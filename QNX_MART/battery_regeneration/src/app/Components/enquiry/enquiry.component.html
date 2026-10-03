@@ -1,0 +1,164 @@
+﻿<div class="enq-wrapper">
+    <div class="enq-header">
+        <div class="enq-header-icon"><i class="fas fa-envelope-open-text"></i></div>
+        <div>
+            <h4 class="enq-header-title">Submit Enquiry</h4>
+            <p class="enq-header-sub">Fill in the details and we'll get back to you</p>
+        </div>
+    </div>
+
+    <div class="enq-body">
+        <form [formGroup]="enquiryForm" (ngSubmit)="submit()">
+
+            <!-- PERSONAL INFO -->
+            <div class="enq-card mb-4">
+                <div class="enq-section-title"><i class="fas fa-user me-2"></i>Personal Information</div>
+                <div class="row g-3">
+                    <div class="col-md-4 col-12">
+                        <label class="enq-label">Person Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" formControlName="person_name"
+                            placeholder="Your full name"
+                            [class.is-invalid]="enquiryForm.get('person_name')?.touched && enquiryForm.get('person_name')?.invalid">
+                        <div class="invalid-feedback">Person name is required</div>
+                    </div>
+                    <div class="col-md-4 col-12">
+                        <label class="enq-label">User Type <span class="text-danger">*</span></label>
+                        <select class="form-select" formControlName="user_type">
+                            <option value="personal">Personal</option>
+                            <option value="business">Business</option>
+                            <option value="organisation">Organisation</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 col-12" *ngIf="enquiryForm.value.user_type === 'personal'">
+                        <label class="enq-label">Shop Name</label>
+                        <input type="text" class="form-control" formControlName="shop_name" placeholder="Shop name">
+                    </div>
+                    <div class="col-md-4 col-12" *ngIf="enquiryForm.value.user_type === 'business'">
+                        <label class="enq-label">Firm Name</label>
+                        <input type="text" class="form-control" formControlName="firm_name" placeholder="Firm name">
+                    </div>
+                    <div class="col-md-4 col-12" *ngIf="enquiryForm.value.user_type === 'organisation'">
+                        <label class="enq-label">Company Name</label>
+                        <input type="text" class="form-control" formControlName="company_name"
+                            placeholder="Company name">
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTACTS -->
+            <div class="enq-card mb-4">
+                <div class="enq-section-title"><i class="fas fa-address-book me-2"></i>Contact Details</div>
+                <div class="row g-3">
+                    <div class="col-md-6 col-12">
+                        <label class="enq-label">Contact Numbers</label>
+                        <div formArrayName="contacts">
+                            <div *ngFor="let c of contacts.controls; let i = index" [formGroupName]="i"
+                                class="input-group mb-2">
+                                <input type="text" class="form-control" formControlName="contact"
+                                    placeholder="10-digit number">
+                                <button type="button" class="btn btn-outline-danger" (click)="removeContact(i)"
+                                    *ngIf="contacts.length > 1">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="button" class="enq-add-btn" (click)="addContact()">
+                            <i class="fas fa-plus me-1"></i>Add Contact
+                        </button>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <label class="enq-label">Email IDs</label>
+                        <div formArrayName="emails">
+                            <div *ngFor="let e of emails.controls; let i = index" [formGroupName]="i"
+                                class="input-group mb-2">
+                                <input type="email" class="form-control" formControlName="email"
+                                    placeholder="Email address">
+                                <button type="button" class="btn btn-outline-danger" (click)="removeEmail(i)"
+                                    *ngIf="emails.length > 1">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="button" class="enq-add-btn" (click)="addEmail()">
+                            <i class="fas fa-plus me-1"></i>Add Email
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRODUCT & ADDRESS -->
+            <div class="enq-card mb-4">
+                <div class="enq-section-title"><i class="fas fa-box me-2"></i>Product & Location</div>
+                <div class="row g-3">
+                    <div class="col-md-4 col-12">
+                        <label class="enq-label">Product <span class="text-danger">*</span></label>
+                        <select multiple class="form-select enq-multi-select" formControlName="product_name">
+                            <option *ngFor="let p of products" [value]="p.id">{{ p.name }}</option>
+                        </select>
+                        <small class="enq-hint">Hold Ctrl / Cmd to select multiple</small>
+                    </div>
+                    <div class="col-md-4 col-12">
+                        <label class="enq-label">Address <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" formControlName="address" placeholder="Your address">
+                    </div>
+                    <div class="col-md-4 col-12">
+                        <label class="enq-label">Pincode <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" formControlName="pincode" placeholder="6-digit pincode"
+                            maxlength="6"
+                            [class.is-invalid]="enquiryForm.get('pincode')?.touched && enquiryForm.get('pincode')?.invalid">
+                        <div class="invalid-feedback">Enter valid 6-digit pincode</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MESSAGE & DEMO -->
+            <div class="enq-card mb-4">
+                <div class="enq-section-title"><i class="fas fa-comment-dots me-2"></i>Message & Demo</div>
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label class="enq-label">Message <span class="text-danger">*</span></label>
+                        <textarea class="form-control enq-textarea" rows="4" formControlName="message"
+                            placeholder="Describe your requirement..."></textarea>
+                    </div>
+                    <div class="col-md-4 col-12">
+                        <label class="enq-label">Demo Required</label>
+                        <select class="form-select" formControlName="demo_required">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 col-12" *ngIf="enquiryForm.value.demo_required === 'yes'">
+                        <label class="enq-label">Demo Type</label>
+                        <select class="form-select" formControlName="demo_type">
+                            <option value="location">At Your Location</option>
+                            <option value="online">Online</option>
+                            <option value="center">At Center</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 col-12">
+                        <label class="enq-label">Attachment</label>
+                        <input type="file" accept=".pdf,.png,.jpg" class="form-control" (change)="onFileSelect($event)">
+                    </div>
+                    <div class="col-md-4 col-12" *ngIf="previewUrl">
+                        <label class="enq-label">Preview</label>
+                        <img *ngIf="selectedFile && selectedFile.type.includes('image')" [src]="previewUrl" class="enq-preview-img" alt="Preview">
+                        <a *ngIf="selectedFile && selectedFile.type.includes('pdf')" [href]="previewUrl" target="_blank" class="enq-pdf-link">
+                            <i class="fas fa-file-pdf me-1"></i>View PDF
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACTIONS -->
+            <div class="enq-actions">
+                <button type="button" class="enq-btn-cancel" routerLink="/home">
+                    <i class="fas fa-times me-2"></i>Cancel
+                </button>
+                <button type="submit" class="enq-btn-submit">
+                    <i class="fas fa-paper-plane me-2"></i>Submit Enquiry
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>

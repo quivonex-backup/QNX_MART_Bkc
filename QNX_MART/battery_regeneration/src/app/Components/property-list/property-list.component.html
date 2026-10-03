@@ -1,0 +1,369 @@
+<div class="pl-page">
+
+  <!-- Header -->
+  <div class="pl-header">
+    <div class="pl-header-text">
+      <h2><i class="bi bi-building me-2"></i>Properties</h2>
+      <p>{{ totalItems }} property{{ totalItems !== 1 ? 's' : '' }} found</p>
+    </div>
+    <button class="pl-filter-toggle" (click)="filterOpen = !filterOpen">
+      <i class="bi bi-funnel-fill me-1"></i>Filters
+      <span class="pl-filter-badge" *ngIf="activeFilterCount > 0">{{ activeFilterCount }}</span>
+    </button>
+  </div>
+
+  <div class="pl-body">
+    <div class="pl-layout">
+
+      <!-- ===== SIDEBAR ===== -->
+      <div class="pl-backdrop" *ngIf="filterOpen" (click)="filterOpen = false"></div>
+
+      <aside class="pl-sidebar" [class.pl-sidebar-open]="filterOpen">
+        <div class="pl-sidebar-header">
+          <span><i class="bi bi-funnel-fill me-2"></i>Filters
+            <span class="pl-filter-badge ms-1" *ngIf="activeFilterCount > 0">{{ activeFilterCount }}</span>
+          </span>
+          <button class="pl-sidebar-close" (click)="filterOpen = false" title="Close">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+
+        <div class="pl-sidebar-scroll">
+          <div class="pl-sidebar-clear" *ngIf="activeFilterCount > 0">
+            <button (click)="clearAllFilters()">
+              <i class="bi bi-x-circle me-1"></i>Clear all filters ({{ activeFilterCount }})
+            </button>
+          </div>
+
+          <!-- Price Range -->
+          <div class="pl-filter-group">
+            <div class="pl-filter-group-title">
+              <i class="bi bi-currency-rupee me-2"></i>Price Range
+            </div>
+            <div class="pl-price-inputs">
+              <input type="number" class="pl-price-input" [(ngModel)]="priceMin" placeholder="Min ₹" min="0"
+                (change)="applyFilters()" />
+              <span class="pl-price-sep">—</span>
+              <input type="number" class="pl-price-input" [(ngModel)]="priceMax" placeholder="Max ₹" min="0"
+                (change)="applyFilters()" />
+            </div>
+          </div>
+
+          <!-- State -->
+          <div class="pl-filter-group">
+            <div class="pl-filter-group-title">
+              <i class="bi bi-geo-alt me-2"></i>State
+            </div>
+            <select class="form-select pl-filter-select" [(ngModel)]="selectedState"
+              (change)="onStateChange(selectedState)">
+              <option [value]="null">All States</option>
+              <option *ngFor="let s of states" [value]="s.id">{{ s.state_name }}</option>
+            </select>
+          </div>
+
+          <!-- District -->
+          <div class="pl-filter-group">
+            <div class="pl-filter-group-title">
+              <i class="bi bi-geo me-2"></i>District / City
+            </div>
+            <select class="form-select pl-filter-select" [(ngModel)]="selectedDistrict" (change)="applyFilters()">
+              <option [value]="null">All Districts</option>
+              <option *ngFor="let d of districts" [value]="d.id">{{ d.district_name }}</option>
+            </select>
+          </div>
+
+          <!-- Property Type -->
+          <div class="pl-filter-group">
+            <div class="pl-filter-group-title">
+              <i class="bi bi-building me-2"></i>Property Type
+            </div>
+            <select class="form-select pl-filter-select" [(ngModel)]="selectedPropertyType" (change)="applyFilters()">
+              <option value="">All Types</option>
+              <option *ngFor="let pt of propertyTypes" [value]="pt.value">{{ pt.label }}</option>
+            </select>
+          </div>
+
+          <!-- Transaction Type -->
+          <div class="pl-filter-group">
+            <div class="pl-filter-group-title">
+              <i class="bi bi-arrow-left-right me-2"></i>Transaction Type
+            </div>
+            <select class="form-select pl-filter-select" [(ngModel)]="selectedTransactionType"
+              (change)="applyFilters()">
+              <option value="">All</option>
+              <option *ngFor="let tt of transactionTypes" [value]="tt.value">{{ tt.label }}</option>
+            </select>
+          </div>
+
+          <!-- Amenities -->
+          <div class="pl-filter-group">
+            <div class="pl-filter-group-title">
+              <i class="bi bi-star me-2"></i>Amenities
+            </div>
+            <div *ngIf="amenitiesList.length; else loadingAmenities">
+              <div class="pl-filter-check" *ngFor="let amenity of amenitiesList">
+                <label>
+                  <input type="checkbox" [value]="amenity.id" (change)="toggleAmenity(amenity.id, $event)"
+                    [checked]="selectedAmenities.includes(amenity.id)" />
+                  <i *ngIf="amenity.icon" [class]="'fas ' + amenity.icon"></i>
+                  {{ amenity.name }}
+                </label>
+              </div>
+            </div>
+            <ng-template #loadingAmenities>
+              <div class="pl-filter-loading">Loading amenities...</div>
+            </ng-template>
+          </div>
+
+        </div>
+      </aside>
+
+      <!-- ===== MAIN ===== -->
+      <main class="pl-main">
+        <div class="pl-topbar">
+          <div class="pl-chips" *ngIf="activeFilterCount > 0">
+            <span class="pl-chip" *ngIf="priceMin !== null || priceMax !== null">
+              ₹{{ priceMin ?? 0 }} – ₹{{ priceMax ?? '∞' }}
+              <button (click)="priceMin=null; priceMax=null; applyFilters()"><i class="bi bi-x"></i></button>
+            </span>
+            <span class="pl-chip" *ngIf="selectedState">
+              {{ getStateName(selectedState) }}
+              <button (click)="selectedState=null; selectedDistrict=null; districts=[]; applyFilters()"><i
+                  class="bi bi-x"></i></button>
+            </span>
+            <span class="pl-chip" *ngIf="selectedDistrict">
+              {{ getDistrictName(selectedDistrict) }}
+              <button (click)="selectedDistrict=null; applyFilters()"><i class="bi bi-x"></i></button>
+            </span>
+            <span class="pl-chip" *ngIf="selectedPropertyType">
+              {{ getPropertyTypeLabel(selectedPropertyType) }}
+              <button (click)="selectedPropertyType=''; applyFilters()"><i class="bi bi-x"></i></button>
+            </span>
+            <span class="pl-chip" *ngIf="selectedTransactionType">
+              {{ getTransactionTypeLabel(selectedTransactionType) }}
+              <button (click)="selectedTransactionType=''; applyFilters()"><i class="bi bi-x"></i></button>
+            </span>
+            <span class="pl-chip" *ngIf="selectedAmenities.length">
+              {{ selectedAmenities.length }} amenity(ies)
+              <button (click)="selectedAmenities=[]; applyFilters()"><i class="bi bi-x"></i></button>
+            </span>
+          </div>
+
+          <!-- <div class="pl-topbar-right">
+            <div class="pl-ipp">
+              <label>Show:</label>
+              <select [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
+                <option *ngFor="let s of pageSizeOptions" [ngValue]="s">{{ s }}</option>
+              </select>
+            </div>
+            <select class="pl-sort-select" [(ngModel)]="selectedSort" (change)="applyFilters()">
+              <option value="">Sort By</option>
+              <option value="price_low">Price: Low → High</option>
+              <option value="price_high">Price: High → Low</option>
+              <option value="a_z">Type: A → Z</option>
+              <option value="z_a">Type: Z → A</option>
+            </select>
+            <span class="pl-count" *ngIf="totalItems > 0">
+              {{ startIndex }}–{{ endIndex }} of {{ totalItems }}
+            </span>
+
+            <span class="pl-count" *ngIf="filteredProperties.length > 0">
+              {{ filteredProperties.length }} Properties
+            </span>
+          </div> -->
+        </div>
+
+        <!-- Property Grid -->
+        <div class="pl-grid" *ngIf="filteredProperties.length > 0; else noResults">
+
+          <div class="pl-card" *ngFor="let property of filteredProperties">
+
+            <!-- ===================================== -->
+            <!-- FULL PROPERTY BACKGROUND IMAGE -->
+            <!-- ===================================== -->
+
+            <img [src]="property.images?.[property.currentImgIndex || 0]?.image_s3_key" [alt]="publicTitle(property)"
+              class="pl-full-bg" loading="lazy" (click)="goToDetails(property)"
+              onerror="this.src='assets/placeholder.png'" />
+
+            <!-- VERY LIGHT IMAGE OVERLAY -->
+            <div class="pl-bg-overlay"></div>
+
+            <!-- FULL IMAGE GLOSSY LOOP -->
+            <div class="pl-full-card-gloss"></div>
+
+
+            <!-- ===================================== -->
+            <!-- IMAGE CAROUSEL CONTROLS -->
+            <!-- ===================================== -->
+
+            <ng-container *ngIf="property.images && property.images.length > 1">
+
+              <!-- PREVIOUS -->
+              <button type="button" class="pl-img-nav pl-img-prev" (click)="prevImage(property, $event)"
+                title="Previous image">
+                <i class="bi bi-chevron-left"></i>
+              </button>
+
+
+              <!-- NEXT -->
+              <button type="button" class="pl-img-nav pl-img-next" (click)="nextImage(property, $event)"
+                title="Next image">
+                <i class="bi bi-chevron-right"></i>
+              </button>
+
+
+              <!-- IMAGE COUNTER -->
+              <span class="pl-img-counter">
+
+                {{ (property.currentImgIndex || 0) + 1 }}
+                /
+                {{ property.images.length }}
+
+              </span>
+
+
+              <!-- IMAGE DOTS -->
+              <div class="pl-img-dots">
+
+                <button type="button" *ngFor="let img of property.images; let i = index" class="pl-img-dot"
+                  [class.active]="i === (property.currentImgIndex || 0)" (click)="setImage(property, i, $event)">
+                </button>
+
+              </div>
+
+            </ng-container>
+
+
+            <!-- ===================================== -->
+            <!-- BOTTOM GLASS DETAIL CARD -->
+            <!-- ===================================== -->
+
+            <div class="pl-glass-content">
+
+              <!-- TYPE BADGES -->
+              <div class="pl-top-meta">
+
+                <span class="pl-glass-category">
+
+                  {{ getPropertyTypeLabel(property.property_type) }}
+
+                </span>
+
+                <span class="pl-glass-transaction">
+
+                  {{ getTransactionTypeLabel(property.transaction_type) }}
+
+                </span>
+
+              </div>
+
+
+              <!-- PROPERTY NAME -->
+              <h6 class="pl-glass-name" (click)="goToDetails(property)">
+
+                {{ publicTitle(property) }}
+
+              </h6>
+
+
+              <!-- DESCRIPTION -->
+              <p class="pl-glass-desc">
+
+                {{ publicDescription(property) }}
+
+              </p>
+
+
+              <!-- LOCATION -->
+              <div class="pl-glass-location">
+
+                <i class="bi bi-geo-alt-fill"></i>
+
+                <span>
+
+                  {{ locationLine(property) }}
+
+                </span>
+
+              </div>
+
+
+              <!-- DIVIDER -->
+              <div class="pl-glass-divider"></div>
+
+
+              <!-- PRICE -->
+              <div class="pl-glass-price-row">
+
+                <span class="pl-glass-price">
+
+                  {{ formatPrice(property.price) }}
+
+                </span>
+
+              </div>
+
+
+              <!-- ACTION BUTTONS -->
+              <div class="pl-glass-actions">
+
+                <button type="button" class="pl-glass-details-btn" (click)="goToDetails(property)">
+
+                  <i class="bi bi-eye"></i>
+
+                  Details
+
+                </button>
+
+
+                <button type="button" class="pl-glass-enquiry-btn" (click)="goToEnquiry(property)">
+
+                  <i class="bi bi-chat-dots"></i>
+
+                  Enquiry
+
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Pagination -->
+        <!-- <div class="pl-pagination" *ngIf="totalPages > 1">
+          <button class="pl-page-btn" [disabled]="currentPage === 1" (click)="firstPage()">
+            <i class="bi bi-chevron-double-left"></i> First
+          </button>
+          <button class="pl-page-btn" [disabled]="currentPage === 1" (click)="previousPage()">
+            <i class="bi bi-chevron-left"></i> Prev
+          </button>
+          <div class="pl-page-numbers">
+            <button *ngFor="let page of getPageNumbers()" class="pl-page-num" [class.active]="page === currentPage"
+              [disabled]="page === '...'" (click)="goToPage(page)">
+              {{ page }}
+            </button>
+          </div>
+          <button class="pl-page-btn" [disabled]="currentPage === totalPages" (click)="nextPage()">
+            Next <i class="bi bi-chevron-right"></i>
+          </button>
+          <button class="pl-page-btn" [disabled]="currentPage === totalPages" (click)="lastPage()">
+            Last <i class="bi bi-chevron-double-right"></i>
+          </button>
+        </div> -->
+
+        <ng-template #noResults>
+          <div class="pl-empty">
+            <i class="bi bi-building pl-empty-icon"></i>
+            <h5>No properties found</h5>
+            <p>Try adjusting your filters or browse all listings.</p>
+            <button class="pl-btn pl-btn-primary" (click)="clearAllFilters()">Clear Filters</button>
+          </div>
+        </ng-template>
+      </main>
+    </div>
+  </div>
+</div>

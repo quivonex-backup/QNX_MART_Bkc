@@ -1,0 +1,138 @@
+<div class="ao-page">
+
+  <!-- Page Header -->
+  <div class="ao-page-header">
+    <div class="ao-page-header-inner">
+      <div>
+        <h1 class="ao-page-title">
+          <i class="bi bi-lightning-charge-fill"></i>
+          Apply Offer to Products
+        </h1>
+        <p class="ao-page-subtitle">Select an offer and assign it to your products</p>
+      </div>
+      <button class="ao-btn-new" (click)="goToCreateOfferPage()">
+        <i class="bi bi-plus-lg"></i> New Offer
+      </button>
+    </div>
+  </div>
+
+  <!-- Config Card -->
+  <div class="ao-config-card">
+    <div class="ao-card-header">
+      <span class="ao-card-title">
+        <i class="bi bi-sliders"></i> Offer Configuration
+      </span>
+    </div>
+
+    <div class="ao-config-body">
+      <div class="ao-config-grid">
+
+        <!-- Select Offer -->
+        <div class="ao-field">
+          <label class="ao-label">
+            Select Offer <span class="ao-required">*</span>
+            <button class="ao-inline-add" (click)="goToCreateOfferPage()" title="Create new offer">
+              <i class="bi bi-plus-circle-fill"></i>
+            </button>
+          </label>
+          <div class="ao-select-wrap">
+            <select class="ao-input ao-select" [(ngModel)]="selectedOfferId">
+              <option value="">-- Select Offer --</option>
+              <option *ngFor="let o of offers" [value]="o.id">{{ o.title }}</option>
+            </select>
+            <i class="bi bi-chevron-down ao-select-icon"></i>
+          </div>
+        </div>
+
+        <!-- Branch Filter -->
+        <div class="ao-field">
+          <label class="ao-label">Branch <span class="ao-optional">(Optional)</span></label>
+          <div class="ao-select-wrap">
+            <select class="ao-input ao-select" [(ngModel)]="selectedBranchId" (change)="onBranchChange()">
+              <option value="">-- All Branches --</option>
+              <option *ngFor="let b of branches" [value]="b.id">{{ b.name }}</option>
+            </select>
+            <i class="bi bi-chevron-down ao-select-icon"></i>
+          </div>
+        </div>
+
+        <!-- Apply to All Toggle -->
+        <div class="ao-field ao-toggle-field">
+          <label class="ao-label">Apply to All Products</label>
+          <label class="ao-toggle">
+            <input type="checkbox" [(ngModel)]="offer.applyToAll" (change)="toggleAllProducts()" />
+            <span class="ao-toggle-track">
+              <span class="ao-toggle-thumb"></span>
+            </span>
+            <span class="ao-toggle-label">{{ offer.applyToAll ? 'All selected' : 'Manual selection' }}</span>
+          </label>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Products Card -->
+  <div class="ao-products-card">
+    <div class="ao-card-header">
+      <span class="ao-card-title">
+        <i class="bi bi-box-seam"></i> Select Products
+      </span>
+      <span class="ao-selected-count" *ngIf="offer.productIds.length > 0">
+        {{ offer.productIds.length }} selected
+      </span>
+    </div>
+
+    <!-- Loading -->
+    <div class="ao-loading" *ngIf="loading">
+      <div class="ao-spinner"></div>
+      <span>Loading products...</span>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="ao-products-grid" *ngIf="!loading">
+
+      <div class="ao-product-card" *ngFor="let p of products" [class.ao-product-selected]="isSelected(p.id)"
+        [class.ao-product-disabled]="offer.applyToAll" (click)="toggleProduct(p.id)">
+
+        <div class="ao-product-check">
+          <input type="checkbox" [disabled]="offer.applyToAll" [checked]="isSelected(p.id)"
+            (click)="$event.stopPropagation()" (change)="toggleProduct(p.id)" />
+        </div>
+
+        <div class="ao-product-img">
+          <img [src]="p.thumbnail_s3_key" [alt]="p.name" />
+        </div>
+
+        <div class="ao-product-info">
+          <div class="ao-product-name">{{ p.name }}</div>
+          <div class="ao-product-price">₹{{ p.price }}</div>
+        </div>
+
+        <div class="ao-product-selected-overlay" *ngIf="isSelected(p.id)">
+          <i class="bi bi-check-circle-fill"></i>
+        </div>
+
+      </div>
+
+      <!-- Empty -->
+      <div class="ao-empty" *ngIf="products.length === 0">
+        <i class="bi bi-box"></i>
+        <p>No products found for the selected branch.</p>
+      </div>
+
+    </div>
+
+    <!-- Footer Actions -->
+    <div class="ao-card-footer">
+      <button class="ao-btn-secondary" (click)="resetForm()">
+        <i class="bi bi-arrow-counterclockwise"></i> Reset
+      </button>
+      <button class="ao-btn-primary" (click)="saveOffer()">
+        <i class="bi bi-check-lg"></i> Apply Offer
+      </button>
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,404 @@
+<div class="mp-page">
+
+  <!-- ===== FULL-WIDTH HEADER with Back Button ===== -->
+  <div class="mp-header">
+    <button class="mp-back-btn" (click)="goBack()">
+      <i class="bi bi-arrow-left"></i>
+    </button>
+    <div class="mp-header-text">
+      <h2><i class="bi bi-people-fill me-2"></i>Create Channel Partner</h2>
+      <p>Fill in the details below to register a new channel partner</p>
+    </div>
+  </div>
+
+  <div class="mp-container">
+
+    <div class="mp-card">
+
+      <div class="mp-body">
+
+        <form (ngSubmit)="submitForm()" #partnerForm="ngForm">
+
+          <!-- ================= BASIC DETAILS ================= -->
+          <div class="mp-section">
+            <div class="mp-section-header">
+              <span class="mp-section-icon"><i class="bi bi-person-badge"></i></span>
+              <h5 class="mp-section-title">Basic Details</h5>
+            </div>
+
+            <div class="mp-row">
+
+              <!-- Name -->
+              <div class="mp-field">
+                <label class="mp-label">Full Name <span class="required">*</span></label>
+                <div class="mp-input-wrap">
+                  <i class="bi bi-person-fill mp-icon"></i>
+                  <input
+                    type="text"
+                    placeholder="Enter partner name"
+                    [(ngModel)]="partner.name"
+                    name="name"
+                    required>
+                </div>
+              </div>
+
+              <!-- Company Name -->
+              <div class="mp-field">
+                <label class="mp-label">Company Name</label>
+                <div class="mp-input-wrap">
+                  <i class="bi bi-building mp-icon"></i>
+                  <input
+                    type="text"
+                    placeholder="Enter company name"
+                    [(ngModel)]="partner.company_name"
+                    name="company_name">
+                </div>
+              </div>
+
+              <!-- Mobile -->
+              <div class="mp-field">
+                <label class="mp-label">Mobile Number <span class="required">*</span></label>
+                <div class="mp-input-wrap">
+                  <i class="bi bi-phone-fill mp-icon"></i>
+                  <input
+                    type="text"
+                    placeholder="Enter 10-digit mobile number"
+                    [(ngModel)]="partner.mobile"
+                    name="mobile"
+                    maxlength="10"
+                    required>
+                </div>
+              </div>
+
+              <!-- Email -->
+              <div class="mp-field">
+                <label class="mp-label">Email Address <span class="required">*</span></label>
+                <div class="mp-input-wrap">
+                  <i class="bi bi-envelope-fill mp-icon"></i>
+                  <input
+                    type="email"
+                    placeholder="Enter email address"
+                    [(ngModel)]="partner.email"
+                    name="email"
+                    required>
+                </div>
+              </div>
+
+              <!-- RERA Number -->
+              <div class="mp-field">
+                <label class="mp-label">RERA Number</label>
+                <div class="mp-input-wrap">
+                  <i class="bi bi-patch-check-fill mp-icon"></i>
+                  <input
+                    type="text"
+                    placeholder="Enter RERA number"
+                    [(ngModel)]="partner.rera_number"
+                    name="rera_number">
+                </div>
+              </div>
+
+              <!-- Commission -->
+              <div class="mp-field">
+                <label class="mp-label">Commission (%)</label>
+                <div class="mp-input-wrap">
+                  <i class="bi bi-percent mp-icon"></i>
+                  <input
+                    type="number"
+                    step="0.01"
+                    placeholder="e.g. 2.00"
+                    [(ngModel)]="partner.commission_percentage"
+                    name="commission_percentage">
+                </div>
+              </div>
+
+            </div><!-- /.mp-row -->
+          </div><!-- /.mp-section -->
+
+          <!-- ================= LOCATION DETAILS ================= -->
+          <div class="mp-section">
+            <div class="mp-section-header">
+              <span class="mp-section-icon"><i class="bi bi-geo-alt-fill"></i></span>
+              <h5 class="mp-section-title">Location Details</h5>
+            </div>
+
+            <div class="mp-row">
+
+              <!-- Address -->
+              <div class="mp-field mp-field-full">
+                <label class="mp-label">Address</label>
+                <div class="mp-input-wrap">
+                  <i class="bi bi-geo mp-icon"></i>
+                  <input
+                    type="text"
+                    placeholder="Enter address"
+                    [(ngModel)]="partner.address"
+                    name="address">
+                </div>
+              </div>
+
+              <!-- State (from state-master) -->
+              <div class="mp-field">
+                <label class="mp-label">State</label>
+                <div class="mp-input-wrap">
+                  <i class="bi bi-map-fill mp-icon"></i>
+                  <select
+                    [(ngModel)]="partner.state"
+                    name="state"
+                    (change)="onStateChange()">
+                    <option value="">Select State</option>
+                    <option
+                      *ngFor="let state of states"
+                      [ngValue]="state.id">
+                      {{ state.state_name }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- City (from district-master, filtered by state) -->
+              <div class="mp-field">
+                <label class="mp-label">City / District</label>
+                <div class="mp-input-wrap">
+                  <i class="bi bi-building mp-icon"></i>
+                  <select
+                    [(ngModel)]="partner.city"
+                    name="city"
+                    [disabled]="!partner.state">
+                    <option value="">Select City / District</option>
+                    <option
+                      *ngFor="let d of districts"
+                      [ngValue]="d.id">
+                      {{ d.district_name }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Pincode -->
+              <div class="mp-field">
+                <label class="mp-label">Pincode</label>
+                <div class="mp-input-wrap">
+                  <i class="bi bi-hash mp-icon"></i>
+                  <input
+                    type="text"
+                    placeholder="Enter pincode"
+                    [(ngModel)]="partner.pincode"
+                    name="pincode"
+                    maxlength="6">
+                </div>
+              </div>
+
+            </div><!-- /.mp-row -->
+          </div><!-- /.mp-section -->
+
+          <!-- ================= NOTES ================= -->
+          <div class="mp-section">
+            <div class="mp-section-header">
+              <span class="mp-section-icon"><i class="bi bi-journal-text"></i></span>
+              <h5 class="mp-section-title">Additional Notes</h5>
+            </div>
+
+            <div class="mp-row">
+              <div class="mp-field mp-field-full">
+                <label class="mp-label">Notes</label>
+                <div class="mp-input-wrap">
+                  <i class="bi bi-pencil-fill mp-icon" style="align-self: flex-start; padding-top: 12px;"></i>
+                  <textarea
+                    rows="4"
+                    placeholder="Any additional notes about this channel partner..."
+                    [(ngModel)]="partner.notes"
+                    name="notes"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= TERMS & CONDITIONS CHECKBOX ================= -->
+          <div class="mp-terms-row">
+            <label class="mp-checkbox-label">
+              <input
+                type="checkbox"
+                [(ngModel)]="termsAccepted"
+                name="terms_accepted">
+              <span class="mp-checkbox-box">
+                <i class="bi bi-check-lg"></i>
+              </span>
+              <span class="mp-checkbox-text">
+                I have read and agree to the
+                <a href="javascript:void(0)" (click)="openTermsModal()">Terms &amp; Conditions</a>
+                for Channel Partners.
+              </span>
+            </label>
+          </div>
+
+          <!-- ================= BUTTONS ================= -->
+          <div class="mp-actions">
+            <button
+              type="button"
+              class="mp-btn mp-btn-outline"
+              (click)="clearForm()">
+              Clear
+            </button>
+            <button
+              type="submit"
+              class="mp-btn mp-btn-primary"
+              [disabled]="isSubmitting">
+              <span *ngIf="!isSubmitting">
+                <i class="bi bi-send-fill me-1"></i> Create Partner
+              </span>
+              <span *ngIf="isSubmitting">
+                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                Submitting...
+              </span>
+            </button>
+          </div>
+
+        </form>
+
+      </div><!-- /.mp-body -->
+
+    </div><!-- /.mp-card -->
+
+  </div><!-- /.mp-container -->
+
+  <!-- ================= TERMS & CONDITIONS MODAL ================= -->
+  <div class="mp-modal-overlay" *ngIf="showTermsModal" (click)="closeTermsModal()">
+    <div class="mp-modal" (click)="$event.stopPropagation()">
+
+      <div class="mp-modal-header">
+        <h4><i class="bi bi-file-earmark-text me-2"></i>Channel Partner — Terms &amp; Conditions</h4>
+        <button type="button" class="mp-modal-close" (click)="closeTermsModal()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <div class="mp-modal-body">
+
+        <p class="mp-tc-intro">
+          These Terms &amp; Conditions ("Terms") govern your registration and
+          ongoing association as a <strong>Channel Partner</strong> with our
+          real estate platform. By accepting, you confirm that you have read,
+          understood, and agree to be bound by them.
+        </p>
+
+        <h6>1. Eligibility &amp; Registration</h6>
+        <p>
+          You must be at least 18 years old and legally competent to enter into
+          a contract under the Indian Contract Act, 1872. All information
+          provided during registration must be true, accurate, and up to date.
+          Providing false or misleading details may result in immediate
+          termination of your partnership.
+        </p>
+
+        <h6>2. RERA Compliance</h6>
+        <p>
+          You agree to comply with the Real Estate (Regulation and Development)
+          Act, 2016 and all applicable RERA rules of the respective State. Any
+          RERA registration number you provide must be genuine and valid. You
+          shall not advertise, promote, or sell any project that is not
+          RERA-registered where registration is mandatory.
+        </p>
+
+        <h6>3. Scope of Association</h6>
+        <p>
+          As a Channel Partner, you are an independent contractor and not an
+          employee, agent, or legal representative of the company. You are not
+          authorised to make any commitment, contract, or representation on
+          behalf of the company or the developer beyond what is officially
+          published.
+        </p>
+
+        <h6>4. Commission &amp; Payment</h6>
+        <p>
+          Commission shall be payable only on successfully closed and
+          registered transactions, subject to receipt of full payment by the
+          developer and completion of all documentation. Commission rates,
+          slabs, and payout timelines may be revised by the company at its
+          sole discretion with prior notice. Commission is not payable on
+          self-sourced, cancelled, refunded, or defaulted bookings.
+        </p>
+
+        <h6>5. Client Confidentiality &amp; Data Protection</h6>
+        <p>
+          All client data, lead information, pricing, project documents, and
+          commercial terms shared with you are strictly confidential. You
+          shall not share, sell, or misuse such information. Any breach will
+          attract legal action and forfeiture of pending commissions.
+        </p>
+
+        <h6>6. Non-Circumvention</h6>
+        <p>
+          You shall not bypass, circumvent, or attempt to directly deal with
+          any developer, client, or lead introduced through the platform for
+          the purpose of avoiding commission or platform fees. Any such act
+          will be treated as a material breach and may result in termination
+          and legal recourse.
+        </p>
+
+        <h6>7. Marketing &amp; Promotion Guidelines</h6>
+        <p>
+          All marketing material, advertisements, and promotions must use
+          only approved content provided by the company or the developer.
+          You shall not make false promises, misrepresent pricing,
+          amenities, approvals, or possession timelines. All digital
+          promotions must comply with the ASCI Code and applicable advertising
+          regulations.
+        </p>
+
+        <h6>8. Code of Conduct</h6>
+        <p>
+          You agree to conduct yourself professionally and ethically. Any
+          form of harassment, discrimination, misuse of the platform,
+          fraudulent activity, or misconduct with clients, developers, or
+          other partners will lead to immediate termination.
+        </p>
+
+        <h6>9. Term &amp; Termination</h6>
+        <p>
+          Either party may terminate this association with prior written
+          notice. The company reserves the right to suspend or terminate your
+          account immediately in case of breach of these Terms, fraudulent
+          activity, or upon regulatory direction. Commissions accrued on
+          completed transactions prior to termination will be settled as per
+          policy.
+        </p>
+
+        <h6>10. Limitation of Liability</h6>
+        <p>
+          The company shall not be liable for any indirect, incidental, or
+          consequential loss arising out of your association as a Channel
+          Partner. The company's total liability, if any, shall be limited to
+          the commission payable on the specific transaction in question.
+        </p>
+
+        <h6>11. Governing Law &amp; Dispute Resolution</h6>
+        <p>
+          These Terms shall be governed by the laws of India. Any dispute
+          arising shall first be attempted to be resolved amicably; failing
+          which, it shall be subject to the exclusive jurisdiction of the
+          courts at the company's registered office location.
+        </p>
+
+        <h6>12. Acceptance</h6>
+        <p>
+          By ticking the "I agree" checkbox and submitting this form, you
+          electronically accept these Terms &amp; Conditions and consent to
+          receive communication from the company via SMS, email, call, or
+          WhatsApp in relation to your partnership.
+        </p>
+
+      </div>
+
+      <div class="mp-modal-footer">
+        <button type="button" class="mp-btn mp-btn-outline" (click)="closeTermsModal()">
+          Close
+        </button>
+        <button type="button" class="mp-btn mp-btn-primary" (click)="acceptTermsFromModal()">
+          <i class="bi bi-check-lg me-1"></i> I Accept
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

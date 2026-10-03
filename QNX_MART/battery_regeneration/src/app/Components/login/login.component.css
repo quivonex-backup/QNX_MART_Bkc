@@ -1,0 +1,675 @@
+:host {
+  display: block;
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  color: #071a3d;
+}
+
+/* ==========================================================
+   IMPORTANT:
+   This page sits BELOW your existing QNX navbar.
+   No 100vh is used.
+   ========================================================== */
+.qnx-login-page {
+  width: 100%;
+  padding: 10px 0 14px;
+  background: linear-gradient(135deg, #eef2ff 0%, #e6deff 100%);
+}
+
+.qnx-auth-card {
+  width: 100%;
+  max-width: 1320px;
+  height: 560px;
+  min-height: 560px;
+  margin: 0 auto;
+  border-radius: 28px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 18px 48px rgba(38, 52, 112, .13);
+}
+
+/* ==========================================================
+   LEFT PANEL
+   ========================================================== */
+.qnx-brand-panel {
+  height: 560px;
+  min-height: 560px;
+  padding: 24px 32px 62px;
+  background:
+    radial-gradient(circle at 78% 12%, rgba(20,128,225,.44), transparent 28%),
+    linear-gradient(145deg, #ffffff 0%, #dcefff 51%, #157dce 100%);
+}
+
+.qnx-brand-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(250,253,255,.98) 0%,
+    rgba(238,248,255,.92) 32%,
+    rgba(224,242,255,.55) 48%,
+    rgba(224,242,255,.05) 66%,
+    transparent 80%
+  );
+}
+
+.brand-copy {
+  position: relative;
+  z-index: 3;
+  width: 47%;
+  max-width: 330px;
+}
+
+.brand-logo-box {
+  width: 122px;
+  height: 84px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+  border-radius: 15px;
+  background: #fff;
+  box-shadow: 0 9px 24px rgba(18, 60, 112, .11);
+}
+
+.brand-logo {
+  width: 106px;
+  max-height: 68px;
+  object-fit: contain;
+}
+
+.brand-kicker {
+  margin: 0 0 10px;
+  color: #17365f;
+  font-size: .67rem;
+  font-weight: 800;
+  letter-spacing: .15em;
+  white-space: nowrap;
+}
+
+.brand-title {
+  margin: 0 0 11px;
+  color: #061a3d;
+  font-size: 2.72rem;
+  line-height: .93;
+  font-weight: 850;
+  letter-spacing: -.05em;
+}
+
+.grow-text {
+  color: #5599f7;
+}
+
+.business-text {
+  color: #ff771d;
+}
+
+.brand-description {
+  width: 305px;
+  max-width: 100%;
+  margin: 0 0 14px;
+  color: #17345f;
+  font-size: .78rem;
+  line-height: 1.4;
+}
+
+.brand-features {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.brand-feature {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #112b55;
+  font-size: .72rem;
+  font-weight: 700;
+}
+
+.feature-icon {
+  width: 31px;
+  height: 31px;
+  flex: 0 0 31px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255,255,255,.9);
+  font-size: .86rem;
+}
+
+.feature-icon.blue { color: #0a6fe8; }
+.feature-icon.orange { color: #ff741c; }
+.feature-icon.purple { color: #6b4ee0; }
+
+/* The image is intentionally smaller and pushed to the right,
+   so it does not cover the heading. */
+.hero-art {
+  position: absolute;
+  right: -8px;
+  bottom: 47px;
+  z-index: 2;
+  width: 58%;
+  height: 95%;
+  object-fit: contain;
+  object-position: right;
+
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0,0,0,.30) 12%,
+    #000 28%,
+    #000 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0,0,0,.30) 12%,
+    #000 28%,
+    #000 100%
+  );
+}
+
+.brand-bottom-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  height: 54px;
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 17px;
+  color: #fff;
+  background: linear-gradient(90deg, #0b315d, #075b9d);
+  font-size: .67rem;
+  font-weight: 650;
+}
+
+.brand-bottom-bar div {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.brand-bottom-bar i {
+  font-size: .9rem;
+}
+
+.bar-divider {
+  width: 1px;
+  height: 18px;
+  background: rgba(255,255,255,.55);
+}
+
+/* ==========================================================
+   RIGHT PANEL
+   ========================================================== */
+.qnx-form-panel {
+  height: 560px;
+  min-height: 560px;
+  padding: 25px 48px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(129,91,255,.08), transparent 29%),
+    radial-gradient(circle at 100% 100%, rgba(255,121,32,.06), transparent 28%),
+    #fff;
+}
+
+.form-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.orb-top {
+  width: 190px;
+  height: 190px;
+  top: -65px;
+  right: -55px;
+  background: radial-gradient(circle, rgba(255,121,32,.10), rgba(125,86,255,.07) 56%, transparent 72%);
+}
+
+.orb-bottom {
+  width: 190px;
+  height: 190px;
+  bottom: -70px;
+  right: -70px;
+  background: radial-gradient(circle, rgba(255,121,32,.07), rgba(125,86,255,.05) 58%, transparent 72%);
+}
+
+.auth-inner {
+  position: relative;
+  z-index: 3;
+  max-width: 475px;
+  margin: 0 auto;
+}
+
+.auth-top {
+  gap: 12px;
+  margin-bottom: 22px;
+  color: #56667f;
+  font-size: .73rem;
+}
+
+.create-account-btn {
+  height: 37px;
+  min-width: 124px;
+  padding: 0 16px;
+  border: 1.3px solid #1a70f2;
+  border-radius: 999px;
+  color: #1265df;
+  background: #fff;
+  font-size: .72rem;
+  font-weight: 700;
+}
+
+.create-account-btn:hover {
+  color: #fff;
+  background: #1265df;
+}
+
+.login-heading {
+  margin-bottom: 19px;
+}
+
+.login-heading h2 {
+  margin: 0 0 4px;
+  color: #07172f;
+  font-size: 2rem;
+  line-height: 1.05;
+  font-weight: 850;
+  letter-spacing: -.035em;
+}
+
+.login-heading p {
+  margin: 0;
+  color: #63718a;
+  font-size: .79rem;
+}
+
+.form-block {
+  margin-bottom: 12px;
+}
+
+.password-block {
+  margin-bottom: 6px;
+}
+
+.form-label {
+  margin-bottom: 4px;
+  color: #101f39;
+  font-size: .70rem;
+  font-weight: 750;
+}
+
+.qnx-input {
+  height: 46px;
+  overflow: hidden;
+  border: 1.3px solid #d5dce8;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.qnx-input:focus-within {
+  border-color: #4485f4;
+  box-shadow: 0 0 0 3px rgba(68,133,244,.09);
+}
+
+.qnx-input .input-group-text {
+  border: 0;
+  padding: 0 12px;
+  color: #7889a5;
+  background: #fff;
+  font-size: .87rem;
+}
+
+.qnx-input .form-control {
+  height: 44px;
+  border: 0;
+  padding-left: 3px;
+  color: #10264a;
+  background: #fff;
+  box-shadow: none !important;
+  font-size: .76rem;
+}
+
+.qnx-input .form-control::placeholder {
+  color: #9ba9bd;
+}
+
+.password-toggle {
+  cursor: pointer;
+  padding-right: 12px !important;
+}
+
+.forgot-row {
+  margin: 5px 0 10px;
+  text-align: right;
+}
+
+.forgot-btn {
+  border: 0;
+  padding: 0;
+  color: #1762ed;
+  background: transparent;
+  font-size: .68rem;
+  font-weight: 650;
+}
+
+.signin-btn {
+  width: 100%;
+  height: 47px;
+  border: 0;
+  border-radius: 11px;
+  color: #fff;
+  background: linear-gradient(
+    100deg,
+    #1679ef 0%,
+    #4b64e6 36%,
+    #814ed1 65%,
+    #ff681c 100%
+  );
+  box-shadow: 0 11px 24px rgba(73,79,213,.19);
+  font-size: .79rem;
+  font-weight: 800;
+}
+
+.signin-btn span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+}
+
+.signin-btn:hover:not(:disabled) {
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.signin-btn:disabled {
+  opacity: .65;
+}
+
+.or-divider {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin: 13px 0 10px;
+  color: #8896a9;
+  font-size: .59rem;
+  font-weight: 700;
+}
+
+.or-divider::before,
+.or-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #e3e7ef;
+}
+
+.google-btn {
+  width: 100%;
+  height: 42px;
+  border: 1.2px solid #d6dde8;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #13213c;
+  background: #fff;
+  font-size: .69rem;
+  font-weight: 700;
+}
+
+.google-g {
+  color: #4285f4;
+  font-size: .93rem;
+  font-weight: 900;
+}
+
+.trust-row {
+  margin-top: 15px;
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr 1px 1fr;
+  align-items: center;
+}
+
+.trust-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: #233f65;
+}
+
+.trust-item i {
+  color: #0a6fe8;
+  font-size: 1.03rem;
+}
+
+.trust-item span {
+  font-size: .57rem;
+  font-weight: 650;
+}
+
+.trust-divider {
+  width: 1px;
+  height: 38px;
+  background: #e0e5ed;
+}
+
+/* ==========================================================
+   SECONDARY VIEWS
+   ========================================================== */
+.secondary-view {
+  max-width: 475px;
+  margin: 0 auto;
+}
+
+.back-btn,
+.resend-btn {
+  border: 0;
+  padding: 0;
+  color: #2867dc;
+  background: transparent;
+  font-size: .69rem;
+  font-weight: 650;
+}
+
+.compact-heading {
+  margin-top: 12px;
+  margin-bottom: 15px;
+}
+
+.compact-heading h2 {
+  font-size: 1.75rem;
+}
+
+.step-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.step {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #8492a6;
+  background: #edf1f7;
+  font-size: .64rem;
+  font-weight: 800;
+}
+
+.step.active,
+.step.done {
+  color: #fff;
+  background: linear-gradient(135deg, #1477ef, #704dde);
+}
+
+.step-line {
+  width: 39px;
+  height: 3px;
+  background: #e2e7f0;
+}
+
+.step-line.active {
+  background: #4f68e3;
+}
+
+.verified-badge {
+  margin-bottom: 9px;
+  padding: 7px 9px;
+  border-radius: 9px;
+  color: #14784a;
+  background: #e9f9ef;
+  font-size: .65rem;
+  font-weight: 650;
+}
+
+.pwd-hint {
+  display: block;
+  margin-top: 5px;
+  color: #7e8ca1;
+  font-size: .60rem;
+}
+
+.signup-form-view .qnx-input {
+  height: 41px;
+}
+
+.signup-form-view .qnx-input .form-control {
+  height: 39px;
+}
+
+/* POPUP */
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(6,22,48,.45);
+  backdrop-filter: blur(5px);
+}
+
+.popup-box {
+  width: min(370px, 94vw);
+  padding: 23px;
+  border-radius: 20px;
+  text-align: center;
+  background: #fff;
+  box-shadow: 0 25px 60px rgba(10,26,55,.24);
+}
+
+.popup-icon {
+  width: 50px;
+  height: 50px;
+  margin: 0 auto 11px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: #176fea;
+}
+
+.popup-success .popup-icon { background: #198754; }
+.popup-error .popup-icon { background: #dc3545; }
+.popup-warning .popup-icon { background: #f0a202; }
+.popup-info .popup-icon { background: #0d6efd; }
+
+/* project global CSS protection */
+.qnx-login-page input,
+.qnx-login-page button,
+.qnx-login-page h1,
+.qnx-login-page h2 {
+  transform: none !important;
+  zoom: 1 !important;
+}
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+@media (max-width: 1199.98px) {
+  .qnx-auth-card,
+  .qnx-brand-panel,
+  .qnx-form-panel {
+    height: 535px;
+    min-height: 535px;
+  }
+
+  .brand-title {
+    font-size: 2.35rem;
+  }
+
+  .brand-copy {
+    max-width: 285px;
+  }
+
+  .hero-art {
+    width: 57%;
+    height: 72%;
+  }
+
+  .qnx-form-panel {
+    padding-left: 34px;
+    padding-right: 34px;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .qnx-login-page {
+    padding: 12px;
+  }
+
+  .qnx-auth-card {
+    max-width: 620px;
+    height: auto;
+    min-height: auto;
+  }
+
+  .qnx-form-panel {
+    height: auto;
+    min-height: 515px;
+    padding: 28px 30px;
+  }
+
+  .auth-inner {
+    max-width: 460px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .qnx-login-page {
+    padding: 8px;
+  }
+
+  .qnx-auth-card {
+    border-radius: 18px;
+  }
+
+  .qnx-form-panel {
+    min-height: auto;
+    padding: 22px 16px;
+  }
+
+  .auth-top {
+    justify-content: space-between !important;
+  }
+
+  .login-heading h2 {
+    font-size: 1.65rem;
+  }
+}

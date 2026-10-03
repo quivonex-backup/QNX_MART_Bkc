@@ -1,0 +1,166 @@
+<div class="br-page">
+
+    <!-- Page Header -->
+    <div class="br-page-header">
+        <div class="br-page-header-inner">
+            <button class="br-back-btn" onclick="window.history.back()" title="Go back">
+                <i class="bi bi-arrow-left"></i>
+            </button>
+            <div>
+                <h1 class="br-page-title">
+                    <i class="bi bi-building"></i>
+                    Branch Master
+                </h1>
+                <p class="br-page-subtitle">Create and manage company branches</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Two Column Layout -->
+    <div class="br-two-col">
+
+        <!-- Form Card -->
+        <div class="br-form-card">
+            <div class="br-card-header">
+                <span class="br-card-title">
+                    <i class="bi bi-{{ isEditMode ? 'pencil-square' : 'plus-circle-fill' }}"></i>
+                    {{ isEditMode ? 'Edit Branch' : 'Add Branch' }}
+                </span>
+                <button class="br-btn-ghost" *ngIf="isEditMode" type="button" (click)="resetForm()">
+                    <i class="bi bi-x-lg"></i> Cancel Edit
+                </button>
+            </div>
+
+            <form (ngSubmit)="onSubmit()" #branchForm="ngForm">
+                <div class="br-form-body">
+                    <div class="br-form-grid">
+
+                        <!-- Company -->
+                        <div class="br-field br-field-full">
+                            <label class="br-label">Company <span class="br-required">*</span></label>
+                            <div class="br-select-wrap">
+                                <select class="br-input br-select" name="company" [(ngModel)]="formData.company"
+                                    required>
+                                    <option value="">-- Select Company --</option>
+                                    <option *ngFor="let c of companies" [value]="c.id">{{ c.name }}</option>
+                                </select>
+                                <i class="bi bi-chevron-down br-select-icon"></i>
+                            </div>
+                        </div>
+
+                        <!-- Branch Name -->
+                        <div class="br-field br-field-full">
+                            <label class="br-label">Branch Name <span class="br-required">*</span></label>
+                            <input type="text" class="br-input" name="name" [(ngModel)]="formData.name"
+                                placeholder="e.g. Mumbai HQ" required />
+                        </div>
+
+                        <!-- Phone & Email -->
+                        <div class="br-field">
+                            <label class="br-label">Phone</label>
+                            <input type="tel" class="br-input" name="phone_number" [(ngModel)]="formData.phone_number"
+                                placeholder="Branch phone" maxlength="10" inputmode="numeric"
+                                (input)="onPhoneInput($event)" />
+                        </div>
+
+                        <div class="br-field">
+                            <label class="br-label">Email</label>
+                            <input type="email" class="br-input" name="email" [(ngModel)]="formData.email"
+                                placeholder="Branch email" />
+                        </div>
+
+                        <!-- Address -->
+                        <div class="br-field br-field-full">
+                            <label class="br-label">Address</label>
+                            <textarea class="br-input br-textarea" rows="3" name="address"
+                                [(ngModel)]="formData.address" placeholder="Branch address..."></textarea>
+                        </div>
+
+                    </div>
+
+                    <div class="br-form-actions">
+                        <button type="button" class="br-btn-secondary" (click)="resetForm()">
+                            <i class="bi bi-arrow-counterclockwise"></i> Reset
+                        </button>
+                        <button type="submit" class="br-btn-primary" [disabled]="branchForm.invalid">
+                            <i class="bi bi-{{ isEditMode ? 'check-lg' : 'plus-lg' }}"></i>
+                            {{ isEditMode ? 'Update Branch' : 'Save Branch' }}
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+        <!-- Table Card -->
+        <div class="br-table-card">
+            <div class="br-card-header">
+                <span class="br-card-title">
+                    <i class="bi bi-list-ul"></i> Branch List
+                </span>
+                <span class="br-count-badge">{{ branchesList.length }} branches</span>
+            </div>
+
+            <!-- Loading -->
+            <div class="br-loading" *ngIf="loading">
+                <div class="br-spinner"></div>
+                <span>Loading branches...</span>
+            </div>
+
+            <div class="br-table-wrap" *ngIf="!loading">
+                <table class="br-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Company</th>
+                            <th>Branch</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Address</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let b of branchesList; let i = index">
+                            <td class="br-td-num">{{ i + 1 }}</td>
+                            <td class="br-td-company">{{ b.company_name }}</td>
+                            <td class="br-td-name">{{ b.name }}</td>
+                            <td>{{ b.phone_number || '—' }}</td>
+                            <td class="br-td-email">{{ b.email || '—' }}</td>
+                            <td class="br-td-addr">{{ b.address || '—' }}</td>
+                            <td>
+                                <span class="br-status-badge" [class.br-status-active]="b.is_active"
+                                    [class.br-status-inactive]="!b.is_active">
+                                    <i class="bi bi-circle-fill"></i>
+                                    {{ b.is_active ? 'Active' : 'Inactive' }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="br-action-btns">
+                                    <button class="br-icon-btn br-icon-edit" (click)="editBranch(b)" title="Edit">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="br-icon-btn" [class.br-icon-deactivate]="b.is_active"
+                                        [class.br-icon-activate]="!b.is_active" (click)="toggleBranchStatus(b)"
+                                        [title]="b.is_active ? 'Deactivate' : 'Activate'">
+                                        <i class="bi" [class.bi-toggle-on]="b.is_active"
+                                            [class.bi-toggle-off]="!b.is_active"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngIf="branchesList.length === 0">
+                            <td colspan="8" class="br-empty">
+                                <i class="bi bi-inbox"></i>
+                                <p>No branches found. Add your first branch.</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div><!-- end br-two-col -->
+
+</div>

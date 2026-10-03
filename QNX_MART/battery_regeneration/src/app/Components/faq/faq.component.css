@@ -1,0 +1,130 @@
+.faq-section {
+  background: #f8f9fb;
+  min-height: 100vh;
+  padding: 0;
+}
+
+.faq-section .container {
+  max-width: 100%;
+  padding: 0;
+}
+
+/* Reuse header style */
+.faq-section>.container>.text-center {
+  background: linear-gradient(135deg, #2c3e50 0%, #3d5166 100%);
+  padding: 36px 40px;
+  margin-bottom: 32px;
+}
+
+.section-title {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 6px;
+}
+
+.section-subtitle {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* Accordion */
+.accordion {
+  padding: 0 40px;
+  margin-bottom: 32px;
+}
+
+.accordion-item {
+  border: 1px solid #dde3ec;
+  border-radius: 8px !important;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.accordion-button {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #2c3e50;
+  background: #fff;
+  padding: 16px 20px;
+}
+
+.accordion-button:not(.collapsed) {
+  background: #eaf4ff;
+  color: #3498db;
+  box-shadow: none;
+}
+
+.accordion-button::after {
+  filter: none;
+}
+
+.accordion-button:focus {
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+}
+
+.accordion-body {
+  font-size: 0.88rem;
+  color: #555;
+  line-height: 1.7;
+  padding: 16px 20px;
+}
+
+/* Features */
+.faq-features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 0 40px;
+  margin-bottom: 32px;
+}
+
+.faq-feature-item {
+  background: #fff;
+  border: 1px solid #dde3ec;
+  border-radius: 8px;
+  padding: 24px;
+  text-align: center;
+}
+
+.faq-feature-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3498db, #27ae60);
+  color: #fff;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+}
+
+.faq-feature-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 6px;
+}
+
+.faq-feature-desc {
+  font-size: 0.82rem;
+  color: #666;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .faq-section>.container>.text-center {
+    padding: 24px 20px;
+  }
+
+  .accordion {
+    padding: 0 16px;
+  }
+
+  .faq-features {
+    grid-template-columns: 1fr;
+    padding: 0 16px;
+  }
+}

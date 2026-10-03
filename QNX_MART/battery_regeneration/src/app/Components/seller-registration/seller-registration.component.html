@@ -1,0 +1,396 @@
+<div class="sr-page">
+
+    <!-- Page Header -->
+    <!-- <div class="sr-page-header">
+        <div class="sr-header-inner">
+            <div>
+                <h1 class="sr-page-title"><i class="bi bi-shop"></i>
+                    {{ isEditMode ? 'Seller Profile' : 'Become a Seller' }}
+                </h1>
+                <p class="sr-page-subtitle">{{ isEditMode ? 'Update your seller information' : 'Register and start
+                    selling on our platform' }}</p>
+            </div>
+            <span class="sr-approval-badge" *ngIf="isEditMode" [class.sr-badge-approved]="approvalStatus"
+                [class.sr-badge-pending]="!approvalStatus">
+                <i class="bi bi-{{ approvalStatus ? 'patch-check-fill' : 'hourglass-split' }}"></i>
+                {{ approvalStatus ? 'Approved' : 'Pending Approval' }}
+            </span>
+        </div>
+    </div> -->
+
+     <div class="sr-page-header">
+        <div class="sr-header-inner">
+            <div>
+                <h1 class="sr-page-title"><i class="bi bi-shop"></i>
+                    {{ isEditMode ? 'Seller Profile' : 'Become a Seller' }}
+                </h1>
+                <p class="sr-page-subtitle">{{ isEditMode ? 'Update your seller information' : 'Register and start
+                    selling on our platform' }}</p>
+            </div>
+        </div>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" #sellerForm="ngForm">
+        <div class="sr-layout">
+
+            <!-- ===== LEFT COLUMN ===== -->
+            <div class="sr-left">
+
+                <!-- Business Information -->
+                <div class="sr-card">
+                    <div class="sr-card-header"><i class="bi bi-briefcase-fill"></i> Business Information</div>
+                    <div class="sr-card-body">
+                        <div class="sr-grid-2">
+
+                            <div class="sr-field">
+                                <label class="sr-label">Business Type <span class="sr-req">*</span></label>
+                                <div class="sr-select-wrap">
+                                    <select class="sr-input sr-select" [(ngModel)]="sellerData.businessType"
+                                        name="businessType" required>
+                                        <option value="">-- Select Type --</option>
+                                        <option value="individual">Individual / Proprietorship</option>
+                                        <option value="partnership">Partnership</option>
+                                        <option value="llp">Limited Liability Partnership (LLP)</option>
+                                        <option value="private_limited">Private Limited Company</option>
+                                        <option value="public_limited">Public Limited Company</option>
+                                    </select>
+                                    <i class="bi bi-chevron-down sr-select-icon"></i>
+                                </div>
+                            </div>
+
+                            <div class="sr-field">
+                                <label class="sr-label">Business Category <span class="sr-req">*</span></label>
+                                <div class="sr-select-wrap">
+                                    <select class="sr-input sr-select" [(ngModel)]="sellerData.businessCategory"
+                                        name="businessCategory" required>
+                                        <option value="">-- Select Category --</option>
+                                        <option value="electronics">Electronics</option>
+                                        <option value="fashion">Fashion & Apparel</option>
+                                        <option value="home">Home & Kitchen</option>
+                                        <option value="books">Books & Media</option>
+                                        <option value="sports">Sports & Fitness</option>
+                                        <option value="automotive">Automotive</option>
+                                        <option value="grocery">Grocery & Gourmet</option>
+                                        <option value="health">Health & Personal Care</option>
+                                        <option value="toys">Toys & Games</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                    <i class="bi bi-chevron-down sr-select-icon"></i>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Details -->
+                <div class="sr-card">
+                    <div class="sr-card-header"><i class="bi bi-person-lines-fill"></i> Contact Details</div>
+                    <div class="sr-card-body">
+                        <div class="sr-grid-2">
+
+                            <div class="sr-field">
+                                <label class="sr-label">Contact Person Name <span class="sr-req">*</span></label>
+                                <input type="text" class="sr-input" [(ngModel)]="sellerData.contactPersonName"
+                                    name="contactPersonName" placeholder="Full name" required />
+                            </div>
+
+                            <div class="sr-field">
+                                <label class="sr-label">Designation <span class="sr-req">*</span></label>
+                                <input type="text" class="sr-input" [(ngModel)]="sellerData.designation"
+                                    name="designation" placeholder="e.g. Owner, Manager" required />
+                            </div>
+
+                            <div class="sr-field">
+                                <label class="sr-label">Email Address <span class="sr-req">*</span></label>
+                                <input type="email" class="sr-input" [(ngModel)]="sellerData.email" name="email"
+                                    placeholder="email@example.com" required />
+                            </div>
+
+                            <div class="sr-field">
+                                <label class="sr-label">Mobile Number <span class="sr-req">*</span></label>
+                                <input type="tel" class="sr-input" [(ngModel)]="sellerData.mobile" name="mobile"
+                                    placeholder="10-digit mobile" maxlength="10" required />
+                            </div>
+
+                            <div class="sr-field">
+                                <label class="sr-label">Alternate Mobile</label>
+                                <input type="tel" class="sr-input" [(ngModel)]="sellerData.alternateMobile"
+                                    name="alternateMobile" placeholder="Optional" maxlength="10" />
+                            </div>
+
+                            <div class="sr-field">
+                                <label class="sr-label">Landline Number</label>
+                                <input type="tel" class="sr-input" [(ngModel)]="sellerData.landline" name="landline"
+                                    placeholder="With STD code" />
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Business Address -->
+                <div class="sr-card">
+                    <div class="sr-card-header"><i class="bi bi-geo-alt-fill"></i> Business Address</div>
+                    <div class="sr-card-body">
+                        <div class="sr-field sr-field-full">
+                            <label class="sr-label">Street Address <span class="sr-req">*</span></label>
+                            <input type="text" class="sr-input" [(ngModel)]="sellerData.address" name="address"
+                                placeholder="Street address" required />
+                        </div>
+                        <div class="sr-grid-3 sr-mt">
+                            <div class="sr-field">
+                                <label class="sr-label">State <span class="sr-req">*</span></label>
+                                <div class="sr-select-wrap">
+                                    <select class="sr-input sr-select" [(ngModel)]="sellerData.state" name="state"
+                                        required>
+                                        <option value="">-- State --</option>
+                                        <option value="AN">Andaman & Nicobar</option>
+                                        <option value="AP">Andhra Pradesh</option>
+                                        <option value="AR">Arunachal Pradesh</option>
+                                        <option value="AS">Assam</option>
+                                        <option value="BR">Bihar</option>
+                                        <option value="CH">Chandigarh</option>
+                                        <option value="CT">Chhattisgarh</option>
+                                        <option value="DN">Dadra & Nagar Haveli</option>
+                                        <option value="DD">Daman & Diu</option>
+                                        <option value="DL">Delhi</option>
+                                        <option value="GA">Goa</option>
+                                        <option value="GJ">Gujarat</option>
+                                        <option value="HR">Haryana</option>
+                                        <option value="HP">Himachal Pradesh</option>
+                                        <option value="JK">Jammu & Kashmir</option>
+                                        <option value="JH">Jharkhand</option>
+                                        <option value="KA">Karnataka</option>
+                                        <option value="KL">Kerala</option>
+                                        <option value="LA">Ladakh</option>
+                                        <option value="LD">Lakshadweep</option>
+                                        <option value="MP">Madhya Pradesh</option>
+                                        <option value="MH">Maharashtra</option>
+                                        <option value="MN">Manipur</option>
+                                        <option value="ML">Meghalaya</option>
+                                        <option value="MZ">Mizoram</option>
+                                        <option value="NL">Nagaland</option>
+                                        <option value="OR">Odisha</option>
+                                        <option value="PY">Puducherry</option>
+                                        <option value="PB">Punjab</option>
+                                        <option value="RJ">Rajasthan</option>
+                                        <option value="SK">Sikkim</option>
+                                        <option value="TN">Tamil Nadu</option>
+                                        <option value="TG">Telangana</option>
+                                        <option value="TR">Tripura</option>
+                                        <option value="UP">Uttar Pradesh</option>
+                                        <option value="UT">Uttarakhand</option>
+                                        <option value="WB">West Bengal</option>
+                                    </select>
+                                    <i class="bi bi-chevron-down sr-select-icon"></i>
+                                </div>
+                            </div>
+                            <div class="sr-field">
+                                <label class="sr-label">City <span class="sr-req">*</span></label>
+                                <input type="text" class="sr-input" [(ngModel)]="sellerData.city" name="city"
+                                    placeholder="City" required />
+                            </div>
+                            <div class="sr-field">
+                                <label class="sr-label">PIN Code <span class="sr-req">*</span></label>
+                                <input type="text" class="sr-input" [(ngModel)]="sellerData.pincode" name="pincode"
+                                    placeholder="6-digit PIN" maxlength="6" required />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ===== RIGHT COLUMN ===== -->
+            <div class="sr-right">
+
+                <!-- Tax Details -->
+                <div class="sr-card">
+                    <div class="sr-card-header"><i class="bi bi-receipt-cutoff"></i> Tax Details</div>
+                    <div class="sr-card-body">
+                        <div class="sr-grid-1">
+
+                            <div class="sr-field">
+                                <label class="sr-label">PAN Number <span class="sr-req">*</span></label>
+                                <input type="text" class="sr-input" [(ngModel)]="sellerData.pan" name="pan"
+                                    placeholder="10-character PAN" maxlength="10" required />
+                                <span class="sr-hint">Permanent Account Number</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bank Details -->
+                <div class="sr-card">
+                    <div class="sr-card-header"><i class="bi bi-bank2"></i> Bank Details</div>
+                    <div class="sr-card-body">
+                        <div class="sr-grid-1">
+
+                            <div class="sr-field">
+                                <label class="sr-label">Bank Account Number</label>
+                                <input type="text" class="sr-input" [(ngModel)]="sellerData.accountNumber"
+                                    name="accountNumber" placeholder="Account number" />
+                            </div>
+
+                            <div class="sr-field">
+                                <label class="sr-label">IFSC Code</label>
+                                <input type="text" class="sr-input" [(ngModel)]="sellerData.ifscCode" name="ifscCode"
+                                    placeholder="11-character IFSC" maxlength="11" />
+                            </div>
+
+                            <div class="sr-field">
+                                <label class="sr-label">Bank Name</label>
+                                <input type="text" class="sr-input" [(ngModel)]="sellerData.bankName" name="bankName"
+                                    placeholder="Bank name" />
+                            </div>
+
+                            <div class="sr-field">
+                                <label class="sr-label">Branch Name</label>
+                                <input type="text" class="sr-input" [(ngModel)]="sellerData.branchName"
+                                    name="branchName" placeholder="Branch name" />
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== SUBMIT SECTION (centered below) ===== -->
+                <div class="sr-submit-wrapper">
+                    <div class="sr-card sr-submit-card">
+                        <div class="sr-card-body">
+                            <!-- Terms (if not edit) -->
+                            <label class="sr-terms" *ngIf="!isEditMode">
+                                <input type="checkbox" [(ngModel)]="agreedToTerms" name="agreedToTerms" />
+                                <span>I agree to the <a href="#" (click)="openTermsModal($event)">Terms & Conditions</a> <span class="sr-req">*</span></span>
+                            </label>
+
+                            <div class="sr-submit-info" *ngIf="isEditMode">
+                                <i class="bi bi-info-circle-fill"></i> You are updating your existing seller profile.
+                            </div>
+                        
+                            <button type="submit" class="sr-btn-submit"
+                                [disabled]="loading || sellerForm.invalid || (!isEditMode && !agreedToTerms)">
+                                <span *ngIf="!loading">
+                                    <i class="bi bi-{{ isEditMode ? 'check-lg' : 'send-fill' }}"></i>
+                                    {{ isEditMode ? 'Update Profile' : 'Submit Application' }}
+                                </span>
+                                <span *ngIf="loading">
+                                    <i class="bi bi-hourglass-split"></i> Processing...
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </form>
+
+    <!-- ===== TERMS & CONDITIONS MODAL ===== -->
+    <div class="tc-modal-overlay" *ngIf="showTermsModal" (click)="closeTermsModal()">
+      <div class="tc-modal" (click)="$event.stopPropagation()">
+        <!-- Header -->
+        <div class="tc-modal-header">
+          <div class="tc-modal-header-inner">
+            <button class="tc-back-btn" (click)="closeTermsModal()" title="Go back">
+              <i class="bi bi-arrow-left"></i>
+            </button>
+            <div>
+              <h1 class="tc-modal-title">
+                <i class="bi bi-file-earmark-text-fill"></i>
+                Terms &amp; Conditions
+              </h1>
+              <p class="tc-modal-subtitle">Please read these terms carefully before registering</p>
+            </div>
+          </div>
+        </div>
+      
+        <!-- Content -->
+        <div class="tc-modal-body">
+          <!-- All the terms content (paste the entire <p> blocks here) -->
+          <p><strong>1. Introduction</strong><br>
+        QNX Mart is a B2B and B2C marketplace platform that enables businesses to showcase, promote, and sell their products through a growing network of marketing partners and customers. These Terms establish the rights, responsibilities, and obligations of companies using the QNX Mart platform.</p>
+
+        <p><strong>2. Eligibility</strong><br>
+        To register as a Company or Seller, you must be a legally registered business entity, possess all licences, registrations, and approvals required under applicable laws, provide accurate business information, provide valid GST details (where applicable), provide PAN and other verification documents whenever required, and have authority to enter into this agreement on behalf of the business. QNX Mart reserves the right to verify submitted information before approving any company registration.</p>
+
+        <p><strong>3. Company Registration</strong><br>
+        Registration of a company on QNX Mart does not automatically guarantee approval. QNX Mart may request Business Registration Certificate, GST Certificate, PAN Details, Address Proof, Identity Proof of Authorized Representative, Product Certifications, Brand Authorization Documents, and any additional documents required for verification. Approval remains subject to successful verification.</p>
+
+        <p><strong>4. Product Listing</strong><br>
+        Companies are responsible for ensuring that every product listed on QNX Mart contains accurate and complete information. Product listings should include Product Name, Description, Features, Specifications, Images, Pricing, Stock Availability, Warranty Information (if applicable), and Applicable Taxes. All information must remain updated throughout the listing period.</p>
+
+        <p><strong>5. Prohibited Products</strong><br>
+        The following products may not be listed on QNX Mart: counterfeit goods, illegal products, expired products, hazardous materials prohibited by law, restricted products, fake branded products, stolen goods, products violating intellectual property rights, and products prohibited under Indian law. QNX Mart reserves the right to remove any listing without prior notice.</p>
+
+        <p><strong>6. Product Registration Fees</strong><br>
+        Where applicable, companies shall pay the prescribed product registration fee before product approval. Registration fees apply per approved product, may be revised by QNX Mart from time to time, and are generally non‑refundable after successful listing unless otherwise stated. Additional agreement, verification, or payment gateway charges may apply where applicable.</p>
+
+        <p><strong>7. Pricing</strong><br>
+        Companies are solely responsible for determining product pricing. Prices must be fair, transparent, include applicable taxes wherever required, and comply with Indian consumer protection laws. Artificial price manipulation or misleading discounts are strictly prohibited.</p>
+
+        <p><strong>8. Inventory Management</strong><br>
+        Companies agree to maintain accurate stock information, update inventory regularly, avoid accepting orders for unavailable products, and inform QNX Mart immediately of discontinued products. Repeated stock shortages may affect account status.</p>
+
+        <p><strong>9. Order Fulfillment</strong><br>
+        Companies shall process orders promptly, package products securely, dispatch products within agreed timelines, provide shipment tracking details where applicable, and deliver products according to promised schedules. Repeated delays may result in account review or suspension.</p>
+
+        <p><strong>10. Product Quality</strong><br>
+        Companies warrant that all listed products match their descriptions, meet advertised specifications, are genuine, are free from manufacturing defects, comply with applicable safety standards, and are legally permitted for sale. The Company remains fully responsible for product quality.</p>
+
+        <p><strong>11. Payments</strong><br>
+        Payments for completed sales shall be processed according to the applicable settlement schedule. Payments may be subject to successful order completion, delivery confirmation, applicable marketplace fees, tax deductions required by law, and refund or return adjustments. Settlement schedules may vary depending on business policies.</p>
+
+        <p><strong>12. Marketplace Fees</strong><br>
+        Companies agree to pay applicable platform charges, which may include product registration fees, marketplace commissions, subscription charges (if applicable), payment gateway charges, verification charges, and other approved service fees. QNX Mart may revise fee structures after providing appropriate notice.</p>
+
+        <p><strong>13. Returns and Refunds</strong><br>
+        Companies agree to accept returns where applicable, including cases such as wrong product supplied, damaged product, manufacturing defect, product differs from description, or incorrect quantity delivered. Refunds shall be processed according to the platform's Return &amp; Refund Policy.</p>
+
+        <p><strong>14. Tax Compliance</strong><br>
+        Companies are solely responsible for GST compliance, filing statutory returns, payment of applicable taxes, issuing valid tax invoices, and maintaining financial records. Any tax liabilities arising from non‑compliance shall remain the sole responsibility of the Company.</p>
+
+        <p><strong>15. Marketing Rights</strong><br>
+        By listing products on QNX Mart, the Company grants QNX Mart a non‑exclusive right to use product images, product descriptions, brand logos, product videos, and marketing content. These materials may be used for marketplace listings, promotional campaigns, digital marketing, social media promotions, and advertising. Ownership of intellectual property remains with the Company.</p>
+
+        <p><strong>16. Confidentiality</strong><br>
+        Companies shall maintain confidentiality regarding customer information, marketing partner information, pricing agreements, business strategies, technical information, financial information, and trade secrets. Confidential information must not be disclosed to unauthorized parties during or after participation in the platform.</p>
+
+        <p><strong>17. Intellectual Property</strong><br>
+        Companies confirm that they own or are legally authorized to use all trademarks, logos, images, videos, and content uploaded to QNX Mart, and that their listings do not infringe any third‑party intellectual property rights. QNX Mart shall not be liable for disputes arising from unauthorized use of intellectual property by the Company.</p>
+
+        <p><strong>18. Company Responsibilities</strong><br>
+        Companies agree to maintain accurate business information, respond to customer inquiries promptly, resolve complaints professionally, maintain ethical business practices, cooperate with verification requests, and follow all QNX Mart policies.</p>
+
+        <p><strong>19. Prohibited Activities</strong><br>
+        Companies shall not upload fake products, manipulate prices, provide false information, sell prohibited products, engage in fraudulent transactions, misuse the QNX Mart platform, circumvent platform policies, or interfere with platform operations. Violations may result in immediate suspension. Products will be delisted from the platform if three or more accepted enquiries remain without a status update for more than seven consecutive days.</p>
+
+        <p><strong>20. Account Suspension</strong><br>
+        QNX Mart reserves the right to suspend or permanently terminate any Company account in cases including fraudulent activities, fake documentation, intellectual property violations, illegal product listings, repeated customer complaints, non‑compliance with applicable laws, or violation of these Terms &amp; Conditions.</p>
+
+        <p><strong>21. Limitation of Liability</strong><br>
+        QNX Mart operates as a marketplace platform connecting businesses and customers. QNX Mart shall not be liable for manufacturing defects, product warranties, business losses, lost profits, indirect damages, delayed shipments caused by third parties, or customer misuse of products. The Company remains solely responsible for the products it sells.</p>
+
+        <p><strong>22. Dispute Resolution</strong><br>
+        In the event of any dispute, the parties shall first attempt to resolve the matter through mutual discussions. If unresolved, the dispute may be referred to arbitration or other legal remedies as permitted under applicable law. These Terms &amp; Conditions shall be governed by the laws of India.</p>
+
+        <p><strong>23. Policy Updates</strong><br>
+        QNX Mart reserves the right to modify marketplace policies, listing requirements, fee structures, product guidelines, platform features, and business processes. Updated Terms become effective upon publication on the QNX Mart platform.</p>
+
+        <p><strong>24. Acceptance</strong><br>
+        By registering your Company or listing products on QNX Mart, you confirm that you have read and understood these Terms &amp; Conditions, all information submitted is accurate, you agree to comply with applicable laws and platform policies, you accept future amendments published by QNX Mart, and you acknowledge that failure to comply may result in suspension or termination of your account.</p>
+        </div>
+      
+        <!-- Footer action -->
+        <div class="tc-modal-footer">
+          <button type="button" class="tc-understand-btn" (click)="agreeAndCloseTerms()">
+            <i class="bi bi-check-circle-fill"></i> I Accept
+          </button>
+        </div>
+      </div>
+    </div>
+
+</div>

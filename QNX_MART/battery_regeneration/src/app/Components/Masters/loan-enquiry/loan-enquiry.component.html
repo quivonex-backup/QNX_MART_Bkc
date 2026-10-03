@@ -1,0 +1,393 @@
+<div class="mp-page">
+
+  <!-- ===== FULL-WIDTH HEADER with Back Button ===== -->
+  <div class="mp-header">
+    <button class="mp-back-btn" (click)="goBack()">
+      <i class="bi bi-arrow-left"></i>
+    </button>
+    <div class="mp-header-text">
+      <h2><i class="bi bi-bank me-2"></i>Loan Enquiry</h2>
+      <p>Fill in the details below to get the best loan offers</p>
+    </div>
+  </div>
+
+  <div class="mp-container">
+
+    <!-- ===== CARD ===== -->
+    <div class="mp-card">
+
+      <!-- ===== BODY ===== -->
+      <div class="mp-body">
+
+        <form (ngSubmit)="submitForm()" #loanForm="ngForm">
+
+          <!-- ================= PERSONAL DETAILS ================= -->
+          <div class="mp-section">
+            <div class="mp-section-header">
+              <span class="mp-section-icon">
+                <i class="bi bi-person-badge"></i>
+              </span>
+              <h5 class="mp-section-title">Personal Information</h5>
+            </div>
+
+            <div class="mp-row">
+
+              <!-- Full Name -->
+              <div class="mp-field mp-field-full">
+                <label class="mp-label">
+                  Full Name <span class="required">*</span>
+                </label>
+
+                <div class="mp-input-wrap" [class.error]="nameRef.invalid && nameRef.touched">
+
+                  <i class="bi bi-person-fill mp-icon"></i>
+
+                  <input type="text" placeholder="Enter your full name" [(ngModel)]="enquiry.name" name="name"
+                    #nameRef="ngModel" required minlength="2" maxlength="100" pattern="^[A-Za-z]+(?:[ .'-][A-Za-z]+)*$"
+                    (input)="removeNameNumbers()" (keydown.enter)="goToNext($event)">
+                </div>
+
+                <small class="mp-error" *ngIf="nameRef.touched && nameRef.errors?.['required']">
+                  Full name is required.
+                </small>
+
+                <small class="mp-error" *ngIf="nameRef.touched && nameRef.errors?.['pattern']">
+                  Name should contain only letters and spaces.
+                </small>
+
+                <small class="mp-error" *ngIf="nameRef.touched && nameRef.errors?.['minlength']">
+                  Name must contain at least 2 characters.
+                </small>
+              </div>
+
+
+              <!-- Mobile -->
+              <div class="mp-field">
+                <label class="mp-label">
+                  Mobile Number <span class="required">*</span>
+                </label>
+
+                <div class="mp-input-wrap" [class.error]="mobileRef.invalid && mobileRef.touched">
+
+                  <i class="bi bi-phone-fill mp-icon"></i>
+
+                  <input type="text" inputmode="numeric" maxlength="10" placeholder="Enter 10-digit mobile number"
+                    [(ngModel)]="enquiry.mobile" name="mobile" #mobileRef="ngModel" required pattern="^[6-9][0-9]{9}$"
+                    (input)="validateMobileInput()" (keydown.enter)="goToNext($event)">
+                </div>
+
+                <small class="mp-error" *ngIf="mobileRef.touched && mobileRef.errors?.['required']">
+                  Mobile number is required.
+                </small>
+
+                <small class="mp-error" *ngIf="mobileRef.touched && mobileRef.errors?.['pattern']">
+                  Enter a valid 10-digit mobile number starting with 6-9.
+                </small>
+              </div>
+
+
+              <!-- Email -->
+              <div class="mp-field">
+                <label class="mp-label">
+                  Email Address <span class="required">*</span>
+                </label>
+
+                <div class="mp-input-wrap" [class.error]="emailRef.invalid && emailRef.touched">
+
+                  <i class="bi bi-envelope-fill mp-icon"></i>
+
+                  <input type="email" placeholder="Enter email address" [(ngModel)]="enquiry.email" name="email"
+                    #emailRef="ngModel" required maxlength="150" email (keydown.enter)="goToNext($event)">
+                </div>
+
+                <small class="mp-error" *ngIf="emailRef.touched && emailRef.errors?.['required']">
+                  Email address is required.
+                </small>
+
+                <small class="mp-error" *ngIf="emailRef.touched && emailRef.errors?.['email']">
+                  Please enter a valid email address.
+                </small>
+              </div>
+
+            </div>
+          </div>
+
+
+          <!-- ================= LOAN DETAILS ================= -->
+          <div class="mp-section">
+
+            <div class="mp-section-header">
+              <span class="mp-section-icon">
+                <i class="bi bi-cash-stack"></i>
+              </span>
+              <h5 class="mp-section-title">Loan Details</h5>
+            </div>
+
+            <div class="mp-row">
+
+              <!-- Loan Type -->
+              <div class="mp-field">
+                <label class="mp-label">
+                  Loan Type <span class="required">*</span>
+                </label>
+
+                <div class="mp-input-wrap">
+                  <i class="bi bi-cash-stack mp-icon"></i>
+
+                  <select [(ngModel)]="enquiry.loan_type" name="loan_type" #loanTypeRef="ngModel" required>
+
+                    <option value="">Select Loan Type</option>
+                    <option value="home_loan">Home Loan</option>
+                    <option value="property_loan">Property Loan</option>
+                    <option value="land_loan">Land Loan</option>
+                    <option value="construction_loan">Construction Loan</option>
+                    <option value="loan_against_property">
+                      Loan Against Property
+                    </option>
+                  </select>
+                </div>
+
+                <small class="mp-error" *ngIf="loanTypeRef.touched && loanTypeRef.errors?.['required']">
+                  Please select loan type.
+                </small>
+              </div>
+
+
+              <!-- Loan Amount -->
+              <div class="mp-field">
+                <label class="mp-label">
+                  Loan Amount (₹) <span class="required">*</span>
+                </label>
+
+                <div class="mp-input-wrap" [class.error]="loanAmountRef.invalid && loanAmountRef.touched">
+
+                  <i class="bi bi-currency-rupee mp-icon"></i>
+
+                  <input type="number" placeholder="e.g. 500000" [(ngModel)]="enquiry.loan_amount" name="loan_amount"
+                    #loanAmountRef="ngModel" required min="1" step="1" (keydown.enter)="goToNext($event)">
+                </div>
+
+                <small class="mp-error" *ngIf="loanAmountRef.touched && loanAmountRef.errors?.['required']">
+                  Loan amount is required.
+                </small>
+
+                <small class="mp-error" *ngIf="loanAmountRef.touched && loanAmountRef.errors?.['min']">
+                  Loan amount must be greater than 0.
+                </small>
+              </div>
+
+
+              <!-- Tenure -->
+              <div class="mp-field">
+                <label class="mp-label">
+                  Tenure (Years) <span class="required">*</span>
+                </label>
+
+                <div class="mp-input-wrap" [class.error]="tenureRef.invalid && tenureRef.touched">
+
+                  <i class="bi bi-clock-fill mp-icon"></i>
+
+                  <input type="number" placeholder="e.g. 20" [(ngModel)]="enquiry.tenure_years" name="tenure_years"
+                    #tenureRef="ngModel" required min="1" max="30" step="1" (keydown.enter)="goToNext($event)"> 
+                </div>
+
+                <small class="mp-error" *ngIf="tenureRef.touched && tenureRef.errors?.['required']">
+                  Tenure is required.
+                </small>
+
+                <small class="mp-error" *ngIf="tenureRef.touched &&
+                      (tenureRef.errors?.['min'] || tenureRef.errors?.['max'])">
+                  Tenure must be between 1 and 30 years.
+                </small>
+              </div>
+
+
+              <!-- Monthly Income -->
+              <div class="mp-field">
+                <label class="mp-label">
+                  Monthly Income (₹) <span class="required">*</span>
+                </label>
+
+                <div class="mp-input-wrap" [class.error]="incomeRef.invalid && incomeRef.touched">
+
+                  <i class="bi bi-cash-stack mp-icon"></i>
+
+                  <input type="number" placeholder="e.g. 85000" [(ngModel)]="enquiry.monthly_income"
+                    name="monthly_income" #incomeRef="ngModel" required min="1" step="1" (keydown.enter)="goToNext($event)">
+                </div>
+
+                <small class="mp-error" *ngIf="incomeRef.touched && incomeRef.errors?.['required']">
+                  Monthly income is required.
+                </small>
+
+                <small class="mp-error" *ngIf="incomeRef.touched && incomeRef.errors?.['min']">
+                  Monthly income must be greater than 0.
+                </small>
+              </div>
+
+            </div>
+          </div>
+
+
+          <!-- ================= LOCATION DETAILS ================= -->
+          <div class="mp-section">
+
+            <div class="mp-section-header">
+              <span class="mp-section-icon">
+                <i class="bi bi-geo-alt-fill"></i>
+              </span>
+              <h5 class="mp-section-title">Location Details</h5>
+            </div>
+
+            <div class="mp-row">
+
+              <!-- State -->
+              <div class="mp-field">
+                <label class="mp-label">
+                  State <span class="required">*</span>
+                </label>
+
+                <div class="mp-input-wrap">
+                  <i class="bi bi-map-fill mp-icon"></i>
+
+                  <select [(ngModel)]="enquiry.state_id" name="state_id" #stateRef="ngModel" (change)="onStateChange()"
+                    required>
+
+                    <option value="">Select State</option>
+
+                    <option *ngFor="let state of states" [value]="state.id">
+                      {{ state.state_name }}
+                    </option>
+                  </select>
+                </div>
+
+                <small class="mp-error" *ngIf="stateRef.touched && stateRef.errors?.['required']">
+                  Please select state.
+                </small>
+              </div>
+
+
+              <!-- City -->
+              <div class="mp-field">
+                <label class="mp-label">
+                  City / District <span class="required">*</span>
+                </label>
+
+                <div class="mp-input-wrap">
+                  <i class="bi bi-map-fill mp-icon"></i>
+
+                  <select [(ngModel)]="enquiry.city_id" name="city_id" #cityRef="ngModel" required>
+
+                    <option value="">Select City</option>
+
+                    <option *ngFor="let city of districts" [value]="city.id">
+                      {{ city.district_name }}
+                    </option>
+                  </select>
+                </div>
+
+                <span *ngIf="loadingDistricts" style="font-size:12px;color:#94a3b8;">
+                  Loading cities...
+                </span>
+
+                <small class="mp-error" *ngIf="cityRef.touched && cityRef.errors?.['required']">
+                  Please select city/district.
+                </small>
+              </div>
+
+
+              <!-- Pincode -->
+              <div class="mp-field">
+                <label class="mp-label">
+                  Pincode <span class="required">*</span>
+                </label>
+
+                <div class="mp-input-wrap" [class.error]="pincodeRef.invalid && pincodeRef.touched">
+
+                  <i class="bi bi-hash mp-icon"></i>
+
+                  <input type="text" inputmode="numeric" maxlength="6" placeholder="6-digit pincode"
+                    [(ngModel)]="enquiry.pincode" name="pincode" #pincodeRef="ngModel" required
+                    pattern="^[1-9][0-9]{5}$" (input)="validatePincodeInput()" (keydown.enter)="goToNext($event)">
+                </div>
+
+                <small class="mp-error" *ngIf="pincodeRef.touched && pincodeRef.errors?.['required']">
+                  Pincode is required.
+                </small>
+
+                <small class="mp-error" *ngIf="pincodeRef.touched && pincodeRef.errors?.['pattern']">
+                  Enter a valid 6-digit pincode.
+                </small>
+              </div>
+
+            </div>
+          </div>
+
+
+          <!-- ================= REMARKS ================= -->
+          <div class="mp-section">
+
+            <div class="mp-section-header">
+              <span class="mp-section-icon">
+                <i class="bi bi-chat-dots"></i>
+              </span>
+
+              <h5 class="mp-section-title">Additional Information</h5>
+            </div>
+
+            <div class="mp-row">
+
+              <div class="mp-field mp-field-full">
+
+                <label class="mp-label">
+                  Remarks / Special Requests
+                </label>
+
+                <div class="mp-input-wrap">
+                  <i class="bi bi-pencil-fill mp-icon" style="align-self: flex-start; padding-top: 12px;">
+                  </i>
+
+                  <textarea rows="3" maxlength="500" placeholder="Any additional details" [(ngModel)]="enquiry.remarks"
+                    name="remarks">
+          </textarea>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+
+          <!-- ================= BUTTONS ================= -->
+          <div class="mp-actions">
+
+            <button type="button" class="mp-btn mp-btn-outline" (click)="clearForm()">
+              Clear
+            </button>
+
+            <button type="submit" class="mp-btn mp-btn-primary" [disabled]="isSubmitting">
+
+              <span *ngIf="!isSubmitting">
+                <i class="bi bi-send-fill me-1"></i>
+                Submit Enquiry
+              </span>
+
+              <span *ngIf="isSubmitting">
+                <span class="spinner-border spinner-border-sm me-2" role="status">
+                </span>
+                Submitting...
+              </span>
+
+            </button>
+
+          </div>
+
+        </form>
+
+      </div><!-- /.mp-body -->
+
+    </div><!-- /.mp-card -->
+
+  </div><!-- /.mp-container -->
+
+</div>

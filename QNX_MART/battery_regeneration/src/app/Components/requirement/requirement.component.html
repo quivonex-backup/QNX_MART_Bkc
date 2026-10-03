@@ -1,0 +1,112 @@
+<div class="req-page">
+
+    <!-- Header -->
+    <div class="req-header">
+        <div class="req-header-text">
+            <h2><i class="bi bi-file-earmark-text-fill me-2"></i>Post Your Requirement</h2>
+            <p>Tell us what you need and we'll connect you with the right suppliers</p>
+        </div>
+    </div>
+
+    <div class="req-body">
+        <div class="req-card">
+
+            <form #reqForm="ngForm" (ngSubmit)="submitRequirement(reqForm)">
+
+                <!-- Product Info -->
+                <div class="req-section-title"><i class="bi bi-box-seam me-2"></i>Product Details</div>
+                <div class="req-row">
+                    <div class="req-field">
+                        <label>Product Name <span class="req-star">*</span></label>
+                        <input type="text" class="req-input" name="productName" ngModel required
+                            placeholder="Enter product name" />
+                    </div>
+                    <div class="req-field">
+                        <label>Category <span class="req-star">*</span></label>
+                        <select class="req-input" name="category" ngModel required>
+                            <option value="">Select Category</option>
+                            <option>Machinery</option>
+                            <option>Industrial Supplies</option>
+                            <option>FMCG</option>
+                            <option>Chemicals</option>
+                            <option>Electronics</option>
+                            <option>Battery Products</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="req-row">
+                    <div class="req-field">
+                        <label>Quantity <span class="req-star">*</span></label>
+                        <input type="number" class="req-input" name="quantity" ngModel required
+                            placeholder="Enter quantity" />
+                    </div>
+                    <div class="req-field">
+                        <label>Unit</label>
+                        <select class="req-input" name="unit" ngModel>
+                            <option>Pieces</option>
+                            <option>Kilogram</option>
+                            <option>Ton</option>
+                            <option>Boxes</option>
+                            <option>Litre</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="req-row">
+                    <div class="req-field">
+                        <label>Budget</label>
+                        <input type="text" class="req-input" name="budget" ngModel
+                            placeholder="e.g. ₹10,000 - ₹50,000" />
+                    </div>
+                    <div class="req-field">
+                        <label>Delivery Location <span class="req-star">*</span></label>
+                        <input type="text" class="req-input" name="location" ngModel required
+                            placeholder="City / State" />
+                    </div>
+                </div>
+
+                <div class="req-field req-field-full">
+                    <label>Requirement Details <span class="req-star">*</span></label>
+                    <textarea class="req-input" rows="4" name="description" ngModel required
+                        placeholder="Describe your requirement in detail..."></textarea>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="req-section-title req-section-title-mt"><i class="bi bi-person-fill me-2"></i>Contact
+                    Details</div>
+                <div class="req-row">
+                    <div class="req-field">
+                        <label>Contact Person <span class="req-star">*</span></label>
+                        <input type="text" class="req-input" name="contactName" ngModel required
+                            placeholder="Full name" />
+                    </div>
+                    <div class="req-field">
+                        <label>Mobile Number <span class="req-star">*</span></label>
+                        <input type="tel" class="req-input" name="phone" ngModel required
+                            placeholder="10-digit mobile" />
+                    </div>
+                </div>
+
+                <div class="req-row">
+                    <div class="req-field">
+                        <label>Email <span class="req-star">*</span></label>
+                        <input type="email" class="req-input" name="email" ngModel required
+                            placeholder="email@example.com" />
+                    </div>
+                    <div class="req-field">
+                        <label>Attachment <span class="req-optional">(Optional)</span></label>
+                        <input type="file" class="req-input req-file" name="attachment" />
+                    </div>
+                </div>
+
+                <div class="req-submit-row">
+                    <button type="submit" class="req-submit-btn">
+                        <i class="bi bi-send-fill me-2"></i>Submit Requirement
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

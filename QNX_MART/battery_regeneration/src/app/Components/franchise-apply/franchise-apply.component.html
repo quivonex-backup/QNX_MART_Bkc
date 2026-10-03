@@ -1,0 +1,253 @@
+<div class="fa-page">
+
+    <!-- ===== FULL-WIDTH HEADER ===== -->
+    <div class="fa-header">
+        <button class="fa-back-btn" (click)="goBack()">
+            <i class="bi bi-arrow-left"></i>
+        </button>
+        <div class="fa-header-text">
+            <h2><i class="bi bi-shop me-2"></i>Franchise Application</h2>
+            <p *ngIf="productSlug">Apply for <strong>{{ productSlug }}</strong></p>
+        </div>
+        <!-- Franchise Code – commented out as per your original -->
+        <!-- <div class="fa-franchise-code" *ngIf="franchiseCode">
+            <span class="fa-code-label">Franchise Code</span>
+            <div class="fa-code-display">
+                <span>{{ franchiseCode }}</span>
+                <button class="fa-copy-btn" (click)="copyFranchiseCode()" title="Copy">
+                    <i class="bi" [class.bi-clipboard]="!copySuccess" [class.bi-clipboard-check]="copySuccess"></i>
+                </button>
+            </div>
+            <span class="fa-code-hint" *ngIf="copySuccess">Copied!</span>
+        </div> -->
+    </div>
+
+    <div class="fa-container">
+
+        <!-- ===== MAIN CARD ===== -->
+        <div class="fa-main-card">
+
+            <!-- ===== BODY ===== -->
+            <div class="fa-body">
+
+                <!-- Loading -->
+                <div *ngIf="loading" class="fa-loading">
+                    <div class="fa-spinner"></div>
+                    <p>Loading franchise plans...</p>
+                </div>
+
+                <!-- Error -->
+                <div *ngIf="error" class="fa-error">
+                    <i class="bi bi-exclamation-circle"></i>
+                    <p>{{ error }}</p>
+                </div>
+
+                <!-- Plans & Form -->
+                <div *ngIf="!loading && !error && plans.length > 0">
+
+                    <!-- Plans -->
+                    <div class="fa-section">
+                        <div class="fa-section-head">
+                            <span class="fa-section-icon"><i class="bi bi-grid-3x3-gap-fill"></i></span>
+                            <h3 class="fa-section-title">Choose Your Franchise Plan</h3>
+                            <span class="fa-plan-count">{{ plans.length }} plan(s)</span>
+                        </div>
+
+                        <div class="fa-plans-grid">
+                            <div class="fa-plan-card"
+                                 *ngFor="let plan of plans"
+                                 [class.fa-plan-selected]="selectedPlanId === plan.id"
+                                 (click)="selectPlan(plan.id)">
+                                <div class="fa-plan-header">
+                                    <span class="fa-plan-name">{{ plan.plan_name }}</span>
+                                    <span class="fa-plan-amount">₹ {{ plan.amount }}</span>
+                                </div>
+                                <p class="fa-plan-desc">{{ plan.description }}</p>
+                                <ul class="fa-plan-items">
+                                    <li *ngFor="let item of plan.plan_products">
+                                        <i class="bi bi-check-circle"></i>
+                                        {{ item.item_name }} – {{ item.quantity }} {{ item.unit }}
+                                    </li>
+                                </ul>
+                                <div class="fa-plan-select-tick" *ngIf="selectedPlanId === plan.id">
+                                    <i class="bi bi-check-circle-fill"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="validationErrors['plan']" class="fa-error-text">
+                            {{ validationErrors['plan'] }}
+                        </div>
+                    </div>
+
+                    <!-- Form -->
+                    <form (ngSubmit)="onSubmit()" #frm="ngForm" class="fa-form">
+
+                        <!-- Basic Details -->
+                        <div class="fa-section">
+                            <div class="fa-section-head">
+                                <span class="fa-section-icon"><i class="bi bi-person-badge"></i></span>
+                                <h3 class="fa-section-title">Basic Details</h3>
+                            </div>
+                            <div class="fa-form-grid">
+                                <div class="fa-form-group fa-full-width">
+                                    <label>Franchise Name <span class="fa-required">*</span></label>
+                                    <div class="fa-input-wrap">
+                                        <i class="bi bi-shop fa-icon"></i>
+                                        <input type="text" [(ngModel)]="franchiseForm.franchise_name" name="franchise_name" placeholder="e.g. Latur Central Franchise">
+                                    </div>
+                                    <span class="fa-error-text" *ngIf="validationErrors['franchise_name']">{{ validationErrors['franchise_name'] }}</span>
+                                </div>
+                                <div class="fa-form-group fa-full-width">
+                                    <label>Owner Name <span class="fa-required">*</span></label>
+                                    <div class="fa-input-wrap">
+                                        <i class="bi bi-person-fill fa-icon"></i>
+                                        <input type="text" [(ngModel)]="franchiseForm.owner_name" name="owner_name" placeholder="Full name of owner">
+                                    </div>
+                                    <span class="fa-error-text" *ngIf="validationErrors['owner_name']">{{ validationErrors['owner_name'] }}</span>
+                                </div>
+                                <div class="fa-form-group">
+                                    <label>Email <span class="fa-required">*</span></label>
+                                    <div class="fa-input-wrap">
+                                        <i class="bi bi-envelope-fill fa-icon"></i>
+                                        <input type="email" [(ngModel)]="franchiseForm.email" name="email" placeholder="you@example.com">
+                                    </div>
+                                    <span class="fa-error-text" *ngIf="validationErrors['email']">{{ validationErrors['email'] }}</span>
+                                </div>
+                                <div class="fa-form-group">
+                                    <label>Mobile Number <span class="fa-required">*</span></label>
+                                    <div class="fa-input-wrap">
+                                        <i class="bi bi-phone-fill fa-icon"></i>
+                                        <input type="text" [(ngModel)]="franchiseForm.mobile_no" name="mobile_no" placeholder="10‑digit number" maxlength="10">
+                                    </div>
+                                    <span class="fa-error-text" *ngIf="validationErrors['mobile_no']">{{ validationErrors['mobile_no'] }}</span>
+                                </div>
+                                <div class="fa-form-group">
+                                    <label>Alternate Mobile</label>
+                                    <div class="fa-input-wrap">
+                                        <i class="bi bi-phone fa-icon"></i>
+                                        <input type="text" [(ngModel)]="franchiseForm.alternate_mobile_no" name="alternate_mobile_no" placeholder="10‑digit number" maxlength="10">
+                                    </div>
+                                    <span class="fa-error-text" *ngIf="validationErrors['alternate_mobile_no']">{{ validationErrors['alternate_mobile_no'] }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Location Details -->
+                        <div class="fa-section">
+                            <div class="fa-section-head">
+                                <span class="fa-section-icon"><i class="bi bi-geo-alt-fill"></i></span>
+                                <h3 class="fa-section-title">Location Details</h3>
+                            </div>
+                            <div class="fa-form-grid">
+                                <div class="fa-form-group fa-full-width">
+                                    <label>Address <span class="fa-required">*</span></label>
+                                    <div class="fa-input-wrap">
+                                        <i class="bi bi-house-fill fa-icon" style="align-self: flex-start; padding-top: 12px;"></i>
+                                        <textarea rows="3" [(ngModel)]="franchiseForm.address" name="address" placeholder="Street, area, landmark..."></textarea>
+                                    </div>
+                                    <span class="fa-error-text" *ngIf="validationErrors['address']">{{ validationErrors['address'] }}</span>
+                                </div>
+                                <div class="fa-form-group">
+                                    <label>State <span class="fa-required">*</span></label>
+                                    <div class="fa-input-wrap">
+                                        <i class="bi bi-map-fill fa-icon"></i>
+                                        <select [(ngModel)]="franchiseForm.state_id" name="state_id" (change)="onStateChange()">
+                                            <option value="">Select State</option>
+                                            <option *ngFor="let st of states" [ngValue]="st.id">{{ st.state_name }}</option>
+                                        </select>
+                                    </div>
+                                    <span class="fa-error-text" *ngIf="validationErrors['state']">{{ validationErrors['state'] }}</span>
+                                </div>
+                                <div class="fa-form-group">
+                                    <label>City (District) <span class="fa-required">*</span></label>
+                                    <div class="fa-input-wrap">
+                                        <i class="bi bi-map-fill fa-icon"></i>
+                                        <select [(ngModel)]="franchiseForm.district_id" name="district_id" (change)="onDistrictChange()">
+                                            <option value="">Select District</option>
+                                            <option *ngFor="let dist of districts" [ngValue]="dist.id">{{ dist.district_name }}</option>
+                                        </select>
+                                    </div>
+                                    <span class="fa-error-text" *ngIf="validationErrors['district']">{{ validationErrors['district'] }}</span>
+                                </div>
+                                <div class="fa-form-group">
+                                    <label>Pincode <span class="fa-required">*</span></label>
+                                    <div class="fa-input-wrap">
+                                        <i class="bi bi-hash fa-icon"></i>
+                                        <input type="text" [(ngModel)]="franchiseForm.pincode" name="pincode" placeholder="6‑digit" maxlength="6">
+                                    </div>
+                                    <span class="fa-error-text" *ngIf="validationErrors['pincode']">{{ validationErrors['pincode'] }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Additional Details -->
+                        <div class="fa-section">
+                            <div class="fa-section-head">
+                                <span class="fa-section-icon"><i class="bi bi-file-earmark-text"></i></span>
+                                <h3 class="fa-section-title">Additional Details</h3>
+                            </div>
+                            <div class="fa-form-grid">
+                                <div class="fa-form-group">
+                                    <label>GST Number</label>
+                                    <div class="fa-input-wrap">
+                                        <i class="bi bi-receipt fa-icon"></i>
+                                        <input type="text" [(ngModel)]="franchiseForm.gst_no" name="gst_no" placeholder="e.g. 27ABCDE1234F1Z5">
+                                    </div>
+                                    <span class="fa-error-text" *ngIf="validationErrors['gst_no']">{{ validationErrors['gst_no'] }}</span>
+                                </div>
+                                <div class="fa-form-group">
+                                    <label>PAN Number</label>
+                                    <div class="fa-input-wrap">
+                                        <i class="bi bi-credit-card fa-icon"></i>
+                                        <input type="text" [(ngModel)]="franchiseForm.pan_no" name="pan_no" placeholder="e.g. ABCDE1234F">
+                                    </div>
+                                    <span class="fa-error-text" *ngIf="validationErrors['pan_no']">{{ validationErrors['pan_no'] }}</span>
+                                </div>
+                                <div class="fa-form-group">
+                                    <label>Joining Date</label>
+                                    <div class="fa-input-wrap">
+                                        <i class="bi bi-calendar3 fa-icon"></i>
+                                        <input type="date" [(ngModel)]="franchiseForm.joining_date" name="joining_date">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Plan Summary -->
+                        <div class="fa-plan-summary" *ngIf="selectedPlan">
+                            <span class="fa-summary-label">Selected Plan</span>
+                            <div class="fa-summary-details">
+                                <span>{{ selectedPlan.plan_name }}</span>
+                                <span>₹ {{ selectedPlan.amount }}</span>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="fa-actions">
+                            <button type="button" class="fa-btn fa-btn-outline" (click)="goBack()" [disabled]="submitting">
+                                Cancel
+                            </button>
+                            <button type="submit" class="fa-btn fa-btn-primary" [disabled]="submitting">
+                                <ng-container *ngIf="!submitting; else loadingBtn">
+                                    <i class="bi bi-send me-2"></i> Submit Application
+                                </ng-container>
+                                <ng-template #loadingBtn>
+                                    <span class="fa-spinner-sm"></span> Submitting...
+                                </ng-template>
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+
+                <!-- No Plans -->
+                <div *ngIf="!loading && !error && plans.length === 0" class="fa-empty">
+                    <i class="bi bi-info-circle"></i>
+                    <h3>No Plans Available</h3>
+                    <p>This product does not have any franchise plans yet.</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

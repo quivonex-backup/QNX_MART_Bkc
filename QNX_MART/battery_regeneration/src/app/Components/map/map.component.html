@@ -1,0 +1,12 @@
+<div>
+  <button (click)="getLocation()" class="btn btn-primary">
+    Get My Location
+  </button>
+
+  <p *ngIf="latitude && longitude">
+    Latitude: {{ latitude }} <br />
+    Longitude: {{ longitude }}
+  </p>
+
+  <div id="map" style="height: 400px; width: 100%; margin-top: 10px;"></div>
+</div>

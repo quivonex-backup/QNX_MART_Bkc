@@ -1,0 +1,21 @@
+.container {
+  width: 70%;
+  margin: auto;
+  padding: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-check {
+  margin-top: 10px;
+}
+
+button {
+  width: 150px;
+}
+
+table {
+  margin-top: 20px;
+}

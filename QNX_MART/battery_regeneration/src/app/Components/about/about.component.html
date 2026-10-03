@@ -1,0 +1,94 @@
+<div class="ab-page">
+
+  <!-- Header -->
+  <div class="ab-header">
+    <div class="ab-header-text">
+      <h2><i class="bi bi-info-circle-fill me-2"></i>About QNX Mart</h2>
+      <p>India's trusted B2B marketplace connecting businesses – with zero listing fees, flexible commissions, and a powerful partner referral program</p>
+    </div>
+  </div>
+
+  <div class="ab-body">
+
+    <!-- Mission & Vision -->
+    <div class="ab-two-col">
+      <div class="ab-card">
+        <div class="ab-card-icon"><i class="bi bi-bullseye"></i></div>
+        <h5>Our Mission</h5>
+        <p>To empower businesses of all sizes by providing a transparent, commission-flexible B2B platform where companies can list products for free, grow their network, and earn through our partner referral ecosystem.</p>
+      </div>
+      <div class="ab-card">
+        <div class="ab-card-icon"><i class="bi bi-eye-fill"></i></div>
+        <h5>Our Vision</h5>
+        <p>To become India's most inclusive B2B marketplace – where every registered company, regardless of scale, can thrive through fair agreements, performance-based commissions, and collaborative growth opportunities.</p>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="ab-stats">
+      <!-- Products Listed -->
+      <div class="ab-stat">
+        <div class="ab-stat-num">{{ loading ? '...' : (approvedProducts + '+') }}</div>
+        <div class="ab-stat-label">Products Listed</div>
+      </div>
+
+      <!-- Registered Companies -->
+      <div class="ab-stat">
+        <div class="ab-stat-num">{{ loading ? '...' : (totalCompanies + '+') }}</div>
+        <div class="ab-stat-label">Registered Companies</div>
+      </div>
+
+      <!-- Active Buyers -->
+      <div class="ab-stat">
+        <div class="ab-stat-num">{{ loading ? '...' : (totalUsers + '+') }}</div>
+        <div class="ab-stat-label">Active Buyers</div>
+      </div>
+
+      <!-- Partner Referrals -->
+      <div class="ab-stat">
+        <div class="ab-stat-num">{{ loading ? '...' : (marketingPartners + '+') }}</div>
+        <div class="ab-stat-label">Partner Referrals</div>
+      </div>
+    </div>
+
+    <!-- Why Us -->
+    <div class="ab-section-title">Why Choose QNX Mart?</div>
+    <div class="ab-features">
+      <div class="ab-feature">
+        <div class="ab-feature-icon"><i class="bi bi-check-circle-fill"></i></div>
+        <h6>Zero Listing Cost</h6>
+        <p>List unlimited products without any hidden fees – only pay a mutually agreed commission on successful sales.</p>
+      </div>
+      <div class="ab-feature">
+        <div class="ab-feature-icon"><i class="bi bi-file-earmark-text-fill"></i></div>
+        <h6>Custom Agreements</h6>
+        <p>Commission rates and partnership terms are defined per company – flexible and transparent to suit your business model.</p>
+      </div>
+      <div class="ab-feature">
+        <div class="ab-feature-icon"><i class="bi bi-people-fill"></i></div>
+        <h6>Partner Referral Program</h6>
+        <p>Refer other companies and earn commissions on their registration fees and sales – a true win-win collaboration.</p>
+      </div>
+      <div class="ab-feature">
+        <div class="ab-feature-icon"><i class="bi bi-graph-up-arrow"></i></div>
+        <h6>Growth-Focused</h6>
+        <p>We work closely with you to scale your business through data insights, marketing support, and network expansion.</p>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="ab-cta">
+      <h5>Ready to get started?</h5>
+      <p>Join our growing community of businesses – register for ₹1000 and start listing for free</p>
+      <div class="ab-cta-btns">
+        <a routerLink="/product_list" class="ab-btn ab-btn-primary">
+          <i class="bi bi-grid-3x3-gap-fill me-2"></i>Browse Products
+        </a>
+        <a routerLink="/home" class="ab-btn ab-btn-outline">
+          <i class="bi bi-house-fill me-2"></i>Go Home
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>

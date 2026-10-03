@@ -1,0 +1,784 @@
+<!-- ===== FLIPKART STYLE MULTI-BANNER SLIDER WITH ARROWS ===== -->
+<div class="container px-4 mt-2" style="max-width: 1500px;">
+    <div class="position-relative overflow-hidden rounded-4 shadow-sm w-100 pb-3" (mouseenter)="stopAutoSlide()"
+        (mouseleave)="resumeAutoSlide()">
+
+        <!-- Sliding Track -->
+        <div class="d-flex flex-nowrap gap-4 w-100 align-items-center"
+            [style.transform]="'translateX(-' + (currentSlide * getTranslateStep()) + '%)'"
+            [style.transition]="isTransitionEnabled ? 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)' : 'none'">
+
+            <!-- Loop through carouselImages -->
+            <div class="flex-shrink-0" *ngFor="let img of carouselImages"
+                [style.width]="isMobile ? '95%' : 'calc(32% - 10px)'">
+
+                <!-- Card -->
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden text-white position-relative w-100"
+                    style="height: 250px; background-size: 100% 100%; background-position: center;"
+                    [style.backgroundImage]="'url(' + img.image_url + ')'">
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Left Arrow Button -->
+        <button class="carousel-arrow left-arrow" (click)="prevSlide()" aria-label="Previous Slide">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+
+        <!-- Right Arrow Button -->
+        <button class="carousel-arrow right-arrow" (click)="nextSlide()" aria-label="Next Slide">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+
+        <!-- Pagination Dots -->
+        <div class="position-absolute bottom-0 start-0 w-100 d-flex justify-content-center align-items-center pb-1 z-2">
+            <div class="d-flex gap-1 px-2 py-1">
+                <span *ngFor="let dot of slideDots; let i = index" class="rounded-circle d-inline-block"
+                    [class.bg-dark]="i === (currentSlide % originalImagesLength)"
+                    [class.bg-secondary]="i !== (currentSlide % originalImagesLength)"
+                    [style.opacity]="i === (currentSlide % originalImagesLength) ? '1' : '0.4'"
+                    (click)="currentSlide = i" style="width: 6px; height: 6px; cursor: pointer; transition: all 0.3s;">
+                </span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- BANKING PARTNERS SECTION -->
+<section class="loan-partner-section py-3 bg-white">
+    <div class="container-fluid px-3">
+        <div class="loan-partner-row">
+            <!-- BANK LOGOS -->
+            <div class="logo-slider-wrap" (mouseenter)="pauseBankSlider = true" (mouseleave)="pauseBankSlider = false">
+                <div class="logo-slider">
+                    <div class="logo-track" [class.logo-paused]="pauseBankSlider">
+                        <div class="logo-item" *ngFor="let logo of bankLogos" routerLink="/loan-enquiry"
+                            title="Apply for Loan">
+                            <img [src]="'assets/bank_logos/' + logo" alt="Banking Partner">
+                        </div>
+                        <!-- Duplicate for infinite slider -->
+                        <div class="logo-item" *ngFor="let logo of bankLogos" routerLink="/loan-enquiry"
+                            title="Apply for Loan">
+                            <img [src]="'assets/bank_logos/' + logo" alt="Banking Partner">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= LOAN CTA SECTION ================= -->
+
+            <!-- 1. DESKTOP VIEW: Jasa aadhi hota tasaach full-width -->
+            <div class="d-none d-lg-block w-100">
+                <button type="button" class="loan-rate-cta w-100" routerLink="/loan-enquiry">
+                    <span class="loan-glow glow-one"></span>
+                    <span class="loan-glow glow-two"></span>
+                    <div class="loan-cta-content">
+                        <div class="loan-rate-box">
+                            <div class="rate-label">LOAN RATES</div>
+                            <div class="rate-value">9.99<span>%</span></div>
+                            <div class="rate-from">Starting From</div>
+                        </div>
+                        <div class="loan-cta-info">
+                            <div class="loan-top-line">
+                                <span class="instant-badge"><span class="pulse-dot"></span> INSTANT</span>
+                                <span class="apply-text blink-apply">QUICK APPLY</span>
+                            </div>
+                            <div class="loan-title">Get Your Loan</div>
+                            <div class="loan-subtitle">Fast approval • Easy process</div>
+                        </div>
+                        <div class="loan-apply-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </button>
+            </div>
+
+            <!-- 2. MOBILE VIEW: Filter button ani Loan banner ekach line madhe (side-by-side) -->
+            <div class="d-flex d-lg-none align-items-center gap-2 w-100">
+
+                <!-- Mobile Filter Button -->
+                <button
+                    class="btn btn-outline-primary rounded-4 shadow-sm fw-bold d-flex flex-column align-items-center justify-content-center flex-shrink-0"
+                    type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileFilterOffcanvas"
+                    aria-controls="mobileFilterOffcanvas" style="height: 60px; width: 50px; font-size: 13px;">
+                    <i class="fas fa-sliders-h fs-4 text-primary mb-1"></i>
+                    <span>Filters</span>
+                    <span class="badge bg-primary text-white rounded-pill mt-1" *ngIf="activeFilterCount > 0"
+                        style="font-size: 9px;">{{ activeFilterCount }}</span>
+                </button>
+
+                <!-- Get Your Loan Button (Mobile sathi) -->
+                <button type="button" class="loan-rate-cta flex-grow-1 mb-0" routerLink="/loan-enquiry"
+                    style="height: 105px;width: 90px;">
+                    <span class="loan-glow glow-one"></span>
+                    <span class="loan-glow glow-two"></span>
+                    <div class="loan-cta-content p-2">
+                        <div class="loan-rate-box" style="padding: 4px;">
+                            <div class="rate-label" style="font-size: 10px;">LOANS</div>
+                            <div class="rate-value" style="font-size: 25px;">9.99<span>%</span></div>
+                        </div>
+                        <div class="loan-cta-info">
+                            <div class="loan-top-line">
+                                <span class="instant-badge" style="font-size: 10px;">INSTANT</span>
+                                <span class="apply-text blink-apply">QUICK APPLY</span>
+                            </div>
+                            <div class="loan-title" style="font-size: 14px;">Get Your Loan</div>
+                            <div class="loan-subtitle" style="font-size: 11px;">Fast approval</div>
+                        </div>
+                        <div class="loan-apply-arrow">
+                            <i class="fas fa-arrow-right" style="font-size: 11px;"></i>
+                        </div>
+                    </div>
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- ===== 3-COLUMN LAYOUT: FILTERS (LEFT) | PRODUCTS (CENTER) | LIVE REELS (RIGHT) ===== -->
+<div class="container-fluid py-1 px-3 px-md-4 bg-light" style="max-width: 1500px;">
+
+    <!-- MOBILE FILTER TRIGGER BUTTON (Fakt Mobile var disel) -->
+    <!-- <div class="d-lg-none mb-3">
+        <button
+            class="btn btn-primary w-100 py-2 rounded-pill shadow-sm fw-bold d-flex align-items-center justify-content-center gap-2"
+            type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileFilterOffcanvas"
+            aria-controls="mobileFilterOffcanvas" style="font-size: 14px;">
+            <i class="fas fa-sliders-h"></i> Filters
+            <span class="badge bg-white text-primary rounded-pill ms-1" *ngIf="activeFilterCount > 0">{{
+                activeFilterCount }}</span>
+        </button>
+        
+    </div> -->
+
+    <div class="row g-4">
+
+        <!-- ================= COLUMN 1: DESKTOP FILTERS (LEFT) ================= -->
+        <!-- d-none d-lg-block mule ha section fat desktop/laptop varach disel -->
+        <div class="col-xl-3 col-lg-4 d-none d-lg-block">
+            <div class="card border-0 shadow-sm rounded-4 p-3 bg-white sticky-lg-top" style="top: 90px; z-index: 10;">
+                <!-- FILTER CONTENT (DESKTOP) -->
+                <ng-container *ngTemplateOutlet="filterContentTemplate"></ng-container>
+            </div>
+        </div>
+
+
+        <!-- ================= COLUMN 2: PRODUCT LISTING (CENTER) ================= -->
+        <div class="col-xl-6 col-lg-8 col-12">
+
+            <!-- Partner & Company Quick Actions -->
+            <!-- <div class="d-flex flex-column flex-sm-row gap-2 mb-3 bg-white p-3 rounded-4 shadow-sm align-items-center">
+                <button class="btn d-flex align-items-center gap-2 flex-fill text-start p-2 rounded-3 shadow-none w-100"
+                    routerLink="/marketing-partner-enquiry" style="background-color: #0d6efd; color: #fff;">
+
+                    <div class="p-2 rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                        style="width: 32px; height: 32px; font-size: 12px; background-color: rgba(255, 255, 255, 0.15); color: #fff;">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+
+                    <div class="overflow-hidden">
+                        <h6 class="fw-bold mb-0 text-truncate" style="font-size: 15px; color: #fff;">
+                            Marketing Partner
+                        </h6>
+
+                        <small class="text-truncate d-block" style="font-size: 11px; color: rgba(255, 255, 255, 0.75);">
+                            Partner catalogs
+                        </small>
+                    </div>
+                </button>
+
+                <button class="btn d-flex align-items-center gap-2 flex-fill text-start p-2 rounded-3 shadow-none w-100"
+                    routerLink="/partner_info" style="background-color: #0d6efd; color: #fff;">
+
+                    <div class="p-2 rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                        style="width: 32px; height: 32px; font-size: 12px; background-color: rgba(255, 255, 255, 0.15); color: #fff;">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+
+                    <div class="overflow-hidden">
+                        <h6 class="fw-bold mb-0 text-truncate" style="font-size: 15px; color: #fff;">
+                            Info Partner
+                        </h6>
+                        <small class="text-truncate d-block" style="font-size: 11px; color: rgba(255, 255, 255, 0.75);">
+                            DSA incentives
+                        </small>
+                    </div>
+                </button>
+
+
+                <button class="btn d-flex align-items-center gap-2 flex-fill text-start p-2 rounded-3 shadow-none w-100"
+                    routerLink="/company_info" style="background-color: #0d6efd; color: #fff;">
+
+                    <div class="p-2 rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                        style="width: 32px; height: 32px; font-size: 12px; background-color: rgba(255, 255, 255, 0.15); color: #fff;">
+                        <i class="fas fa-building"></i>
+                    </div>
+
+                    <div class="overflow-hidden">
+                        <h6 class="fw-bold mb-0 text-truncate" style="font-size: 15px; color: #fff;">
+                            Info Company
+                        </h6>
+                        <small class="text-truncate d-block" style="font-size: 11px; color: rgba(255, 255, 255, 0.75);">
+                            Governance profile
+                        </small>
+                    </div>
+                </button>
+            </div> -->
+
+            <!-- Partner & Company Quick Actions -->
+            <div class="bg-white p-3 rounded-4 shadow-sm mb-3">
+                <div class="row g-2">
+
+                    <!-- Button 1: Marketing Partner (Mobile var half width, desktop var equal) -->
+                    <div class="col-6 col-md-4">
+                        <button
+                            class="btn d-flex align-items-center gap-2 text-start p-2 rounded-3 shadow-none w-100 h-100"
+                            routerLink="/marketing-partner-enquiry" style="background:
+        linear-gradient(135deg,
+            #071b3a 0%,
+            #0b3a78 48%,
+            #0756a8 100%); color: #fff;">
+
+                            <div class="p-2 rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                                style="width: 32px; height: 32px; font-size: 12px; background-color: rgba(255, 255, 255, 0.15); color: #fff;">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+
+                            <div class="overflow-hidden">
+                                <h6 class="fw-bold mb-0 text-truncate" style="font-size: 13px; color: #fff;">
+                                    Marketing Partner
+                                </h6>
+                                <small class="text-truncate d-block"
+                                    style="font-size: 10px; color: rgba(255, 255, 255, 0.75);">
+                                    Partner catalogs
+                                </small>
+                            </div>
+                        </button>
+                    </div>
+
+                    <!-- Button 2: Info Partner -->
+                    <div class="col-6 col-md-4">
+                        <button
+                            class="btn d-flex align-items-center gap-2 text-start p-2 rounded-3 shadow-none w-100 h-100"
+                            routerLink="/partner_info" style="background:
+        linear-gradient(135deg,
+            #071b3a 0%,
+            #0b3a78 48%,
+            #0756a8 100%); color: #fff;">
+
+                            <div class="p-2 rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                                style="width: 32px; height: 32px; font-size: 12px; background-color: rgba(255, 255, 255, 0.15); color: #fff;">
+                                <i class="fas fa-handshake"></i>
+                            </div>
+
+                            <div class="overflow-hidden">
+                                <h6 class="fw-bold mb-0 text-truncate" style="font-size: 13px; color: #fff;">
+                                    Info Partner
+                                </h6>
+                                <small class="text-truncate d-block"
+                                    style="font-size: 10px; color: rgba(255, 255, 255, 0.75);">
+                                    DSA incentives
+                                </small>
+                            </div>
+                        </button>
+                    </div>
+
+                    <!-- Button 3: Info Company -->
+                    <div class="col-12 col-md-4">
+                        <button
+                            class="btn d-flex align-items-center gap-2 text-start p-2 rounded-3 shadow-none w-100 h-100"
+                            routerLink="/company_info" style="background:
+        linear-gradient(135deg,
+            #071b3a 0%,
+            #0b3a78 48%,
+            #0756a8 100%); color: #fff;">
+
+                            <div class="p-2 rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                                style="width: 32px; height: 32px; font-size: 12px; background-color: rgba(255, 255, 255, 0.15); color: #fff;">
+                                <i class="fas fa-building"></i>
+                            </div>
+
+                            <div class="overflow-hidden">
+                                <h6 class="fw-bold mb-0 text-truncate" style="font-size: 13px; color: #fff;">
+                                    Info Company
+                                </h6>
+                                <small class="text-truncate d-block"
+                                    style="font-size: 10px; color: rgba(255, 255, 255, 0.75);">
+                                    Governance profile
+                                </small>
+                            </div>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div *ngIf="loadingProducts" class="text-center py-5 bg-white rounded-4 shadow-sm">
+                <div class="spinner-border text-primary mb-2" role="status"></div>
+                <p class="text-muted small">Loading products...</p>
+            </div>
+
+            <!-- background: linear-gradient(135deg, #4b4949 0%, #393939 50%, #747171 100%); -->
+            <!-- Products Grid -->
+            <div class="row row-cols-2 row-cols-sm-2 row-cols-md-3 g-3" *ngIf="!loadingProducts">
+
+                <div class="col" *ngFor="let product of latestProducts">
+
+                    <div class="product-glass-card">
+
+                        <!-- FULL IMAGE -->
+                        <img [src]="product.thumbnail_s3_key" [alt]="product.name" class="product-full-bg"
+                            (click)="goToCategory(product)" onerror="this.src='assets/placeholder.png'" />
+
+                        <!-- VERY LIGHT OVERLAY -->
+                        <div class="product-bg-overlay"></div>
+
+                        <!-- FULL IMAGE GLOSSY LOOP -->
+                        <div class="full-card-gloss"></div>
+
+                        <!-- Franchise -->
+                        <div class="product-franchise" *ngIf="product.is_franchise_available">
+
+                            <i class="fas fa-store-alt"></i>
+                            Franchise
+
+                        </div>
+
+                        <!-- DETAIL GLASS CARD -->
+                        <div class="product-glass-content">
+
+                            <div class="product-top-meta">
+
+                                <span class="product-category">
+                                    {{ product.category_name }}
+                                </span>
+
+                                <span class="product-brand">
+                                    {{ product.brand_name }}
+                                </span>
+
+                            </div>
+
+                            <h6 class="product-glass-name" (click)="goToCategory(product)">
+
+                                {{ product.name }}
+
+                            </h6>
+
+                            <div class="product-stock">
+
+                                <i class="fas fa-shield-alt"></i>
+
+                                <span class="stock-label">
+                                    Stock:
+                                </span>
+
+                                <span class="stock-value">
+                                    {{ product.stock_quantity }}
+                                    {{ product.unit_name }}
+                                </span>
+
+                            </div>
+
+                            <div class="glass-divider"></div>
+
+                            <div class="product-glass-price">
+
+                                <span class="final-price">
+                                    ₹{{ product.final_price }}
+                                </span>
+
+                                <span class="original-price"
+                                    *ngIf="product.price && product.price > product.final_price">
+
+                                    ₹{{ product.price }}
+
+                                </span>
+
+                            </div>
+
+                            <div class="product-glass-actions">
+
+                                <button type="button" class="glass-enquiry-btn" (click)="goToEnquiry(product)">
+
+                                    <i class="fas fa-envelope"></i>
+                                    Enquiry
+
+                                </button>
+
+                                <button type="button" class="glass-cart-btn" (click)="addToCart(product)"
+                                    [disabled]="cartLoadingId === product.id">
+
+                                    <ng-container *ngIf="cartLoadingId !== product.id">
+                                        <i class="fas fa-shopping-cart"></i>
+                                        Cart
+                                    </ng-container>
+
+                                    <span *ngIf="cartLoadingId === product.id" class="spinner-border spinner-border-sm">
+                                    </span>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Empty Products -->
+                <div class="col-12 text-center py-5 bg-white rounded-4 shadow-sm" *ngIf="latestProducts.length === 0">
+
+                    <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
+
+                    <p class="text-muted fw-medium mb-0">
+                        No approved products available right now
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ================= COLUMN 3: LIVE REELS & DEMOS (RIGHT) ================= -->
+        <div class="col-xl-3 col-lg-12 col-12">
+
+            <div class="d-flex flex-column gap-3 sticky-lg-top reels-sticky">
+
+                <!-- HEADER -->
+                <div class="bg-white p-3 rounded-4 shadow-sm d-flex justify-content-between align-items-center">
+
+                    <div>
+                        <div class="d-flex align-items-center gap-2">
+
+                            <span class="live-dot"></span>
+
+                            <h6 class="fw-bold text-dark mb-0 reels-title">
+                                Live Reels & Demos
+                            </h6>
+
+                        </div>
+
+                        <small class="text-muted reels-subtitle">
+                            Tap to shop while watching
+                        </small>
+                    </div>
+
+                    <a href="https://www.instagram.com/qnxmart.b2b/" target="_blank"
+                        class="text-decoration-none fw-bold text-primary reels-view-all">
+                        VIEW ALL
+                    </a>
+
+                </div>
+
+
+                <!-- REEL CARD -->
+                <div class="reel-card" *ngIf="homeVideos.length > 0">
+
+                    <!-- ACTUAL PRODUCT VIDEO -->
+                    <video #reelVideo class="reel-video" [src]="homeVideos[currentReelIndex]?.video_url" autoplay
+                        [muted]="true" loop playsinline preload="metadata" (loadedmetadata)="forceMute(reelVideo)"
+                        (canplay)="forceMute(reelVideo)" (play)="isReelPlaying = true" (pause)="isReelPlaying = false"
+                        (click)="toggleReelVideo(reelVideo)">
+                    </video>
+
+                    <!-- VIDEO STATUS - TOP -->
+                    <div class="reel-video-label">
+                        <i class="bi bi-camera-video-fill"></i>
+                        PRODUCT VIDEO
+                    </div>
+
+
+
+                    <!-- DARK GRADIENT -->
+                    <div class="reel-gradient"></div>
+
+
+                    <!-- LIVE BADGE -->
+                    <div class="reel-live-badge">
+
+                        <span class="reel-live-dot"></span>
+
+                        LIVE SHOPPING
+
+                    </div>
+
+
+                    <!-- VIDEO CONTROLS -->
+                    <div class="reel-actions">
+
+                        <button type="button" class="reel-action-btn"
+                            (click)="toggleMute(reelVideo); $event.stopPropagation()">
+
+                            <i class="bi" [ngClass]="reelVideo.muted
+                            ? 'bi-volume-mute-fill'
+                            : 'bi-volume-up-fill'">
+                            </i>
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- PRODUCT DETAILS -->
+                    <div class="reel-product-info">
+
+                        <div class="reel-product-name">
+                            {{ homeVideos[currentReelIndex]?.product_name }}
+                        </div>
+
+                        <div class="reel-product-price" *ngIf="homeVideos[currentReelIndex]?.price">
+
+                            ₹{{ homeVideos[currentReelIndex]?.price }}
+
+                        </div>
+
+                        <button type="button" class="reel-shop-btn" (click)="openReelProduct(
+                        homeVideos[currentReelIndex]
+                    )">
+
+                            <i class="bi bi-bag-fill me-1"></i>
+
+                            Shop Now
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- PREVIOUS -->
+                    <button *ngIf="homeVideos.length > 1" type="button" class="reel-navigation reel-prev"
+                        (click)="previousReel(); $event.stopPropagation()">
+
+                        <i class="bi bi-chevron-up"></i>
+
+                    </button>
+
+
+                    <!-- NEXT -->
+                    <button *ngIf="homeVideos.length > 1" type="button" class="reel-navigation reel-next"
+                        (click)="nextReel(); $event.stopPropagation()">
+
+                        <i class="bi bi-chevron-down"></i>
+
+                    </button>
+
+
+                    <!-- COUNTER -->
+                    <div class="reel-counter" *ngIf="homeVideos.length > 1">
+
+                        {{ currentReelIndex + 1 }}/{{ homeVideos.length }}
+
+                    </div>
+
+                </div>
+
+
+                <!-- NO VIDEOS -->
+                <div class="reel-empty" *ngIf="homeVideos.length === 0">
+
+                    <i class="bi bi-camera-video"></i>
+
+                    <p class="mb-0">
+                        No product videos available
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<!-- ========================================================= -->
+<!-- MOBILE OFFCANVAS SIDEBAR FOR FILTERS (Bootstrap 5) -->
+<!-- ========================================================= -->
+<div class="offcanvas offcanvas-start rounded-end-4" tabindex="-1" id="mobileFilterOffcanvas"
+    aria-labelledby="mobileFilterLabel">
+    <div class="offcanvas-header border-bottom">
+        <h5 class="offcanvas-title fw-bold text-dark fs-6" id="mobileFilterLabel">
+            <i class="fas fa-sliders-h me-2 text-primary"></i>Filters
+        </h5>
+        <button type="button" class="btn-close shadow-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <!-- Reusing the exact same filter content inside mobile drawer -->
+        <ng-container *ngTemplateOutlet="filterContentTemplate"></ng-container>
+    </div>
+</div>
+
+
+<!-- ========================================================= -->
+<!-- REUSABLE FILTER CONTENT TEMPLATE -->
+<!-- ========================================================= -->
+<ng-template #filterContentTemplate>
+    <!-- Filters Header (Desktop Only header since offcanvas has its own header) -->
+    <div class="d-none d-lg-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+        <h5 class="fw-bold text-dark mb-0 fs-6">
+            <i class="fas fa-sliders-h me-2 text-primary"></i>Filters
+            <span class="badge bg-primary rounded-pill ms-1" *ngIf="activeFilterCount > 0" style="font-size: 10px;">{{
+                activeFilterCount }}</span>
+        </h5>
+        <button class="btn btn-link btn-sm text-decoration-none fw-bold text-primary p-0" style="font-size: 13px;"
+            (click)="showAll()" *ngIf="activeFilterCount > 0">
+            Reset
+        </button>
+    </div>
+
+    <!-- Clear All Filters Button -->
+    <div class="mb-3" *ngIf="activeFilterCount > 0">
+        <button class="btn btn-outline-danger btn-sm w-100 py-1" (click)="showAll()" style="font-size: 12px;">
+            <i class="bi bi-x-circle me-1"></i>Clear all filters ({{ activeFilterCount }})
+        </button>
+    </div>
+
+    <!-- 1. CATEGORY FILTER -->
+    <div class="pl-filter-group mb-3 pb-3 border-bottom">
+        <div class="pl-filter-group-title fw-bold text-dark mb-2" style="font-size: 13px;">
+            <i class="bi bi-grid me-2 text-primary"></i>Category
+        </div>
+        <ul class="pl-filter-list list-unstyled ps-0 d-flex flex-column gap-1" style="font-size: 13px;">
+            <li class="p-2 rounded cursor-pointer d-flex align-items-center" [class.bg-primary-subtle]="!activeCat"
+                [class.fw-bold]="!activeCat"
+                (click)="selectCategory(''); activeSubCat=''; activeBrand=''; applyFilters()" style="cursor: pointer;">
+                <i class="bi bi-circle me-2 text-muted" style="font-size: 8px;"></i>All Categories
+            </li>
+            <li *ngFor="let cat of categories" class="p-2 rounded cursor-pointer d-flex align-items-center"
+                [class.bg-primary-subtle]="activeCat === cat" [class.fw-bold]="activeCat === cat"
+                (click)="selectCategory(cat); applyFilters()" style="cursor: pointer;">
+                <i class="bi bi-circle me-2 text-muted" style="font-size: 8px;"></i>{{ cat }}
+            </li>
+        </ul>
+    </div>
+
+    <!-- 2. SUB CATEGORY FILTER -->
+    <div class="pl-filter-group mb-3 pb-3 border-bottom"
+        *ngIf="activeCat && subcategoriesForCat && subcategoriesForCat.length > 0">
+        <div class="pl-filter-group-title fw-bold text-dark mb-2" style="font-size: 13px;">
+            <i class="bi bi-diagram-2 me-2 text-primary"></i>Sub Category
+            <span class="text-muted fw-normal d-block" style="font-size: 11px;">in {{ activeCat }}</span>
+        </div>
+        <ul class="pl-filter-list list-unstyled ps-0 d-flex flex-column gap-1" style="font-size: 13px;">
+            <li class="p-2 rounded cursor-pointer d-flex align-items-center" [class.bg-primary-subtle]="!activeSubCat"
+                [class.fw-bold]="!activeSubCat" (click)="selectSubCategory(''); applyFilters()"
+                style="cursor: pointer;">
+                <i class="bi bi-circle me-2 text-muted" style="font-size: 8px;"></i>All in {{ activeCat }}
+            </li>
+            <li *ngFor="let sub of subcategoriesForCat" class="p-2 rounded cursor-pointer d-flex align-items-center"
+                [class.bg-primary-subtle]="activeSubCat === sub" [class.fw-bold]="activeSubCat === sub"
+                (click)="selectSubCategory(sub); applyFilters()" style="cursor: pointer;">
+                <i class="bi bi-circle me-2 text-muted" style="font-size: 8px;"></i>{{ sub }}
+            </li>
+        </ul>
+    </div>
+
+    <!-- 3. BRAND FILTER -->
+    <div class="pl-filter-group mb-3 pb-3 border-bottom" *ngIf="brandsForFilter && brandsForFilter.length > 0">
+        <div class="pl-filter-group-title fw-bold text-dark mb-2" style="font-size: 13px;">
+            <i class="bi bi-award me-2 text-primary"></i>Brand
+        </div>
+        <ul class="pl-filter-list list-unstyled ps-0 d-flex flex-column gap-1" style="font-size: 13px;">
+            <li class="p-2 rounded cursor-pointer d-flex align-items-center" [class.bg-primary-subtle]="!activeBrand"
+                [class.fw-bold]="!activeBrand" (click)="selectBrand(''); applyFilters()" style="cursor: pointer;">
+                <i class="bi bi-circle me-2 text-muted" style="font-size: 8px;"></i>All Brands
+            </li>
+            <li *ngFor="let brand of brandsForFilter" class="p-2 rounded cursor-pointer d-flex align-items-center"
+                [class.bg-primary-subtle]="activeBrand === brand" [class.fw-bold]="activeBrand === brand"
+                (click)="selectBrand(brand); applyFilters()" style="cursor: pointer;">
+                <i class="bi bi-circle me-2 text-muted" style="font-size: 8px;"></i>{{ brand }}
+            </li>
+        </ul>
+    </div>
+
+    <!-- 4. PRICE RANGE -->
+    <div class="mb-3 pb-3 border-bottom">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="fw-bold text-dark" style="font-size: 13px;"><i class="bi bi-currency-rupee me-1"></i>Price
+                Range</span>
+        </div>
+        <div class="pl-price-inputs d-flex align-items-center gap-2 mb-2 px-0">
+            <input type="number" class="form-control form-control-sm" [(ngModel)]="priceMin" placeholder="Min ₹" min="0"
+                (change)="applyFilters()" style="font-size: 12px;" />
+            <span class="text-muted">—</span>
+            <input type="number" class="form-control form-control-sm" [(ngModel)]="priceMax" placeholder="Max ₹" min="0"
+                (change)="applyFilters()" style="font-size: 12px;" />
+        </div>
+        <div class="d-flex gap-2">
+            <button class="btn btn-sm btn-primary w-100 py-1" style="font-size: 11px;"
+                (click)="applyFilters()">Apply</button>
+            <button class="btn btn-sm btn-outline-secondary w-100 py-1" style="font-size: 11px;"
+                *ngIf="priceMin !== null || priceMax !== null" (click)="clearPriceFilter()">Clear</button>
+        </div>
+    </div>
+
+    <!-- Customer Rating Section -->
+    <div class="mb-3 pb-3 border-bottom">
+        <span class="fw-bold text-dark d-block mb-2" style="font-size: 13px;">Customer Rating</span>
+        <div class="d-flex flex-column gap-2">
+
+            <!-- 4.5 & Above -->
+            <label class="d-flex align-items-center gap-2 text-dark mb-0" style="font-size: 13px; cursor: pointer;">
+                <input class="form-check-input mt-0 shadow-none flex-shrink-0" type="radio" name="customerRating"
+                    [(ngModel)]="minRating" [value]="4.5" (change)="applyFilters()"
+                    style="accent-color: #6366f1; width: 16px; height: 16px; cursor: pointer;">
+                <div class="d-flex align-items-center text-warning" style="font-size: 11px; gap: 2px;">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+                <span class="text-dark ms-1 text-nowrap" style="font-size: 12px;">4.5 & Above</span>
+            </label>
+
+            <!-- 4.0 & Above -->
+            <label class="d-flex align-items-center gap-2 text-dark mb-0" style="font-size: 13px; cursor: pointer;">
+                <input class="form-check-input mt-0 shadow-none flex-shrink-0" type="radio" name="customerRating"
+                    [(ngModel)]="minRating" [value]="4.0" (change)="applyFilters()"
+                    style="accent-color: #6366f1; width: 16px; height: 16px; cursor: pointer;">
+                <div class="d-flex align-items-center text-warning" style="font-size: 11px; gap: 2px;">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star text-muted" style="opacity: 0.4;"></i>
+                </div>
+                <span class="text-dark ms-1 text-nowrap" style="font-size: 12px;">4.0 & Above</span>
+            </label>
+
+        </div>
+    </div>
+
+    <!-- QNX Escrow Shield Notice -->
+    <div class="bg-primary-subtle p-3 rounded-4 border border-primary-subtle">
+        <div class="d-flex align-items-center gap-2 mb-1">
+            <i class="fas fa-shield-alt text-primary"></i>
+            <strong class="text-primary" style="font-size: 12px;">QNX Escrow Shield</strong>
+        </div>
+        <p class="text-muted mb-0" style="font-size: 11px; line-height: 1.4;">
+            Your payment is held safe in escrow until you unpack and inspect your purchase.
+        </p>
+    </div>
+</ng-template>
+
+
+
+
+<!-- ================= BACK TO TOP BUTTON ================= -->
+<button *ngIf="showScrollTop" type="button" class="scroll-to-top-btn" (click)="scrollToTop()" aria-label="Back to top">
+
+    <i class="fas fa-chevron-up"></i>
+</button>

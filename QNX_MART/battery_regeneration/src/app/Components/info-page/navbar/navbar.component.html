@@ -1,0 +1,44 @@
+<nav class="navbar navbar-expand-lg navbar-qnx fixed-top" id="navbarQNX">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <img src="assets/QNXMARTLOGO-removebg-preview.png" alt="QNX Mart" class="brand-logo" />
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center gap-1">
+        <li class="nav-item">
+          <a class="nav-link" href="#" (click)="onNavLinkClick($event, 'what-is')">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" (click)="onNavLinkClick($event, 'how-it-works')">How It Works</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" (click)="onNavLinkClick($event, 'earnings')">Earnings</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" (click)="onNavLinkClick($event, 'benefits')">Benefits</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" (click)="onNavLinkClick($event, 'faq')">FAQ</a>
+        </li>
+
+        <!-- Terms & Conditions dropdown (hover) -->
+        <li class="nav-item dropdown terms-dropdown">
+          <a class="nav-link dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false">
+            Terms & Conditions
+          </a>
+          <ul class="dropdown-menu terms-dropdown-menu">
+            <li><a class="dropdown-item" (click)="onTermsClick('marketing-partner')">Marketing Partner</a></li>
+            <li><a class="dropdown-item" (click)="onTermsClick('company')">Company</a></li>
+            <li><a class="dropdown-item" (click)="onTermsClick('customer')">Customer</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item"><a class="btn btn-nav" href="home">Get Started</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>

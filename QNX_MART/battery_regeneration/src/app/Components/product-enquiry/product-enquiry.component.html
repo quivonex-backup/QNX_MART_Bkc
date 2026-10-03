@@ -1,0 +1,376 @@
+<div class="enq-page">
+
+    <!-- Page Header -->
+    <div class="enq-header">
+        <button class="enq-back-btn" (click)="goBack()">
+            <i class="bi bi-arrow-left"></i>
+        </button>
+        <div class="enq-header-text">
+            <h2><i class="bi bi-headset me-2"></i>Product Enquiry</h2>
+            <p>Fill in your details and we'll get back to you shortly</p>
+        </div>
+    </div>
+
+    <div class="enq-container">
+
+        <!-- ===== PRODUCT SUMMARY CARD (Proper Image Fix) ===== -->
+        <div class="enq-product-card d-flex flex-column flex-md-row-reverse align-items-center gap-4" *ngIf="product">
+
+            <!-- Image Fix: width/height ani object-fit contain theva -->
+            <img [src]="product.thumbnail_s3_key" [alt]="product.name"
+                class="enq-product-img cursor-pointer img-fluid rounded border bg-light p-1"
+                style="cursor: pointer; width: 180px; height: 180px; object-fit: contain;" data-bs-toggle="modal"
+                data-bs-target="#imageModal" />
+
+            <!-- Product Info -->
+            <div class="enq-product-info flex-grow-1 w-100">
+                <div class="enq-product-tags">
+                    <span class="enq-tag enq-tag-cat">{{ product.category_name }}</span>
+                    <span class="enq-tag enq-tag-brand"><i class="bi bi-award-fill me-1"></i>{{ product.brand_name
+                        }}</span>
+                </div>
+                <h3 class="enq-product-name">{{ product.name }}</h3>
+                <div class="enq-product-price-row">
+                    <span class="enq-price">₹{{ selectedPrice || product.final_price }}</span>
+                    <span class="enq-price-original" *ngIf="product.discount_value">₹{{ product.price }}</span>
+                    <span class="enq-savings" *ngIf="product.discount_value">
+                        {{ product.discount_type === 'percent' ? product.discount_value + '% OFF' : '₹' +
+                        product.discount_value + ' OFF' }}
+                    </span>
+                </div>
+
+                <!-- Product Key Details Grid -->
+                <div class="enq-detail-grid">
+                    <div class="enq-detail-item" *ngIf="product.product_code">
+                        <span class="enq-detail-label"><i class="bi bi-upc-scan me-1"></i>Product Code</span>
+                        <span class="enq-detail-value">{{ product.product_code }}</span>
+                    </div>
+                    <div class="enq-detail-item" *ngIf="product.HSN_code">
+                        <span class="enq-detail-label"><i class="bi bi-hash me-1"></i>HSN Code</span>
+                        <span class="enq-detail-value">{{ product.HSN_code }}</span>
+                    </div>
+                    <div class="enq-detail-item" *ngIf="product.unit_name">
+                        <span class="enq-detail-label"><i class="bi bi-rulers me-1"></i>Unit</span>
+                        <span class="enq-detail-value">{{ product.unit_name }}</span>
+                    </div>
+                    <div class="enq-detail-item" *ngIf="product.weight">
+                        <span class="enq-detail-label"><i class="bi bi-box-seam me-1"></i>Weight</span>
+                        <span class="enq-detail-value">{{ product.weight }}</span>
+                    </div>
+                    <div class="enq-detail-item" *ngIf="product.dimensions">
+                        <span class="enq-detail-label"><i class="bi bi-aspect-ratio me-1"></i>Dimensions</span>
+                        <span class="enq-detail-value">{{ product.dimensions }}</span>
+                    </div>
+                    <div class="enq-detail-item" *ngIf="product.stock_quantity">
+                        <span class="enq-detail-label"><i class="bi bi-boxes me-1"></i>Stock</span>
+                        <span class="enq-detail-value" [class.text-success]="product.stock_quantity > 0">
+                            {{ product.stock_quantity > 0 ? product.stock_quantity + ' units' : 'Out of Stock' }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== FULL SCREEN IMAGE MODAL (Mothi Width & Height) ===== -->
+        <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-fullscreen-lg-down modal-xl">
+                <div class="modal-content bg-dark bg-opacity-75 border-0">
+                    <div class="modal-header border-0 pb-0">
+                        <button type="button"
+                            class="btn-close btn-close-white ms-auto bg-white p-2 rounded-circle shadow"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center p-2 d-flex align-items-center justify-content-center">
+                        <!-- Yethe width ani height maximum keli ahe -->
+                        <img [src]="product?.thumbnail_s3_key" [alt]="product?.name" class="img-fluid rounded shadow-lg"
+                            style="width: 100%; height: auto; max-height: 80vh; max-width: 80vw; object-fit: contain;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== VARIANT SELECTOR ===== -->
+        <div class="enq-variant-card"
+            *ngIf="product && (colorOptions.length || sizeOptions.length || variantOptions.length)">
+            <div class="enq-section-title">
+                <i class="bi bi-sliders me-2"></i>Select Variant
+            </div>
+
+            <!-- Color -->
+            <div class="enq-variant-group" *ngIf="colorOptions.length">
+                <div class="enq-variant-label">
+                    Color
+                    <span class="enq-selected-val" *ngIf="selectedColor">— {{ selectedColor }}</span>
+                </div>
+                <div class="enq-color-row">
+                    <button type="button" class="enq-color-chip" *ngFor="let color of colorOptions"
+                        [class.active]="selectedColor === color" [style.background]="color.toLowerCase()"
+                        [title]="color" (click)="selectedColor = selectedColor === color ? '' : color">
+                        <i class="bi bi-check-lg" *ngIf="selectedColor === color"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Size -->
+            <div class="enq-variant-group" *ngIf="sizeOptions.length">
+                <div class="enq-variant-label">
+                    Size
+                    <span class="enq-selected-val" *ngIf="selectedSize">— {{ selectedSize }}</span>
+                </div>
+                <div class="enq-chip-row">
+                    <button type="button" class="enq-size-chip" *ngFor="let size of sizeOptions"
+                        [class.active]="selectedSize === size"
+                        (click)="selectedSize = selectedSize === size ? '' : size">
+                        {{ size }}
+                    </button>
+                </div>
+            </div>
+
+            <!-- Variant / Model -->
+            <div class="enq-variant-group" *ngIf="variantOptions.length">
+                <div class="enq-variant-label">
+                    Variant / Model
+                    <span class="enq-selected-val" *ngIf="selectedVariant">— {{ selectedVariant }}</span>
+                </div>
+                <div class="enq-chip-row">
+                    <button type="button" class="enq-variant-chip" *ngFor="let v of variantOptions"
+                        [class.active]="selectedVariant === v"
+                        (click)="selectedVariant = selectedVariant === v ? '' : v">
+                        {{ v }}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== ENQUIRY FORM ===== -->
+        <div class="enq-form-card">
+            <div class="enq-section-title">
+                <i class="bi bi-person-lines-fill me-2"></i>Your Details
+            </div>
+
+            <form [formGroup]="enquiryForm" (ngSubmit)="submit()" novalidate>
+
+                <!-- Row 1: Name + Email -->
+                <div class="enq-row">
+                    <div class="enq-field">
+                        <label>Full Name <span class="req">*</span></label>
+                        <div class="enq-input-wrap" [class.error]="isInvalid('person_name')">
+                            <i class="bi bi-person-fill enq-icon"></i>
+                            <input type="text" formControlName="person_name" placeholder="Enter your full name" />
+                        </div>
+                        <span class="enq-error" *ngIf="isInvalid('person_name')">
+                            <ng-container *ngIf="f('person_name')?.errors?.['required']">Name is
+                                required.</ng-container>
+                            <ng-container *ngIf="f('person_name')?.errors?.['minlength']">Minimum 2 characters
+                                required.</ng-container>
+                        </span>
+                    </div>
+
+                    <div class="enq-field">
+                        <label>Email Address <span class="req">*</span></label>
+                        <div class="enq-input-wrap" [class.error]="isInvalid('email')">
+                            <i class="bi bi-envelope-fill enq-icon"></i>
+                            <input type="email" formControlName="email" placeholder="Enter your email" />
+                        </div>
+                        <span class="enq-error" *ngIf="isInvalid('email')">
+                            <ng-container *ngIf="f('email')?.errors?.['required']">Email is required.</ng-container>
+                            <ng-container *ngIf="f('email')?.errors?.['email']">Enter a valid email
+                                address.</ng-container>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Row 2: Contact + Pincode -->
+                <div class="enq-row">
+                    <div class="enq-field">
+                        <label>Contact Number <span class="req">*</span></label>
+                        <div class="enq-input-wrap" [class.error]="isInvalid('contact')">
+                            <i class="bi bi-telephone-fill enq-icon"></i>
+                            <input type="tel" formControlName="contact" placeholder="10-digit mobile number"
+                                maxlength="10" />
+                        </div>
+                        <span class="enq-error" *ngIf="isInvalid('contact')">
+                            <ng-container *ngIf="f('contact')?.errors?.['required']">Contact number is
+                                required.</ng-container>
+                            <ng-container *ngIf="f('contact')?.errors?.['pattern']">Enter a valid 10-digit
+                                number.</ng-container>
+                        </span>
+                    </div>
+
+                    <div class="enq-field">
+                        <!-- <label>Pincode <span class="req">*</span></label>
+                        <div class="enq-input-wrap" [class.error]="isInvalid('pincode')">
+                            <i class="bi bi-geo-fill enq-icon"></i>
+                            <input type="text" formControlName="pincode" placeholder="6-digit pincode" maxlength="6" />
+                        </div>
+                        <span class="enq-error" *ngIf="isInvalid('pincode')">
+                            <ng-container *ngIf="f('pincode')?.errors?.['required']">Pincode is required.</ng-container>
+                            <ng-container *ngIf="f('pincode')?.errors?.['pattern']">Enter a valid 6-digit pincode.</ng-container>
+                        </span> -->
+                        <label>Quantity <span class="req">*</span></label>
+                        <div class="enq-input-wrap" [class.error]="isInvalid('quantity')">
+                            <i class="bi bi-box-fill enq-icon"></i>
+                            <input type="number" formControlName="quantity" placeholder="Min 1" min="1" step="1" />
+                            <span class="enq-unit-badge" *ngIf="product?.unit_name">{{ product.unit_name }}</span>
+                        </div>
+                        <span class="enq-error" *ngIf="isInvalid('quantity')">
+                            <ng-container *ngIf="f('quantity')?.errors?.['required']">Quantity is
+                                required.</ng-container>
+                            <ng-container *ngIf="f('quantity')?.errors?.['min']">Quantity must be at least
+                                1.</ng-container>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Quantity (compact with unit badge) -->
+                <!-- <div class="enq-field enq-field-full enq-qty-field">
+                    <label>Quantity <span class="req">*</span></label>
+                    <div class="enq-input-wrap" [class.error]="isInvalid('quantity')">
+                        <i class="bi bi-box-fill enq-icon"></i>
+                        <input type="number" formControlName="quantity" placeholder="Min 1" min="1" step="1" />
+                        <span class="enq-unit-badge" *ngIf="product?.unit_name">{{ product.unit_name }}</span>
+                    </div>
+                    <span class="enq-error" *ngIf="isInvalid('quantity')">
+                        <ng-container *ngIf="f('quantity')?.errors?.['required']">Quantity is required.</ng-container>
+                        <ng-container *ngIf="f('quantity')?.errors?.['min']">Quantity must be at least 1.</ng-container>
+                    </span>
+                </div> -->
+
+                <!-- Address -->
+                <div class="enq-field enq-field-full">
+                    <label>Address <span class="req">*</span></label>
+                    <div class="enq-input-wrap" [class.error]="isInvalid('address')">
+                        <i class="bi bi-house-fill enq-icon enq-icon-top"></i>
+                        <textarea formControlName="address" rows="2" placeholder="Enter your full address"></textarea>
+                    </div>
+                    <span class="enq-error" *ngIf="isInvalid('address')">Address is required.</span>
+                </div>
+
+                <div class="enq-field enq-field-full enq-qty-field">
+                    <label>Pincode <span class="req">*</span></label>
+                    <div class="enq-input-wrap" [class.error]="isInvalid('pincode')">
+                        <i class="bi bi-geo-fill enq-icon"></i>
+                        <input type="text" formControlName="pincode" placeholder="6-digit pincode" maxlength="6" />
+                    </div>
+                    <span class="enq-error" *ngIf="isInvalid('pincode')">
+                        <ng-container *ngIf="f('pincode')?.errors?.['required']">Pincode is required.</ng-container>
+                        <ng-container *ngIf="f('pincode')?.errors?.['pattern']">Enter a valid 6-digit
+                            pincode.</ng-container>
+                    </span>
+                </div>
+
+                <!-- Message -->
+                <div class="enq-field enq-field-full">
+                    <label>Message <span class="req">*</span></label>
+                    <div class="enq-input-wrap" [class.error]="isInvalid('message')">
+                        <i class="bi bi-chat-text-fill enq-icon enq-icon-top"></i>
+                        <textarea formControlName="message" rows="3"
+                            placeholder="Describe your requirement in detail..."></textarea>
+                    </div>
+                    <span class="enq-error" *ngIf="isInvalid('message')">
+                        <ng-container *ngIf="f('message')?.errors?.['required']">Message is required.</ng-container>
+                        <ng-container *ngIf="f('message')?.errors?.['minlength']">Minimum 10 characters
+                            required.</ng-container>
+                    </span>
+                </div>
+
+                <!-- Demo Required -->
+                <div class="enq-field enq-field-full">
+                    <label>Demo Required?</label>
+                    <div class="enq-demo-toggle">
+                        <label class="enq-toggle-opt" [class.active]="f('demo_required')?.value === 'no'">
+                            <input type="radio" formControlName="demo_required" value="no" />
+                            <i class="bi bi-x-circle me-1"></i> No Demo
+                        </label>
+                        <label class="enq-toggle-opt" [class.active]="f('demo_required')?.value === 'yes'">
+                            <input type="radio" formControlName="demo_required" value="yes" />
+                            <i class="bi bi-check-circle me-1"></i> Yes, I need a Demo
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Demo Type -->
+                <div class="enq-field enq-field-full" *ngIf="f('demo_required')?.value === 'yes'">
+                    <label>Demo Location <span class="req">*</span></label>
+                    <div class="enq-demo-location">
+                        <label class="enq-location-opt" [class.active]="f('demo_type')?.value === 'at_location'">
+                            <input type="radio" formControlName="demo_type" value="at_location" />
+                            <i class="bi bi-geo-alt-fill"></i>
+                            <span>At Your Location</span>
+                        </label>
+                        <label class="enq-location-opt" [class.active]="f('demo_type')?.value === 'online'">
+                            <input type="radio" formControlName="demo_type" value="online" />
+                            <i class="bi bi-camera-video-fill"></i>
+                            <span>Online</span>
+                        </label>
+                    </div>
+                    <span class="enq-error" *ngIf="isInvalid('demo_type')">Please select a demo location.</span>
+                </div>
+
+                <!-- Attachment -->
+                <div class="enq-field enq-field-full">
+                    <label>Attachment <span class="enq-optional">(Optional — JPG, PNG, PDF, max 5MB)</span></label>
+                    <div class="enq-file-area" *ngIf="!selectedFile">
+                        <input type="file" id="attachmentInput" accept=".jpg,.jpeg,.png,.webp,.pdf"
+                            (change)="onFileSelect($event)" hidden />
+                        <label for="attachmentInput" class="enq-file-label">
+                            <i class="bi bi-cloud-upload-fill"></i>
+                            <span>Click to upload file</span>
+                        </label>
+                    </div>
+                    <div class="enq-attachment-preview" *ngIf="selectedFile">
+                        <img *ngIf="attachmentPreview" [src]="attachmentPreview" class="enq-attach-img" alt="preview" />
+                        <div class="enq-attach-info" *ngIf="!attachmentPreview">
+                            <i class="bi bi-file-earmark-pdf-fill enq-pdf-icon"></i>
+                            <span>{{ attachmentName }}</span>
+                        </div>
+                        <button type="button" class="enq-remove-attach" (click)="removeAttachment()">
+                            <i class="bi bi-x-circle-fill"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Selected Summary before submit -->
+                <div class="enq-summary-box" *ngIf="product">
+                    <div class="enq-summary-title"><i class="bi bi-clipboard-check me-2"></i>Enquiry Summary</div>
+                    <div class="enq-summary-grid">
+                        <div class="enq-summary-row"><span>Product</span><strong>{{ product.name }}</strong></div>
+                        <div class="enq-summary-row" *ngIf="product.product_code"><span>Code</span><strong>{{
+                                product.product_code }}</strong></div>
+                        <div class="enq-summary-row" *ngIf="product.brand_name"><span>Brand</span><strong>{{
+                                product.brand_name }}</strong></div>
+                        <div class="enq-summary-row" *ngIf="product.category_name"><span>Category</span><strong>{{
+                                product.category_name }}</strong></div>
+                        <div class="enq-summary-row"><span>Price</span><strong>₹{{ selectedPrice || product.final_price
+                                }}</strong></div>
+                        <div class="enq-summary-row" *ngIf="f('quantity')?.value">
+                            <span>Quantity</span>
+                            <strong>{{ f('quantity')?.value }} {{ product?.unit_name }}</strong>
+                        </div>
+                        <div class="enq-summary-row" *ngIf="selectedColor"><span>Color</span><strong>{{ selectedColor
+                                }}</strong></div>
+                        <div class="enq-summary-row" *ngIf="selectedSize"><span>Size</span><strong>{{ selectedSize
+                                }}</strong></div>
+                        <div class="enq-summary-row" *ngIf="selectedVariant"><span>Variant</span><strong>{{
+                                selectedVariant }}</strong></div>
+                        <div class="enq-summary-row" *ngIf="selectedVariantData"><span>Selected Variant</span>
+                            <strong>
+                                <span *ngFor="let key of (selectedVariantData | keyvalue)"> {{ key.key }}: {{ key.value
+                                    }} </span>
+                            </strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit -->
+                <div class="enq-submit-row">
+                    <button type="submit" class="enq-submit-btn">
+                        <i class="bi bi-send-fill me-2"></i>Submit Enquiry
+                    </button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</div>

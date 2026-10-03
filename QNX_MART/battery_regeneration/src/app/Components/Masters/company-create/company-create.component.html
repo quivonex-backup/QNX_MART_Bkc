@@ -1,0 +1,992 @@
+<div class="cc-wrapper">
+
+  <!-- ===== HEADER ===== -->
+  <div class="cc-header">
+    <div class="cc-header-icon"><i class="fas fa-building"></i></div>
+    <div>
+      <h4 class="cc-header-title">
+        {{ showCompanyList ? 'My Companies' : (isEditMode ? 'Edit Company' : 'Create New Company') }}
+      </h4>
+      <p class="cc-header-sub">
+        {{ showCompanyList ? 'Manage your company listings' : (isEditMode ? 'Update company details' : 'Add a new company to QNX Mart System') }}
+      </p>
+    </div>
+    <div class="ms-auto">
+      <!-- When list is shown, show "Add Company" -->
+      <button type="button" class="cc-btn-show-companies" *ngIf="showCompanyList" (click)="showAddForm()">
+        <i class="fas fa-plus-circle me-2"></i>Add Company
+      </button>
+      <!-- When form is shown, show "My Companies" -->
+      <button type="button" class="cc-btn-show-companies" *ngIf="!showCompanyList" (click)="toggleCompanyList()">
+        <i class="fas fa-building me-2"></i>My Companies
+      </button>
+      <!-- Cancel Edit (only when editing and form is visible) -->
+      <button type="button" class="cc-btn-show-companies cc-btn-cancel-edit" 
+              *ngIf="isEditMode && !showCompanyList" 
+              (click)="cancelEdit()" 
+              style="background:rgba(255,255,255,0.12); border-color:#e74c3c; color:#e74c3c; margin-left:10px;">
+        <i class="fas fa-times-circle me-2"></i>Cancel Edit
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== FORM BODY ===== -->
+  <div class="cc-body">
+
+    <!-- ===== MY COMPANIES TABLE ===== -->
+    <div class="mt-4" *ngIf="showCompanyList">
+
+      <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+        <h5 class="mb-0 fw-bold"><i class="fas fa-building me-2 text-primary"></i>My Companies</h5>
+        <span class="badge bg-primary rounded-pill">{{ companyList.length }} found</span>
+      </div>
+
+      <!-- Loading -->
+      <div class="text-center py-4" *ngIf="companyListLoading">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-2 text-muted">Loading companies...</p>
+      </div>
+
+      <!-- Table -->
+      <div class="table-responsive rounded-3 shadow-sm" *ngIf="!companyListLoading"
+        style="max-height:520px;overflow-y:auto;">
+        <table class="table table-hover table-bordered align-middle mb-0" style="min-width:2600px;font-size:13px;">
+          <thead class="table-dark text-center" style="position:sticky;top:0;z-index:2;">
+            <tr>
+              <th>#</th>
+              <th>Action</th>
+              <th>Logo</th>
+              <th>Images</th>
+              <th>Company</th>
+              <th>Slogan</th>
+              <th>Owner</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>WhatsApp</th>
+              <th>Address</th>
+              <th>State</th>
+              <th>District</th>
+              <th>Taluka</th>
+              <th>Village</th>
+              <th>Pincode</th>
+              <th>Pickup Location</th>
+              <th>GST</th>
+              <th>PAN</th>
+              <th>Reg No</th>
+              <th>IAN No</th>
+              <th>Reg Year</th>
+              <th>Website</th>
+              <th>YouTube</th>
+              <th>Facebook</th>
+              <th>LinkedIn</th>
+              <th>Instagram</th>
+              <th>Policy</th>
+              <th>Terms & Conditions</th>
+              <th>Extra Emails</th>
+              <th>Extra Contacts</th>
+              <th>Short Desc</th>
+              <th>Long Desc</th>
+              <th>Latitude</th>
+              <th>Longitude</th>
+              <th>Status</th>
+              <th>ISI</th>
+              <th>ISO</th>
+              <th>COD</th>
+              <th>Created</th>
+              <th>Payment</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let c of companyList; let i = index">
+              <td class="text-muted fw-semibold">{{ i + 1 }}</td>
+
+              <td>
+                <button class="btn btn-sm btn-warning fw-semibold" (click)="editCompany(c)" title="Edit company">
+                  <i class="bi bi-pencil me-1"></i>Edit
+                </button>
+              </td>
+
+              <td>
+                <img *ngIf="c.logo" [src]="c.logo" [alt]="c.name" class="rounded"
+                  style="width:44px;height:44px;object-fit:cover;" />
+                <div *ngIf="!c.logo"
+                  class="rounded bg-secondary d-flex align-items-center justify-content-center text-white"
+                  style="width:44px;height:44px;font-size:18px;">
+                  <i class="fas fa-building"></i>
+                </div>
+              </td>
+
+              <!-- Images -->
+              <td style="min-width:160px;">
+                <div class="d-flex flex-wrap gap-1" *ngIf="c.images?.length">
+                  <a *ngFor="let img of c.images" [href]="img.url" target="_blank">
+                    <img [src]="img.url" [alt]="img.image_s3_key" class="rounded border"
+                      style="width:36px;height:36px;object-fit:cover;" />
+                  </a>
+                </div>
+                <span *ngIf="!c.images?.length" class="text-muted">—</span>
+              </td>
+
+              <td class="fw-semibold" style="min-width:140px;">{{ c.name }}</td>
+              <td style="min-width:160px;"><small class="text-muted">{{ c.company_slogan || '—' }}</small></td>
+              <td style="min-width:130px;">{{ c.owner_name }}</td>
+
+              <td style="min-width:160px;">
+                <a *ngIf="c.email" [href]="'mailto:' + c.email" class="text-decoration-none">{{ c.email }}</a>
+                <span *ngIf="!c.email" class="text-muted">—</span>
+              </td>
+
+              <td style="min-width:120px;">{{ c.phone_number || '—' }}</td>
+              <td style="min-width:120px;">{{ c.whatsapp_no || '—' }}</td>
+
+              <td style="min-width:200px;max-width:220px;white-space:normal;">{{ c.address || '—' }}</td>
+              <td style="min-width:110px;">{{ c.state || '—' }}</td>
+              <td style="min-width:100px;">{{ c.district || '—' }}</td>
+              <td style="min-width:100px;">{{ c.taluka || '—' }}</td>
+              <td style="min-width:100px;">{{ c.village || '—' }}</td>
+              <td>{{ c.pincode || '—' }}</td>
+
+              <td style="min-width:200px;max-width:220px;white-space:normal;">
+                {{ c.pickup_location || '—' }}
+              </td>
+
+              <td style="min-width:150px;">
+                <span *ngIf="c.gst_number" class="badge bg-light text-dark border">{{ c.gst_number }}</span>
+                <span *ngIf="!c.gst_number" class="text-muted">—</span>
+              </td>
+              <td>{{ c.company_pan_no || '—' }}</td>
+              <td>{{ c.registration_no || '—' }}</td>
+              <td>{{ c.IAN_No || '—' }}</td>
+              <td>{{ c.farm_registration_year || '—' }}</td>
+
+              <td style="min-width:90px;">
+                <a *ngIf="c.website_url" [href]="c.website_url" target="_blank"
+                  class="text-decoration-none text-primary">
+                  <i class="fas fa-external-link-alt me-1"></i>Visit
+                </a>
+                <span *ngIf="!c.website_url" class="text-muted">—</span>
+              </td>
+
+              <td class="text-center">
+                <a *ngIf="c.youtube_url" [href]="c.youtube_url" target="_blank"
+                  class="text-danger text-decoration-none">
+                  <i class="fab fa-youtube fa-lg"></i>
+                </a>
+                <span *ngIf="!c.youtube_url" class="text-muted">—</span>
+              </td>
+
+              <td class="text-center">
+                <a *ngIf="c.facebook_url || c.social_media_accounts?.facebook"
+                  [href]="c.facebook_url || c.social_media_accounts?.facebook" target="_blank"
+                  class="text-decoration-none" style="color:#1877f2;">
+                  <i class="fab fa-facebook fa-lg"></i>
+                </a>
+                <span *ngIf="!c.facebook_url && !c.social_media_accounts?.facebook" class="text-muted">—</span>
+              </td>
+
+              <td class="text-center">
+                <a *ngIf="c.linkedin_url || c.social_media_accounts?.linkedin"
+                  [href]="c.linkedin_url || c.social_media_accounts?.linkedin" target="_blank"
+                  class="text-decoration-none" style="color:#0a66c2;">
+                  <i class="fab fa-linkedin fa-lg"></i>
+                </a>
+                <span *ngIf="!c.linkedin_url && !c.social_media_accounts?.linkedin" class="text-muted">—</span>
+              </td>
+
+              <td class="text-center">
+                <a *ngIf="c.instagram_url || c.social_media_accounts?.instagram"
+                  [href]="c.instagram_url || c.social_media_accounts?.instagram" target="_blank"
+                  class="text-decoration-none" style="color:#e1306c;">
+                  <i class="fab fa-instagram fa-lg"></i>
+                </a>
+                <span *ngIf="!c.instagram_url && !c.social_media_accounts?.instagram" class="text-muted">—</span>
+              </td>
+
+              <td class="text-center">
+                <a *ngIf="c.privacy_policy_url || c.social_media_accounts?.privacy_policy_url"
+                  [href]="c.privacy_policy_url || c.social_media_accounts?.privacy_policy_url" target="_blank"
+                  class="text-decoration-none" style="color:#ebb1c5;">
+                  <i class="fas fa-user-shield" style="color:#20c997"></i>
+                </a>
+                <span *ngIf="!c.privacy_policy_url && !c.social_media_accounts?.privacy_policy_url"
+                  class="text-muted">—</span>
+              </td>
+
+              <td class="text-center">
+                <a *ngIf="c.terms_conditions_url || c.social_media_accounts?.terms_conditions_url"
+                  [href]="c.terms_conditions_url || c.social_media_accounts?.terms_conditions_url" target="_blank"
+                  class="text-decoration-none" style="color:#7785b1;">
+                  <i class="fas fa-file-contract" style="color:#fd7e14"></i>
+                </a>
+                <span *ngIf="!c.terms_conditions_url && !c.social_media_accounts?.terms_conditions_url"
+                  class="text-muted">—</span>
+              </td>
+
+              <td style="min-width:160px;">
+                <div *ngFor="let e of c.multiple_email_ids"><small>{{ e }}</small></div>
+                <span *ngIf="!c.multiple_email_ids?.length" class="text-muted">—</span>
+              </td>
+
+              <td style="min-width:120px;">
+                <div *ngFor="let p of c.contacts"><small>{{ p }}</small></div>
+                <span *ngIf="!c.contacts?.length" class="text-muted">—</span>
+              </td>
+
+              <td style="min-width:160px;max-width:180px;white-space:normal;">
+                <small>{{ c.short_description || '—' }}</small>
+              </td>
+              <td style="min-width:180px;max-width:200px;white-space:normal;">
+                <small>{{ c.long_description || '—' }}</small>
+              </td>
+
+              <td>{{ c.latitude || '—' }}</td>
+              <td>{{ c.longitude || '—' }}</td>
+
+              <td>
+                <span class="badge" [ngClass]="c.is_active ? 'bg-success' : 'bg-danger'">
+                  {{ c.is_active ? 'Active' : 'Inactive' }}
+                </span>
+              </td>
+
+              <!-- ISI Certified -->
+              <td>
+                <span class="badge" [ngClass]="c.ISI_certified ? 'bg-success' : 'bg-secondary'">
+                  {{ c.ISI_certified ? 'Yes' : 'No' }}
+                </span>
+              </td>
+              <!-- ISO Certified -->
+              <td>
+                <span class="badge" [ngClass]="c.ISO_certified ? 'bg-success' : 'bg-secondary'">
+                  {{ c.ISO_certified ? 'Yes' : 'No' }}
+                </span>
+              </td>
+              <!-- COD Available -->
+              <td>
+                <span class="badge" [ngClass]="c.COD_available ? 'bg-success' : 'bg-secondary'">
+                  {{ c.COD_available ? 'Yes' : 'No' }}
+                </span>
+              </td>
+
+              <td class="text-muted" style="min-width:100px;">{{ c.created_at | date:'dd MMM yyyy' }}</td>
+
+              <td class="text-center">
+                <!-- Paid -->
+                <ng-container *ngIf="c.payment_status === 'paid'; else pendingPayment">
+                  <div class="payment-success">
+                    <i class="fas fa-check-circle"></i>
+                  </div>
+                </ng-container>
+                <!-- Pending -->
+                <ng-template #pendingPayment>
+                  <button
+                    class="btn-pay-now"
+                    (click)="payCompany(c)"
+                    [disabled]="isPaymentProcessing">
+                    <i class="fas fa-credit-card me-1"></i>
+                    {{ isPaymentProcessing ? 'Processing...' : 'Pay' }}
+                  </button>
+                </ng-template>
+              </td>
+
+            </tr>
+
+            <tr *ngIf="companyList.length === 0">
+              <td colspan="40" class="text-center py-4 text-muted">
+                <i class="fas fa-inbox fa-2x mb-2 d-block"></i>No companies found
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- ===== FORM (hidden when showCompanyList = true) ===== -->
+    <!-- ========================================================= -->
+    <form [formGroup]="companyForm" (ngSubmit)="onSubmit()" (keydown.enter)="focusNext($event)" *ngIf="!showCompanyList">
+
+      <!-- ===== LOGO UPLOAD ===== -->
+      <div class="cc-section-title"><i class="fas fa-image me-2"></i>Company Logo <span class="text-danger">*</span>
+      </div>
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="cc-logo-area" [class.file-over]="isFileDragged" (dragover)="onDragOver($event)"
+            (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
+            <input type="file" #fileInput class="d-none" accept="image/*" (change)="onFileSelected($event)">
+            <div *ngIf="!logoPreview" class="cc-logo-placeholder" (click)="fileInput.click()">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <span>Drag & Drop or Click to Upload</span>
+              <small>PNG, JPG, JPEG — Max 2MB</small>
+            </div>
+            <div *ngIf="logoPreview" class="cc-logo-preview">
+              <img [src]="logoPreview" alt="Logo Preview" />
+              <div class="cc-logo-actions">
+                <button type="button" class="btn btn-sm btn-outline-primary" (click)="fileInput.click()">
+                  <i class="fas fa-edit me-1"></i>Change
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeLogo()">
+                  <i class="fas fa-trash me-1"></i>Remove
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== BASIC INFORMATION ===== -->
+      <div class="cc-section-title"><i class="fas fa-info-circle me-2"></i>Basic Information</div>
+      <div class="row g-3 mb-4">
+        <div class="col-lg-3 col-md-6 col-12">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="name" formControlName="name" placeholder="Company Name"
+              [class.is-invalid]="isFieldInvalid('name')">
+            <label for="name">Company Name <span class="text-danger">*</span></label>
+            <div *ngIf="isFieldInvalid('name')" class="invalid-feedback">{{ getErrorMessage('name') }}</div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="owner_name" formControlName="owner_name"
+              placeholder="Owner Name" (keypress)="allowOnlyText($event)"
+              [class.is-invalid]="isFieldInvalid('owner_name')">
+            <label for="owner_name">Owner Name <span class="text-danger">*</span></label>
+            <div *ngIf="isFieldInvalid('owner_name')" class="invalid-feedback">{{ getErrorMessage('owner_name') }}</div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="company_slogan" formControlName="company_slogan"
+              placeholder="Slogan">
+            <label for="company_slogan">Company Slogan</label>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+          <div class="form-floating">
+            <input type="email" class="form-control" id="email" formControlName="email" placeholder="Email"
+              [class.is-invalid]="isFieldInvalid('email')">
+            <label for="email">Email <span class="text-danger">*</span></label>
+            <div *ngIf="isFieldInvalid('email')" class="invalid-feedback">{{ getErrorMessage('email') }}</div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+          <div class="form-floating">
+            <input type="tel" class="form-control" id="phone_number" formControlName="phone_number" placeholder="Phone"
+              maxlength="10" [class.is-invalid]="isFieldInvalid('phone_number')">
+            <label for="phone_number">Phone Number <span class="text-danger">*</span></label>
+            <div *ngIf="isFieldInvalid('phone_number')" class="invalid-feedback">{{ getErrorMessage('phone_number') }}
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+          <div class="form-floating">
+            <input type="tel" class="form-control" id="whatsapp_no" formControlName="whatsapp_no" placeholder="WhatsApp"
+              maxlength="10" (keypress)="allowOnlyNumber($event)" [class.is-invalid]="isFieldInvalid('whatsapp_no')">
+            <label for="whatsapp_no"><i class="fab fa-whatsapp me-1" style="color:#25D366"></i>WhatsApp No</label>
+            <div *ngIf="isFieldInvalid('whatsapp_no')" class="invalid-feedback">Enter valid 10-digit number</div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="website_url" formControlName="website_url"
+              placeholder="Website">
+            <label for="website_url">Website URL</label>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="gst_number" formControlName="gst_number" placeholder="GST"
+              maxlength="15" [class.is-invalid]="isFieldInvalid('gst_number')">
+            <label for="gst_number">GST Number</label>
+            <div *ngIf="isFieldInvalid('gst_number')" class="invalid-feedback">{{ getErrorMessage('gst_number') }}</div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="registration_no" formControlName="registration_no"
+              placeholder="Reg No">
+            <label for="registration_no">Registration No</label>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="company_pan_no" formControlName="company_pan_no"
+              placeholder="PAN" [class.is-invalid]="isFieldInvalid('company_pan_no')">
+            <label for="company_pan_no">PAN Number</label>
+            <div *ngIf="isFieldInvalid('company_pan_no')" class="invalid-feedback">{{ getErrorMessage('company_pan_no')
+              }}</div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+          <div class="form-floating">
+            <input type="number" class="form-control" id="farm_registration_year"
+              formControlName="farm_registration_year" placeholder="Year" min="1900" max="2100"
+              (keypress)="allowOnlyNumber($event)" [class.is-invalid]="isFieldInvalid('farm_registration_year')">
+            <label for="farm_registration_year">Firm Registration Year</label>
+            <div *ngIf="isFieldInvalid('farm_registration_year')" class="invalid-feedback">{{ 
+              getErrorMessage('farm_registration_year') }}</div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="IAN_No" formControlName="IAN_No" placeholder="IAN">
+            <label for="IAN_No">IAN Number</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== ADDRESS ===== -->
+      <div class="cc-section-title"><i class="fas fa-map-marker-alt me-2"></i>Address Details</div>
+      <div class="row g-3 mb-4">
+        <div class="col-12">
+          <div class="form-floating">
+            <textarea class="form-control cc-textarea" id="address" formControlName="address" placeholder="Address"
+              [class.is-invalid]="isFieldInvalid('address')"></textarea>
+            <label for="address">Address <span class="text-danger">*</span></label>
+            <div *ngIf="isFieldInvalid('address')" class="invalid-feedback">{{ getErrorMessage('address') }}</div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+          <div class="form-floating">
+            <select class="form-select" id="state" formControlName="state" [class.is-invalid]="isFieldInvalid('state')">
+              <option value="">Select State</option>
+              <option *ngFor="let s of states" [value]="s.id">{{ s.state_name }}</option>
+            </select>
+            <label for="state">State <span class="text-danger">*</span></label>
+            <div *ngIf="isFieldInvalid('state')" class="invalid-feedback">{{ getErrorMessage('state') }}</div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+          <div class="form-floating">
+            <select class="form-select" formControlName="district" [class.is-invalid]="isFieldInvalid('district')">
+              <option value="">Select District</option>
+              <option *ngFor="let d of districts" [value]="d.id">{{ d.district_name }}</option>
+            </select>
+            <label>District <span class="text-danger">*</span></label>
+            <div *ngIf="isFieldInvalid('district')" class="invalid-feedback">{{ getErrorMessage('district') }}</div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+          <div class="form-floating">
+            <select class="form-select" id="taluka" formControlName="taluka"
+              [class.is-invalid]="isFieldInvalid('taluka')">
+              <option value="">Select Taluka</option>
+              <option *ngFor="let t of talukas" [value]="t.id">{{ t.taluka_name }}</option>
+            </select>
+            <label for="taluka">Taluka <span class="text-danger">*</span></label>
+            <div *ngIf="isFieldInvalid('taluka')" class="invalid-feedback">{{ getErrorMessage('taluka') }}</div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+          <div class="form-floating">
+            <select class="form-select" id="village" formControlName="village"
+              [class.is-invalid]="isFieldInvalid('village')">
+              <option value="">Select Village</option>
+              <option *ngFor="let v of villages" [value]="v.id">{{ v.village_name }}</option>
+            </select>
+            <label for="village">Village <span class="text-danger">*</span></label>
+            <div *ngIf="isFieldInvalid('village')" class="invalid-feedback">{{ getErrorMessage('village') }}</div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="pincode" formControlName="pincode" placeholder="Pincode"
+              maxlength="6" (keypress)="allowOnlyNumber($event)" [class.is-invalid]="isFieldInvalid('pincode')">
+            <label for="pincode">Pincode <span class="text-danger">*</span></label>
+            <div *ngIf="isFieldInvalid('pincode')" class="invalid-feedback">{{ getErrorMessage('pincode') }}</div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-12 col-12">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="pickup_location" formControlName="pickup_location"
+                   placeholder="Pickup Location" [class.is-invalid]="isFieldInvalid('pickup_location')">
+            <label for="pickup_location">Pickup Location <span class="text-danger">*</span></label>
+            <div *ngIf="isFieldInvalid('pickup_location')" class="invalid-feedback">
+              {{ getErrorMessage('pickup_location') }}
+            </div>
+            <small class="text-muted">Auto‑filled from map, but you can edit manually.</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== LOCATION / MAP ===== -->
+      <div class="cc-section-title">
+        <i class="fas fa-map-marker-alt me-2"></i>
+        Company Location <span class="text-danger">*</span>
+      </div>
+      <div
+        *ngIf="companyForm.get('pickup_location')?.invalid &&
+               (companyForm.get('pickup_location')?.touched || isSubmitting)"
+        class="invalid-feedback d-block">
+        Company Location is required
+      </div>
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="cc-location-card">
+            <div class="cc-loc-actions">
+              <button type="button" class="cc-btn-location" (click)="getLiveLocation()" [disabled]="locationLoading">
+                <span *ngIf="!locationLoading"><i class="bi bi-geo-alt-fill me-2"></i>Get My Live Location</span>
+                <span *ngIf="locationLoading"><span class="cc-loc-spinner me-2"></span>Detecting location...</span>
+              </button>
+              <button type="button" class="cc-btn-clear-loc" (click)="clearLocation()" *ngIf="latitude">
+                <i class="bi bi-x-circle me-1"></i>Clear
+              </button>
+            </div>
+
+            <div class="cc-loc-error" *ngIf="locationError">
+              <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ locationError }}
+            </div>
+
+            <div class="cc-coords-row">
+              <!-- Latitude -->
+              <div class="cc-coord-item">
+                <i class="bi bi-arrow-up-down"></i>
+                <div class="cc-coordinate-input">
+                  <span class="cc-coord-label">Latitude</span>
+                  <input
+                    type="number"
+                    class="form-control form-control-sm"
+                    formControlName="latitude"
+                    placeholder="Enter latitude"
+                    step="0.000001"
+                    min="-90"
+                    max="90"
+                    (blur)="onCoordinateChange()">
+                </div>
+              </div>
+              <!-- Longitude -->
+              <div class="cc-coord-item">
+                <i class="bi bi-arrow-left-right"></i>
+                <div class="cc-coordinate-input">
+                  <span class="cc-coord-label">Longitude</span>
+                  <input
+                    type="number"
+                    class="form-control form-control-sm"
+                    formControlName="longitude"
+                    placeholder="Enter longitude"
+                    step="0.000001"
+                    min="-180"
+                    max="180"
+                    (blur)="onCoordinateChange()">
+                </div>
+              </div>
+              <!-- Detected Address -->
+              <div class="cc-coord-item cc-coord-addr" *ngIf="locationAddress">
+                <i class="bi bi-geo-alt"></i>
+                <div>
+                  <span class="cc-coord-label">Detected Address</span>
+                  <span class="cc-coord-val cc-addr-text">
+                    {{ locationAddress }}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="cc-map-wrapper" *ngIf="showMap">
+              <div class="cc-map-hint"><i class="bi bi-info-circle me-1"></i>Click or drag the pin to adjust location
+              </div>
+              <div id="company-map" class="cc-map"></div>
+            </div>
+
+            <div class="cc-loc-hint" *ngIf="!latitude && !locationLoading && !locationError">
+              <i class="bi bi-geo-alt me-2"></i>Click "Get My Live Location" to auto-detect coordinates
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== DESCRIPTION ===== -->
+      <div class="cc-section-title"><i class="fas fa-align-left me-2"></i>Company Description</div>
+      <div class="row g-3 mb-4">
+        <div class="col-12">
+          <div class="form-floating cc-float-rel">
+            <input type="text" class="form-control" id="short_description" formControlName="short_description"
+              placeholder="Short Description" maxlength="160" [class.is-invalid]="isFieldInvalid('short_description')">
+            <label for="short_description">Short Description <small class="text-muted">(max 160)</small></label>
+            <span class="cc-char-count">{{ companyForm.get('short_description')?.value?.length || 0 }} / 160</span>
+            <div *ngIf="isFieldInvalid('short_description')" class="invalid-feedback">Max 160 characters</div>
+          </div>
+        </div>
+        <div class="col-12">
+          <label class="cc-label">Long Description</label>
+          <textarea class="form-control cc-textarea-lg" formControlName="long_description"
+            placeholder="Write a detailed description of your company..."></textarea>
+        </div>
+      </div>
+
+      <!-- ===== ADDITIONAL CONTACTS ===== -->
+      <div class="cc-section-title"><i class="fas fa-address-book me-2"></i>Additional Contacts</div>
+      <div class="row g-3 mb-4">
+        <div class="col-md-6 col-12">
+          <div class="cc-array-card">
+            <div class="cc-array-label"><i class="fas fa-envelope-open-text me-2"></i>Multiple Email IDs</div>
+            <div formArrayName="multiple_email_ids">
+              <div *ngFor="let email of multipleEmailIds.controls; let i = index" style="flex-wrap: nowrap;"
+                class="input-group mb-2">
+                <input type="email" class="form-control" [formControlName]="i" placeholder="Email">
+                <button class="btn btn-outline-danger" type="button" (click)="removeEmail(i)"
+                  *ngIf="multipleEmailIds.length > 1">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+            <button type="button" class="cc-add-btn" (click)="addEmail()"><i class="fas fa-plus me-1"></i>Add
+              Email</button>
+          </div>
+        </div>
+        <div class="col-md-6 col-12">
+          <div class="cc-array-card">
+            <div class="cc-array-label"><i class="fas fa-phone-alt me-2"></i>Multiple Contacts</div>
+            <div formArrayName="contacts">
+              <div *ngFor="let contact of contacts.controls; let i = index" class="mb-2">
+                <div class="input-group" style="flex-wrap: nowrap;">
+                  <input type="tel" class="form-control" [formControlName]="i" placeholder="Phone Number"
+                    maxlength="10">
+                  <button class="btn btn-outline-danger" type="button" (click)="removeContact(i)"
+                    *ngIf="contacts.length > 1">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+                <!-- Error message -->
+                <div *ngIf="contact.touched && contact.invalid" class="text-danger invalid-feedback mt-1">
+                  <div *ngIf="contact.errors?.['invalidPhone']">
+                    Enter valid 10 digit number
+                  </div>
+                  <div *ngIf="contact.errors?.['invalidStartDigit']">
+                    Must start with 6-9
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button type="button" class="cc-add-btn" (click)="addContact()"><i class="fas fa-plus me-1"></i>Add
+              Contact</button>
+          </div>
+        </div>
+
+        <!-- Social Media -->
+        <div class="col-12">
+          <div class="cc-array-card">
+            <div class="cc-array-label"><i class="fas fa-share-alt me-2"></i>Social Media</div>
+            <div class="row g-3">
+              <div class="col-lg-3 col-md-6 col-12">
+                <div class="input-group flex-nowrap">
+                  <span class="input-group-text"><i class="fab fa-facebook" style="color:#1877f2"></i></span>
+                  <input type="text" class="form-control" formControlName="facebook_url" placeholder="Facebook URL">
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6 col-12">
+                <div class="input-group flex-nowrap">
+                  <span class="input-group-text"><i class="fab fa-linkedin" style="color:#0a66c2"></i></span>
+                  <input type="text" class="form-control" formControlName="linkedin_url" placeholder="LinkedIn URL">
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6 col-12">
+                <div class="input-group flex-nowrap">
+                  <span class="input-group-text"><i class="fab fa-instagram" style="color:#e1306c"></i></span>
+                  <input type="text" class="form-control" formControlName="instagram_url" placeholder="Instagram URL">
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6 col-12">
+                <div class="input-group flex-nowrap">
+                  <span class="input-group-text"><i class="fab fa-youtube" style="color:#ff0000"></i></span>
+                  <input type="text" class="form-control" formControlName="youtube_url" placeholder="YouTube URL">
+                </div>
+              </div>
+
+              <!-- Privacy Policy -->
+              <div class="col-lg-3 col-md-6 col-12">
+                <div class="input-group flex-nowrap">
+                  <span class="input-group-text"><i class="fas fa-user-shield" style="color:#20c997"></i></span>
+                  <input type="text" class="form-control" formControlName="privacy_policy_url"
+                    placeholder="Privacy Policy URL">
+                </div>
+              </div>
+
+              <!-- Terms & Conditions -->
+              <div class="col-lg-3 col-md-6 col-12">
+                <div class="input-group flex-nowrap">
+                  <span class="input-group-text"><i class="fas fa-file-contract" style="color:#fd7e14"></i></span>
+                  <input type="text" class="form-control" formControlName="terms_conditions_url"
+                    placeholder="Terms & Conditions URL">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Referral Code -->
+        <div class="col-12">
+          <div class="cc-array-card">
+            <div class="cc-array-label">
+              <i class="fas fa-gift me-2 text-success"></i>
+              Apply Marketing Partner Referral Code
+            </div>
+            <div class="row g-3">
+              <div class="col-lg-3 col-md-6 col-12">
+                <div class="input-group flex-nowrap">
+                  <span class="input-group-text">
+                    <i class="fas fa-ticket-alt text-primary"></i>
+                  </span>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="referral_code"
+                    placeholder="Enter Referral Code"
+                    [readonly]="hasReferralCode"
+                    [class.bg-light]="hasReferralCode">
+                </div>
+                <small
+                  class="text-success mt-2 d-block"
+                  *ngIf="hasReferralCode">
+                  <i class="fas fa-check-circle me-1"></i>
+                  Applied from invitation link.
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== COMPANY IMAGES ===== -->
+      <div class="cc-section-title"><i class="fas fa-images me-2"></i>Company Images</div>
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="cc-images-card">
+            <label class="cc-img-trigger" for="companyImagesInput">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <span>Click to add images</span>
+              <small>PNG, JPG, JPEG, WebP — Max 5MB each</small>
+            </label>
+            <input type="file" id="companyImagesInput" class="d-none" multiple accept="image/*"
+              (change)="onCompanyImagesSelected($event)">
+
+            <!-- Existing server images (edit mode) -->
+            <div *ngIf="existingImages.length > 0">
+              <p class="cc-img-count mb-2"><i class="fas fa-server me-1"></i>Saved Images ({{ existingImages.length }})
+              </p>
+              <div class="cc-img-grid">
+                <div class="cc-img-item" *ngFor="let img of existingImages; let i = index">
+                  <img [src]="img.url" [alt]="img.name" />
+                  <button type="button" class="cc-img-remove" (click)="removeExistingImage(i)"
+                    title="Delete this image">
+                    <i class="fas fa-times"></i>
+                  </button>
+                  <div class="cc-img-name">Saved</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- New uploads -->
+            <div class="cc-img-grid" *ngIf="companyImagePreviews.length > 0">
+              <div class="cc-img-item" *ngFor="let img of companyImagePreviews; let i = index">
+                <img [src]="img.url" [alt]="img.name" />
+                <button type="button" class="cc-img-remove" (click)="removeCompanyImage(i)">
+                  <i class="fas fa-times"></i>
+                </button>
+                <div class="cc-img-name">{{ img.name }}</div>
+              </div>
+            </div>
+
+            <p class="cc-img-count" *ngIf="companyImagePreviews.length > 0">
+              <i class="fas fa-check-circle me-1"></i>{{ companyImagePreviews.length }} new image(s) selected
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== STATUS & CERTIFICATIONS ===== -->
+      <div class="cc-section-title"><i class="fas fa-check-circle me-2"></i>Status & Certifications</div>
+      <div class="cc-cert-card">
+        <div class="row g-3 align-items-center">
+        
+          <!-- ISI Certified -->
+          <div class="col-md-3 col-6">
+            <label class="cc-label"><i class="fas fa-certificate me-1" style="color:#2e7d32;"></i> ISI Certified</label>
+            <label class="cc-toggle cc-toggle-isi">
+              <input type="checkbox" formControlName="ISI_certified" />
+              <span class="cc-toggle-track">
+                <span class="cc-toggle-thumb"></span>
+              </span>
+              <span class="cc-toggle-label">{{ companyForm.get('ISI_certified')?.value ? 'Yes' : 'No' }}</span>
+            </label>
+          </div>
+        
+          <!-- ISO Certified -->
+          <div class="col-md-3 col-6">
+            <label class="cc-label"><i class="fas fa-shield-alt me-1" style="color:#1565c0;"></i> ISO Certified</label>
+            <label class="cc-toggle cc-toggle-iso">
+              <input type="checkbox" formControlName="ISO_certified" />
+              <span class="cc-toggle-track">
+                <span class="cc-toggle-thumb"></span>
+              </span>
+              <span class="cc-toggle-label">{{ companyForm.get('ISO_certified')?.value ? 'Yes' : 'No' }}</span>
+            </label>
+          </div>
+        
+          <!-- COD Available -->
+          <div class="col-md-3 col-6">
+            <label class="cc-label"><i class="fas fa-truck me-1" style="color:#e65100;"></i> COD Available</label>
+            <label class="cc-toggle cc-toggle-cod">
+              <input type="checkbox" formControlName="COD_available" />
+              <span class="cc-toggle-track">
+                <span class="cc-toggle-thumb"></span>
+              </span>
+              <span class="cc-toggle-label">{{ companyForm.get('COD_available')?.value ? 'Yes' : 'No' }}</span>
+            </label>
+          </div>
+        
+        </div>
+      </div>
+
+      <!-- ===== AGREEMENTS ===== -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="cc-array-card">
+            <div class="form-check d-flex align-items-center gap-2">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="accept_terms_conditions"
+                formControlName="accept_terms_conditions">
+              <label class="form-check-label mb-0" for="accept_terms_conditions">
+                I agree to the
+                <a href="" (click)="openTermsModal($event)">Terms & Conditions</a>
+                <span class="text-danger">*</span>
+              </label>
+            </div>
+            <div
+              class="text-danger small mt-2"
+              *ngIf="
+                companyForm.get('accept_terms_conditions')?.touched &&
+                companyForm.get('accept_terms_conditions')?.invalid
+              ">
+              Please accept Terms & Conditions.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== ACTIONS ===== -->
+      <div class="cc-actions">
+        <button type="button" class="cc-btn-cancel" (click)="clearForm()">
+          <i class="fas fa-eraser me-2"></i>Clear
+        </button>
+        <button type="submit" class="cc-btn-submit" [disabled]="isSubmitting">
+          <span *ngIf="!isSubmitting">
+            <i class="fas fa-{{ isEditMode ? 'edit' : 'save' }} me-2"></i>
+            {{ isEditMode ? 'Update Company' : 'Create Company' }}
+          </span>
+          <span *ngIf="isSubmitting">
+            <span class="spinner-border spinner-border-sm me-2"></span>
+            {{ isEditMode ? 'Updating...' : 'Creating...' }}
+          </span>
+        </button>
+      </div>
+
+    </form>
+
+    <!-- ===== TERMS & CONDITIONS MODAL ===== -->
+    <div class="tc-modal-overlay" *ngIf="showTermsModal" (click)="closeTermsModal()">
+      <div class="tc-modal" (click)="$event.stopPropagation()">
+        <!-- Header -->
+        <div class="tc-modal-header">
+          <div class="tc-modal-header-inner">
+            <button class="tc-back-btn" (click)="closeTermsModal()" title="Go back">
+              <i class="bi bi-arrow-left"></i>
+            </button>
+            <div>
+              <h1 class="tc-modal-title">
+                <i class="bi bi-file-earmark-text-fill"></i>
+                Terms &amp; Conditions
+              </h1>
+              <p class="tc-modal-subtitle">Please read these terms carefully before registering</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="tc-modal-body">
+          <p><strong>1. Introduction</strong><br>
+        QNX Mart is a B2B and B2C marketplace platform that enables businesses to showcase, promote, and sell their products through a growing network of marketing partners and customers. These Terms establish the rights, responsibilities, and obligations of companies using the QNX Mart platform.</p>
+
+        <p><strong>2. Eligibility</strong><br>
+        To register as a Company or Seller, you must be a legally registered business entity, possess all licences, registrations, and approvals required under applicable laws, provide accurate business information, provide valid GST details (where applicable), provide PAN and other verification documents whenever required, and have authority to enter into this agreement on behalf of the business. QNX Mart reserves the right to verify submitted information before approving any company registration.</p>
+
+        <p><strong>3. Company Registration</strong><br>
+        Registration of a company on QNX Mart does not automatically guarantee approval. QNX Mart may request Business Registration Certificate, GST Certificate, PAN Details, Address Proof, Identity Proof of Authorized Representative, Product Certifications, Brand Authorization Documents, and any additional documents required for verification. Approval remains subject to successful verification.</p>
+
+        <p><strong>4. Product Listing</strong><br>
+        Companies are responsible for ensuring that every product listed on QNX Mart contains accurate and complete information. Product listings should include Product Name, Description, Features, Specifications, Images, Pricing, Stock Availability, Warranty Information (if applicable), and Applicable Taxes. All information must remain updated throughout the listing period.</p>
+
+        <p><strong>5. Prohibited Products</strong><br>
+        The following products may not be listed on QNX Mart: counterfeit goods, illegal products, expired products, hazardous materials prohibited by law, restricted products, fake branded products, stolen goods, products violating intellectual property rights, and products prohibited under Indian law. QNX Mart reserves the right to remove any listing without prior notice.</p>
+
+        <p><strong>6. Product Registration Fees</strong><br>
+        Where applicable, companies shall pay the prescribed product registration fee before product approval. Registration fees apply per approved product, may be revised by QNX Mart from time to time, and are generally non‑refundable after successful listing unless otherwise stated. Additional agreement, verification, or payment gateway charges may apply where applicable.</p>
+
+        <p><strong>7. Pricing</strong><br>
+        Companies are solely responsible for determining product pricing. Prices must be fair, transparent, include applicable taxes wherever required, and comply with Indian consumer protection laws. Artificial price manipulation or misleading discounts are strictly prohibited.</p>
+
+        <p><strong>8. Inventory Management</strong><br>
+        Companies agree to maintain accurate stock information, update inventory regularly, avoid accepting orders for unavailable products, and inform QNX Mart immediately of discontinued products. Repeated stock shortages may affect account status.</p>
+
+        <p><strong>9. Order Fulfillment</strong><br>
+        Companies shall process orders promptly, package products securely, dispatch products within agreed timelines, provide shipment tracking details where applicable, and deliver products according to promised schedules. Repeated delays may result in account review or suspension.</p>
+
+        <p><strong>10. Product Quality</strong><br>
+        Companies warrant that all listed products match their descriptions, meet advertised specifications, are genuine, are free from manufacturing defects, comply with applicable safety standards, and are legally permitted for sale. The Company remains fully responsible for product quality.</p>
+
+        <p><strong>11. Payments</strong><br>
+        Payments for completed sales shall be processed according to the applicable settlement schedule. Payments may be subject to successful order completion, delivery confirmation, applicable marketplace fees, tax deductions required by law, and refund or return adjustments. Settlement schedules may vary depending on business policies.</p>
+
+        <p><strong>12. Marketplace Fees</strong><br>
+        Companies agree to pay applicable platform charges, which may include product registration fees, marketplace commissions, subscription charges (if applicable), payment gateway charges, verification charges, and other approved service fees. QNX Mart may revise fee structures after providing appropriate notice.</p>
+
+        <p><strong>13. Returns and Refunds</strong><br>
+        Companies agree to accept returns where applicable, including cases such as wrong product supplied, damaged product, manufacturing defect, product differs from description, or incorrect quantity delivered. Refunds shall be processed according to the platform's Return &amp; Refund Policy.</p>
+
+        <p><strong>14. Tax Compliance</strong><br>
+        Companies are solely responsible for GST compliance, filing statutory returns, payment of applicable taxes, issuing valid tax invoices, and maintaining financial records. Any tax liabilities arising from non‑compliance shall remain the sole responsibility of the Company.</p>
+
+        <p><strong>15. Marketing Rights</strong><br>
+        By listing products on QNX Mart, the Company grants QNX Mart a non‑exclusive right to use product images, product descriptions, brand logos, product videos, and marketing content. These materials may be used for marketplace listings, promotional campaigns, digital marketing, social media promotions, and advertising. Ownership of intellectual property remains with the Company.</p>
+
+        <p><strong>16. Confidentiality</strong><br>
+        Companies shall maintain confidentiality regarding customer information, marketing partner information, pricing agreements, business strategies, technical information, financial information, and trade secrets. Confidential information must not be disclosed to unauthorized parties during or after participation in the platform.</p>
+
+        <p><strong>17. Intellectual Property</strong><br>
+        Companies confirm that they own or are legally authorized to use all trademarks, logos, images, videos, and content uploaded to QNX Mart, and that their listings do not infringe any third‑party intellectual property rights. QNX Mart shall not be liable for disputes arising from unauthorized use of intellectual property by the Company.</p>
+
+        <p><strong>18. Company Responsibilities</strong><br>
+        Companies agree to maintain accurate business information, respond to customer inquiries promptly, resolve complaints professionally, maintain ethical business practices, cooperate with verification requests, and follow all QNX Mart policies.</p>
+
+        <p><strong>19. Prohibited Activities</strong><br>
+        Companies shall not upload fake products, manipulate prices, provide false information, sell prohibited products, engage in fraudulent transactions, misuse the QNX Mart platform, circumvent platform policies, or interfere with platform operations. Violations may result in immediate suspension. Products will be delisted from the platform if three or more accepted enquiries remain without a status update for more than seven consecutive days.</p>
+
+        <p><strong>20. Account Suspension</strong><br>
+        QNX Mart reserves the right to suspend or permanently terminate any Company account in cases including fraudulent activities, fake documentation, intellectual property violations, illegal product listings, repeated customer complaints, non‑compliance with applicable laws, or violation of these Terms &amp; Conditions.</p>
+
+        <p><strong>21. Limitation of Liability</strong><br>
+        QNX Mart operates as a marketplace platform connecting businesses and customers. QNX Mart shall not be liable for manufacturing defects, product warranties, business losses, lost profits, indirect damages, delayed shipments caused by third parties, or customer misuse of products. The Company remains solely responsible for the products it sells.</p>
+
+        <p><strong>22. Dispute Resolution</strong><br>
+        In the event of any dispute, the parties shall first attempt to resolve the matter through mutual discussions. If unresolved, the dispute may be referred to arbitration or other legal remedies as permitted under applicable law. These Terms &amp; Conditions shall be governed by the laws of India.</p>
+
+        <p><strong>23. Policy Updates</strong><br>
+        QNX Mart reserves the right to modify marketplace policies, listing requirements, fee structures, product guidelines, platform features, and business processes. Updated Terms become effective upon publication on the QNX Mart platform.</p>
+
+        <p><strong>24. Acceptance</strong><br>
+        By registering your Company or listing products on QNX Mart, you confirm that you have read and understood these Terms &amp; Conditions, all information submitted is accurate, you agree to comply with applicable laws and platform policies, you accept future amendments published by QNX Mart, and you acknowledge that failure to comply may result in suspension or termination of your account.</p>
+        </div>
+
+        <!-- Footer action -->
+        <div class="tc-modal-footer">
+          <button type="button" class="tc-understand-btn" (click)="agreeAndCloseTerms()">
+            <i class="bi bi-check-circle-fill"></i> I Accept
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,198 @@
+<div class="container-fluid mt-4">
+  <div class="row">
+
+    <!-- LEFT SIDE FORM -->
+    <div class="col-12 col-md-4 col-lg-3 mb-4">
+      <div class="card p-3 shadow-sm">
+        <h5>{{ isEditMode ? 'Update State' : 'Create State' }}</h5>
+
+        <form [formGroup]="stateForm" (ngSubmit)="onSubmit()">
+
+          <div class="mb-3">
+            <label class="form-label">State Code</label>
+            <input type="text" class="form-control" formControlName="state_code">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">State Name</label>
+            <input type="text" class="form-control" formControlName="state_name">
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100">
+            {{ isEditMode ? 'Update' : 'Save' }}
+          </button>
+
+          <button *ngIf="isEditMode"
+                  type="button"
+                  class="btn btn-secondary w-100 mt-2"
+                  (click)="resetForm()">
+            Cancel
+          </button>
+
+        </form>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDE TABLE -->
+    <div class="col-12 col-md-8 col-lg-9">
+      <div class="card p-3 shadow-sm">
+        <h5>State List</h5>
+
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead class="table-light">
+              <tr>
+                <th>ID</th>
+                <th>State Code</th>
+                <th>State Name</th>
+                <th>Active</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let state of states"
+                  (click)="editState(state)"
+                  style="cursor: pointer">
+
+                <td>{{ state.id }}</td>
+                <td>{{ state.state_code }}</td>
+                <td>{{ state.state_name }}</td>
+                <td>
+                  <span class="badge bg-success" *ngIf="state.is_active">Yes</span>
+                  <span class="badge bg-danger" *ngIf="!state.is_active">No</span>
+                </td>
+
+                <td (click)="$event.stopPropagation()">
+                  <button class="btn btn-sm btn-warning me-2"
+                          (click)="editState(state)">
+                    Edit
+                  </button>
+
+                  <button class="btn btn-sm btn-danger"
+                          (click)="deleteState(state.id)">
+                    Delete
+                  </button>
+                </td>
+
+              </tr>
+            </tbody>
+
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- <div class="container-fluid py-4 state-master-wrapper">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+      
+     
+      <div class="card border-0 shadow-sm mb-4 header-card">
+        <div class="card-body p-4">
+          <div class="d-flex align-items-center">
+            <div class="state-icon me-3">
+              <i class="fas fa-map"></i>
+            </div>
+            <div>
+              <h2 class="mb-1 fw-bold">Add State</h2>
+              <p class="text-muted mb-0">Add new state to QNX Battery System</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="card border-0 shadow-lg form-card">
+        <div class="card-body p-4 ">
+          
+         
+          <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>{{ errorMessage }}
+            <button type="button" class="btn-close" (click)="errorMessage = ''"></button>
+          </div>
+
+        
+          <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+            <i class="fas fa-check-circle me-2"></i>{{ successMessage }}
+            <button type="button" class="btn-close" (click)="successMessage = ''"></button>
+          </div>
+
+          <form [formGroup]="stateForm" (ngSubmit)="onSubmit()">
+            
+    
+            <div class="form-floating mb-4">
+              <input type="text" class="form-control" id="state_code" formControlName="state_code" 
+                     placeholder="State Code" [class.is-invalid]="isFieldInvalid('state_code')">
+              <label for="state_code"><i class="fas fa-code me-2 text-primary"></i>State Code *</label>
+              
+   
+              <div *ngIf="isFieldInvalid('state_code')" class="invalid-feedback">
+                <i class="fas fa-exclamation-circle me-1"></i>
+                State Code is required
+              </div>
+              <small class="text-muted mt-1 d-block">Enter unique state code (e.g., MH, GJ, KA)</small>
+            </div>
+
+  
+            <div class="form-floating mb-4">
+              <input type="text" class="form-control" id="state_name" formControlName="state_name" 
+                     placeholder="State Name" [class.is-invalid]="isFieldInvalid('state_name')">
+              <label for="state_name"><i class="fas fa-map-marker-alt me-2 text-primary"></i>State Name *</label>
+    
+
+              <div *ngIf="isFieldInvalid('state_name')" class="invalid-feedback">
+                <i class="fas fa-exclamation-circle me-1"></i>
+                State Name is required
+              </div>
+              <small class="text-muted mt-1 d-block">Enter full state name (e.g., Maharashtra, Gujarat)</small>
+            </div>
+
+      
+            <div class="d-flex flex-column flex-sm-row gap-3 mt-5">
+              <button type="button" class="btn btn-outline-secondary btn-lg flex-fill" 
+                      (click)="resetForm()">
+                <i class="fas fa-redo me-2"></i>Reset
+              </button>
+              <button type="submit" class="btn btn-primary btn-lg flex-fill" 
+                      [disabled]="isSubmitting">
+                <span *ngIf="!isSubmitting">
+                  <i class="fas fa-save me-2"></i>Save State
+                </span>
+                <span *ngIf="isSubmitting">
+                  <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  Saving...
+                </span>
+              </button>
+            </div>
+          </form>
+
+     
+          <div class="info-card mt-4 p-3">
+            <div class="d-flex align-items-center">
+              <i class="fas fa-info-circle text-primary fs-5 me-3"></i>
+              <div>
+                <p class="mb-1 small fw-semibold">State Information</p>
+                <p class="mb-0 small text-muted">State code should be 2-3 characters. State name should be unique in the system.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+ 
+      <div class="text-center mt-4">
+        <button class="btn btn-link" routerLink="/state/list">
+          <i class="fas fa-arrow-left me-2"></i>Back to State List
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div> -->

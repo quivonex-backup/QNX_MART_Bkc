@@ -1,0 +1,159 @@
+/* ===== PAGE ===== */
+.tc-page {
+  min-height: 100vh;
+  background: #f4f6fb;
+  padding: 0 0 3rem 0;
+}
+
+/* ===== PAGE HEADER (identical to Category Master) ===== */
+.tc-page-header {
+  background: linear-gradient(135deg, #1a1f36 0%, #2d3561 100%);
+  padding: 2rem 2rem 2.5rem;
+  margin-bottom: -1.5rem;
+}
+
+.tc-page-header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* ===== BACK BUTTON (circular icon) ===== */
+.tc-back-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #94a3b8;
+  font-size: 1.1rem;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.tc-back-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #e2e8f0;
+  transform: translateX(-2px);
+}
+
+.tc-back-btn i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== TITLE & SUBTITLE ===== */
+.tc-page-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.tc-page-title i {
+  color: #f59e0b;
+}
+
+.tc-page-subtitle {
+  color: #a0aec0;
+  margin: 0.25rem 0 0;
+  font-size: 0.9rem;
+}
+
+/* ===== CONTENT AREA ===== */
+.tc-content-area {
+  max-width: 960px;
+  margin: 2rem auto 0;
+  padding: 0 1rem;
+}
+
+/* ===== CARD ===== */
+.tc-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
+  overflow: hidden;
+}
+
+.tc-card-body {
+  padding: 2rem 2rem 1.5rem;
+  font-size: 0.94rem;
+  line-height: 1.7;
+  color: #2d3748;
+}
+
+.tc-card-body p {
+  margin-bottom: 1.2rem;
+}
+
+.tc-card-body strong {
+  color: #1a1f36;
+}
+
+/* ===== BOTTOM ACTION BUTTON ===== */
+.tc-bottom-action {
+  text-align: center;
+  margin-top: 1.5rem;
+  padding-bottom: 2rem;
+}
+
+.tc-understand-btn {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 0.75rem 2.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.tc-understand-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  .tc-page-header {
+    padding: 1.5rem 1rem 2rem;
+  }
+
+  .tc-page-header-inner {
+    gap: 0.75rem;
+  }
+
+  .tc-back-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 1rem;
+  }
+
+  .tc-page-title {
+    font-size: 1.25rem;
+  }
+
+  .tc-content-area {
+    margin-top: 1.5rem;
+  }
+
+  .tc-card-body {
+    padding: 1.5rem 1.25rem;
+  }
+}

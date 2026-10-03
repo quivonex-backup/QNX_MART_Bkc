@@ -1,0 +1,506 @@
+/* ===== PAGE ===== */
+.fa-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f0f4f8 0%, #e8f0fe 100%);
+    padding-bottom: 40px;
+}
+
+/* ===== HEADER (full width gradient) ===== */
+.fa-header {
+    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+    padding: 20px 30px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    color: #fff;
+    flex-wrap: wrap;
+}
+
+.fa-back-btn {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+    color: #fff;
+    border-radius: 10px;
+    padding: 8px 18px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.25s;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.fa-back-btn:hover {
+    background: rgba(255, 255, 255, 0.28);
+}
+
+.fa-header-text h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.fa-header-text p {
+    margin: 2px 0 0;
+    font-size: 13px;
+    opacity: 0.85;
+}
+
+/* ===== CONTAINER (wider) ===== */
+.fa-container {
+    max-width: 960px;
+    margin: 30px auto;
+    padding: 0 16px;
+}
+
+/* ===== MAIN CARD ===== */
+.fa-main-card {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.07), 0 2px 8px rgba(0, 0, 0, 0.03);
+    overflow: hidden;
+    border-left: 5px solid #3498db;
+}
+
+/* ===== BODY ===== */
+.fa-body {
+    padding: 30px 32px;
+}
+
+/* ===== SECTIONS ===== */
+.fa-section {
+    margin-bottom: 28px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #eef2f6;
+}
+
+.fa-section:last-of-type {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.fa-section-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.fa-section-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: #eef3fa;
+    border-radius: 10px;
+    color: #3498db;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.fa-section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1d1d1f;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin: 0;
+}
+
+.fa-plan-count {
+    background: #f1f5f9;
+    padding: 2px 14px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #334155;
+}
+
+/* ===== PLANS GRID ===== */
+.fa-plans-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+.fa-plan-card {
+    background: #fff;
+    border: 2px solid #dde3ec;
+    border-radius: 14px;
+    padding: 16px 14px 14px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+}
+
+.fa-plan-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+}
+
+.fa-plan-selected {
+    border-color: #22c55e;
+    background: #f0fdf4;
+    box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.08);
+}
+
+.fa-plan-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+.fa-plan-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1d1d1f;
+}
+.fa-plan-amount {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #22c55e;
+}
+.fa-plan-desc {
+    font-size: 0.82rem;
+    color: #64748b;
+    margin: 4px 0 8px;
+}
+.fa-plan-items {
+    list-style: none;
+    padding: 0;
+    margin: 6px 0 0;
+}
+.fa-plan-items li {
+    font-size: 0.8rem;
+    color: #334155;
+    padding: 3px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.fa-plan-items li i {
+    color: #22c55e;
+    font-size: 0.75rem;
+}
+
+/* ===== SELECTED TICK – GREEN & SLIGHTLY HIGHER ===== */
+.fa-plan-select-tick {
+    position: absolute;
+    top: 1px;          /* raised from 10px to 6px */
+    right: 2px;
+    color: #22c55e;    /* green */
+    font-size: 1.3rem;
+}
+
+/* ===== FORM (icon‑based inputs) ===== */
+.fa-form {
+    margin-top: 16px;
+}
+
+.fa-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 20px;
+}
+
+.fa-full-width {
+    grid-column: 1 / -1;
+}
+
+.fa-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.fa-form-group label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #2c3e50;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.fa-required {
+    color: #e74c3c;
+    margin-left: 2px;
+}
+
+/* ----- INPUT WRAPPER ----- */
+.fa-input-wrap {
+    display: flex;
+    align-items: center;
+    border: 1.5px solid #dde3ec;
+    border-radius: 10px;
+    background: #fafbfd;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    overflow: hidden;
+}
+
+.fa-input-wrap:focus-within {
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.12);
+    background: #ffffff;
+}
+
+.fa-input-wrap .fa-icon {
+    padding: 10px 12px 10px 14px;
+    color: #7f8fa4;
+    font-size: 15px;
+    flex-shrink: 0;
+    transition: color 0.2s;
+}
+
+.fa-input-wrap:focus-within .fa-icon {
+    color: #3498db;
+}
+
+.fa-input-wrap input,
+.fa-input-wrap select,
+.fa-input-wrap textarea {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 10px 14px 10px 8px;
+    font-size: 14px;
+    color: #1d1d1f;
+    font-family: inherit;
+    width: 100%;
+    min-width: 0;
+}
+
+.fa-input-wrap select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+    cursor: pointer;
+}
+
+.fa-input-wrap select option {
+    color: #1d1d1f;
+    background: #fff;
+    padding: 8px 14px;
+}
+
+.fa-input-wrap textarea {
+    resize: vertical;
+    min-height: 80px;
+    padding-top: 12px;
+    line-height: 1.5;
+}
+
+.fa-input-wrap input::placeholder,
+.fa-input-wrap textarea::placeholder {
+    color: #aab3c0;
+}
+
+/* ===== ERROR TEXT ===== */
+.fa-error-text {
+    color: #e74c3c;
+    font-size: 12px;
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+/* ===== PLAN SUMMARY ===== */
+.fa-plan-summary {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 14px 20px;
+    margin: 24px 0 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.fa-summary-label {
+    font-weight: 600;
+    color: #475569;
+    font-size: 14px;
+}
+.fa-summary-details {
+    font-weight: 600;
+    color: #1d1d1f;
+    font-size: 14px;
+}
+.fa-summary-details span:last-child {
+    color: #22c55e;
+    font-size: 1.1rem;
+    margin-left: 10px;
+}
+
+/* ===== BUTTONS ===== */
+.fa-actions {
+    display: flex;
+    gap: 14px;
+    justify-content: flex-end;
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid #eef2f6;
+}
+
+.fa-btn {
+    padding: 12px 32px;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s;
+    letter-spacing: 0.3px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.fa-btn-primary {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(52, 152, 219, 0.3);
+    min-width: 180px;
+}
+
+.fa-btn-primary:hover:not(:disabled) {
+    background: linear-gradient(135deg, #2980b9, #1f6fa0);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+}
+
+.fa-btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.fa-btn-outline {
+    background: #fff;
+    color: #2c3e50;
+    border: 1.5px solid #cbd5e1;
+    min-width: 120px;
+}
+
+.fa-btn-outline:hover:not(:disabled) {
+    background: #f8fafc;
+    border-color: #94a3b8;
+}
+
+.fa-spinner-sm {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #fff;
+    border-top-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    animation: fa-spin 0.6s linear infinite;
+}
+
+@keyframes fa-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ===== LOADING / ERROR / EMPTY ===== */
+.fa-loading, .fa-error, .fa-empty {
+    padding: 3rem 1rem;
+    text-align: center;
+}
+.fa-spinner {
+    width: 44px;
+    height: 44px;
+    border: 4px solid #e2e8f0;
+    border-top-color: #3498db;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    animation: fa-spin 0.8s linear infinite;
+}
+.fa-error {
+    color: #dc2626;
+}
+.fa-error i {
+    font-size: 2rem;
+}
+.fa-empty i {
+    font-size: 3rem;
+    color: #94a3b8;
+    margin-bottom: 1.2rem;
+}
+.fa-empty h3 {
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0.5rem 0 0.2rem;
+}
+.fa-empty p {
+    color: #64748b;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .fa-header {
+        padding: 16px 20px;
+        gap: 12px;
+    }
+    .fa-header-text h2 {
+        font-size: 18px;
+    }
+    .fa-container {
+        margin: 20px auto;
+        padding: 0 12px;
+    }
+    .fa-body {
+        padding: 20px 16px;
+    }
+    .fa-form-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    .fa-full-width {
+        grid-column: 1;
+    }
+    .fa-section {
+        margin-bottom: 20px;
+        padding-bottom: 16px;
+    }
+    .fa-plans-grid {
+        grid-template-columns: 1fr;
+    }
+    .fa-actions {
+        flex-direction: column-reverse;
+        gap: 10px;
+    }
+    .fa-actions .fa-btn {
+        width: 100%;
+        min-width: unset;
+    }
+    .fa-plan-summary {
+        flex-direction: column;
+        gap: 6px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .fa-header {
+        padding: 12px 14px;
+    }
+    .fa-header-text h2 {
+        font-size: 16px;
+    }
+    .fa-body {
+        padding: 16px 12px;
+    }
+    .fa-section-title {
+        font-size: 13px;
+    }
+    .fa-plan-card {
+        padding: 12px;
+    }
+}

@@ -1,0 +1,137 @@
+<div class="um-page">
+
+    <!-- Page Header -->
+    <div class="um-page-header">
+        <div class="um-page-header-inner">
+            <button class="um-back-btn" onclick="window.history.back()" title="Go back">
+                <i class="bi bi-arrow-left"></i>
+            </button>
+            <div>
+                <h1 class="um-page-title">
+                    <i class="bi bi-rulers"></i>
+                    Unit Master
+                </h1>
+                <p class="um-page-subtitle">Create and manage measurement units</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Two Column Layout -->
+    <div class="um-two-col">
+
+        <!-- Form Card -->
+        <div class="um-form-card">
+            <div class="um-card-header">
+                <span class="um-card-title">
+                    <i class="bi bi-{{ isEditMode ? 'pencil-square' : 'plus-circle-fill' }}"></i>
+                    {{ isEditMode ? 'Edit Unit' : 'Add New Unit' }}
+                </span>
+                <button class="um-btn-ghost" *ngIf="isEditMode" type="button" (click)="resetForm(unitForm)">
+                    <i class="bi bi-x-lg"></i> Cancel Edit
+                </button>
+            </div>
+
+            <form #unitForm="ngForm" (ngSubmit)="saveUnit(unitForm)">
+                <div class="um-form-body">
+
+                    <!-- Success -->
+                    <div class="um-success" *ngIf="showSuccess">
+                        <i class="bi bi-check-circle-fill"></i> Unit created successfully
+                    </div>
+
+                    <div class="um-form-grid">
+
+                        <div class="um-field">
+                            <label class="um-label">Unit Name <span class="um-required">*</span></label>
+                            <input type="text" class="um-input" name="name" [(ngModel)]="unitData.name"
+                                placeholder="e.g. Kilogram" required />
+                        </div>
+
+                        <div class="um-field">
+                            <label class="um-label">Short Name <span class="um-required">*</span></label>
+                            <input type="text" class="um-input" name="short_name" [(ngModel)]="unitData.short_name"
+                                placeholder="e.g. kg" required />
+                        </div>
+
+                    </div>
+
+                    <div class="um-form-actions">
+                        <button type="button" class="um-btn-secondary" (click)="resetForm(unitForm)">
+                            <i class="bi bi-arrow-counterclockwise"></i> Reset
+                        </button>
+                        <button type="submit" class="um-btn-primary" [disabled]="unitForm.invalid">
+                            <i class="bi bi-{{ isEditMode ? 'check-lg' : 'plus-lg' }}"></i>
+                            {{ isEditMode ? 'Update Unit' : 'Save Unit' }}
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+        <!-- Table Card -->
+        <div class="um-table-card">
+            <div class="um-card-header">
+                <span class="um-card-title">
+                    <i class="bi bi-list-ul"></i> Unit List
+                </span>
+                <span class="um-count-badge">{{ units.length }} units</span>
+            </div>
+
+            <!-- Loading -->
+            <div class="um-loading" *ngIf="loading">
+                <div class="um-spinner"></div>
+                <span>Loading units...</span>
+            </div>
+
+            <div class="um-table-wrap" *ngIf="!loading">
+                <table class="um-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Unit Name</th>
+                            <th>Short Name</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let unit of units; let i = index">
+                            <td class="um-td-num">{{ i + 1 }}</td>
+                            <td class="um-td-name">{{ unit.name }}</td>
+                            <td><span class="um-short-badge">{{ unit.short_name }}</span></td>
+                            <td>
+                                <span class="um-status-badge" [class.um-status-active]="unit.is_active"
+                                    [class.um-status-inactive]="!unit.is_active">
+                                    <i class="bi bi-circle-fill"></i>
+                                    {{ unit.is_active ? 'Active' : 'Inactive' }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="um-action-btns">
+                                    <button class="um-icon-btn um-icon-edit" (click)="editUnit(unit)" title="Edit">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="um-icon-btn" [class.um-icon-deactivate]="unit.is_active"
+                                        [class.um-icon-activate]="!unit.is_active" (click)="toggleUnitStatus(unit)"
+                                        [title]="unit.is_active ? 'Deactivate' : 'Activate'">
+                                        <i class="bi" [class.bi-toggle-on]="unit.is_active"
+                                            [class.bi-toggle-off]="!unit.is_active"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngIf="units.length === 0">
+                            <td colspan="5" class="um-empty">
+                                <i class="bi bi-inbox"></i>
+                                <p>No units found. Add your first unit above.</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div><!-- end um-table-card -->
+
+    </div><!-- end um-two-col -->
+
+</div><!-- end um-page -->

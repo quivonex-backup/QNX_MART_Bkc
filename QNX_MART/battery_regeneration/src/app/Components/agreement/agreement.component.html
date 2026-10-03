@@ -1,0 +1,248 @@
+<!-- agreement.component.html -->
+<div class="agreement-container">
+  <div class="header">
+    <h1>QNX Mart Vendor Agreement</h1>
+    <p>Complete this form to create a legally binding agreement between your company and QNX Mart</p>
+  </div>
+
+  <!-- Agreement Form -->
+  <div class="form-section" *ngIf="!submitted">
+    <h2>Agreement Details</h2>
+    <form [formGroup]="agreementForm" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <!-- Agreement Dates -->
+        <div class="form-group">
+          <label>Agreement Start Date *</label>
+          <input type="date" formControlName="agreementStartDate" class="form-control">
+          <div class="error" *ngIf="agreementForm.get('agreementStartDate')?.invalid && agreementForm.get('agreementStartDate')?.touched">
+            Start date is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Agreement End Date *</label>
+          <input type="date" formControlName="agreementEndDate" class="form-control">
+          <div class="error" *ngIf="agreementForm.get('agreementEndDate')?.invalid && agreementForm.get('agreementEndDate')?.touched">
+            End date is required
+          </div>
+        </div>
+
+        <!-- Company Information -->
+        <div class="form-group">
+          <label>Select Company *</label>
+          <select formControlName="companyId" class="form-control">
+            <option value="">Select a company</option>
+            <option *ngFor="let company of companies" [value]="company.id">{{company.name}}</option>
+          </select>
+          <div class="error" *ngIf="agreementForm.get('companyId')?.invalid && agreementForm.get('companyId')?.touched">
+            Company is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Company Owner Name *</label>
+          <input type="text" formControlName="companyOwnerName" class="form-control" placeholder="Enter owner name">
+        </div>
+
+        <div class="form-group">
+          <label>Company Email *</label>
+          <input type="email" formControlName="companyOwnerEmail" class="form-control" placeholder="Enter email">
+        </div>
+
+        <div class="form-group">
+          <label>Company Phone *</label>
+          <input type="tel" formControlName="companyPhone" class="form-control" placeholder="Enter phone number">
+        </div>
+
+        <div class="form-group full-width">
+          <label>Company Address *</label>
+          <textarea formControlName="companyAddress" rows="2" class="form-control" placeholder="Enter full address"></textarea>
+        </div>
+
+        <!-- Products List -->
+        <div class="form-group full-width">
+          <label>Select Products *</label>
+          <div class="products-grid">
+            <div *ngFor="let product of products" class="product-checkbox">
+              <label>
+                <input type="checkbox" 
+                       [checked]="isProductSelected(product.id)"
+                       (change)="onProductCheckboxChange($event, product)">
+                <div class="product-info">
+                  <strong>{{product.name}}</strong>
+                  <span>{{product.category}}</span>
+                  <span>Price: ${{product.price}}</span>
+                  <span>Commission: {{product.commission}}%</span>
+                </div>
+              </label>
+            </div>
+          </div>
+          <div class="error" *ngIf="selectedProductsArray.length === 0 && agreementForm.get('selectedProducts')?.touched">
+            At least one product must be selected
+          </div>
+        </div>
+
+        <!-- Profit Share -->
+        <div class="form-group">
+          <label>Profit Share to QNX Mart (%) *</label>
+          <input type="number" formControlName="profitSharePercentage" class="form-control" step="0.01" min="0" max="100">
+          <div class="error" *ngIf="agreementForm.get('profitSharePercentage')?.invalid && agreementForm.get('profitSharePercentage')?.touched">
+            Profit share percentage is required (0-100)
+          </div>
+        </div>
+
+        <!-- Additional Points -->
+        <div class="form-group full-width">
+          <label>Additional Terms & Conditions *</label>
+          <textarea formControlName="additionalPoints" rows="4" class="form-control" 
+                    placeholder="Add any additional points, terms, or conditions..."></textarea>
+        </div>
+
+        <!-- Digital Signatures -->
+        <div class="form-group">
+          <label>QNX Mart Representative Name *</label>
+          <input type="text" formControlName="qnxMartRepresentative" class="form-control" placeholder="Enter representative name">
+        </div>
+
+<div class="form-group">
+  <label>Digital Signature (QNX Mart) *</label>
+  <input type="file" accept="image/*" (change)="onFileChange($event, 'qnxMartSign')" class="form-control">
+</div>
+
+<!-- Company Signature -->
+<div class="form-group">
+  <label>Digital Signature (Company) *</label>
+  <input type="file" accept="image/*" (change)="onFileChange($event, 'companySign')" class="form-control">
+</div>
+
+<!-- QNX Photo -->
+<div class="form-group">
+  <label>Photo (QNX Mart Rep) *</label>
+  <input type="file" accept="image/*" (change)="onFileChange($event, 'qnxMartPicture')" class="form-control">
+</div>
+
+<!-- Company Photo -->
+<div class="form-group">
+  <label>Photo (Company Rep) *</label>
+  <input type="file" accept="image/*" (change)="onFileChange($event, 'companyPicture')" class="form-control">
+</div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">Generate Agreement</button>
+        <button type="button" class="btn-secondary" (click)="resetForm()">Reset Form</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Agreement Preview -->
+  <div id="agreementPreview" *ngIf="submitted && agreementData" class="agreement-preview">
+    <div class="preview-header">
+      <h2>Agreement Document</h2>
+      <div class="action-buttons">
+        <button class="btn-pdf" (click)="downloadPDF()">Download PDF</button>
+        <button class="btn-excel" (click)="downloadExcel()">Download Excel</button>
+        <button class="btn-share" (click)="shareAgreement()">Share</button>
+        <button class="btn-edit" (click)="resetForm()">Create New Agreement</button>
+      </div>
+    </div>
+
+    <div id="agreementContent" class="agreement-content">
+      <div class="agreement-header">
+        <h1>QNX MART VENDOR AGREEMENT</h1>
+        <p>Agreement Number: {{agreementData.agreementNumber}}</p>
+        <p>Date: {{agreementData.createdDate | date:'fullDate'}}</p>
+      </div>
+
+      <div class="agreement-body">
+        <section>
+          <h3>1. PARTIES INVOLVED</h3>
+          <p>This Agreement is made and entered into between <strong>QNX Mart</strong>, represented by <strong>{{agreementData.qnxMartRepresentative}}</strong>, and <strong>{{getCompanyName(agreementData.companyId)}}</strong>, represented by <strong>{{agreementData.companyOwnerName}}</strong>.</p>
+        </section>
+
+        <section>
+          <h3>2. AGREEMENT PERIOD</h3>
+          <p>This Agreement shall commence on <strong>{{agreementData.agreementStartDate | date}}</strong> and shall remain in effect until <strong>{{agreementData.agreementEndDate | date}}</strong>, unless terminated earlier in accordance with the terms herein.</p>
+        </section>
+
+        <section>
+          <h3>3. COMPANY DETAILS</h3>
+          <table class="details-table">
+            <tr><td><strong>Company Name:</strong></td><td>{{getCompanyName(agreementData.companyId)}}</td></tr>
+            <tr><td><strong>Owner Name:</strong></td><td>{{agreementData.companyOwnerName}}</td></tr>
+            <tr><td><strong>Email:</strong></td><td>{{agreementData.companyOwnerEmail}}</td></tr>
+            <tr><td><strong>Phone:</strong></td><td>{{agreementData.companyPhone}}</td></tr>
+            <tr><td><strong>Address:</strong></td><td>{{agreementData.companyAddress}}</td></tr>
+          </table>
+        </section>
+
+        <section>
+          <h3>4. PRODUCTS LIST</h3>
+          <table class="products-table">
+            <thead>
+              <tr><th>Product Name</th><th>Category</th><th>Price (USD)</th><th>Commission Rate</th><th>Commission Amount</th></tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of agreementData.selectedProducts">
+                <td>{{product.productName}}</td>
+                <td>{{product.category}}</td>
+                <td>${{product.price}}</td>
+                <td>{{product.commission}}%</td>
+                <td>${{(product.price * product.commission / 100).toFixed(2)}}</td>
+              </tr>
+              <tr class="total-row">
+                <td colspan="4"><strong>Total Commission Amount:</strong></td>
+                <td><strong>${{agreementData.totalCommission.toFixed(2)}}</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section>
+          <h3>5. PROFIT SHARING AGREEMENT</h3>
+          <p>QNX Mart shall receive <strong>{{agreementData.profitSharePercentage}}%</strong> of the total profits generated from the sale of the above-listed products. The remaining profit shall be paid to the Vendor Company.</p>
+        </section>
+
+        <section>
+          <h3>6. ADDITIONAL TERMS AND CONDITIONS</h3>
+          <p>{{agreementData.additionalPoints}}</p>
+        </section>
+
+        <section>
+          <h3>7. DIGITAL SIGNATURES AND VERIFICATION</h3>
+          <div class="signatures">
+            <div class="signature-box">
+              <p><strong>QNX Mart Representative:</strong></p>
+              <p>Name: {{agreementData.qnxMartRepresentative}}</p>
+              <p><strong>Digital Signature:</strong></p>
+<img [src]="agreementData.qnxMartSign" width="120">
+              <p><strong>Photo:</strong></p>
+<img [src]="agreementData.qnxMartPicture" width="120">
+            </div>
+            <div class="signature-box">
+              <p><strong>Company Representative:</strong></p>
+              <p>Name: {{agreementData.companyOwnerName}}</p>
+              <p><strong>Digital Company Signature:</strong></p>
+<img [src]="agreementData.companySign" width="120">
+<p><strong>Picture Comapany:</strong></p>
+<img [src]="agreementData.companyPicture" width="120">
+            </div>
+          </div>
+        </section>
+
+        <div class="agreement-footer">
+          <p>This Agreement constitutes the entire agreement between the parties and supersedes all prior discussions, agreements, or understandings.</p>
+          <p><strong>IN WITNESS WHEREOF</strong>, the parties have executed this Agreement as of the date first above written.</p>
+          <div class="stamp">
+            <p>_________________________</p>
+            <p>For QNX Mart</p>
+          </div>
+          <div class="stamp">
+            <p>_________________________</p>
+            <p>For Vendor Company</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

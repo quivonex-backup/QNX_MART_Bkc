@@ -1,0 +1,475 @@
+<!-- ============================================================
+     ORDER PLACED SUCCESS – Enhanced
+     ============================================================ -->
+<div class="co-success-wrapper" *ngIf="orderPlaced">
+    <div class="co-success-container">
+        <!-- Animated success icon -->
+        <div class="co-success-icon-wrap">
+            <div class="co-success-icon-bg">
+                <i class="fas fa-check"></i>
+            </div>
+        </div>
+
+        <h1 class="co-success-title">Thank You for Your Order! 🎉</h1>
+        <p class="co-success-order">Order <strong>#{{ orderId }}</strong> confirmed</p>
+        <p class="co-success-message">We've received your order and will process it shortly.</p>
+
+        <div class="co-success-details">
+            <div class="co-success-detail-item">
+                <i class="fas fa-envelope"></i>
+                <span>Confirmation sent to your email</span>
+            </div>
+            <div class="co-success-detail-item">
+                <i class="fas fa-clock"></i>
+                <span>You can track your order in the Orders section</span>
+            </div>
+        </div>
+
+        <div class="co-success-actions">
+            <button class="co-btn-primary" (click)="goToOrders()">
+                <i class="fas fa-shopping-bag me-2"></i>View My Orders
+            </button>
+            <button class="co-btn-secondary" (click)="goHome()">
+                <i class="fas fa-home me-2"></i>Continue Shopping
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<!-- ============================================================
+     CHECKOUT PAGE (when order not placed)
+     ============================================================ -->
+<div class="co-page" *ngIf="!orderPlaced">
+
+    <!-- ===== HEADER ===== -->
+    <div class="co-header">
+        <div class="co-header-inner">
+            <button class="co-back-btn" (click)="goBack()" title="Go back">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <div class="co-header-icon"><i class="fas fa-clipboard-check"></i></div>
+            <div class="co-header-text">
+                <h4 class="co-header-title">Checkout</h4>
+                <p class="co-header-sub">Review and place your order</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== BODY ===== -->
+    <div class="co-body">
+
+        <!-- Loading -->
+        <div class="co-loading" *ngIf="loading">
+            <div class="co-spinner"></div>
+            <span>Loading checkout...</span>
+        </div>
+
+        <!-- Main content -->
+        <div *ngIf="!loading">
+
+            <!-- Steps -->
+            <div class="co-steps">
+                <div class="co-step" [class.active]="currentStep >= 1" [class.done]="currentStep > 1">
+                    <div class="co-step-num">
+                        <i class="fas fa-check" *ngIf="currentStep > 1"></i>
+                        <span *ngIf="currentStep <= 1">1</span>
+                    </div>
+                    <span>Delivery</span>
+                </div>
+                <div class="co-step-line" [class.done]="currentStep > 1"></div>
+                <div class="co-step" [class.active]="currentStep >= 2">
+                    <div class="co-step-num">2</div>
+                    <span>Review &amp; Pay</span>
+                </div>
+            </div>
+
+            <div class="co-layout">
+
+                <!-- LEFT COLUMN -->
+                <div class="co-left">
+
+                    <!-- ===== STEP 1: ADDRESS ===== -->
+                    <div class="co-card" [class.co-card-done]="currentStep > 1">
+                        <div class="co-card-header">
+                            <div class="co-card-title">
+                                <span class="co-step-badge" [class.done]="currentStep > 1">
+                                    <i class="fas fa-check" *ngIf="currentStep > 1"></i>
+                                    <span *ngIf="currentStep <= 1">1</span>
+                                </span>
+                                Delivery Address
+                            </div>
+                            <button class="co-edit-btn" *ngIf="currentStep > 1" (click)="changeAddress()">
+                                <i class="fas fa-pencil me-1"></i>Change
+                            </button>
+                        </div>
+
+                        <!-- Confirmed address summary (step 2) -->
+                        <div class="co-address-summary" *ngIf="currentStep > 1 && confirmedAddress">
+                            <div class="co-addr-name">{{ confirmedAddress.full_name }}</div>
+                            <div class="co-addr-detail">{{ confirmedAddress.address_line1 }}<span
+                                    *ngIf="confirmedAddress.address_line2">, {{ confirmedAddress.address_line2 }}</span></div>
+                            <div class="co-addr-detail">
+                                {{ confirmedAddress.city }}<span *ngIf="confirmedAddress.state">, {{ confirmedAddress.state }}</span>
+                                <span *ngIf="confirmedAddress.pincode"> — {{ confirmedAddress.pincode }}</span>
+                            </div>
+                            <div class="co-addr-phone"><i class="fas fa-phone me-1"></i>{{ confirmedAddress.mobile_no }}</div>
+                        </div>
+
+                        <!-- Step 1 body -->
+                        <div class="co-card-body" *ngIf="currentStep === 1">
+
+                            <!-- Loading -->
+                            <div class="co-addr-loading" *ngIf="addressesLoading">
+                                <div class="co-mini-spinner"></div>
+                                <span>Loading addresses…</span>
+                            </div>
+
+                            <!-- Saved addresses -->
+                            <ng-container *ngIf="!addressesLoading && savedAddresses.length > 0 && !showAddressForm">
+                                <div class="co-saved-addr-title">
+                                    <i class="fas fa-map-pin me-1"></i>
+                                    Saved Addresses <span class="co-addr-count">{{ savedAddresses.length }}</span>
+                                </div>
+
+                                <div class="co-addr-cards">
+                                    <div *ngFor="let addr of savedAddresses; let i = index" class="co-addr-card"
+                                        [class.co-addr-card-selected]="selectedAddressIndex === i" (click)="selectAddress(i)">
+                                        <div class="co-addr-card-radio">
+                                            <div class="co-radio-dot" [class.active]="selectedAddressIndex === i"></div>
+                                        </div>
+                                        <div class="co-addr-card-body">
+                                            <div class="co-addr-card-name">
+                                                {{ addr.full_name }}
+                                                <span class="co-addr-latest-badge" *ngIf="i === savedAddresses.length - 1">Latest</span>
+                                            </div>
+                                            <div class="co-addr-card-line">{{ addr.address_line1 }}<span *ngIf="addr.address_line2">, {{ addr.address_line2 }}</span></div>
+                                            <div class="co-addr-card-line">{{ addr.city }}<span *ngIf="addr.state">, {{ addr.state }}</span><span *ngIf="addr.pincode"> — {{ addr.pincode }}</span></div>
+                                            <div class="co-addr-card-phone"><i class="fas fa-phone me-1"></i>{{ addr.mobile_no }}</div>
+                                        </div>
+                                        <button class="co-addr-edit-btn" (click)="$event.stopPropagation(); editExistingAddress(i)" title="Edit">
+                                            <i class="fas fa-pencil"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="co-addr-actions">
+                                    <button class="co-add-new-btn" (click)="addNewAddress()">
+                                        <i class="fas fa-plus-circle me-1"></i>Add New Address
+                                    </button>
+                                    <button class="co-btn-primary" [disabled]="selectedAddressIndex < 0" (click)="confirmAddress(selectedAddressIndex)">
+                                        <i class="fas fa-check me-1"></i>Deliver Here
+                                    </button>
+                                </div>
+                            </ng-container>
+
+                            <!-- Address form -->
+                            <ng-container *ngIf="!addressesLoading && (showAddressForm || savedAddresses.length === 0)">
+                                <div class="co-form-section-title" *ngIf="savedAddresses.length > 0">
+                                    <i class="fas fa-pencil-square me-1"></i>
+                                    {{ isEditMode ? 'Edit Address' : 'New Address' }}
+                                    <button class="co-back-link" (click)="showAddressForm = false; isEditMode = false">
+                                        <i class="fas fa-arrow-left me-1"></i>Back to saved
+                                    </button>
+                                </div>
+
+                                <!-- Full Name -->
+                                <div class="co-field co-col-2">
+                                  <label>Full Name <span class="co-req">*</span></label>
+                                  <input type="text" [(ngModel)]="address.full_name" placeholder="Enter your full name" required />
+                                </div>
+
+                                <!-- Mobile -->
+                                <div class="co-field co-col-2">
+                                  <label>Mobile Number <span class="co-req">*</span></label>
+                                  <input type="tel" [(ngModel)]="address.phone" placeholder="10-digit mobile" maxlength="10" required />
+                                </div>
+
+                                <!-- Address Line 1 -->
+                                <div class="co-field co-col-2">
+                                  <label>Address Line 1 <span class="co-req">*</span></label>
+                                  <input type="text" [(ngModel)]="address.addressLine1" placeholder="House No, Building, Street" required />
+                                </div>
+
+                                <!-- Address Line 2 (optional – keep no asterisk) -->
+                                <div class="co-field co-col-2">
+                                  <label>Address Line 2 <small>(optional)</small></label>
+                                  <input type="text" [(ngModel)]="address.addressLine2" placeholder="Area, Colony, Landmark" />
+                                </div>
+
+                                <!-- State -->
+                                <div class="co-field">
+                                  <label>State <span class="co-req">*</span></label>
+                                  <select (change)="onStateChange($event)" required>
+                                    <option value="">Select State</option>
+                                    <option *ngFor="let s of states" [value]="s.id" [selected]="address.state === s.state_name">{{ s.state_name }}</option>
+                                  </select>
+                                </div>
+
+                                <!-- District -->
+                                <div class="co-field">
+                                  <label>District <span class="co-req">*</span></label>
+                                  <select (change)="onDistrictChange($event)" required>
+                                    <option value="">Select District</option>
+                                    <option *ngFor="let d of districts" [value]="d.id" [selected]="address.district === d.district_name">{{ d.district_name }}</option>
+                                  </select>
+                                </div>
+
+                                <!-- Taluka -->
+                                <div class="co-field">
+                                  <label>Taluka <span class="co-req">*</span></label>
+                                  <select (change)="onTalukaChange($event)" required>
+                                    <option value="">Select Taluka</option>
+                                    <option *ngFor="let t of talukas" [value]="t.id" [selected]="address.taluka === t.taluka_name">{{ t.taluka_name }}</option>
+                                  </select>
+                                </div>
+
+                                <!-- Village -->
+                                <div class="co-field">
+                                  <label>Village <span class="co-req">*</span></label>
+                                  <select (change)="onVillageChange($event)" required>
+                                    <option value="">Select Village</option>
+                                    <option *ngFor="let v of villages" [value]="v.id" [selected]="address.village === v.village_name">{{ v.village_name }}</option>
+                                  </select>
+                                </div>
+
+                                <!-- City -->
+                                <div class="co-field">
+                                  <label>City <span class="co-req">*</span></label>
+                                  <input type="text" [(ngModel)]="address.city" placeholder="City" required />
+                                </div>
+
+                                <!-- Pincode -->
+                                <div class="co-field">
+                                  <label>Pincode <span class="co-req">*</span></label>
+                                  <input type="text" [(ngModel)]="address.pincode" placeholder="6-digit pincode" maxlength="6" required />
+                                </div>
+
+                                <div class="co-card-actions">
+                                    <button class="co-btn-primary" (click)="saveAddress()" [disabled]="addressesLoading">
+                                        <i class="fas fa-check me-1"></i>
+                                        {{ isEditMode ? 'Update Address' : 'Save & Deliver Here' }}
+                                    </button>
+                                </div>
+                            </ng-container>
+
+                        </div><!-- end co-card-body -->
+                    </div><!-- end step 1 card -->
+
+                    <!-- ===== STEP 2: REVIEW & PAYMENT ===== -->
+                    <div class="co-card" [class.co-card-locked]="currentStep < 2">
+                        <div class="co-card-header">
+                            <div class="co-card-title">
+                                <span class="co-step-badge" [class.done]="currentStep > 2">2</span>
+                                Review &amp; Payment
+                            </div>
+                        </div>
+
+                        <div class="co-card-body" *ngIf="currentStep === 2">
+
+                            <!-- Items -->
+                            <div class="co-review-section">
+                                <div class="co-review-section-title"><i class="fas fa-bag me-2"></i>Items ({{ itemCount }})</div>
+
+                                <div class="co-review-product" *ngIf="source === 'buynow' && product">
+                                    <img [src]="product.thumbnail_s3_key" [alt]="product.name" class="co-review-img" />
+                                    <div class="co-review-info">
+                                        <div class="co-review-name">{{ product.name }}</div>
+                                        <div class="co-review-brand" *ngIf="product.brand_name">{{ product.brand_name }}</div>
+                                        <div class="co-review-variant" *ngIf="variant">
+                                            <span *ngFor="let k of variantKeys" class="co-variant-tag">{{ k }}: {{ variant[k] }}</span>
+                                        </div>
+                                        <div class="co-review-meta">
+                                            <span>Qty: {{ quantity }}</span>
+                                            <span class="co-review-price">₹{{ price }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="source === 'cart'">
+                                    <div class="co-review-product" *ngFor="let item of cartItems">
+                                        <img [src]="item.thumbnail || 'assets/placeholder.png'" [alt]="item.product_name" class="co-review-img" onerror="this.src='assets/placeholder.png'" />
+                                        <div class="co-review-info">
+                                            <div class="co-review-name">{{ item.product_name }}</div>
+                                            <div class="co-review-meta">
+                                                <span>Qty: {{ item.quantity }}</span>
+                                                <span class="co-review-price">₹{{ item.unit_price * item.quantity | number:'1.2-2' }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Delivering to -->
+                            <div class="co-review-section" *ngIf="confirmedAddress">
+                                <div class="co-review-section-title"><i class="fas fa-map-pin me-2"></i>Delivering to</div>
+                                <div class="co-review-addr">
+                                    <strong>{{ confirmedAddress.full_name }}</strong> &nbsp;·&nbsp; {{ confirmedAddress.mobile_no }}<br />
+                                    {{ confirmedAddress.address_line1 }}<span *ngIf="confirmedAddress.address_line2">, {{ confirmedAddress.address_line2 }}</span>
+                                    <span *ngIf="confirmedAddress.city">, {{ confirmedAddress.city }}</span>
+                                    <span *ngIf="confirmedAddress.state">, {{ confirmedAddress.state }}</span>
+                                    <span *ngIf="confirmedAddress.pincode"> — {{ confirmedAddress.pincode }}</span>
+                                </div>
+                            </div>
+
+                            <!-- Payment -->
+                            <div class="co-review-section">
+                                <div class="co-review-section-title"><i class="fas fa-credit-card me-2"></i>Payment Method</div>
+                                <div class="co-pay-options">
+                                    <!-- Online Payment (always enabled) -->
+                                    <label class="co-pay-option" [class.selected]="paymentMethod === 'Online'">
+                                        <input type="radio" name="payment" value="Online" [(ngModel)]="paymentMethod" (ngModelChange)="onPaymentMethodChange()" />
+                                        <div class="co-pay-icon co-pay-online"><i class="fas fa-mobile-alt"></i></div>
+                                        <div class="co-pay-info">
+                                            <div class="co-pay-title">UPI / Card / Net Banking</div>
+                                            <div class="co-pay-sub">Powered by Razorpay — Secure &amp; Instant</div>
+                                        </div>
+                                        <div class="co-pay-check"><i class="fas fa-check-circle"></i></div>
+                                    </label>
+                                
+                                    <!-- COD – disabled when not available -->
+                                    <label class="co-pay-option" 
+                                           [class.selected]="paymentMethod === 'COD'" 
+                                           [class.co-pay-disabled]="!codAvailable">
+                                        <input type="radio" name="payment" value="COD" 
+                                               [(ngModel)]="paymentMethod" 
+                                               [disabled]="!codAvailable" 
+                                               (ngModelChange)="onPaymentMethodChange()" />
+                                        <div class="co-pay-icon"><i class="fas fa-coins"></i></div>
+                                        <div class="co-pay-info">
+                                            <div class="co-pay-title">Cash on Delivery</div>
+                                            <div class="co-pay-sub" *ngIf="codAvailable">Pay when your order arrives</div>
+                                            <div class="co-pay-sub co-pay-unavailable" *ngIf="!codAvailable">
+                                                <i class="fas fa-exclamation-circle me-1"></i>Not available for this order
+                                            </div>
+                                        </div>
+                                        <div class="co-pay-check"><i class="fas fa-check-circle"></i></div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="co-card-actions">
+                                <button class="co-btn-place" (click)="placeOrder()" [disabled]="isPlacingOrder || !hasShippingData">
+                                    <i class="fas" [class.fa-bag-check]="!isPlacingOrder" [class.fa-hourglass-half]="isPlacingOrder" class="me-2"></i>
+                                    {{ isPlacingOrder ? 'Processing...' : 'Place Order · ₹' + total }}
+                                </button>
+                                <!-- <p class="co-terms">By placing your order, you agree to QNX Mart's <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.</p> -->
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div><!-- end co-left -->
+
+                <!-- ===== RIGHT: ORDER SUMMARY ===== -->
+                <div class="co-right">
+                    <div class="co-summary-card">
+
+                        <div class="co-summary-title">
+                            <i class="fas fa-receipt me-2"></i>Order Summary
+                        </div>
+
+                        <div class="co-summary-product" *ngIf="source === 'buynow' && product">
+                            <img [src]="product.thumbnail_s3_key" [alt]="product.name" />
+                            <div>
+                                <div class="co-summary-pname">{{ product.name }}</div>
+                                <div class="co-summary-variant" *ngIf="variant">
+                                    <span *ngFor="let k of variantKeys">{{ k }}: {{ variant[k] }} </span>
+                                </div>
+                                <div class="co-summary-qty">Qty: {{ quantity }}</div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="source === 'cart'">
+                            <div class="co-summary-product" *ngFor="let item of cartItems">
+                                <img [src]="item.thumbnail || 'assets/placeholder.png'" [alt]="item.product_name" onerror="this.src='assets/placeholder.png'" />
+                                <div>
+                                    <div class="co-summary-pname">{{ item.product_name }}</div>
+                                    <div class="co-summary-qty">Qty: {{ item.quantity }} × ₹{{ item.unit_price }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="co-summary-divider" />
+
+                        <div class="co-summary-row">
+                            <span>Subtotal ({{ itemCount }} item{{ itemCount > 1 ? 's' : '' }})</span>
+                            <span>₹{{ subtotal | number:'1.2-2' }}</span>
+                        </div>
+
+                        <!-- Shipping -->
+                        <div class="co-shipping-loading" *ngIf="shippingLoading">
+                            <div class="co-mini-spinner"></div>
+                            <span>Fetching shipping rates…</span>
+                        </div>
+
+                        <div class="co-shipping-error" *ngIf="shippingError && !shippingLoading">
+                            <i class="fas fa-exclamation-circle me-1"></i>{{ shippingError }}
+                        </div>
+
+                        <ng-container *ngIf="hasShippingData">
+                            <div class="co-shipping-header">
+                                <i class="fas fa-truck me-1"></i>Shipping Details
+                            </div>
+                            <div class="co-shipping-box" *ngFor="let company of shippingCompanies; let i = index">
+                                <div class="co-shipping-shipment-title">Shipment {{ i + 1 }} — {{ company.company_name }}</div>
+                                <div class="co-shipping-row">
+                                    <span><i class="fas fa-truck me-1"></i>Courier</span>
+                                    <span class="co-shipping-val">{{ company.recommended_courier?.courier_name }}</span>
+                                </div>
+                                <div class="co-shipping-row">
+                                    <span><i class="fas fa-calendar-check me-1"></i>Est. Delivery</span>
+                                    <span class="co-shipping-val">{{ company.recommended_courier?.estimated_delivery_days }} days</span>
+                                </div>
+                                <div class="co-shipping-row">
+                                    <span>Freight Charge</span>
+                                    <span>₹{{ company.recommended_courier?.freight_charge || 0 | number:'1.2-2' }}</span>
+                                </div>
+                                <div class="co-shipping-row">
+                                    <span>COD Charges</span>
+                                    <span>₹{{ company.recommended_courier?.cod_charges || 0 | number:'1.2-2' }}</span>
+                                </div>
+                                <div class="co-shipping-row co-shipping-total-row">
+                                    <span>Shipment Total</span>
+                                    <span>₹{{ company.shipping_charge || 0 | number:'1.2-2' }}</span>
+                                </div>
+                                <div class="co-shipping-row">
+                                    <span>Payment</span>
+                                    <span class="co-shipping-val">{{ paymentMethod === 'COD' ? 'Cash on Delivery' : 'Online Payment' }}</span>
+                                </div>
+                            </div>
+                            <div class="co-summary-row co-shipping-grand-row">
+                                <span>Total Shipping</span>
+                                <span>₹{{ grandTotalShippingCharge | number:'1.2-2' }}</span>
+                            </div>
+                        </ng-container>
+
+                        <div class="co-summary-row" *ngIf="!shippingLoading && !shippingError && !hasShippingData">
+                            <span>Delivery</span>
+                            <span class="co-shipping-unavailable">Not available</span>
+                        </div>
+
+                        <hr class="co-summary-divider" />
+
+                        <div class="co-summary-row co-summary-total">
+                            <span>Grand Total</span>
+                            <span>₹{{ total | number:'1.2-2' }}</span>
+                        </div>
+
+                        <!-- Trust badges -->
+                        <div class="co-trust">
+                            <div class="co-trust-item"><i class="fas fa-shield-alt"></i><span>Secure Payment</span></div>
+                            <div class="co-trust-item"><i class="fas fa-undo-alt"></i><span>Easy Returns</span></div>
+                            <div class="co-trust-item"><i class="fas fa-truck"></i><span>Fast Delivery</span></div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div><!-- end co-layout -->
+
+        </div><!-- end !loading -->
+
+    </div><!-- end co-body -->
+
+</div>

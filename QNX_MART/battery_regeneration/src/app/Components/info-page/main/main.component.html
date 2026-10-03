@@ -1,0 +1,470 @@
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- HERO SECTION -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="hero-section" id="hero">
+  <!-- Glossy overlapping bubbles -->
+  <div class="hero-bubble bubble-1"></div>
+  <div class="hero-bubble bubble-2"></div>
+  <div class="hero-bubble bubble-3"></div>
+  <div class="hero-bubble bubble-4"></div>
+  <div class="hero-bubble bubble-5"></div>
+  <div class="hero-bubble bubble-6"></div>
+  <div class="hero-bubble bubble-7"></div>
+  <div class="hero-bubble bubble-8"></div>
+  <!-- <div class="hero-bubble bubble-9"></div>
+  <div class="hero-bubble bubble-10"></div>
+  <div class="hero-bubble bubble-11"></div>
+  <div class="hero-bubble bubble-12"></div>
+  <div class="hero-bubble bubble-13"></div>
+  <div class="hero-bubble bubble-14"></div>
+  <div class="hero-bubble bubble-15"></div>
+  <div class="hero-bubble bubble-16"></div>
+  <div class="hero-bubble bubble-17"></div>
+  <div class="hero-bubble bubble-18"></div>
+  <div class="hero-bubble bubble-19"></div>
+  <div class="hero-bubble bubble-20"></div> -->
+
+
+  <div class="container">
+    <div class="row align-items-center">
+      <!-- LEFT SIDE: Text content -->
+      <div class="col-lg-7 hero-content">
+        <div class="hero-badge" data-aos="fade-up" data-aos-duration="600">
+          <span class="dot-pulse"></span> India's Growing Marketplace Ecosystem
+        </div>
+        <h1 class="hero-title" data-aos="fade-up" data-aos-delay="100" data-aos-duration="700">
+          Build Your Business.<br>
+          <span class="highlight">Earn for Life.</span>
+        </h1>
+        <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="200" data-aos-duration="700">
+          Join India's growing marketplace ecosystem where marketing partners earn
+          <strong>lifetime passive income</strong> while helping companies sell products
+          without spending on traditional advertising.
+        </p>
+        <div class="hero-buttons" data-aos="fade-up" data-aos-delay="300" data-aos-duration="700">
+          <a href="marketing-partner-enquiry" class="btn-hero-primary">
+            <i class="fa-solid fa-handshake"></i> Join as Marketing Partner
+          </a>
+          <a href="company_create" class="btn-hero-outline">
+            <i class="fa-solid fa-building"></i> Register Your Company
+          </a>
+        </div>
+        <div class="floating-cards-hero" data-aos="fade-up" data-aos-delay="500" data-aos-duration="800">
+          <span class="float-card-mini"><i class="fa-solid fa-gift"></i> Free Registration</span>
+          <span class="float-card-mini"><i class="fa-solid fa-percent"></i> 20% Registration Bonus</span>
+          <span class="float-card-mini"><i class="fa-solid fa-clock"></i> 5% Lifetime Income</span>
+          <span class="float-card-mini"><i class="fa-solid fa-tag"></i> 15% Selling Commission</span>
+          <span class="float-card-mini"><i class="fa-solid fa-shield-halved"></i> Trusted Business Ecosystem</span>
+        </div>
+      </div>
+
+      <!-- RIGHT SIDE: Illustration bubbles -->
+      <div class="col-lg-5 text-center" data-aos="zoom-in" data-aos-delay="300" data-aos-duration="900">
+        <div class="hero-illustration d-inline-block">
+          <!-- Main large bubble -->
+          <div class="illustration-circle" 
+               (mouseenter)="onCircleEnter()" 
+               (mouseleave)="onCircleLeave()"
+               [class.counter-active]="isHovered">
+            <div class="counter-overlay">
+              <span class="counter-value">{{ displayCount }}</span>
+              <span class="counter-label">Total Estimation</span>
+            </div>
+            <i class="fa-solid fa-chart-line main-icon"></i>
+          </div>
+
+          <!-- Satellite bubble 1 – Partners (top-left of main) -->
+          <div class="illustration-circle-sm illustration-sm-1">
+            <i class="fa-solid fa-handshake"></i>
+            <span class="illustration-label">Partners</span>
+          </div>
+
+          <!-- Satellite bubble 2 – Companies (bottom-right of main) -->
+          <div class="illustration-circle-sm illustration-sm-2">
+            <i class="fa-solid fa-building"></i>
+            <span class="illustration-label">Companies</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  <!-- <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-7 hero-content">
+        <div class="hero-badge" data-aos="fade-up" data-aos-duration="600">
+          <span class="dot-pulse"></span> India's Growing Marketplace Ecosystem
+        </div>
+        <h1 class="hero-title" data-aos="fade-up" data-aos-delay="100" data-aos-duration="700">
+          Build Your Business.<br>
+          <span class="highlight">Earn for Life.</span>
+        </h1>
+        <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="200" data-aos-duration="700">
+          Join India's growing marketplace ecosystem where marketing partners earn
+          <strong>lifetime passive income</strong> while helping companies sell products
+          without spending on traditional advertising.
+        </p>
+        <div class="hero-buttons" data-aos="fade-up" data-aos-delay="300" data-aos-duration="700">
+          <a href="marketing-partner-enquiry" class="btn-hero-primary">
+            <i class="fa-solid fa-handshake"></i> Join as Marketing Partner
+          </a>
+          <a href="company_create" class="btn-hero-outline">
+            <i class="fa-solid fa-building"></i> Register Your Company
+          </a>
+        </div>
+        <div class="floating-cards-hero" data-aos="fade-up" data-aos-delay="500" data-aos-duration="800">
+          <span class="float-card-mini"><i class="fa-solid fa-gift"></i> Free Registration</span>
+          <span class="float-card-mini"><i class="fa-solid fa-percent"></i> 20% Registration Bonus</span>
+          <span class="float-card-mini"><i class="fa-solid fa-clock"></i> 5% Lifetime Income</span>
+          <span class="float-card-mini"><i class="fa-solid fa-tag"></i> 15% Selling Commission</span>
+          <span class="float-card-mini"><i class="fa-solid fa-shield-halved"></i> Trusted Business Ecosystem</span>
+        </div>
+      </div>
+      <div class="col-lg-5 text-center" data-aos="zoom-in" data-aos-delay="300" data-aos-duration="900">
+        <div class="hero-illustration d-inline-block">
+          <div class="illustration-circle">
+            <i class="fa-solid fa-chart-line"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+<!-- WAVE SEPARATOR -->
+<div class="wave-separator">
+  <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 40C240 100 480 0 720 30C960 60 1200 10 1440 50V100H0V40Z" fill="#ffffff"/>
+  </svg>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 2: WHAT IS QNX MART -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="what-is-section section-padding" id="what-is">
+  <div class="container">
+    <div class="section-header" data-aos="fade-up">
+      <span class="badge-tag">About QNX Mart</span>
+      <h2>What is QNX Mart?</h2>
+      <div class="divider"></div>
+      <p>QNX Mart is a modern business ecosystem designed to connect companies, marketing partners and customers on one powerful platform.</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-6" data-aos="fade-right" data-aos-duration="700">
+        <div class="what-is-card glossy-card">
+          <div class="icon-circle icon-blue"><i class="fa-solid fa-lightbulb"></i></div>
+          <h4 class="fw-bold mb-2" style="color: var(--primary);">The Problem We Solve</h4>
+          <p class="text-muted mb-0">Instead of companies spending huge money on advertising, dealers, distributors and marketing campaigns, QNX Mart creates a network of marketing partners who promote products and help businesses grow.</p>
+        </div>
+      </div>
+      <div class="col-lg-6" data-aos="fade-left" data-aos-duration="700">
+        <div class="what-is-card glossy-card">
+          <div class="icon-circle icon-orange"><i class="fa-solid fa-circle-nodes"></i></div>
+          <h4 class="fw-bold mb-2" style="color: var(--primary);">The Win-Win Ecosystem</h4>
+          <p class="text-muted mb-0">This creates a win-win ecosystem where <strong>companies save marketing costs</strong>, <strong>marketing partners earn recurring income</strong>, <strong>customers discover quality products</strong>, and <strong>everyone grows together</strong>.</p>
+        </div>
+      </div>
+      <div class="col-12 text-center mt-4" data-aos="zoom-in" data-aos-delay="200">
+        <div style="font-size: 6rem; color: var(--secondary); opacity: 0.7;">
+          <i class="fa-solid fa-people-arrows"></i>
+        </div>
+        <p class="fw-semibold text-muted mt-2">Connecting Companies · Partners · Customers on One Platform</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 3: HOW IT WORKS -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="how-it-works-section section-padding" id="how-it-works">
+  <div class="container">
+    <div class="section-header" data-aos="fade-up">
+      <span class="badge-tag">Process</span>
+      <h2>How It Works</h2>
+      <div class="divider"></div>
+      <p>Follow these simple steps to start earning with QNX Mart.</p>
+    </div>
+    <div class="timeline">
+      <div class="timeline-step" data-aos="fade-up" data-aos-duration="600">
+        <span class="step-number">01</span>
+        <h4>Become Marketing Partner</h4>
+        <p><strong>Free Registration</strong> — No joining fees, no hidden charges, no starter kit. Instant onboarding. <i class="fa-solid fa-check-circle" style="color:#4ade80;"></i></p>
+      </div>
+      <div class="timeline-step" data-aos="fade-up" data-aos-duration="600" data-aos-delay="100">
+        <span class="step-number">02</span>
+        <h4>Find Companies</h4>
+        <p>Identify local manufacturers, retail businesses, wholesalers, brands, and service providers. Approach them and explain the QNX Mart ecosystem.</p>
+      </div>
+      <div class="timeline-step" data-aos="fade-up" data-aos-duration="600" data-aos-delay="200">
+        <span class="step-number">03</span>
+        <h4>Register Products</h4>
+        <p>Company registers products with a <strong>₹1000 per product</strong> registration fee. Lifetime listing — product becomes live on the marketplace instantly.</p>
+      </div>
+      <div class="timeline-step" data-aos="fade-up" data-aos-duration="600" data-aos-delay="300">
+        <span class="step-number">04</span>
+        <h4>Earn Registration Bonus</h4>
+        <p>Marketing Partner receives a <strong style="color:var(--secondary);">20% One-Time Bonus</strong> for successfully onboarding a company.</p>
+      </div>
+      <div class="timeline-step" data-aos="fade-up" data-aos-duration="600" data-aos-delay="400">
+        <span class="step-number">05</span>
+        <h4>Products Sell & Revenue Flows</h4>
+        <p>Customers purchase products, QNX Mart processes payment, and <strong>revenue gets distributed automatically</strong> to all stakeholders.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 4: REVENUE DISTRIBUTION -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="revenue-section section-padding" id="revenue">
+  <div class="container">
+    <div class="section-header" data-aos="fade-up">
+      <span class="badge-tag">Revenue</span>
+      <h2>Revenue Distribution</h2>
+      <div class="divider"></div>
+      <p>See how revenue flows when a customer makes a purchase.</p>
+    </div>
+    <div class="row justify-content-center mb-5" data-aos="zoom-in" data-aos-duration="800">
+      <div class="col-md-10">
+        <div class="revenue-flow">
+          <div class="revenue-node primary-node glossy-card">
+            <i class="fa-solid fa-cart-shopping fa-2x mb-2" style="color:var(--secondary);"></i>
+            <div class="fw-bold">Customer Purchase</div>
+            <div class="revenue-amount">₹1,00,000</div>
+          </div>
+          <div class="revenue-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+          <div class="revenue-node glossy-card">
+            <i class="fa-solid fa-building fa-2x mb-2" style="color:var(--primary);"></i>
+            <div class="fw-bold">Company Receives</div>
+            <div class="revenue-amount" style="color:#0B3C6D;">₹80,000</div>
+            <small class="text-muted">80% of revenue</small>
+          </div>
+          <div class="revenue-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+          <div class="revenue-node accent-node glossy-card">
+            <i class="fa-solid fa-layer-group fa-2x mb-2" style="color:#b8960c;"></i>
+            <div class="fw-bold">Platform Profit</div>
+            <div class="revenue-amount" style="color:#b8960c;">₹20,000</div>
+            <small class="text-muted">20% distributed further</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center" data-aos="fade-up" data-aos-delay="300">
+      <div class="glass-card d-inline-block px-5 py-3">
+        <i class="fa-solid fa-circle-info me-2" style="color:var(--secondary);"></i>
+        <span class="fw-semibold">Platform revenue gets distributed among marketing partners, creating lifetime passive income.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 5: MARKETING PARTNER EARNINGS -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="earnings-section section-padding" id="earnings">
+  <div class="container">
+    <div class="section-header" data-aos="fade-up">
+      <span class="badge-tag">Earnings</span>
+      <h2>Marketing Partner Earnings</h2>
+      <div class="divider"></div>
+      <p>Three powerful ways to earn with the QNX Mart ecosystem.</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-4" data-aos="flip-left" data-aos-duration="700">
+        <div class="earning-card card-gold glossy-card">
+          <div class="card-icon-wrap" style="background:rgba(255,215,0,0.15); color:#b8960c;">
+            <i class="fa-solid fa-gift"></i>
+          </div>
+          <h5 class="fw-bold" style="color:var(--primary);">Company Registration Bonus</h5>
+          <div class="big-number">20%</div>
+          <p class="text-muted">One-time incentive</p>
+          <p class="fw-semibold" style="color:var(--secondary);">Receive bonus when company joins.</p>
+        </div>
+      </div>
+      <div class="col-lg-4" data-aos="flip-left" data-aos-duration="700" data-aos-delay="150">
+        <div class="earning-card card-orange glossy-card">
+          <div class="card-icon-wrap" style="background:rgba(247,147,30,0.15); color:var(--secondary);">
+            <i class="fa-solid fa-clock"></i>
+          </div>
+          <h5 class="fw-bold" style="color:var(--primary);">Lifetime Passive Income</h5>
+          <div class="big-number">5%</div>
+          <p class="text-muted">Earn lifetime income on every future sale</p>
+          <div class="stat-row"><span>1 Sale</span><span class="stat-val">₹1,000</span></div>
+          <div class="stat-row"><span>Daily 10 Sales</span><span class="stat-val">₹10,000/day</span></div>
+          <div class="stat-row"><span>Monthly</span><span class="stat-val" style="color:var(--secondary);">₹3,00,000</span></div>
+          <div class="stat-row"><span>Yearly</span><span class="stat-val" style="color:var(--secondary);">₹36,00,000</span></div>
+        </div>
+      </div>
+      <div class="col-lg-4" data-aos="flip-left" data-aos-duration="700" data-aos-delay="300">
+        <div class="earning-card card-blue glossy-card">
+          <div class="card-icon-wrap" style="background:rgba(11,60,109,0.12); color:var(--primary);">
+            <i class="fa-solid fa-tags"></i>
+          </div>
+          <h5 class="fw-bold" style="color:var(--primary);">Active Selling Commission</h5>
+          <div class="big-number">15%</div>
+          <p class="text-muted">Sell products yourself</p>
+          <div class="stat-row"><span>Earn per sale</span><span class="stat-val">₹3,000</span></div>
+          <div class="stat-row"><span>Daily 5 Sales</span><span class="stat-val">₹15,000</span></div>
+          <div class="stat-row"><span>Monthly</span><span class="stat-val" style="color:var(--secondary);">₹4,50,000</span></div>
+          <div class="stat-row"><span>Yearly</span><span class="stat-val" style="color:var(--secondary);">₹54,00,000</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 6: COMPANY BENEFITS -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="benefits-section section-padding" id="benefits">
+  <div class="container">
+    <div class="section-header" data-aos="fade-up">
+      <span class="badge-tag">For Companies</span>
+      <h2>Company Benefits</h2>
+      <div class="divider"></div>
+      <p>Why businesses choose QNX Mart for their product sales.</p>
+    </div>
+    <div class="row g-3">
+      <div class="col-md-4 col-sm-6" data-aos="zoom-in" data-aos-duration="500"><div class="benefit-card glossy-card"><span class="benefit-icon">📢</span><h5>No Marketing Cost</h5><p>Sell without expensive advertising</p></div></div>
+      <div class="col-md-4 col-sm-6" data-aos="zoom-in" data-aos-duration="500" data-aos-delay="80"><div class="benefit-card glossy-card"><span class="benefit-icon">🎯</span><h5>Direct Customer Reach</h5><p>Reach buyers directly</p></div></div>
+      <div class="col-md-4 col-sm-6" data-aos="zoom-in" data-aos-duration="500" data-aos-delay="160"><div class="benefit-card glossy-card"><span class="benefit-icon">💰</span><h5>Performance Based Payment</h5><p>Pay only when products sell</p></div></div>
+      <div class="col-md-4 col-sm-6" data-aos="zoom-in" data-aos-duration="500" data-aos-delay="240"><div class="benefit-card glossy-card"><span class="benefit-icon">📋</span><h5>Lifetime Product Listing</h5><p>₹1000 one-time registration</p></div></div>
+      <div class="col-md-4 col-sm-6" data-aos="zoom-in" data-aos-duration="500" data-aos-delay="320"><div class="benefit-card glossy-card"><span class="benefit-icon">👁️</span><h5>Brand Visibility</h5><p>Permanent product showcase</p></div></div>
+      <div class="col-md-4 col-sm-6" data-aos="zoom-in" data-aos-duration="500" data-aos-delay="400"><div class="benefit-card glossy-card"><span class="benefit-icon">🌐</span><h5>Nationwide Marketing Network</h5><p>Thousands of partners promote</p></div></div>
+      <div class="col-md-4 col-sm-6" data-aos="zoom-in" data-aos-duration="500" data-aos-delay="480"><div class="benefit-card glossy-card"><span class="benefit-icon">🚀</span><h5>Business Growth</h5><p>Scale faster with QNX Mart ecosystem</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 7: MARKETING PARTNER BENEFITS -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="benefits-section section-padding" style="background: var(--light-gray);">
+  <div class="container">
+    <div class="section-header" data-aos="fade-up">
+      <span class="badge-tag">For Partners</span>
+      <h2>Marketing Partner Benefits</h2>
+      <div class="divider"></div>
+      <p>Everything you need to build a successful income stream.</p>
+    </div>
+    <div class="row g-3">
+      <div class="col-md-3 col-sm-6" data-aos="fade-up" data-aos-duration="500"><div class="benefit-card glossy-card"><span class="benefit-icon">🆓</span><h5>Free Registration</h5><p>Zero Investment</p></div></div>
+      <div class="col-md-3 col-sm-6" data-aos="fade-up" data-aos-duration="500" data-aos-delay="80"><div class="benefit-card glossy-card"><span class="benefit-icon">🎁</span><h5>20% Registration Bonus</h5><p>On company onboarding</p></div></div>
+      <div class="col-md-3 col-sm-6" data-aos="fade-up" data-aos-duration="500" data-aos-delay="160"><div class="benefit-card glossy-card"><span class="benefit-icon">♾️</span><h5>5% Lifetime Income</h5><p>Recurring passive revenue</p></div></div>
+      <div class="col-md-3 col-sm-6" data-aos="fade-up" data-aos-duration="500" data-aos-delay="240"><div class="benefit-card glossy-card"><span class="benefit-icon">💸</span><h5>15% Selling Commission</h5><p>Active selling rewards</p></div></div>
+      <div class="col-md-3 col-sm-6" data-aos="fade-up" data-aos-duration="500" data-aos-delay="320"><div class="benefit-card glossy-card"><span class="benefit-icon">📈</span><h5>Unlimited Earnings</h5><p>No income ceiling</p></div></div>
+      <div class="col-md-3 col-sm-6" data-aos="fade-up" data-aos-duration="500" data-aos-delay="400"><div class="benefit-card glossy-card"><span class="benefit-icon">🤝</span><h5>Business Network Growth</h5><p>Expand your connections</p></div></div>
+      <div class="col-md-3 col-sm-6" data-aos="fade-up" data-aos-duration="500" data-aos-delay="480"><div class="benefit-card glossy-card"><span class="benefit-icon">🕐</span><h5>Flexible Working</h5><p>Work on your schedule</p></div></div>
+      <div class="col-md-3 col-sm-6" data-aos="fade-up" data-aos-duration="500" data-aos-delay="560"><div class="benefit-card glossy-card"><span class="benefit-icon">🔄</span><h5>Passive Income</h5><p>Recurring Revenue</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 8: FINANCIAL PROJECTION -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="financial-section section-padding" id="financial">
+  <div class="container">
+    <div class="section-header" data-aos="fade-up">
+      <span class="badge-tag">Projections</span>
+      <h2>Financial Projection</h2>
+      <div class="divider"></div>
+      <p>See your potential earnings with QNX Mart.</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-6" data-aos="fade-right" data-aos-duration="700">
+        <h5 class="fw-bold text-center mb-3" style="color:var(--primary);">📊 Passive Income (5% Lifetime)</h5>
+        <div class="table-responsive">
+          <table class="table table-premium">
+            <thead><tr><th>Products Sold</th><th>Daily</th><th>Monthly</th><th>Yearly</th></tr></thead>
+            <tbody>
+              <tr><td>1 Product Sale</td><td>₹1,000</td><td>₹30,000</td><td class="highlight-cell">₹3,60,000</td></tr>
+              <tr><td>5 Product Sales</td><td>₹5,000</td><td>₹1,50,000</td><td class="highlight-cell">₹18,00,000</td></tr>
+              <tr><td>10 Product Sales</td><td>₹10,000</td><td>₹3,00,000</td><td class="highlight-cell">₹36,00,000</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-lg-6" data-aos="fade-left" data-aos-duration="700">
+        <h5 class="fw-bold text-center mb-3" style="color:var(--primary);">💸 Selling Commission (15%)</h5>
+        <div class="table-responsive">
+          <table class="table table-premium">
+            <thead><tr><th>Sales/Day</th><th>Daily</th><th>Monthly</th><th>Yearly</th></tr></thead>
+            <tbody>
+              <tr><td>1 Sale</td><td>₹3,000</td><td>₹90,000</td><td class="highlight-cell">₹10,80,000</td></tr>
+              <tr><td>5 Sales</td><td>₹15,000</td><td>₹4,50,000</td><td class="highlight-cell">₹54,00,000</td></tr>
+              <tr><td>10 Sales</td><td>₹30,000</td><td>₹9,00,000</td><td class="highlight-cell">₹1,08,00,000</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 9: WHY CHOOSE QNX MART -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="why-choose-section section-padding" id="why-choose">
+  <div class="container">
+    <div class="section-header" data-aos="fade-up">
+      <span class="badge-tag">Why Us</span>
+      <h2>Why Choose QNX Mart</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="row g-3">
+      <div class="col-md-4" data-aos="fade-up" data-aos-duration="500"><div class="feature-grid-item"><div class="fg-icon"><i class="fa-solid fa-check"></i></div><div><h6>Free Registration</h6><span>No Joining Fee</span></div></div></div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-duration="500" data-aos-delay="60"><div class="feature-grid-item"><div class="fg-icon"><i class="fa-solid fa-infinity"></i></div><div><h6>Lifetime Passive Income</h6><span>High Commission</span></div></div></div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-duration="500" data-aos-delay="120"><div class="feature-grid-item"><div class="fg-icon"><i class="fa-solid fa-chart-simple"></i></div><div><h6>Performance Based Revenue</h6><span>Scalable Business</span></div></div></div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-duration="500" data-aos-delay="180"><div class="feature-grid-item"><div class="fg-icon"><i class="fa-solid fa-bullseye"></i></div><div><h6>Direct Customer Access</h6><span>Zero Advertisement Cost</span></div></div></div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-duration="500" data-aos-delay="240"><div class="feature-grid-item"><div class="fg-icon"><i class="fa-solid fa-seedling"></i></div><div><h6>Long Term Business Ecosystem</h6><span>Nationwide Marketing Network</span></div></div></div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-duration="500" data-aos-delay="300"><div class="feature-grid-item"><div class="fg-icon"><i class="fa-solid fa-lock"></i></div><div><h6>Secure Payment</h6><span>Transparent Revenue Distribution</span></div></div></div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-duration="500" data-aos-delay="360"><div class="feature-grid-item"><div class="fg-icon"><i class="fa-solid fa-mobile-screen"></i></div><div><h6>Modern Marketplace Platform</h6><span>Seamless experience</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 10: FAQ -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="faq-section section-padding" id="faq">
+  <div class="container">
+    <div class="section-header" data-aos="fade-up">
+      <span class="badge-tag">FAQ</span>
+      <h2>Frequently Asked Questions</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-lg-8" data-aos="fade-up" data-aos-delay="100">
+        <div class="accordion accordion-premium" id="faqAccordion">
+          <div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">What is QNX Mart?</button></h2><div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion"><div class="accordion-body">QNX Mart is a modern business ecosystem that connects companies, marketing partners, and customers on one powerful platform, enabling passive income and cost-effective product sales.</div></div></div>
+          <div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">Who can become a marketing partner?</button></h2><div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Anyone! Students, working professionals, entrepreneurs, homemakers — anyone looking to earn income by connecting companies to the QNX Mart marketplace.</div></div></div>
+          <div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">Is registration free?</button></h2><div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Yes! Registration for marketing partners is 100% free with no joining fees, no hidden charges, and no starter kit requirements.</div></div></div>
+          <div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">How do I earn passive income?</button></h2><div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">You earn 5% lifetime passive income on every future sale of companies you onboard. Once a company is registered through you, you keep earning on their sales forever.</div></div></div>
+          <div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">How do companies benefit?</button></h2><div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Companies save huge marketing costs, get direct customer reach, pay only when products sell, and get lifetime product listing for just ₹1000 one-time registration.</div></div></div>
+          <div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">Can I sell products myself?</button></h2><div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Absolutely! You can actively sell products and earn a 15% commission on every sale you generate, in addition to your passive income.</div></div></div>
+          <div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq7">How much commission do I receive?</button></h2><div id="faq7" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">You receive 20% registration bonus, 5% lifetime passive income, and 15% active selling commission — multiple income streams from one platform.</div></div></div>
+          <div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq8">How do I register my company?</button></h2><div id="faq8" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Visit qnxmartb2b.com or contact us at 9579345147. Our team will guide you through the simple registration process.</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 11: CALL TO ACTION -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="cta-section" id="cta">
+  <div class="container">
+    <div class="cta-card" data-aos="zoom-in" data-aos-duration="800">
+      <h2>Ready to Build Your Business?</h2>
+      <p>Join the QNX Mart Partner Ecosystem Today.</p>
+      <a href="marketing-partner-enquiry" class="btn-cta"><i class="fa-solid fa-handshake me-2"></i>Become Marketing Partner</a>
+      <a href="company_create" class="btn-cta"><i class="fa-solid fa-building me-2"></i>Register Company</a>
+    </div>
+  </div>
+</section>

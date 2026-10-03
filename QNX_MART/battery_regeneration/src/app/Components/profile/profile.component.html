@@ -1,0 +1,138 @@
+<div class="prof-wrapper">
+
+    <!-- ============================================================
+         HERO / HEADER – Dark gradient
+         ============================================================ -->
+    <div class="prof-hero">
+        <div class="prof-hero-inner">
+            <div class="prof-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="prof-user-details">
+                <h2>{{ username || 'My Profile' }}</h2>
+                <p>{{ email || 'Manage your account' }}</p>
+            </div>
+            <div class="prof-hero-actions">
+                <button class="prof-logout-btn" (click)="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="prof-container">
+
+        <!-- ============================================================
+             STATS ROW – Cart, Enquiries, Orders
+             ============================================================ -->
+        <div class="row g-3 prof-stats">
+            <div class="col-6 col-lg-4">
+                <div class="prof-stat-card stat-cart">
+                    <div class="prof-stat-icon"><i class="fas fa-shopping-cart"></i></div>
+                    <div class="prof-stat-info">
+                        <h6>Cart Items</h6>
+                        <span>{{ cartCount }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-4">
+                <div class="prof-stat-card stat-enquiries">
+                    <div class="prof-stat-icon"><i class="fas fa-envelope"></i></div>
+                    <div class="prof-stat-info">
+                        <h6>Enquiries</h6>
+                        <span>{{ enquiryCount }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-4">
+                <div class="prof-stat-card stat-orders">
+                    <div class="prof-stat-icon"><i class="fas fa-clipboard-list"></i></div>
+                    <div class="prof-stat-info">
+                        <h6>Orders</h6>
+                        <span>{{ orderCount }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             RECENTLY VIEWED PRODUCTS (top 3)
+             ============================================================ -->
+        <div class="prof-recent-section" *ngIf="recentProducts.length > 0">
+            <div class="prof-section-header">
+                <div class="prof-section-title">
+                    <i class="fas fa-clock"></i> Recently Viewed
+                </div>
+                <a routerLink="/product_list" class="prof-section-link">View All →</a>
+            </div>
+            <div class="prof-recent-grid">
+                <a *ngFor="let product of recentProducts" class="prof-recent-item" [routerLink]="['/product-details', product.slug]">
+                    <img [src]="product.thumbnail" [alt]="product.name" class="prof-recent-img" onerror="this.src='assets/placeholder.png'">
+                    <div class="prof-recent-info">
+                        <div class="prof-recent-name">{{ product.name }}</div>
+                        <div class="prof-recent-price">₹{{ product.display_price || product.final_price }}</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             QUICK ACTIONS
+             ============================================================ -->
+        <div class="prof-actions-section">
+            <div class="prof-section-header">
+                <div class="prof-section-title">
+                    <i class="fas fa-bolt"></i> Quick Actions
+                </div>
+            </div>
+            <div class="prof-actions-grid">
+
+                <a routerLink="/product_list" class="prof-action-tile">
+                    <div class="tile-icon" style="background:#eef2ff;color:#6366f1">
+                        <i class="fas fa-store"></i>
+                    </div>
+                    <span>Browse Products</span>
+                </a>
+
+                <a routerLink="/add_products" class="prof-action-tile">
+                    <div class="tile-icon" style="background:#fef9e7;color:#f59e0b">
+                        <i class="fas fa-plus-circle"></i>
+                    </div>
+                    <span>Add Product</span>
+                </a>
+
+                <a routerLink="/my-products-enquiry" class="prof-action-tile">
+                    <div class="tile-icon" style="background:#ecfdf5;color:#10b981">
+                        <i class="fas fa-box-open"></i>
+                    </div>
+                    <span>My Product Enquiries</span>
+                </a>
+
+                <!-- ===== Commented tiles (preserved) ===== -->
+                <a routerLink="/add_to_cart" class="prof-action-tile">
+                    <div class="tile-icon" style="background:#eaf4fd;color:#3498db">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <span>My Cart</span>
+                </a>
+
+                <!-- ✅ New: My Orders -->
+                <a routerLink="/my-orders" class="prof-action-tile">
+                    <div class="tile-icon" style="background:#f0f4ff;color:#4f46e5">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <span>My Orders</span>
+                </a>
+
+                <!-- <a routerLink="/enquiry" class="prof-action-tile">
+                    <div class="tile-icon" style="background:#fdf0f0;color:#e74c3c">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <span>My Enquiries</span>
+                </a> -->
+
+            </div>
+        </div>
+
+    </div>
+</div>

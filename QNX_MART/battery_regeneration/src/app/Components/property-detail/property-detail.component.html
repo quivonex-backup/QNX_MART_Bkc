@@ -1,0 +1,387 @@
+<div class="pd-page">
+
+  <!-- ===== LOADING ===== -->
+  <div class="pd-loading" *ngIf="loading">
+    <div class="pd-spinner"></div>
+    <p>Loading property details...</p>
+  </div>
+
+  <!-- ===== NOT FOUND ===== -->
+  <div class="pd-empty" *ngIf="!loading && !property">
+    <i class="bi bi-building pd-empty-icon"></i>
+    <h5>Property not found</h5>
+    <p>The property you are looking for may have been removed or is unavailable.</p>
+    <button class="pd-btn pd-btn-primary" (click)="goBack()">
+      <i class="bi bi-arrow-left me-1"></i>Go Back
+    </button>
+  </div>
+
+  <!-- ===== CONTENT ===== -->
+  <ng-container *ngIf="!loading && property">
+
+    <!-- Header -->
+    <div class="pd-header">
+      <button class="pd-back-btn" (click)="goBack()">
+        <i class="bi bi-arrow-left"></i>
+      </button>
+      <div class="pd-header-text">
+        <h2><i class="bi bi-building me-2"></i>Property Details</h2>
+        <p>{{ locationLine }}</p>
+      </div>
+    </div>
+
+    <div class="pd-container">
+
+      <!-- ===== GALLERY + SUMMARY ===== -->
+      <div class="pd-hero">
+
+        <!-- Image Carousel -->
+        <div class="pd-gallery">
+          <div class="pd-gallery-main">
+            <img [src]="property.images[currentImgIndex]?.image_s3_key" [alt]="publicTitle" class="pd-gallery-img" />
+
+            <ng-container *ngIf="property.images.length > 1">
+              <button class="pd-img-nav pd-img-prev" (click)="prevImage($event)" title="Previous">
+                <i class="bi bi-chevron-left"></i>
+              </button>
+              <button class="pd-img-nav pd-img-next" (click)="nextImage($event)" title="Next">
+                <i class="bi bi-chevron-right"></i>
+              </button>
+              <span class="pd-img-counter">
+                {{ currentImgIndex + 1 }} / {{ property.images.length }}
+              </span>
+            </ng-container>
+          </div>
+
+          <!-- Thumbnails -->
+          <div class="pd-thumbs" *ngIf="property.images.length > 1">
+            <img *ngFor="let img of property.images; let i = index" [src]="img.image_s3_key" [alt]="publicTitle"
+              class="pd-thumb" [class.active]="i === currentImgIndex"
+              (click)="setImage(i, $event); openImageFullscreen(img.image_s3_key)" />
+          </div>
+
+
+          <!-- ===== FULLSCREEN IMAGE ===== -->
+          <div class="pd-image-overlay" *ngIf="fullscreenImage" (click)="closeImageFullscreen()">
+
+            <button type="button" class="pd-image-close" (click)="closeImageFullscreen(); $event.stopPropagation()">
+              <i class="bi bi-x-lg"></i>
+            </button>
+
+            <img [src]="fullscreenImage" [alt]="publicTitle" class="pd-fullscreen-img"
+              (click)="$event.stopPropagation()" />
+
+          </div>
+        </div>
+
+        <!-- Summary Card -->
+        <div class="pd-summary">
+          <div class="pd-badges">
+            <span class="pd-badge pd-badge-sub">{{ getTransactionTypeLabel(property.transaction_type) }}</span>
+            <span class="pd-badge pd-badge-cat">{{ getPropertyTypeLabel(property.property_type) }}</span>
+            <span class="pd-badge pd-badge-construction" *ngIf="property.is_under_construction">
+              <i class="bi bi-hammer me-1"></i>Under Construction
+            </span>
+            <span class="pd-badge pd-badge-ready" *ngIf="!property.is_under_construction">
+              <i class="bi bi-check-circle-fill me-1"></i>Ready to Move
+            </span>
+            <span class="pd-badge pd-badge-verified" *ngIf="property.is_verified">
+              <i class="bi bi-patch-check-fill me-1"></i>Verified
+            </span>
+            <span class="pd-badge pd-badge-featured" *ngIf="property.is_featured">
+              <i class="bi bi-star-fill me-1"></i>Featured
+            </span>
+          </div>
+
+          <h1 class="pd-title">{{ publicTitle }}</h1>
+
+          <p class="pd-location">
+            <i class="bi bi-geo-alt-fill"></i>
+            <span>{{ locationLine }}</span>
+          </p>
+
+          <div class="pd-price-row">
+            <span class="pd-price">{{ formatPrice(minBasePrice) }}</span>
+            <span class="pd-price-note" *ngIf="minBasePrice > 0">Starting price</span>
+          </div>
+
+          <p class="pd-desc">{{ property.description }}</p>
+
+          <button class="pd-btn pd-btn-primary pd-btn-block" (click)="goToEnquiry()">
+            <i class="bi bi-chat-dots-fill me-2"></i>Enquire Now
+          </button>
+        </div>
+      </div>
+
+      <!-- ===== KEY DETAILS ===== -->
+      <div class="pd-card">
+        <div class="pd-section-title">
+          <i class="bi bi-info-circle me-2"></i>Key Details
+        </div>
+        <div class="pd-detail-grid">
+          <div class="pd-detail-item" *ngIf="property.total_area">
+            <span class="pd-detail-label"><i class="bi bi-rulers me-1"></i>Total Area</span>
+            <span class="pd-detail-value">{{ property.total_area }} sq.ft</span>
+          </div>
+          <div class="pd-detail-item" *ngIf="property.plot_area">
+            <span class="pd-detail-label"><i class="bi bi-aspect-ratio me-1"></i>Plot Area</span>
+            <span class="pd-detail-value">{{ property.plot_area }} sq.ft</span>
+          </div>
+          <div class="pd-detail-item" *ngIf="property.total_floors">
+            <span class="pd-detail-label"><i class="bi bi-building me-1"></i>Total Floors</span>
+            <span class="pd-detail-value">{{ property.total_floors }}</span>
+          </div>
+          <div class="pd-detail-item" *ngIf="property.total_towers">
+            <span class="pd-detail-label"><i class="bi bi-buildings me-1"></i>Total Towers</span>
+            <span class="pd-detail-value">{{ property.total_towers }}</span>
+          </div>
+          <div class="pd-detail-item" *ngIf="property.possession_date">
+            <span class="pd-detail-label"><i class="bi bi-calendar-check me-1"></i>Possession</span>
+            <span class="pd-detail-value">{{ property.possession_date }}</span>
+          </div>
+          <div class="pd-detail-item" *ngIf="showCompletion">
+            <span class="pd-detail-label"><i class="bi bi-speedometer2 me-1"></i>Completion</span>
+            <span class="pd-detail-value">{{ property.completion_percentage }}%</span>
+          </div>
+          <div class="pd-detail-item">
+            <span class="pd-detail-label"><i class="bi bi-hammer me-1"></i>Construction</span>
+            <span class="pd-detail-value">
+              {{ property.is_under_construction ? 'Under Construction' : 'Ready to Move' }}
+            </span>
+          </div>
+          <div class="pd-detail-item" *ngIf="property.is_negotiable">
+            <span class="pd-detail-label"><i class="bi bi-cash-coin me-1"></i>Negotiable</span>
+            <span class="pd-detail-value">Yes</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== FEATURES ===== -->
+      <div class="pd-card" *ngIf="featureEntries.length">
+        <div class="pd-section-title">
+          <i class="bi bi-list-stars me-2"></i>Highlights
+        </div>
+        <div class="pd-features-grid">
+          <div class="pd-feature-item" *ngFor="let f of featureEntries">
+            <span class="pd-feature-key">{{ formatKey(f.key) }}</span>
+            <span class="pd-feature-val">{{ formatFeatureValue(f.value) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== LOCATION ===== -->
+      <div class="pd-card">
+        <div class="pd-section-title">
+          <i class="bi bi-geo-alt me-2"></i>Location
+        </div>
+        <p class="pd-address">{{ locationLine }}</p>
+
+        <div class="pd-loc-row">
+          <div class="pd-loc-item" *ngIf="property.city">
+            <span class="pd-loc-label"><i class="bi bi-geo-alt me-1"></i>City</span>
+            <span class="pd-loc-value">{{ property.city }}</span>
+          </div>
+          <div class="pd-loc-item" *ngIf="property.area">
+            <span class="pd-loc-label"><i class="bi bi-map me-1"></i>Area</span>
+            <span class="pd-loc-value">{{ property.area }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== VIDEOS ===== -->
+      <div class="pd-card" *ngIf="property.videos?.length">
+        <div class="pd-section-title">
+          <i class="bi bi-camera-video me-2"></i>Property Videos
+        </div>
+        <div class="pd-video-grid">
+          <div class="pd-video-item" *ngFor="let v of property.videos">
+            <video controls preload="metadata" class="pd-video">
+              <source [src]="v.video_s3_key" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            <p class="pd-video-title" *ngIf="v.title">{{ v.title }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== AMENITIES ===== -->
+      <div class="pd-card" *ngIf="property.amenities?.length">
+        <div class="pd-section-title">
+          <i class="bi bi-stars me-2"></i>Amenities
+        </div>
+        <div class="pd-amenity-grid">
+          <div class="pd-amenity" *ngFor="let a of property.amenities">
+            <i [ngClass]="a.icon ? 'bi ' + a.icon : 'bi bi-check-circle-fill'"></i>
+            <span>{{ a.name }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== FLAT TYPES / CONFIGURATIONS ===== -->
+      <div class="pd-card" *ngIf="property.flat_types?.length">
+        <div class="pd-section-title">
+          <i class="bi bi-house-door me-2"></i>Configurations
+        </div>
+        <div class="pd-flat-grid">
+          <div class="pd-flat" *ngFor="let ft of property.flat_types">
+            <div class="pd-flat-head">
+              <h4>{{ ft.flat_type }}</h4>
+              <span class="pd-flat-avail" [class.yes]="ft.is_available" [class.no]="!ft.is_available">
+                {{ ft.is_available ? 'Available' : 'Sold Out' }}
+              </span>
+            </div>
+
+            <div class="pd-flat-row" *ngIf="ft.area_sqft">
+              <span>Total Area</span><strong>{{ ft.area_sqft }} sq.ft</strong>
+            </div>
+            <div class="pd-flat-row" *ngIf="ft.carpet_area">
+              <span>Carpet Area</span><strong>{{ ft.carpet_area }} sq.ft</strong>
+            </div>
+            <div class="pd-flat-row" *ngIf="ft.built_up_area">
+              <span>Built-up</span><strong>{{ ft.built_up_area }} sq.ft</strong>
+            </div>
+            <div class="pd-flat-row" *ngIf="ft.balcony_area">
+              <span>Balcony</span><strong>{{ ft.balcony_area }} sq.ft</strong>
+            </div>
+            <div class="pd-flat-row" *ngIf="ft.bedrooms">
+              <span>Bedrooms</span><strong>{{ ft.bedrooms }}</strong>
+            </div>
+            <div class="pd-flat-row" *ngIf="ft.bathrooms">
+              <span>Bathrooms</span><strong>{{ ft.bathrooms }}</strong>
+            </div>
+            <div class="pd-flat-row" *ngIf="ft.balconies">
+              <span>Balconies</span><strong>{{ ft.balconies }}</strong>
+            </div>
+            <div class="pd-flat-row" *ngIf="ft.kitchens">
+              <span>Kitchens</span><strong>{{ ft.kitchens }}</strong>
+            </div>
+            <div class="pd-flat-row" *ngIf="ft.parking_count">
+              <span>Parking</span><strong>{{ ft.parking_count }}</strong>
+            </div>
+
+            <p class="pd-flat-desc" *ngIf="ft.description">{{ ft.description }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== PRICING SLABS ===== -->
+      <div class="pd-card" *ngIf="property.pricing_slabs?.length">
+        <div class="pd-section-title">
+          <i class="bi bi-currency-rupee me-2"></i>Pricing
+        </div>
+
+        <div class="pd-price-slabs">
+          <div class="pd-slab" *ngFor="let ps of property.pricing_slabs">
+
+            <div class="pd-slab-head">
+              <h4 class="pd-slab-title">
+                {{ ps.flat_type || 'Unit' }}
+                <small *ngIf="ps.floor !== null && ps.floor !== undefined">
+                  Floor {{ ps.floor }}
+                </small>
+              </h4>
+
+              <div class="pd-slab-badges">
+                <span class="pd-slab-badge" [class.avail]="ps.is_available" [class.na]="!ps.is_available">
+                  {{ ps.is_available ? 'Available' : 'Unavailable' }}
+                </span>
+                <span class="pd-slab-badge discount" *ngIf="toNumber(ps.discount_percentage) > 0">
+                  {{ ps.discount_percentage }}% Off
+                </span>
+                <span class="pd-slab-badge gst" *ngIf="toNumber(ps.gst_percentage) > 0">
+                  GST {{ ps.gst_percentage }}%
+                </span>
+              </div>
+            </div>
+
+            <div class="pd-slab-grid">
+              <div class="pd-slab-item" *ngIf="ps.base_price">
+                <span class="pd-slab-label">Base Price</span>
+                <span class="pd-slab-value highlight">{{ formatPrice(ps.base_price) }}</span>
+              </div>
+              <div class="pd-slab-item" *ngIf="ps.price_per_sqft">
+                <span class="pd-slab-label">Price / sq.ft</span>
+                <span class="pd-slab-value">{{ formatPrice(ps.price_per_sqft) }}</span>
+              </div>
+              <div class="pd-slab-item" *ngIf="ps.booking_amount">
+                <span class="pd-slab-label">Booking Amount</span>
+                <span class="pd-slab-value">{{ formatPrice(ps.booking_amount) }}</span>
+              </div>
+            </div>
+
+            <div class="pd-slab-sub" *ngIf="ps.payment_schedule && hasEntries(ps.payment_schedule)">
+              <div class="pd-slab-sub-title">Payment Schedule</div>
+              <div class="pd-schedule">
+                <span class="pd-schedule-chip" *ngFor="let kv of toEntries(ps.payment_schedule)">
+                  <span>{{ formatKey(kv.key) }}</span>
+                  <strong>{{ kv.value }}</strong>
+                </span>
+              </div>
+            </div>
+
+            <div class="pd-slab-sub" *ngIf="ps.additional_charges && hasEntries(ps.additional_charges)">
+              <div class="pd-slab-sub-title">Additional Charges</div>
+              <div class="pd-schedule">
+                <span class="pd-schedule-chip" *ngFor="let kv of toEntries(ps.additional_charges)">
+                  <span>{{ formatKey(kv.key) }}</span>
+                  <strong>{{ formatPrice(kv.value) }}</strong>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== FLOORS ===== -->
+      <div class="pd-card" *ngIf="property.floors?.length">
+        <div class="pd-section-title">
+          <i class="bi bi-list-ol me-2"></i>Floor Availability
+        </div>
+        <div class="pd-floors">
+          <div class="pd-floor" *ngFor="let f of property.floors">
+            <span class="pd-floor-name">
+              <i class="bi bi-layers me-2"></i>{{ f.floor_name }}
+            </span>
+            <span class="pd-floor-avail" [class.none]="f.available_units === 0">
+              {{ f.available_units }} / {{ f.total_units }} available
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== RERA ===== -->
+      <div class="pd-card" *ngIf="property.rera_number || property.rera_qr_code">
+        <div class="pd-section-title">
+          <i class="bi bi-patch-check me-2"></i>RERA Details
+        </div>
+
+        <div class="pd-rera">
+          <div class="pd-rera-block">
+            <div class="pd-rera-number" *ngIf="property.rera_number">
+              <i class="bi bi-shield-check"></i>
+              <!-- RERA No: {{ property.rera_number }} -->
+              RERA No: {{ maskReraNumber(property.rera_number) }}
+            </div>
+          </div>
+
+          <div class="pd-rera-qr" *ngIf="property.rera_qr_code">
+            <img [src]="property.rera_qr_code" alt="RERA QR Code" />
+            <p>Scan for RERA</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== CTA ===== -->
+      <div class="pd-cta">
+        <div class="pd-cta-text">
+          <h3>Interested in this property?</h3>
+          <p>Send an enquiry and we'll get back to you soon.</p>
+        </div>
+        <button class="pd-btn pd-btn-primary" (click)="goToEnquiry()">
+          <i class="bi bi-chat-dots-fill me-2"></i>Enquire Now
+        </button>
+      </div>
+
+    </div>
+  </ng-container>
+</div>

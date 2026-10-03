@@ -1,0 +1,367 @@
+/* ============================================================
+   PROFILE – Professional Dashboard
+   ============================================================ */
+
+/* ---- WRAPPER ---- */
+.prof-wrapper {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #f1f4f9;
+    min-height: 100vh;
+}
+
+/* ---- CONTAINER ---- */
+.prof-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem 2rem;
+}
+
+/* ============================================================
+   HERO / HEADER – Dark gradient with avatar
+   ============================================================ */
+.prof-hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+    padding: 3rem 2rem 2.5rem;
+    margin-bottom: -1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+.prof-hero::after {
+    content: '';
+    position: absolute;
+    top: -40%;
+    right: -10%;
+    width: 50%;
+    height: 200%;
+    background: radial-gradient(circle at 70% 30%, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.prof-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+}
+
+.prof-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #818cf8, #6366f1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.25);
+}
+.prof-avatar i {
+    font-size: 36px;
+    color: #fff;
+}
+
+.prof-user-details {
+    flex: 1;
+}
+.prof-user-details h2 {
+    margin: 0;
+    font-weight: 700;
+    color: #fff;
+    font-size: 1.8rem;
+    letter-spacing: -0.02em;
+}
+.prof-user-details p {
+    margin: 0.2rem 0 0;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+}
+
+.prof-hero-actions {
+    display: flex;
+    gap: 0.8rem;
+    margin-left: auto;
+}
+.prof-logout-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    border-radius: 40px;
+    padding: 0.6rem 1.4rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    backdrop-filter: blur(4px);
+}
+.prof-logout-btn:hover {
+    background: rgba(239, 68, 68, 0.25);
+    border-color: #dc2626;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(220, 38, 38, 0.15);
+}
+
+/* ============================================================
+   STATS ROW – White cards with shadow
+   ============================================================ */
+.prof-stats {
+    margin-top: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+.prof-stat-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 1.2rem 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(226, 232, 240, 0.6);
+    transition: transform 0.2s, box-shadow 0.3s;
+}
+.prof-stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.04);
+}
+
+.prof-stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+}
+.stat-cart .prof-stat-icon {
+    background: #fffbeb;
+    color: #f59e0b;
+}
+.stat-enquiries .prof-stat-icon {
+    background: #eef2ff;
+    color: #6366f1;
+}
+.stat-orders .prof-stat-icon {
+    background: #fef2f2;
+    color: #ef4444;
+}
+
+.prof-stat-info h6 {
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: #94a3b8;
+}
+.prof-stat-info span {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #1e293b;
+    line-height: 1.2;
+}
+
+/* ============================================================
+   RECENTLY VIEWED PRODUCTS – Horizontal scroll
+   ============================================================ */
+.prof-recent-section {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 1.8rem 2rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(226, 232, 240, 0.6);
+    margin-bottom: 2.5rem;
+}
+
+.prof-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.2rem;
+}
+.prof-section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.prof-section-title i {
+    color: #6366f1;
+    font-size: 1.2rem;
+}
+.prof-section-link {
+    color: #6366f1;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+.prof-section-link:hover {
+    text-decoration: underline;
+}
+
+.prof-recent-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+}
+@media (max-width: 768px) {
+    .prof-recent-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+@media (max-width: 480px) {
+    .prof-recent-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.prof-recent-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem;
+    border-radius: 14px;
+    background: #fafbfc;
+    border: 1px solid #e2e8f0;
+    transition: all 0.25s;
+    cursor: pointer;
+    text-decoration: none;
+    color: #1e293b;
+}
+.prof-recent-item:hover {
+    border-color: #6366f1;
+    background: #ffffff;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.04);
+}
+.prof-recent-img {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 1px solid #eef2f6;
+    flex-shrink: 0;
+}
+.prof-recent-info {
+    flex: 1;
+    min-width: 0;
+}
+.prof-recent-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.prof-recent-price {
+    color: #22c55e;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+.prof-recent-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 2rem 0;
+    color: #94a3b8;
+}
+.prof-recent-empty i {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #cbd5e1;
+}
+
+/* ============================================================
+   QUICK ACTIONS – Grid
+   ============================================================ */
+.prof-actions-section {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 1.8rem 2rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(226, 232, 240, 0.6);
+}
+
+.prof-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1.2rem;
+    margin-top: 0.5rem;
+}
+.prof-action-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1.6rem 0.8rem;
+    background: #fafbfc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 16px;
+    text-decoration: none;
+    color: #1e293b;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    text-align: center;
+}
+.prof-action-tile:hover {
+    border-color: #6366f1;
+    background: #ffffff;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.04);
+}
+.prof-action-tile .tile-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    transition: transform 0.2s;
+}
+.prof-action-tile:hover .tile-icon {
+    transform: scale(1.04);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+    .prof-hero-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    .prof-hero-actions {
+        margin-left: 0;
+        width: 100%;
+    }
+    .prof-container {
+        padding: 0 0.8rem 1.5rem;
+    }
+    .prof-stat-card {
+        padding: 0.8rem;
+    }
+    .prof-stat-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+    .prof-stat-info span {
+        font-size: 1.3rem;
+    }
+    .prof-recent-section,
+    .prof-actions-section {
+        padding: 1.2rem;
+    }
+}

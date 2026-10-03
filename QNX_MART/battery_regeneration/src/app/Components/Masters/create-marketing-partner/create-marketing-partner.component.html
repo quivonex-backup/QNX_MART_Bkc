@@ -1,0 +1,356 @@
+<div class="mp-page">
+
+  <!-- Header -->
+  <div class="mp-header">
+    <div class="mp-header-text">
+      <h2><i class="bi bi-megaphone-fill me-2"></i>Marketing Partner Application</h2>
+      <p>Join our network — earn commissions by promoting our products</p>
+    </div>
+  </div>
+
+  <!-- Alerts -->
+  <div class="mp-body">
+    <div class="mp-alert mp-alert-success" *ngIf="showSuccess">
+      <i class="bi bi-check-circle-fill me-2"></i>
+      <strong>Application Submitted!</strong> Our team will review and contact you within 3–5 business days.
+    </div>
+    <div class="mp-alert mp-alert-danger" *ngIf="showError">
+      <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ errorMessage }}
+    </div>
+
+    <!-- Step Progress -->
+    <div class="mp-steps">
+      <div class="mp-step-item" *ngFor="let s of [1,2,3,4]" [class.mp-step-active]="currentStep >= s"
+        [class.mp-step-done]="currentStep > s">
+        <div class="mp-step-circle">
+          <i class="bi bi-check" *ngIf="currentStep > s"></i>
+          <span *ngIf="currentStep <= s">{{ s }}</span>
+        </div>
+        <span class="mp-step-label">{{ ['Personal','Business','Bank','Marketing'][s-1] }}</span>
+      </div>
+    </div>
+
+    <form [formGroup]="partnerForm" (ngSubmit)="onSubmit()">
+
+      <!-- ===== STEP 1: PERSONAL INFO ===== -->
+      <div *ngIf="currentStep === 1">
+        <div class="mp-section">
+          <div class="mp-section-title"><i class="bi bi-person-badge me-2"></i>Personal Information</div>
+          <div class="mp-grid-2">
+
+            <div class="mp-field">
+              <label class="mp-label">Full Name <span class="mp-req">*</span></label>
+              <input type="text" class="mp-input" formControlName="fullName" placeholder="Enter your full name"
+                [class.mp-invalid]="partnerForm.get('fullName')?.invalid && partnerForm.get('fullName')?.touched" />
+              <span class="mp-err"
+                *ngIf="partnerForm.get('fullName')?.errors?.['required'] && partnerForm.get('fullName')?.touched">Full
+                name is required</span>
+              <span class="mp-err" *ngIf="partnerForm.get('fullName')?.errors?.['minlength']">Minimum 3
+                characters</span>
+            </div>
+
+            <div class="mp-field">
+              <label class="mp-label">Email Address <span class="mp-req">*</span></label>
+              <input type="email" class="mp-input" formControlName="email" placeholder="you@example.com"
+                [class.mp-invalid]="partnerForm.get('email')?.invalid && partnerForm.get('email')?.touched" />
+              <span class="mp-err"
+                *ngIf="partnerForm.get('email')?.errors?.['required'] && partnerForm.get('email')?.touched">Email is
+                required</span>
+              <span class="mp-err" *ngIf="partnerForm.get('email')?.errors?.['email']">Enter a valid email</span>
+            </div>
+
+            <div class="mp-field">
+              <label class="mp-label">Mobile Number <span class="mp-req">*</span></label>
+              <input type="tel" class="mp-input" formControlName="mobile" placeholder="9876543210" maxlength="10"
+                [class.mp-invalid]="partnerForm.get('mobile')?.invalid && partnerForm.get('mobile')?.touched" />
+              <span class="mp-err"
+                *ngIf="partnerForm.get('mobile')?.errors?.['required'] && partnerForm.get('mobile')?.touched">Mobile is
+                required</span>
+              <span class="mp-err" *ngIf="partnerForm.get('mobile')?.errors?.['pattern']">Enter valid 10-digit
+                number</span>
+            </div>
+
+            <div class="mp-field">
+              <label class="mp-label">Aadhar Card Number <span class="mp-req">*</span></label>
+              <input type="text" class="mp-input" formControlName="aadharCard" placeholder="123456789012" maxlength="12"
+                (input)="formatAadhar($event)"
+                [class.mp-invalid]="partnerForm.get('aadharCard')?.invalid && partnerForm.get('aadharCard')?.touched" />
+              <span class="mp-err"
+                *ngIf="partnerForm.get('aadharCard')?.errors?.['required'] && partnerForm.get('aadharCard')?.touched">Aadhar
+                is required</span>
+              <span class="mp-err" *ngIf="partnerForm.get('aadharCard')?.errors?.['pattern']">Enter valid 12-digit
+                Aadhar</span>
+            </div>
+
+            <div class="mp-field">
+              <label class="mp-label">PAN Card Number <span class="mp-req">*</span></label>
+              <input type="text" class="mp-input" formControlName="panCard" placeholder="ABCDE1234F"
+                (input)="formatPanCard($event)"
+                [class.mp-invalid]="partnerForm.get('panCard')?.invalid && partnerForm.get('panCard')?.touched" />
+              <span class="mp-err"
+                *ngIf="partnerForm.get('panCard')?.errors?.['required'] && partnerForm.get('panCard')?.touched">PAN is
+                required</span>
+              <span class="mp-err" *ngIf="partnerForm.get('panCard')?.errors?.['pattern']">Enter valid PAN (e.g.
+                ABCDE1234F)</span>
+            </div>
+
+            <div class="mp-field">
+              <label class="mp-label">Profile Photo</label>
+              <input type="file" class="mp-input mp-file" (change)="onFileSelect($event)" accept="image/*" />
+              <span class="mp-hint">JPG, PNG — max 2MB</span>
+              <div class="mp-img-preview" *ngIf="profilePicPreview">
+                <img [src]="profilePicPreview" alt="Preview" />
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== STEP 2: BUSINESS DETAILS ===== -->
+      <div *ngIf="currentStep === 2">
+        <div class="mp-section">
+          <div class="mp-section-title"><i class="bi bi-building me-2"></i>Business Details</div>
+          <div class="mp-grid-2">
+
+            <div class="mp-field mp-field-full">
+              <label class="mp-label">Business / Organization Name <span class="mp-req">*</span></label>
+              <input type="text" class="mp-input" formControlName="businessName" placeholder="Your Business Name"
+                [class.mp-invalid]="partnerForm.get('businessName')?.invalid && partnerForm.get('businessName')?.touched" />
+              <span class="mp-err"
+                *ngIf="partnerForm.get('businessName')?.invalid && partnerForm.get('businessName')?.touched">Business
+                name is required</span>
+            </div>
+
+            <div class="mp-field">
+              <label class="mp-label">Business Type <span class="mp-req">*</span></label>
+              <div class="mp-select-wrap">
+                <select class="mp-input mp-select" formControlName="businessType"
+                  [class.mp-invalid]="partnerForm.get('businessType')?.invalid && partnerForm.get('businessType')?.touched">
+                  <option value="">-- Select Type --</option>
+                  <option value="individual">Individual / Sole Proprietor</option>
+                  <option value="partnership">Partnership Firm</option>
+                  <option value="private_limited">Private Limited Company</option>
+                  <option value="llp">LLP</option>
+                  <option value="trust">Trust / NGO</option>
+                  <option value="other">Other</option>
+                </select>
+                <i class="bi bi-chevron-down mp-select-icon"></i>
+              </div>
+              <span class="mp-err"
+                *ngIf="partnerForm.get('businessType')?.invalid && partnerForm.get('businessType')?.touched">Please
+                select business type</span>
+            </div>
+
+            <div class="mp-field">
+              <label class="mp-label">GST Number <span class="mp-hint-inline">(optional)</span></label>
+              <input type="text" class="mp-input" formControlName="gstNumber" placeholder="22AAAAA0000A1Z5"
+                (input)="formatGST($event)" />
+              <span class="mp-hint">Recommended for business verification</span>
+            </div>
+
+            <div class="mp-field mp-field-full">
+              <label class="mp-label">Business Address <span class="mp-req">*</span></label>
+              <textarea class="mp-input" rows="2" formControlName="businessAddress" placeholder="Full business address"
+                [class.mp-invalid]="partnerForm.get('businessAddress')?.invalid && partnerForm.get('businessAddress')?.touched"></textarea>
+              <span class="mp-err"
+                *ngIf="partnerForm.get('businessAddress')?.invalid && partnerForm.get('businessAddress')?.touched">Address
+                is required</span>
+            </div>
+
+            <div class="mp-field">
+              <label class="mp-label">City <span class="mp-req">*</span></label>
+              <input type="text" class="mp-input" formControlName="city" placeholder="City"
+                [class.mp-invalid]="partnerForm.get('city')?.invalid && partnerForm.get('city')?.touched" />
+              <span class="mp-err" *ngIf="partnerForm.get('city')?.invalid && partnerForm.get('city')?.touched">City is
+                required</span>
+            </div>
+
+            <div class="mp-field">
+              <label class="mp-label">State <span class="mp-req">*</span></label>
+              <input type="text" class="mp-input" formControlName="state" placeholder="State"
+                [class.mp-invalid]="partnerForm.get('state')?.invalid && partnerForm.get('state')?.touched" />
+              <span class="mp-err" *ngIf="partnerForm.get('state')?.invalid && partnerForm.get('state')?.touched">State
+                is required</span>
+            </div>
+
+            <div class="mp-field">
+              <label class="mp-label">Pincode <span class="mp-req">*</span></label>
+              <input type="text" class="mp-input" formControlName="pincode" placeholder="6-digit pincode" maxlength="6"
+                [class.mp-invalid]="partnerForm.get('pincode')?.invalid && partnerForm.get('pincode')?.touched" />
+              <span class="mp-err"
+                *ngIf="partnerForm.get('pincode')?.errors?.['required'] && partnerForm.get('pincode')?.touched">Pincode
+                is required</span>
+              <span class="mp-err" *ngIf="partnerForm.get('pincode')?.errors?.['pattern']">Enter valid 6-digit
+                pincode</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== STEP 3: BANK DETAILS ===== -->
+      <div *ngIf="currentStep === 3">
+        <div class="mp-section">
+          <div class="mp-section-title"><i class="bi bi-bank2 me-2"></i>Bank Details</div>
+          <div class="mp-grid-2">
+
+            <div class="mp-field mp-field-full">
+              <label class="mp-label">Account Holder Name <span class="mp-req">*</span></label>
+              <input type="text" class="mp-input" formControlName="accountHolderName"
+                placeholder="Name as per bank account"
+                [class.mp-invalid]="partnerForm.get('accountHolderName')?.invalid && partnerForm.get('accountHolderName')?.touched" />
+              <span class="mp-err"
+                *ngIf="partnerForm.get('accountHolderName')?.invalid && partnerForm.get('accountHolderName')?.touched">Account
+                holder name is required</span>
+            </div>
+
+            <div class="mp-field">
+              <label class="mp-label">Bank Name <span class="mp-req">*</span></label>
+              <input type="text" class="mp-input" formControlName="bankName" placeholder="e.g. State Bank of India"
+                [class.mp-invalid]="partnerForm.get('bankName')?.invalid && partnerForm.get('bankName')?.touched" />
+              <span class="mp-err"
+                *ngIf="partnerForm.get('bankName')?.invalid && partnerForm.get('bankName')?.touched">Bank name is
+                required</span>
+            </div>
+
+            <div class="mp-field">
+              <label class="mp-label">Account Number <span class="mp-req">*</span></label>
+              <input type="text" class="mp-input" formControlName="accountNumber" placeholder="Bank account number"
+                [class.mp-invalid]="partnerForm.get('accountNumber')?.invalid && partnerForm.get('accountNumber')?.touched" />
+              <span class="mp-err"
+                *ngIf="partnerForm.get('accountNumber')?.invalid && partnerForm.get('accountNumber')?.touched">Account
+                number is required</span>
+            </div>
+
+            <div class="mp-field">
+              <label class="mp-label">IFSC Code <span class="mp-req">*</span></label>
+              <input type="text" class="mp-input" formControlName="ifscCode" placeholder="SBIN0001234"
+                (input)="formatIFSC($event)"
+                [class.mp-invalid]="partnerForm.get('ifscCode')?.invalid && partnerForm.get('ifscCode')?.touched" />
+              <span class="mp-err"
+                *ngIf="partnerForm.get('ifscCode')?.errors?.['required'] && partnerForm.get('ifscCode')?.touched">IFSC
+                is required</span>
+              <span class="mp-err" *ngIf="partnerForm.get('ifscCode')?.errors?.['pattern']">Enter valid 11-char
+                IFSC</span>
+            </div>
+
+            <div class="mp-field">
+              <label class="mp-label">Branch Name</label>
+              <input type="text" class="mp-input" formControlName="branchName" placeholder="Branch name (optional)" />
+            </div>
+
+          </div>
+          <div class="mp-info-box">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            Commission payments will be transferred to this bank account. Please ensure all details are correct.
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== STEP 4: MARKETING INFO ===== -->
+      <div *ngIf="currentStep === 4">
+        <div class="mp-section">
+          <div class="mp-section-title"><i class="bi bi-megaphone-fill me-2"></i>Marketing Information</div>
+          <div class="mp-grid-2">
+
+            <div class="mp-field mp-field-full">
+              <label class="mp-label">Marketing Channels</label>
+              <div class="mp-check-grid">
+                <label class="mp-check-item">
+                  <input type="checkbox" formControlName="channelSocialMedia" />
+                  <span><i class="bi bi-instagram me-1"></i>Social Media</span>
+                </label>
+                <label class="mp-check-item">
+                  <input type="checkbox" formControlName="channelReferral" />
+                  <span><i class="bi bi-people-fill me-1"></i>Referral</span>
+                </label>
+                <label class="mp-check-item">
+                  <input type="checkbox" formControlName="channelOnline" />
+                  <span><i class="bi bi-google me-1"></i>Online Ads</span>
+                </label>
+                <label class="mp-check-item">
+                  <input type="checkbox" formControlName="channelEvents" />
+                  <span><i class="bi bi-calendar-event me-1"></i>Events</span>
+                </label>
+                <label class="mp-check-item">
+                  <input type="checkbox" formControlName="channelOther" />
+                  <span><i class="bi bi-three-dots me-1"></i>Other</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="mp-field mp-field-full">
+              <label class="mp-label">Social Media Handles</label>
+              <input type="text" class="mp-input" formControlName="socialMediaHandles"
+                placeholder="Instagram: @handle, Facebook: /page, etc." />
+            </div>
+
+            <div class="mp-field">
+              <label class="mp-label">Target Audience / Niche</label>
+              <input type="text" class="mp-input" formControlName="targetAudience"
+                placeholder="e.g. College students, Working professionals" />
+            </div>
+
+            <div class="mp-field">
+              <label class="mp-label">Estimated Monthly Reach</label>
+              <div class="mp-select-wrap">
+                <select class="mp-input mp-select" formControlName="estimatedReach">
+                  <option value="">-- Select reach --</option>
+                  <option value="<1000">Less than 1,000</option>
+                  <option value="1000-5000">1,000 – 5,000</option>
+                  <option value="5000-10000">5,000 – 10,000</option>
+                  <option value="10000-50000">10,000 – 50,000</option>
+                  <option value=">50000">More than 50,000</option>
+                </select>
+                <i class="bi bi-chevron-down mp-select-icon"></i>
+              </div>
+            </div>
+
+            <div class="mp-field mp-field-full">
+              <label class="mp-label">Previous Marketing Experience</label>
+              <textarea class="mp-input" rows="3" formControlName="experience"
+                placeholder="Describe your previous campaigns, results, etc."></textarea>
+            </div>
+
+            <div class="mp-field mp-field-full">
+              <label class="mp-label">Why do you want to partner with us?</label>
+              <textarea class="mp-input" rows="2" formControlName="whyPartner"
+                placeholder="Share your motivation and how you can add value"></textarea>
+            </div>
+
+            <div class="mp-field mp-field-full">
+              <label class="mp-terms">
+                <input type="checkbox" formControlName="termsAccepted" />
+                <span>I agree to the <a href="#" (click)="$event.preventDefault()">Terms & Conditions</a> and
+                  <a href="#" (click)="$event.preventDefault()">Commission Policy</a> <span
+                    class="mp-req">*</span></span>
+              </label>
+              <span class="mp-err"
+                *ngIf="partnerForm.get('termsAccepted')?.invalid && partnerForm.get('termsAccepted')?.touched">
+                You must accept the terms to proceed
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Actions -->
+      <div class="mp-footer">
+        <button type="button" class="mp-btn-secondary" *ngIf="currentStep > 1" (click)="previousStep()">
+          <i class="bi bi-arrow-left me-1"></i> Back
+        </button>
+        <button type="button" class="mp-btn-primary" *ngIf="currentStep < 4" (click)="nextStep()">
+          Next <i class="bi bi-arrow-right ms-1"></i>
+        </button>
+        <button type="submit" class="mp-btn-submit" *ngIf="currentStep === 4"
+          [disabled]="partnerForm.invalid || isSubmitting">
+          <span *ngIf="!isSubmitting"><i class="bi bi-send-fill me-1"></i> Submit Application</span>
+          <span *ngIf="isSubmitting"><span class="mp-spinner"></span> Submitting...</span>
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

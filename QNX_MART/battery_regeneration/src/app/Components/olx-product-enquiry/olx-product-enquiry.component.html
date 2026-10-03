@@ -1,0 +1,158 @@
+<div class="enq-page">
+
+  <!-- ===== HEADER ===== -->
+  <div class="enq-header">
+    <button class="enq-back-btn" (click)="goBack()" title="Back">
+      <i class="bi bi-arrow-left"></i>
+    </button>
+    <div class="enq-header-text">
+      <h2><i class="bi bi-headset me-2"></i>Product Enquiry</h2>
+      <p>Fill in your details and we'll get back to you shortly</p>
+    </div>
+  </div>
+
+  <div class="enq-container">
+
+    <!-- ===== PRODUCT SUMMARY CARD ===== -->
+    <!-- <div class="enq-product-card" *ngIf="product"> -->
+    <div class="enq-product-card d-flex flex-column flex-md-row-reverse align-items-center gap-4" *ngIf="product">
+
+      <!-- Image (right side, clickable for fullscreen) -->
+      <img [src]="product.images[0]?.image_url" [alt]="product.title" class="enq-product-img clickable-img"
+        (click)="openFullScreen(product.images[0]?.image_url)" title="Click to view full screen" />
+
+      <div class="enq-product-info">
+
+        <div class="enq-product-tags">
+          <span class="enq-tag enq-tag-cat" *ngIf="product.category_name">
+            {{ product.category_name }}
+          </span>
+          <span class="enq-tag enq-tag-brand" *ngIf="product.condition">
+            <i class="bi bi-patch-check me-1"></i>{{ getConditionLabel(product.condition) }}
+          </span>
+          <span class="enq-tag enq-tag-featured" *ngIf="product.is_featured">
+            <i class="bi bi-star-fill me-1"></i>Featured
+          </span>
+        </div>
+
+        <h3 class="enq-product-name">{{ product.title }}</h3>
+
+        <div class="enq-product-price-row">
+          <span class="enq-price">{{ formatPrice(product.price) }}</span>
+          <span class="enq-savings" *ngIf="product.is_negotiable">Negotiable</span>
+        </div>
+
+        <p class="enq-product-loc" *ngIf="shortLocation">
+          <i class="bi bi-geo-alt-fill"></i>
+          {{ shortLocation }}
+        </p>
+
+        <!-- Quick specs from attributes -->
+        <div class="enq-detail-grid" *ngIf="attributeEntries.length">
+          <div class="enq-detail-item" *ngFor="let a of attributeEntries.slice(0, 4)">
+            <span class="enq-detail-label">{{ formatKey(a.key) }}</span>
+            <span class="enq-detail-value">{{ formatValue(a.value) }}</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ===== FULLSCREEN LIGHTBOX ===== -->
+    <div class="fullscreen-modal" *ngIf="isFullScreenOpen" (click)="closeFullScreen()">
+      <div class="fullscreen-content" (click)="$event.stopPropagation()">
+        <button class="fullscreen-close-btn" (click)="closeFullScreen()" title="Close">
+          <i class="bi bi-x-lg"></i>
+        </button>
+        <img [src]="currentFullScreenImg" alt="Full Screen Preview" class="fullscreen-img" />
+      </div>
+    </div>
+
+    <!-- ===== ENQUIRY FORM ===== -->
+    <div class="enq-form-card">
+      <div class="enq-section-title">
+        <i class="bi bi-person-lines-fill me-2"></i>Your Details
+      </div>
+
+      <form [formGroup]="enquiryForm" (ngSubmit)="submit()" novalidate>
+
+        <!-- Row 1: Phone number -->
+        <div class="enq-row">
+          <div class="enq-field">
+            <label>Contact Number <span class="req">*</span></label>
+            <div class="enq-input-wrap" [class.error]="isInvalid('phone_number')">
+              <i class="bi bi-telephone-fill enq-icon"></i>
+              <input type="text" inputmode="numeric" formControlName="phone_number" placeholder="10-digit mobile number"
+                maxlength="10" (input)="allowOnlyNumbers($event)" />
+            </div>
+            <span class="enq-error" *ngIf="isInvalid('phone_number')">
+              <ng-container *ngIf="f('phone_number')?.errors?.['required']">
+                Contact number is required.
+              </ng-container>
+              <ng-container *ngIf="f('phone_number')?.errors?.['pattern']">
+                Enter a valid 10-digit number.
+              </ng-container>
+            </span>
+          </div>
+
+          <!-- empty spacer for 2-col layout -->
+          <div class="enq-field"></div>
+        </div>
+
+        <!-- Row 2: Message -->
+        <div class="enq-field enq-field-full">
+          <label>Message <span class="req">*</span></label>
+          <div class="enq-input-wrap" [class.error]="isInvalid('message')">
+            <i class="bi bi-chat-text-fill enq-icon enq-icon-top"></i>
+            <textarea formControlName="message" rows="4"
+              placeholder="Describe your requirement in detail (e.g. Is this product still available?)"></textarea>
+          </div>
+          <span class="enq-error" *ngIf="isInvalid('message')">
+            <ng-container *ngIf="f('message')?.errors?.['required']">
+              Message is required.
+            </ng-container>
+            <ng-container *ngIf="f('message')?.errors?.['minlength']">
+              Minimum 10 characters required.
+            </ng-container>
+          </span>
+        </div>
+
+        <!-- ===== SUMMARY BOX ===== -->
+        <div class="enq-summary-box" *ngIf="product">
+          <div class="enq-summary-title">
+            <i class="bi bi-clipboard-check me-2"></i>Enquiry Summary
+          </div>
+          <div class="enq-summary-grid">
+            <div class="enq-summary-row">
+              <span>Product</span><strong>{{ product.title }}</strong>
+            </div>
+            <div class="enq-summary-row" *ngIf="product.category_name">
+              <span>Category</span><strong>{{ product.category_name }}</strong>
+            </div>
+            <div class="enq-summary-row" *ngIf="product.condition">
+              <span>Condition</span>
+              <strong>{{ getConditionLabel(product.condition) }}</strong>
+            </div>
+            <div class="enq-summary-row" *ngIf="shortLocation">
+              <span>Location</span><strong>{{ shortLocation }}</strong>
+            </div>
+            <div class="enq-summary-row">
+              <span>Price</span><strong>{{ formatPrice(product.price) }}</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== SUBMIT ===== -->
+        <div class="enq-submit-row">
+          <button type="submit" class="enq-submit-btn" [disabled]="submitting || !loggedIn">
+            <i class="bi" [ngClass]="submitting ? 'bi-hourglass-split' : 'bi-send-fill'"></i>
+            {{ submitting ? 'Submitting...' : 'Submit Enquiry' }}
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+</div>

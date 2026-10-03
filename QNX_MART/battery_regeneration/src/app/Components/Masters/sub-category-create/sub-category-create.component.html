@@ -1,0 +1,140 @@
+<div class="sc-page">
+
+  <!-- Page Header -->
+  <div class="sc-page-header">
+    <div class="sc-page-header-inner">
+      <button class="sc-back-btn" onclick="window.history.back()" title="Go back">
+        <i class="bi bi-arrow-left"></i>
+      </button>
+      <div>
+        <h1 class="sc-page-title">
+          <i class="bi bi-diagram-3-fill"></i>
+          Sub Category Master
+        </h1>
+        <p class="sc-page-subtitle">Create and manage sub categories</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Two Column Layout -->
+  <div class="sc-two-col">
+
+    <!-- Form Card -->
+    <div class="sc-form-card">
+      <div class="sc-card-header">
+        <span class="sc-card-title">
+          <i class="bi bi-{{ isEditMode ? 'pencil-square' : 'plus-circle-fill' }}"></i>
+          {{ isEditMode ? 'Edit Sub Category' : 'Add Sub Category' }}
+        </span>
+        <button class="sc-btn-ghost" *ngIf="isEditMode" type="button" (click)="resetForm()">
+          <i class="bi bi-x-lg"></i> Cancel Edit
+        </button>
+      </div>
+
+      <form (ngSubmit)="onSubmit()" #subForm="ngForm">
+        <div class="sc-form-body">
+          <div class="sc-form-grid">
+
+            <!-- Category -->
+            <div class="sc-field sc-field-full">
+              <label class="sc-label">Category <span class="sc-required">*</span></label>
+              <div class="sc-select-wrap">
+                <select class="sc-input sc-select" name="category" [(ngModel)]="formData.category" required>
+                  <option value="">-- Select Category --</option>
+                  <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+                </select>
+                <i class="bi bi-chevron-down sc-select-icon"></i>
+              </div>
+            </div>
+
+            <!-- Sub Category Name -->
+            <div class="sc-field sc-field-full">
+              <label class="sc-label">Sub Category Name <span class="sc-required">*</span></label>
+              <input type="text" class="sc-input" name="name" [(ngModel)]="formData.name"
+                placeholder="e.g. Men's Clothing" required />
+            </div>
+
+            <!-- Description -->
+            <div class="sc-field sc-field-full">
+              <label class="sc-label">Description</label>
+              <textarea class="sc-input sc-textarea" rows="3" name="description" [(ngModel)]="formData.description"
+                placeholder="Brief description..."></textarea>
+            </div>
+
+          </div>
+
+          <div class="sc-form-actions">
+            <button type="button" class="sc-btn-secondary" (click)="resetForm()">
+              <i class="bi bi-arrow-counterclockwise"></i> Reset
+            </button>
+            <button type="submit" class="sc-btn-primary" [disabled]="subForm.invalid">
+              <i class="bi bi-{{ isEditMode ? 'check-lg' : 'plus-lg' }}"></i>
+              {{ isEditMode ? 'Update' : 'Save' }}
+            </button>
+          </div>
+
+        </div>
+      </form>
+    </div>
+
+    <!-- Table Card -->
+    <div class="sc-table-card">
+      <div class="sc-card-header">
+        <span class="sc-card-title">
+          <i class="bi bi-list-ul"></i> Sub Category List
+        </span>
+        <span class="sc-count-badge">{{ subCategories.length }} items</span>
+      </div>
+
+      <div class="sc-table-wrap">
+        <table class="sc-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Category</th>
+              <th>Sub Category</th>
+              <th>Description</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let sc of subCategories; let i = index">
+              <td class="sc-td-num">{{ i + 1 }}</td>
+              <td class="sc-td-cat">{{ sc.category_name }}</td>
+              <td class="sc-td-name">{{ sc.name }}</td>
+              <td class="sc-td-desc">{{ sc.description || '—' }}</td>
+              <td>
+                <span class="sc-status-badge" [class.sc-status-active]="sc.is_active"
+                  [class.sc-status-inactive]="!sc.is_active">
+                  <i class="bi bi-circle-fill"></i>
+                  {{ sc.is_active ? 'Active' : 'Inactive' }}
+                </span>
+              </td>
+              <td>
+                <div class="sc-action-btns">
+                  <button class="sc-icon-btn sc-icon-edit" (click)="editSubCategory(sc)" title="Edit">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="sc-icon-btn" [class.sc-icon-deactivate]="sc.is_active"
+                    [class.sc-icon-activate]="!sc.is_active" (click)="toggleStatus(sc)"
+                    [title]="sc.is_active ? 'Deactivate' : 'Activate'">
+                    <i class="bi" [class.bi-toggle-on]="sc.is_active" [class.bi-toggle-off]="!sc.is_active"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="subCategories.length === 0">
+              <td colspan="6" class="sc-empty">
+                <i class="bi bi-inbox"></i>
+                <p>No sub categories found. Add your first one.</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- end sc-two-col -->
+
+</div>

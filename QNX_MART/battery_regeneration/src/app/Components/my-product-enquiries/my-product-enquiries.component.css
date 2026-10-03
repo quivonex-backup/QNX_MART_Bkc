@@ -1,0 +1,671 @@
+/* ============================================================
+   MY PRODUCT ENQUIRIES – Clean & Professional
+   ============================================================ */
+
+/* ---- PAGE WRAPPER ---- */
+.mpe-page {
+    min-height: 100vh;
+    background: #f1f4f9;
+    padding-bottom: 3rem;
+}
+
+/* ============================================================
+   HEADER – Dark gradient (matches profile)
+   ============================================================ */
+.mpe-header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+    padding: 2.5rem 2rem 2rem;
+    position: relative;
+    overflow: hidden;
+}
+.mpe-header::after {
+    content: '';
+    position: absolute;
+    top: -40%;
+    right: -10%;
+    width: 50%;
+    height: 200%;
+    background: radial-gradient(circle at 70% 30%, rgba(99, 102, 241, 0.06) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.mpe-header-inner {
+    max-width: 1250px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+}
+
+/* ===== BACK BUTTON – Dark theme ===== */
+.mpe-back-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 8px 16px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.mpe-back-btn:hover {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateX(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.mpe-back-btn i {
+    font-size: 0.9rem;
+}
+
+.mpe-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+}
+.mpe-title-wrap i {
+    font-size: 2rem;
+    color: #22c55e;
+}
+.mpe-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+    letter-spacing: -0.02em;
+}
+.mpe-subtitle {
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0.1rem 0 0;
+    font-size: 0.95rem;
+}
+
+.mpe-count-badge {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 0.6rem 1.2rem;
+    border-radius: 40px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.9rem;
+    backdrop-filter: blur(4px);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.mpe-count-badge span {
+    font-weight: 800;
+    color: #22c55e;
+}
+
+/* ============================================================
+   FILTER PILLS – fixed spacing
+   ============================================================ */
+.mpe-filters-wrap {
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 1.2rem 1.5rem 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+}
+
+.mpe-filter-pill {
+    border: none;
+    background: #ffffff;
+    color: #334155;
+    padding: 0.55rem 1.2rem;
+    border-radius: 40px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.25s ease;
+    cursor: pointer;
+    border: 1.5px solid #e2e8f0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+.mpe-filter-pill span {
+    background: #f1f4f9;
+    min-width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    transition: 0.25s;
+}
+.mpe-filter-pill:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.mpe-filter-pill.active {
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+.mpe-filter-pill.active span {
+    background: rgba(255, 255, 255, 0.25);
+    color: #fff;
+}
+.mpe-filter-pill.active.all { background: linear-gradient(135deg, #334155, #0f172a); }
+.mpe-filter-pill.active.pending { background: linear-gradient(135deg, #f59e0b, #ea580c); }
+.mpe-filter-pill.active.approved { background: linear-gradient(135deg, #22c55e, #16a34a); }
+.mpe-filter-pill.active.rejected { background: linear-gradient(135deg, #ef4444, #dc2626); }
+.mpe-filter-pill.active.completed { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+
+/* ============================================================
+   MAIN CARD
+   ============================================================ */
+.mpe-card {
+    max-width: 1250px;
+    margin: 0.5rem auto 0;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(226, 232, 240, 0.6);
+    overflow: hidden;
+}
+
+/* ---- Card Header with Search ---- */
+.mpe-card-header {
+    padding: 1.2rem 1.8rem;
+    border-bottom: 1px solid #f1f4f9;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    background: #fafbfc;
+}
+.mpe-card-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.mpe-card-title i {
+    color: #6366f1;
+}
+.mpe-card-title .count {
+    font-weight: 400;
+    color: #94a3b8;
+    font-size: 0.8rem;
+}
+
+.mpe-search-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.mpe-search-wrap .search-icon {
+    position: absolute;
+    left: 14px;
+    color: #94a3b8;
+    font-size: 0.85rem;
+    pointer-events: none;
+    z-index: 1;
+}
+.mpe-search-wrap input {
+    padding: 0.5rem 2.6rem 0.5rem 2.4rem;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 40px;
+    font-size: 0.85rem;
+    width: 220px;
+    transition: all 0.25s;
+    background: #ffffff;
+    outline: none;
+    color: #1e293b;
+}
+.mpe-search-wrap input:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.08);
+    width: 260px;
+}
+.mpe-search-wrap input::placeholder {
+    color: #94a3b8;
+}
+.mpe-search-clear {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 4px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    line-height: 1;
+    z-index: 1;
+}
+.mpe-search-clear:hover {
+    color: #1e293b;
+    background: #f1f4f9;
+}
+
+/* ============================================================
+   ENQUIRY LIST
+   ============================================================ */
+.mpe-list {
+    padding: 1.5rem 1.8rem;
+    display: grid;
+    gap: 1rem;
+}
+
+/* ---- Individual Enquiry Card ---- */
+.mpe-item {
+    background: #ffffff;
+    border: 1px solid #e8edf5;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.01);
+}
+.mpe-item:hover {
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.04);
+    border-color: #cbd5e1;
+}
+.mpe-item.expanded {
+    border-color: #6366f1;
+    box-shadow: 0 6px 28px rgba(99, 102, 241, 0.06);
+}
+
+/* ---- Top Bar (clickable) ---- */
+.mpe-item-top {
+    padding: 1rem 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.mpe-item-top:hover {
+    background: #fafbfc;
+}
+
+.mpe-item-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+    min-width: 0;
+}
+.mpe-item-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #eef2ff;
+    color: #6366f1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    transition: 0.2s;
+}
+.mpe-item:hover .mpe-item-icon {
+    background: #e0e7ff;
+}
+
+.mpe-item-info {
+    flex: 1;
+    min-width: 0;
+}
+.mpe-product-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+    line-height: 1.3;
+}
+.mpe-enquiry-meta {
+    font-size: 0.78rem;
+    color: #94a3b8;
+    margin: 0.1rem 0 0;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+}
+.mpe-enquiry-meta .sep {
+    color: #e2e8f0;
+}
+.mpe-enquiry-meta i {
+    font-size: 0.7rem;
+    color: #cbd5e1;
+    margin-right: 2px;
+}
+
+.mpe-item-right {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex-shrink: 0;
+}
+
+/* ---- Status Badge ---- */
+.mpe-status {
+    padding: 0.35rem 1rem;
+    border-radius: 40px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+.mpe-status.pending {
+    background: #fff7ed;
+    color: #ea580c;
+}
+.mpe-status.approved {
+    background: #ecfdf5;
+    color: #16a34a;
+}
+.mpe-status.rejected {
+    background: #fef2f2;
+    color: #dc2626;
+}
+.mpe-status.completed {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+/* ---- Expand Chevron ---- */
+.mpe-chevron {
+    color: #94a3b8;
+    font-size: 0.85rem;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+}
+.mpe-chevron.open {
+    transform: rotate(180deg);
+    color: #6366f1;
+}
+
+/* ============================================================
+   EXPANDED DETAILS – Clean & Structured
+   ============================================================ */
+.mpe-body {
+    padding: 0 1.4rem 1.4rem;
+    border-top: 1px solid #f1f4f9;
+    animation: mpeSlideDown 0.3s ease;
+}
+@keyframes mpeSlideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Section header inside details */
+.mpe-detail-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.8rem 0 0.6rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #94a3b8;
+    border-bottom: 1px solid #f1f4f9;
+    margin-bottom: 0.8rem;
+}
+.mpe-detail-header i {
+    color: #6366f1;
+    font-size: 0.8rem;
+}
+
+.mpe-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.7rem;
+}
+.mpe-field {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 0.6rem 1rem;
+    border: 1px solid #f1f4f9;
+    transition: 0.2s;
+}
+.mpe-field:hover {
+    background: #f1f4f9;
+}
+.mpe-field-full {
+    grid-column: 1 / -1;
+}
+.mpe-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.15rem;
+}
+.mpe-value {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: #0f172a;
+    word-break: break-word;
+    line-height: 1.4;
+}
+.mpe-value .na {
+    color: #cbd5e1;
+    font-weight: 400;
+}
+
+/* ============================================================
+   EMPTY & LOADING
+   ============================================================ */
+.mpe-empty {
+    padding: 4rem 1.5rem;
+    text-align: center;
+}
+.mpe-empty i {
+    font-size: 3.5rem;
+    color: #cbd5e1;
+    margin-bottom: 1rem;
+}
+.mpe-empty h4 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 0.3rem;
+}
+.mpe-empty p {
+    color: #94a3b8;
+    margin: 0;
+}
+
+.mpe-loading {
+    padding: 4rem 1rem;
+    text-align: center;
+}
+.mpe-spinner {
+    width: 42px;
+    height: 42px;
+    border: 4px solid #e2e8f0;
+    border-top-color: #6366f1;
+    border-radius: 50%;
+    margin: 0 auto;
+    animation: mpeSpin 0.8s linear infinite;
+}
+@keyframes mpeSpin {
+    to { transform: rotate(360deg); }
+}
+.mpe-loading p {
+    margin-top: 1rem;
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 992px) {
+    .mpe-grid {
+        grid-template-columns: 1fr;
+    }
+    .mpe-search-wrap input {
+        width: 160px;
+    }
+    .mpe-search-wrap input:focus {
+        width: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .mpe-header {
+        padding: 1.8rem 1rem 1.5rem;
+    }
+    .mpe-title {
+        font-size: 1.4rem;
+    }
+    .mpe-title-wrap i {
+        font-size: 1.5rem;
+    }
+    .mpe-header-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    .mpe-count-badge {
+        align-self: flex-start;
+        font-size: 0.8rem;
+        padding: 0.4rem 1rem;
+    }
+    .mpe-filters-wrap {
+        padding: 0.8rem 0.8rem 0.3rem;
+        gap: 0.5rem;
+    }
+    .mpe-filter-pill {
+        font-size: 0.72rem;
+        padding: 0.4rem 0.9rem;
+    }
+    .mpe-card {
+        margin: 0.3rem 0.8rem 0;
+        border-radius: 16px;
+    }
+    .mpe-card-header {
+        padding: 0.8rem 1rem;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.6rem;
+    }
+    .mpe-search-wrap input {
+        width: 100%;
+    }
+    .mpe-search-wrap input:focus {
+        width: 100%;
+    }
+    .mpe-list {
+        padding: 0.8rem 1rem;
+        gap: 0.7rem;
+    }
+    .mpe-item-top {
+        padding: 0.7rem 1rem;
+        flex-wrap: wrap;
+    }
+    .mpe-item-left {
+        gap: 0.6rem;
+    }
+    .mpe-item-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
+    }
+    .mpe-product-name {
+        font-size: 0.9rem;
+    }
+    .mpe-enquiry-meta {
+        font-size: 0.7rem;
+        gap: 0.4rem;
+    }
+    .mpe-item-right {
+        gap: 0.5rem;
+    }
+    .mpe-status {
+        font-size: 0.6rem;
+        padding: 0.25rem 0.7rem;
+    }
+    .mpe-body {
+        padding: 0 1rem 1rem;
+    }
+    .mpe-grid {
+        gap: 0.5rem;
+        padding-top: 0.4rem;
+    }
+    .mpe-field {
+        padding: 0.5rem 0.7rem;
+    }
+    .mpe-value {
+        font-size: 0.82rem;
+    }
+    .mpe-detail-header {
+        font-size: 0.65rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .mpe-header {
+        padding: 1.2rem 0.8rem 1.2rem;
+    }
+    .mpe-title {
+        font-size: 1.2rem;
+    }
+    .mpe-subtitle {
+        font-size: 0.8rem;
+    }
+    .mpe-count-badge {
+        font-size: 0.7rem;
+        padding: 0.3rem 0.8rem;
+    }
+    .mpe-back-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    .mpe-filter-pill {
+        font-size: 0.65rem;
+        padding: 0.3rem 0.7rem;
+    }
+    .mpe-filter-pill span {
+        min-width: 18px;
+        height: 18px;
+        font-size: 0.6rem;
+    }
+    .mpe-item-top {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+    .mpe-item-right {
+        justify-content: space-between;
+        width: 100%;
+    }
+    .mpe-enquiry-meta {
+        flex-wrap: wrap;
+    }
+}

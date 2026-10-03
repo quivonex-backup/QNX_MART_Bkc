@@ -1,0 +1,375 @@
+<div class="mp-page">
+
+    <!-- ===== FULL-WIDTH HEADER with Back Button ===== -->
+    <div class="mp-header">
+        <button class="mp-back-btn" (click)="goBack()">
+            <i class="bi bi-arrow-left"></i>
+        </button>
+        <div class="mp-header-text">
+            <h2><i class="bi bi-megaphone-fill me-2"></i>Marketing Partner Application</h2>
+            <p>Fill in the details below to join our partner network</p>
+        </div>
+    </div>
+
+    <div class="mp-container">
+
+        <!-- ===== CARD ===== -->
+        <div class="mp-card">
+
+            <!-- ===== BODY ===== -->
+            <div class="mp-body">
+
+                <form (ngSubmit)="submitForm()" #enquiryForm="ngForm">
+
+                    <!-- ================= BASIC DETAILS ================= -->
+                    <div class="mp-section">
+                        <div class="mp-section-header">
+                            <span class="mp-section-icon"><i class="bi bi-person-badge"></i></span>
+                            <h5 class="mp-section-title">Basic Details</h5>
+                        </div>
+
+                        <div class="mp-row">
+
+                            <!-- Application Type -->
+                            <!-- <div class="mp-field mp-field-full"> -->
+                            <!-- <div class="mp-field">
+                                <label class="mp-label">Application Type <span class="required">*</span></label>
+                                <div class="mp-input-wrap">
+                                    <i class="bi bi-briefcase-fill mp-icon"></i>
+                                    <select
+                                        class="mp-select"
+                                        [(ngModel)]="enquiry.application_type"
+                                        name="application_type"
+                                        required>
+                                        <option value="">Select Type</option>
+                                        <option value="marketing_partner">Marketing Partner</option>
+                                        <option value="marketing_head">Marketing Head</option>
+                                    </select>
+                                </div>
+                            </div> -->
+
+                            <!-- Application Type - hidden, always Marketing Partner -->
+                            <div class="mp-field" style="display: none;">
+                                <input
+                                    type="hidden"
+                                    name="application_type"
+                                    [ngModel]="'marketing_partner'"
+                                    (ngModelChange)="enquiry.application_type = $event">
+                            </div>
+
+                            <!-- Full Name -->
+                            <div class="mp-field mp-field-full">
+                                <label class="mp-label">Full Name <span class="required">*</span></label>
+                                <div class="mp-input-wrap">
+                                    <i class="bi bi-person-fill mp-icon"></i>
+                                    <input
+                                        type="text"
+                                        placeholder="Enter your full name"
+                                        [(ngModel)]="enquiry.full_name"
+                                        name="full_name"
+                                        required>
+                                </div>
+                            </div>
+
+                            <!-- Mobile -->
+                            <div class="mp-field">
+                                <label class="mp-label">Mobile Number <span class="required">*</span></label>
+                                <div class="mp-input-wrap">
+                                    <i class="bi bi-phone-fill mp-icon"></i>
+                                    <input
+                                        type="text"
+                                        placeholder="Enter mobile number"
+                                        [(ngModel)]="enquiry.mobile"
+                                        name="mobile"
+                                        required>
+                                </div>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="mp-field">
+                                <label class="mp-label">Email Address <span class="required">*</span></label>
+                                <div class="mp-input-wrap">
+                                    <i class="bi bi-envelope-fill mp-icon"></i>
+                                    <input
+                                        type="email"
+                                        placeholder="Enter email address"
+                                        [(ngModel)]="enquiry.email"
+                                        name="email"
+                                        required>
+                                </div>
+                            </div>
+
+                            <!-- Profession -->
+                            <div class="mp-field">
+                                <label class="mp-label">Profession</label>
+                                <div class="mp-input-wrap">
+                                    <i class="bi bi-briefcase-fill mp-icon"></i>
+                                    <input
+                                        type="text"
+                                        placeholder="Enter profession"
+                                        [(ngModel)]="enquiry.profession"
+                                        name="profession">
+                                </div>
+                            </div>
+
+                            <!-- Team Size (only for Marketing Head) -->
+                            <div
+                                class="mp-field"
+                                *ngIf="enquiry.application_type === 'marketing_head'">
+                                <label class="mp-label">Team Size</label>
+                                <div class="mp-input-wrap">
+                                    <i class="bi bi-people-fill mp-icon"></i>
+                                    <input
+                                        type="number"
+                                        placeholder="Enter team size"
+                                        [(ngModel)]="enquiry.team_size"
+                                        name="team_size">
+                                </div>
+                            </div>
+
+                            <!-- Profile Photo -->
+                            <div class="mp-field">
+                                <label class="mp-label">Profile Photo <span class="optional">(optional)</span></label>
+                                <div class="mp-upload-area">
+                                    <!-- Upload Area -->
+                                    <div *ngIf="!enquiry.profile_image && !imagePreview">
+                                        <input
+                                            type="file"
+                                            class="mp-file-input-hidden"
+                                            accept="image/*"
+                                            (change)="onFileChange($event)"
+                                            id="profile-photo">
+                                        <label for="profile-photo" class="mp-upload-label">
+                                            <i class="bi bi-cloud-upload-fill"></i>
+                                            <span>Choose Photo</span>
+                                        </label>
+                                    </div>
+                                    <!-- Preview Area -->
+                                    <div class="mp-photo-preview" *ngIf="imagePreview">
+                                        <img [src]="imagePreview" alt="Preview">
+                                        <button type="button" class="mp-remove-photo" (click)="removePhoto()">
+                                            <i class="bi bi-x-lg"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div><!-- /.mp-row -->
+                    </div><!-- /.mp-section -->
+
+                    <!-- ================= LOCATION DETAILS ================= -->
+                    <div class="mp-section">
+                        <div class="mp-section-header">
+                            <span class="mp-section-icon"><i class="bi bi-geo-alt-fill"></i></span>
+                            <h5 class="mp-section-title">Location Details</h5>
+                        </div>
+
+                        <div class="mp-row">
+
+                            <!-- State -->
+                            <div class="mp-field">
+                                <label class="mp-label">State</label>
+                                <div class="mp-input-wrap">
+                                    <i class="bi bi-map-fill mp-icon"></i>
+                                    <select
+                                        [(ngModel)]="enquiry.state"
+                                        name="state"
+                                        (change)="onStateChange()">
+                                        <option value="">Select State</option>
+                                        <option
+                                            *ngFor="let state of states"
+                                            [ngValue]="state.id">
+                                            {{ state.state_name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- District -->
+                            <div class="mp-field">
+                                <label class="mp-label">District</label>
+                                <div class="mp-input-wrap">
+                                    <i class="bi bi-map-fill mp-icon"></i>
+                                    <select
+                                        [(ngModel)]="enquiry.district"
+                                        name="district"
+                                        (change)="onDistrictChange()">
+                                        <option value="">Select District</option>
+                                        <option
+                                            *ngFor="let district of districts"
+                                            [ngValue]="district.id">
+                                            {{ district.district_name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Taluka -->
+                            <div class="mp-field">
+                                <label class="mp-label">Taluka</label>
+                                <div class="mp-input-wrap">
+                                    <i class="bi bi-map-fill mp-icon"></i>
+                                    <select
+                                        [(ngModel)]="enquiry.taluka"
+                                        name="taluka"
+                                        (change)="onTalukaChange()">
+                                        <option value="">Select Taluka</option>
+                                        <option
+                                            *ngFor="let taluka of talukas"
+                                            [ngValue]="taluka.id">
+                                            {{ taluka.taluka_name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Village -->
+                            <div class="mp-field">
+                                <label class="mp-label">Village</label>
+                                <div class="mp-input-wrap">
+                                    <i class="bi bi-house-fill mp-icon"></i>
+                                    <select
+                                        [(ngModel)]="enquiry.village"
+                                        name="village">
+                                        <option value="">Select Village</option>
+                                        <option
+                                            *ngFor="let village of villages"
+                                            [ngValue]="village.id">
+                                            {{ village.village_name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Pincode -->
+                            <div class="mp-field">
+                                <label class="mp-label">Pincode <span class="required">*</span></label>
+                                <div class="mp-input-wrap">
+                                    <i class="bi bi-hash mp-icon"></i>
+                                    <input
+                                        type="text"
+                                        placeholder="Enter pincode"
+                                        [(ngModel)]="enquiry.pincode"
+                                        name="pincode"
+                                        required>
+                                </div>
+                            </div>
+
+                            <!-- Working Area -->
+                            <div class="mp-field">
+                                <label class="mp-label">Working Area</label>
+                                <div class="mp-input-wrap">
+                                    <i class="bi bi-bullseye mp-icon"></i>
+                                    <input
+                                        type="text"
+                                        placeholder="Enter working area"
+                                        [(ngModel)]="enquiry.working_area"
+                                        name="working_area">
+                                </div>
+                            </div>
+
+                        </div><!-- /.mp-row -->
+                    </div><!-- /.mp-section -->
+
+                    <!-- ================= EXPERIENCE & PROMOTION ================= -->
+                    <div class="mp-section">
+                        <div class="mp-section-header">
+                            <span class="mp-section-icon"><i class="bi bi-bar-chart-fill"></i></span>
+                            <h5 class="mp-section-title">Experience & Promotion</h5>
+                        </div>
+
+                        <div class="mp-row">
+
+                            <!-- Experience -->
+                            <div class="mp-field mp-field-full">
+                                <label class="mp-label">Experience</label>
+                                <div class="mp-input-wrap">
+                                    <i class="bi bi-pencil-fill mp-icon" style="align-self: flex-start; padding-top: 12px;"></i>
+                                    <textarea
+                                        rows="4"
+                                        placeholder="Describe your relevant experience in marketing and promotion..."
+                                        [(ngModel)]="enquiry.experience"
+                                        name="experience"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Promotion Platforms -->
+                            <div class="mp-field mp-field-full">
+                                <label class="mp-label">Promotion Platforms</label>
+                                <div class="mp-platform-group">
+                                    <label class="mp-platform-option" [class.active]="enquiry.promotion_platforms.includes('instagram')">
+                                        <input
+                                            type="checkbox"
+                                            value="instagram"
+                                            (change)="onPlatformChange($event)">
+                                        <span class="mp-platform-check">
+                                            <i class="bi bi-check" *ngIf="enquiry.promotion_platforms.includes('instagram')"></i>
+                                        </span>
+                                        Instagram
+                                    </label>
+                                    <label class="mp-platform-option" [class.active]="enquiry.promotion_platforms.includes('facebook')">
+                                        <input
+                                            type="checkbox"
+                                            value="facebook"
+                                            (change)="onPlatformChange($event)">
+                                        <span class="mp-platform-check">
+                                            <i class="bi bi-check" *ngIf="enquiry.promotion_platforms.includes('facebook')"></i>
+                                        </span>
+                                        Facebook
+                                    </label>
+                                    <label class="mp-platform-option" [class.active]="enquiry.promotion_platforms.includes('youtube')">
+                                        <input
+                                            type="checkbox"
+                                            value="youtube"
+                                            (change)="onPlatformChange($event)">
+                                        <span class="mp-platform-check">
+                                            <i class="bi bi-check" *ngIf="enquiry.promotion_platforms.includes('youtube')"></i>
+                                        </span>
+                                        YouTube
+                                    </label>
+                                    <label class="mp-platform-option" [class.active]="enquiry.promotion_platforms.includes('whatsapp')">
+                                        <input
+                                            type="checkbox"
+                                            value="whatsapp"
+                                            (change)="onPlatformChange($event)">
+                                        <span class="mp-platform-check">
+                                            <i class="bi bi-check" *ngIf="enquiry.promotion_platforms.includes('whatsapp')"></i>
+                                        </span>
+                                        WhatsApp
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div><!-- /.mp-row -->
+                    </div><!-- /.mp-section -->
+
+                    <!-- ================= BUTTONS ================= -->
+                    <div class="mp-actions">
+                        <button
+                            type="button"
+                            class="mp-btn mp-btn-outline"
+                            (click)="clearForm()">
+                            Clear
+                        </button>
+                        <button
+                            type="submit"
+                            class="mp-btn mp-btn-primary"
+                            [disabled]="isSubmitting">
+                            <span *ngIf="!isSubmitting">
+                                <i class="bi bi-send-fill me-1"></i> Submit Application
+                            </span>
+                            <span *ngIf="isSubmitting">
+                                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                Submitting...
+                            </span>
+                        </button>
+                    </div>
+
+                </form>
+
+            </div><!-- /.mp-body -->
+
+        </div><!-- /.mp-card -->
+
+    </div><!-- /.mp-container -->
+</div>

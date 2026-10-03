@@ -1,0 +1,99 @@
+<nav class="navbar navbar-expand-lg navbar-qnx fixed-top" id="navbarQNX">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <img src="assets/QNXMARTLOGO-removebg-preview.png" alt="QNX Mart" class="brand-logo" />
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center gap-1">
+        <li class="nav-item">
+          <a class="nav-link" href="#" (click)="onNavLinkClick($event, 'what-is')">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" (click)="onNavLinkClick($event, 'how-it-works')">How It Works</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" (click)="onNavLinkClick($event, 'earnings')">Earnings</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" (click)="onNavLinkClick($event, 'faq')">FAQ</a>
+        </li>
+
+        <!-- Single Terms & Conditions link -->
+        <li class="nav-item">
+          <a class="nav-link" href="#" (click)="onTermsClick($event, 'marketing-partner')">Terms & Conditions</a>
+        </li>
+
+        <li class="nav-item language-selector notranslate" translate="no">
+
+          <div class="language-dropdown">
+
+            <button type="button" class="language-btn" (click)="toggleLanguageMenu($event)">
+
+              <i class="fa-solid fa-globe"></i>
+
+              <span>
+                {{ selectedLanguage }}
+              </span>
+
+              <i class="fa-solid fa-chevron-down language-arrow" [class.rotate]="showLanguageMenu">
+              </i>
+
+            </button>
+
+
+            <div class="language-menu notranslate" translate="no" *ngIf="showLanguageMenu">
+
+
+              <button type="button" (click)="changeLanguage(
+          'en',
+          'English',
+          $event
+        )">
+
+                <i class="fa-solid fa-globe"></i>
+
+                <span>English</span>
+
+              </button>
+
+
+              <button type="button" (click)="changeLanguage(
+          'mr',
+          'मराठी',
+          $event
+        )">
+
+                <i class="fa-solid fa-globe"></i>
+
+                <span>मराठी</span>
+
+              </button>
+
+
+              <button type="button" (click)="changeLanguage(
+          'hi',
+          'हिन्दी',
+          $event
+        )">
+
+                <i class="fa-solid fa-globe"></i>
+
+                <span>हिन्दी</span>
+
+              </button>
+
+            </div>
+
+          </div>
+
+        </li>
+
+        <li class="nav-item"><a class="btn btn-nav" href="home">Get Started</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>

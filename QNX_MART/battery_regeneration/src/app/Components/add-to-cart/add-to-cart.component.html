@@ -1,0 +1,166 @@
+<!-- ============================================================
+     NOT LOGGED IN
+     ============================================================ -->
+<div class="cart-wrapper" *ngIf="!isLoggedIn">
+    <div class="cart-header">
+        <div class="cart-header-inner">
+            <button class="cart-back-btn" (click)="goBack()" title="Go back">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <div class="cart-header-icon"><i class="fas fa-shopping-cart"></i></div>
+            <div class="cart-header-text">
+                <h4 class="cart-header-title">My Cart</h4>
+                <p class="cart-header-sub">Your shopping cart</p>
+            </div>
+        </div>
+    </div>
+    <div class="cart-body">
+        <div class="cart-empty-login">
+            <div class="empty-icon-wrapper">
+                <i class="fas fa-lock"></i>
+            </div>
+            <h5>Please login to view your cart</h5>
+            <p>Sign in to access your saved items and continue shopping.</p>
+            <button class="cart-login-btn" (click)="redirectLogin()">
+                <i class="fas fa-sign-in-alt me-2"></i>Login
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================
+     LOGGED IN
+     ============================================================ -->
+<div class="cart-wrapper" *ngIf="isLoggedIn">
+
+    <div class="cart-header">
+        <div class="cart-header-inner">
+            <button class="cart-back-btn" (click)="goBack()" title="Go back">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <div class="cart-header-icon"><i class="fas fa-shopping-cart"></i></div>
+            <div class="cart-header-text">
+                <h4 class="cart-header-title">My Cart</h4>
+                <p class="cart-header-sub">{{ totalItems }} item(s) in your cart</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="cart-body">
+
+        <!-- Empty cart -->
+        <div class="cart-empty" *ngIf="cartList.length === 0 && !loading">
+            <div class="empty-icon-wrapper">
+                <i class="fas fa-shopping-basket"></i>
+            </div>
+            <h5>Your cart is empty</h5>
+            <p>Browse products and add items to your cart.</p>
+            <a routerLink="/product_list" class="cart-shop-btn">
+                <i class="fas fa-store me-2"></i>Browse Products
+            </a>
+        </div>
+
+        <!-- Loading -->
+        <div class="cart-loading" *ngIf="loading">
+            <div class="cart-spinner"></div>
+            <span>Loading cart...</span>
+        </div>
+
+        <div class="row g-4" *ngIf="cartList.length > 0 && !loading">
+
+            <!-- CART ITEMS -->
+            <div class="col-lg-8 col-12">
+                <div class="cart-items-card">
+
+                    <!-- Select All – hidden (single selection only) -->
+                    <div class="cart-select-all" style="display: none;">
+                        <label class="cart-checkbox-label">
+                            <input type="checkbox" [checked]="allSelected" (change)="toggleSelectAll($event)" />
+                            <span>Select All ({{ selectedCount }} of {{ cartList.length }} selected)</span>
+                        </label>
+                    </div>
+
+                    <div class="cart-item" *ngFor="let item of cartList" [class.cart-item-selected]="item.selected">
+
+                        <!-- Radio button -->
+                        <div class="cart-item-check">
+                            <input type="radio"
+                                   name="cartSelect"
+                                   [checked]="item.selected"
+                                   (click)="selectOnlyThis(item)" />
+                        </div>
+
+                        <div class="cart-item-img">
+                            <img [src]="item.thumbnail || 'assets/placeholder.png'" [alt]="item.product_name"
+                                onerror="this.src='assets/placeholder.png'">
+                        </div>
+
+                        <div class="cart-item-info">
+                            <h6 class="cart-item-name">{{ item.product_name }}</h6>
+                            <p class="cart-item-code" *ngIf="item.product_code">
+                                <i class="fas fa-barcode me-1"></i>{{ item.product_code }}
+                            </p>
+                            <div class="cart-item-price">
+                                <span class="cart-unit-price">₹{{ item.unit_price | number:'1.2-2' }} / unit</span>
+                                <span class="cart-total-price">₹{{ (item.unit_price * item.quantity) | number:'1.2-2' }}</span>
+                            </div>
+                        </div>
+
+                        <div class="cart-item-actions">
+                            <div class="qty-control">
+                                <button class="qty-btn" (click)="decreaseQty(item)" [disabled]="item.quantity <= 1">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <span class="qty-val">{{ item.quantity }}</span>
+                                <button class="qty-btn" (click)="increaseQty(item)">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                            <button class="cart-remove-btn" (click)="removeItem(item)">
+                                <i class="fas fa-trash-alt me-1"></i>Remove
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ORDER SUMMARY -->
+            <div class="col-lg-4 col-12">
+                <div class="cart-summary-card">
+
+                    <div class="summary-title">
+                        <i class="fas fa-receipt me-2"></i>Order Summary
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Selected Items</span>
+                        <strong>{{ selectedCount }}</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <strong>₹{{ subtotal | number:'1.2-2' }}</strong>
+                    </div>
+
+                    <div class="summary-divider"></div>
+
+                    <div class="summary-total">
+                        <span>Total</span>
+                        <span class="summary-total-val">₹{{ subtotal | number:'1.2-2' }}</span>
+                    </div>
+
+                    <button class="checkout-btn" [disabled]="selectedCount === 0" (click)="proceedToCheckout()">
+                        <i class="fas fa-lock me-2"></i>Proceed to Checkout ({{ selectedCount }} item{{ selectedCount !== 1 ? 's' : '' }})
+                    </button>
+
+                    <a routerLink="/product_list" class="continue-shopping">
+                        <i class="fas fa-arrow-left me-1"></i>Continue Shopping
+                    </a>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

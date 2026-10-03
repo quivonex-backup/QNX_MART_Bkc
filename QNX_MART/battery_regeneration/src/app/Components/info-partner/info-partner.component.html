@@ -1,0 +1,33 @@
+<div id="qnx-partner-info">
+
+  <!-- Animated background particles -->
+  <div class="bg-particles">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+  </div>
+
+  <!-- NAVBAR -->
+  <app-navbar 
+    (scrollTo)="onScrollTo($event)"
+    (termsClick)="onTermsRequest($event)"
+    (languageChange)="onLanguageChange($event)">
+  </app-navbar>
+
+  <!-- MAIN CONTENT (partner specific) -->
+  <app-main></app-main>
+
+  <!-- FOOTER -->
+  <app-footer></app-footer>
+
+  <!-- TERMS MODAL -->
+  <app-terms-modal *ngIf="showTerms" [role]="selectedRole" (close)="onCloseTerms()"></app-terms-modal>
+
+</div>

@@ -1,0 +1,226 @@
+<div class="mpe-page">
+
+    <!-- ================= HEADER ================= -->
+    <div class="mpe-header">
+        <div class="mpe-header-inner">
+        
+            <!-- Back Button -->
+            <button class="mpe-back-btn" (click)="goBack()" title="Go back">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+        
+            <div class="mpe-title-wrap">
+                <i class="fas fa-box-open"></i>
+                <div>
+                    <h1 class="mpe-title">My Product Enquiries</h1>
+                    <p class="mpe-subtitle">View and track all your submitted product enquiries</p>
+                </div>
+            </div>
+            <div class="mpe-count-badge">
+                <i class="fas fa-envelope me-2"></i> Total: <span>{{ enquiries.length }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= FILTERS ================= -->
+    <div class="mpe-filters-wrap">
+        <button
+            class="mpe-filter-pill all"
+            [class.active]="selectedFilter === 'all'"
+            (click)="filterEnquiries('all')">
+            All <span>{{ enquiries.length }}</span>
+        </button>
+        <button
+            class="mpe-filter-pill pending"
+            [class.active]="selectedFilter === 'pending'"
+            (click)="filterEnquiries('pending')">
+            Pending <span>{{ getCount('pending') }}</span>
+        </button>
+        <button
+            class="mpe-filter-pill approved"
+            [class.active]="selectedFilter === 'approved'"
+            (click)="filterEnquiries('approved')">
+            Approved <span>{{ getCount('approved') }}</span>
+        </button>
+        <button
+            class="mpe-filter-pill rejected"
+            [class.active]="selectedFilter === 'rejected'"
+            (click)="filterEnquiries('rejected')">
+            Rejected <span>{{ getCount('rejected') }}</span>
+        </button>
+        <button
+            class="mpe-filter-pill completed"
+            [class.active]="selectedFilter === 'completed'"
+            (click)="filterEnquiries('completed')">
+            Completed <span>{{ getCount('completed') }}</span>
+        </button>
+    </div>
+
+    <!-- ================= MAIN CARD ================= -->
+    <div class="mpe-card">
+
+        <!-- Card Header with Search -->
+        <div class="mpe-card-header">
+            <div class="mpe-card-title">
+                <i class="fas fa-list-ul"></i> Enquiry List
+                <span class="count">({{ filteredEnquiries.length }} shown)</span>
+            </div>
+            <div class="mpe-search-wrap">
+                <i class="fas fa-search search-icon"></i>
+                <input
+                    type="text"
+                    placeholder="Search by product..."
+                    [(ngModel)]="searchQuery"
+                    (input)="onSearch()"
+                />
+                <button
+                    class="mpe-search-clear"
+                    *ngIf="searchQuery.length > 0"
+                    (click)="clearSearch()"
+                    title="Clear search"
+                >
+                    <i class="fas fa-times-circle"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- ================= LOADING ================= -->
+        <div *ngIf="loading" class="mpe-loading">
+            <div class="mpe-spinner"></div>
+            <p>Loading your enquiries...</p>
+        </div>
+
+        <!-- ================= EMPTY ================= -->
+        <div *ngIf="!loading && filteredEnquiries.length === 0" class="mpe-empty">
+            <i class="fas fa-inbox"></i>
+            <h4>No Enquiries Found</h4>
+            <p>{{ enquiries.length === 0 ? 'You have not submitted any product enquiry yet.' : 'No enquiries match your current filter or search.' }}</p>
+        </div>
+
+        <!-- ================= ENQUIRY LIST ================= -->
+        <div *ngIf="!loading && filteredEnquiries.length > 0" class="mpe-list">
+
+            <div
+                class="mpe-item"
+                [class.expanded]="enquiry.expanded"
+                *ngFor="let enquiry of filteredEnquiries"
+            >
+
+                <!-- Top Bar – click to expand -->
+                <div class="mpe-item-top" (click)="toggleExpand(enquiry)">
+                    <div class="mpe-item-left">
+                        <div class="mpe-item-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div class="mpe-item-info">
+                            <div class="mpe-product-name">{{ enquiry.product_name }}</div>
+                            <div class="mpe-enquiry-meta">
+                                <span><i class="fas fa-user"></i> {{ enquiry.person_name }}</span>
+                                <span class="sep">|</span>
+                                <span><i class="fas fa-phone"></i> {{ enquiry.contact }}</span>
+                                <span class="sep">|</span>
+                                <span><i class="fas fa-calendar-alt"></i> {{ enquiry.created_at | date:'shortDate' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mpe-item-right">
+                        <div class="mpe-status"
+                            [ngClass]="{
+                                'pending': enquiry.status === 'pending',
+                                'approved': enquiry.status === 'approved',
+                                'rejected': enquiry.status === 'rejected',
+                                'completed': enquiry.status === 'completed'
+                            }">
+                            {{ enquiry.status }}
+                        </div>
+                        <i class="fas fa-chevron-down mpe-chevron" [class.open]="enquiry.expanded"></i>
+                    </div>
+                </div>
+
+                <!-- ================= EXPANDED DETAILS ================= -->
+                <div class="mpe-body" *ngIf="enquiry.expanded">
+
+                    <div class="mpe-detail-header">
+                        <i class="fas fa-info-circle"></i> Enquiry Details
+                    </div>
+
+                    <div class="mpe-grid">
+
+                        <!-- Personal Info -->
+                        <div class="mpe-field">
+                            <div class="mpe-label">Person Name</div>
+                            <div class="mpe-value">{{ enquiry.person_name }}</div>
+                        </div>
+
+                        <div class="mpe-field">
+                            <div class="mpe-label">Contact Number</div>
+                            <div class="mpe-value">{{ enquiry.contact }}</div>
+                        </div>
+
+                        <div class="mpe-field">
+                            <div class="mpe-label">Email Address</div>
+                            <div class="mpe-value">{{ enquiry.email || '—' }}</div>
+                        </div>
+
+                        <div class="mpe-field">
+                            <div class="mpe-label">Pincode</div>
+                            <div class="mpe-value">{{ enquiry.pincode || '—' }}</div>
+                        </div>
+
+                        <div class="mpe-field mpe-field-full">
+                            <div class="mpe-label">Address</div>
+                            <div class="mpe-value">{{ enquiry.address || '—' }}</div>
+                        </div>
+
+                        <div class="mpe-field mpe-field-full">
+                            <div class="mpe-label">Message</div>
+                            <div class="mpe-value">{{ enquiry.message || '—' }}</div>
+                        </div>
+
+                        <!-- Product Selection -->
+                        <div class="mpe-field">
+                            <div class="mpe-label">Demo Required</div>
+                            <div class="mpe-value">{{ enquiry.demo_required || '—' }}</div>
+                        </div>
+
+                        <div class="mpe-field">
+                            <div class="mpe-label">Demo Type</div>
+                            <div class="mpe-value">{{ enquiry.demo_type || '—' }}</div>
+                        </div>
+
+                        <div class="mpe-field">
+                            <div class="mpe-label">Selected Color</div>
+                            <div class="mpe-value">{{ enquiry.selected_color || '—' }}</div>
+                        </div>
+
+                        <div class="mpe-field">
+                            <div class="mpe-label">Selected Size</div>
+                            <div class="mpe-value">{{ enquiry.selected_size || '—' }}</div>
+                        </div>
+
+                        <div class="mpe-field mpe-field-full">
+                            <div class="mpe-label">Selected Variant</div>
+                            <div class="mpe-value">{{ enquiry.selected_variant || '—' }}</div>
+                        </div>
+
+                        <div class="mpe-field">
+                            <div class="mpe-label">Quantity</div>
+                            <div class="mpe-value">{{ enquiry.quantity || '—' }}</div>
+                        </div>
+
+                        <div class="mpe-field mpe-field-full">
+                            <div class="mpe-label">Created At</div>
+                            <div class="mpe-value">{{ enquiry.created_at | date:'medium' }}</div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- ================= END DETAILS ================= -->
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

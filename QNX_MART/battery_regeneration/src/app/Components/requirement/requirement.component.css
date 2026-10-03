@@ -1,0 +1,158 @@
+.req-page {
+    background: #f8f9fb;
+    min-height: 100vh;
+}
+
+.req-header {
+    background: linear-gradient(135deg, #2c3e50 0%, #3d5166 100%);
+    padding: 36px 40px;
+    color: #fff;
+}
+
+.req-header-text h2 {
+    font-size: 1.7rem;
+    font-weight: 700;
+    margin: 0 0 6px;
+}
+
+.req-header-text p {
+    margin: 0;
+    opacity: 0.8;
+    font-size: 0.95rem;
+}
+
+.req-body {
+    padding: 32px 40px;
+}
+
+.req-card {
+    background: #fff;
+    border: 1px solid #dde3ec;
+    border-radius: 8px;
+    padding: 32px;
+}
+
+.req-section-title {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 18px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #3498db;
+}
+
+.req-section-title-mt {
+    margin-top: 28px;
+}
+
+.req-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+.req-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.req-field-full {
+    margin-bottom: 18px;
+}
+
+.req-field label,
+.req-field-full label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.req-star {
+    color: #e74c3c;
+}
+
+.req-optional {
+    font-weight: 400;
+    color: #999;
+    font-size: 0.78rem;
+}
+
+.req-input {
+    width: 100%;
+    height: 42px;
+    border: 1.5px solid #dde3ec;
+    border-radius: 6px;
+    padding: 0 14px;
+    font-size: 0.9rem;
+    background: #fff;
+    color: #2c3e50;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+}
+
+.req-input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+}
+
+textarea.req-input {
+    height: auto;
+    padding: 10px 14px;
+    resize: vertical;
+}
+
+select.req-input {
+    cursor: pointer;
+}
+
+.req-file {
+    height: 42px;
+    padding: 8px 14px;
+    cursor: pointer;
+}
+
+.req-submit-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 24px;
+}
+
+.req-submit-btn {
+    height: 44px;
+    padding: 0 36px;
+    background: linear-gradient(135deg, #3498db, #27ae60);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    display: inline-flex;
+    align-items: center;
+}
+
+.req-submit-btn:hover {
+    opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+    .req-header {
+        padding: 24px 20px;
+    }
+
+    .req-body {
+        padding: 16px;
+    }
+
+    .req-card {
+        padding: 20px;
+    }
+
+    .req-row {
+        grid-template-columns: 1fr;
+    }
+}

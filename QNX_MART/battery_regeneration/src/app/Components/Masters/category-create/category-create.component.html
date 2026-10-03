@@ -1,0 +1,166 @@
+<div class="cc-page">
+
+  <!-- Page Header -->
+  <div class="cc-page-header">
+    <div class="cc-page-header-inner">
+      <button class="cc-back-btn" onclick="window.history.back()" title="Go back">
+        <i class="bi bi-arrow-left"></i>
+      </button>
+      <div>
+        <h1 class="cc-page-title">
+          <i class="bi bi-tags-fill"></i>
+          Category Master
+        </h1>
+        <p class="cc-page-subtitle">Create and manage product categories</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Two Column Layout -->
+  <div class="cc-two-col">
+
+    <!-- Form Card -->
+    <div class="cc-form-card">
+      <div class="cc-card-header">
+        <span class="cc-card-title">
+          <i class="bi bi-{{ isEditMode ? 'pencil-square' : 'plus-circle-fill' }}"></i>
+          {{ isEditMode ? 'Edit Category' : 'Add Category' }}
+        </span>
+        <button class="cc-btn-ghost" *ngIf="isEditMode" type="button" (click)="resetForm()">
+          <i class="bi bi-x-lg"></i> Cancel Edit
+        </button>
+      </div>
+
+      <div class="cc-form-body">
+        <div class="cc-form-grid">
+
+          <!-- Company -->
+          <div class="cc-field cc-field-full">
+            <label class="cc-label">Company <span class="cc-required">*</span></label>
+            <div class="cc-select-wrap">
+              <select class="cc-input cc-select" [(ngModel)]="category.company" name="company"
+                (change)="onCompanyChange(category.company)">
+                <option value="">-- Select Company --</option>
+                <option *ngFor="let c of companies" [value]="c.id">{{ c.name }}</option>
+              </select>
+              <i class="bi bi-chevron-down cc-select-icon"></i>
+            </div>
+          </div>
+
+          <!-- Branch -->
+          <div class="cc-field cc-field-full">
+            <label class="cc-label">Branch <span class="cc-required">*</span></label>
+            <div class="cc-select-wrap">
+              <select class="cc-input cc-select" [(ngModel)]="category.branch" name="branch"
+                [disabled]="!branches.length">
+                <option value="">{{ category.company ? 'Select Branch' : 'Select Company First' }}</option>
+                <option *ngFor="let b of branches" [value]="b.id">{{ b.name }}</option>
+              </select>
+              <i class="bi bi-chevron-down cc-select-icon"></i>
+            </div>
+          </div>
+
+          <!-- Category Name -->
+          <div class="cc-field cc-field-full">
+            <label class="cc-label">Category Name <span class="cc-required">*</span></label>
+            <input type="text" class="cc-input" placeholder="e.g. Electronics" [(ngModel)]="category.name"
+              name="name" />
+          </div>
+
+          <!-- Description -->
+          <div class="cc-field cc-field-full">
+            <label class="cc-label">Description</label>
+            <textarea class="cc-input cc-textarea" rows="3" placeholder="Brief description..."
+              [(ngModel)]="category.description" name="description"></textarea>
+          </div>
+
+          <!-- Status Toggle -->
+          <div class="cc-field cc-field-full">
+            <label class="cc-label">Status</label>
+            <label class="cc-toggle">
+              <input type="checkbox" [(ngModel)]="category.status" name="status" />
+              <span class="cc-toggle-track">
+                <span class="cc-toggle-thumb"></span>
+              </span>
+              <span class="cc-toggle-label">{{ category.status ? 'Active' : 'Inactive' }}</span>
+            </label>
+          </div>
+
+        </div>
+
+        <div class="cc-form-actions">
+          <button type="button" class="cc-btn-secondary" (click)="resetForm()">
+            <i class="bi bi-arrow-counterclockwise"></i> Reset
+          </button>
+          <button type="button" class="cc-btn-primary" (click)="createCategory()">
+            <i class="bi bi-{{ isEditMode ? 'check-lg' : 'plus-lg' }}"></i>
+            {{ isEditMode ? 'Update Category' : 'Save Category' }}
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Table Card -->
+    <div class="cc-table-card">
+      <div class="cc-card-header">
+        <span class="cc-card-title">
+          <i class="bi bi-list-ul"></i> Category List
+        </span>
+        <span class="cc-count-badge">{{ categoriesList.length }} items</span>
+      </div>
+
+      <div class="cc-table-wrap">
+        <table class="cc-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Company</th>
+              <th>Category Name</th>
+              <th>Branch</th>
+              <th>Description</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let c of categoriesList; let i = index">
+              <td class="cc-td-num">{{ i + 1 }}</td>
+              <td class="cc-td-company">{{ c.company_name }}</td>
+              <td class="cc-td-name">{{ c.name }}</td>
+              <td>{{ c.branch_name }}</td>
+              <td class="cc-td-desc">{{ c.description || '—' }}</td>
+              <td>
+                <span class="cc-status-badge" [class.cc-status-active]="c.is_active"
+                  [class.cc-status-inactive]="!c.is_active">
+                  <i class="bi bi-circle-fill"></i>
+                  {{ c.is_active ? 'Active' : 'Inactive' }}
+                </span>
+              </td>
+              <td>
+                <div class="cc-action-btns">
+                  <button class="cc-icon-btn cc-icon-edit" (click)="editCategory(c)" title="Edit">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="cc-icon-btn" [class.cc-icon-deactivate]="c.is_active"
+                    [class.cc-icon-activate]="!c.is_active" (click)="toggleCategoryStatus(c)"
+                    [title]="c.is_active ? 'Deactivate' : 'Activate'">
+                    <i class="bi" [class.bi-toggle-on]="c.is_active" [class.bi-toggle-off]="!c.is_active"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="categoriesList.length === 0">
+              <td colspan="7" class="cc-empty">
+                <i class="bi bi-inbox"></i>
+                <p>No categories found. Add your first one.</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- end cc-two-col -->
+
+</div>

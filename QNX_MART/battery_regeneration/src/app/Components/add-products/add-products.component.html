@@ -1,0 +1,1294 @@
+<div class="ap-page">
+
+  <!-- ===== HEADER ===== -->
+  <div class="ap-header">
+    <div class="ap-header-text">
+      <h2>
+        <i
+          class="bi bi-{{ showProductList ? 'box-seam-fill' : (isEditMode ? 'pencil-square' : 'box-seam-fill') }} me-2"></i>
+        {{ showProductList ? 'My Products' : (isEditMode ? 'Edit Product' : 'Add Product') }}
+      </h2>
+      <p>
+        {{ showProductList ? 'Manage your product listings' : (isEditMode ? 'Update the product details below' : 'Fill
+        in the details below to list your product') }}
+      </p>
+    </div>
+    <div class="ap-header-actions">
+      <button type="button" class="ap-btn-ghost" *ngIf="showProductList" (click)="showAddForm()">
+        <i class="bi bi-plus-circle me-1"></i>Add Product
+      </button>
+      <button type="button" class="ap-btn-ghost" *ngIf="!showProductList" (click)="toggleProductList()">
+        <i class="bi bi-list me-1"></i>Show Products
+      </button>
+      <button type="button" class="ap-btn-ghost ap-btn-cancel-edit" *ngIf="isEditMode && !showProductList"
+        (click)="cancelEdit()">
+        <i class="bi bi-x-circle me-1"></i>Cancel Edit
+      </button>
+    </div>
+  </div>
+
+  <!-- ============================================= -->
+  <!-- ===== PRODUCT LIST ===== -->
+  <!-- ============================================= -->
+  <div class="ap-product-list-section" *ngIf="showProductList">
+
+    <div class="ap-list-header">
+      <div class="ap-list-title">
+        <i class="bi bi-box-seam me-2"></i>Product List
+        <span class="ap-list-count" *ngIf="!productListLoading">{{ productList.length }} products</span>
+      </div>
+      <div class="ap-list-filter">
+        <label class="ap-filter-label">Filter by Company:</label>
+        <select class="ap-filter-select" [(ngModel)]="filterCompanyId" (change)="onFilterCompanyChange()">
+          <option value="">All Companies</option>
+          <option *ngFor="let c of companies" [value]="c.id">{{ c.name }}</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div class="text-center py-4" *ngIf="productListLoading">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p class="mt-2 text-muted small">Loading products...</p>
+    </div>
+
+    <!-- Table -->
+    <div class="table-responsive" *ngIf="!productListLoading" style="max-height:560px;overflow-y:auto;overflow-x:auto;">
+      <table class="table table-hover table-bordered align-middle mb-0" style="min-width:3100px;font-size:12px;">
+        <thead class="table-dark text-center" style="position:sticky;top:0;z-index:2;">
+          <tr>
+            <th style="width:40px;">#</th>
+            <th style="width:70px;">Action</th>
+            <th style="width:70px;">Thumb</th>
+            <th style="width:80px;">Images</th>
+            <th style="width:90px;">Videos</th>
+            <th style="min-width:120px;max-width:200px;">Name</th>
+            <th style="width:70px;">Franchise</th>
+            <th style="min-width:140px;max-width:250px;">Description</th>
+            <th style="width:80px;">Code</th>
+            <th style="min-width:100px;max-width:180px;">Company</th>
+            <th style="min-width:90px;max-width:150px;">Branch</th>
+            <th style="min-width:100px;max-width:180px;">Category</th>
+            <th style="min-width:100px;max-width:180px;">Sub Cat</th>
+            <th style="min-width:90px;max-width:150px;">Brand</th>
+            <th style="width:60px;">Unit</th>
+            <th style="width:70px;">Price</th>
+            <th style="width:80px;">Discount</th>
+            <th style="width:80px;">Final</th>
+            <th style="width:70px;">Stock</th>
+            <th style="width:70px;">HSN</th>
+            <th style="width:70px;">Weight</th>
+            <th style="width:120px;">Dimensions</th>
+            <th style="width:100px;">Mfg Date</th>
+            <th style="width:100px;">Expiry</th>
+            <th style="width:100px;">Best Before</th>
+            <th style="min-width:140px;max-width:220px;">Specifications</th>
+            <th style="min-width:200px;max-width:380px;">Variants</th>
+            <th style="width:70px;">Status</th>
+            <th style="width:80px;">Featured</th>
+            <th style="width:80px;">Approval</th>
+            <!-- NEW COLUMNS -->
+            <!-- <th style="width:70px;">ISI</th>
+            <th style="width:70px;">ISO</th>
+            <th style="width:70px;">COD</th> -->
+            <th style="width:100px;">Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of productList; let i = index">
+            <td class="text-muted fw-semibold">{{ i + 1 }}</td>
+
+            <!-- Action -->
+            <td>
+              <button class="btn btn-sm btn-warning fw-semibold" (click)="editProduct(p)" title="Edit product">
+                <i class="bi bi-pencil me-1"></i>Edit
+              </button>
+            </td>
+
+            <!-- Thumbnail -->
+            <td>
+              <a *ngIf="p.thumbnail_s3_key" [href]="p.thumbnail_s3_key" target="_blank">
+                <img [src]="p.thumbnail_s3_key" [alt]="p.name" class="rounded"
+                  style="width:52px;height:52px;object-fit:cover;" />
+              </a>
+              <div *ngIf="!p.thumbnail_s3_key"
+                class="rounded bg-secondary d-flex align-items-center justify-content-center text-white"
+                style="width:52px;height:52px;font-size:18px;">
+                <i class="bi bi-box-seam"></i>
+              </div>
+            </td>
+
+            <!-- Images -->
+            <!--<td style="min-width:80px;">
+              <div class="d-flex flex-wrap gap-1" *ngIf="p.images?.length">
+                <a *ngFor="let img of p.images.slice(0,3)" [href]="img.image_s3_key" target="_blank">
+                  <img [src]="img.image_s3_key" class="rounded border"
+                    style="width:32px;height:32px;object-fit:cover;" />
+                </a>
+                <span *ngIf="p.images.length > 3" class="text-muted small">+{{ p.images.length - 3 }}</span>
+              </div>
+              <span *ngIf="!p.images?.length" class="text-muted">—</span>
+            </td>-->
+
+            <td style="width:110px;">
+              <div *ngIf="p.images?.length" class="d-flex align-items-center gap-1">
+
+                <a *ngFor="let img of p.images.slice(0, 2)" [href]="img.image_s3_key" target="_blank">
+
+                  <img [src]="img.image_s3_key" class="rounded border" style="width:35px;height:35px;object-fit:cover;">
+                </a>
+
+                <button *ngIf="p.images.length > 2" class="btn btn-sm btn-outline-primary px-2 py-1"
+                  (click)="openProductDetails(p, 'images')">
+                  +{{ p.images.length - 2 }} More
+                </button>
+
+              </div>
+
+              <span *ngIf="!p.images?.length" class="text-muted">—</span>
+            </td>
+
+            <!-- Videos -->
+            <td style="min-width:90px;">
+              <div *ngIf="p.videos?.length">
+                <div *ngFor="let v of p.videos.slice(0,2)" class="mb-1">
+                  <a [href]="v.video_s3_key" target="_blank" class="text-decoration-none text-primary">
+                    <i class="bi bi-play-circle me-1"></i>
+                    <small>Video</small>
+                  </a>
+                </div>
+                <span *ngIf="p.videos.length > 2" class="text-muted small">+{{ p.videos.length - 2 }}</span>
+              </div>
+              <span *ngIf="!p.videos?.length" class="text-muted">—</span>
+            </td>
+
+            <!-- Name – full content with word-wrap -->
+            <td style="max-width:200px; white-space:normal; word-break:break-word;">
+              <span class="fw-semibold">{{ p.name }}</span>
+            </td>
+
+            <!-- Franchise -->
+            <td>
+              <span class="badge" [ngClass]="p.is_franchise_available ? 'bg-success' : 'bg-secondary'">
+                {{ p.is_franchise_available ? 'Yes' : 'No' }}
+              </span>
+            </td>
+
+            <!-- Description – full content -->
+            <!-- <td style="max-width:250px; white-space:normal; word-break:break-word;">
+              <small class="text-muted">{{ p.description || '—' }}</small>
+            </td> -->
+
+            <td style="width:250px; max-width:250px;">
+              <div class="content-preview">
+                <small class="text-muted">
+                  {{ getShortText(p.description, 80) }}
+                </small>
+
+                <button *ngIf="p.description?.length > 80" class="btn btn-link btn-sm p-0 ms-1 fw-semibold"
+                  (click)="openProductDetails(p, 'description')">
+                  More
+                </button>
+              </div>
+            </td>
+
+            <!-- Code -->
+            <td><small class="text-muted" style="max-width:80px; word-break:break-word;">{{ p.product_code || '—'
+                }}</small></td>
+
+            <!-- Company, Branch, Category, Subcategory, Brand – full content with word-wrap -->
+            <td style="max-width:180px; white-space:normal; word-break:break-word;">{{ p.company_name || '—' }}</td>
+            <td style="max-width:150px; white-space:normal; word-break:break-word;">{{ p.branch_name || '—' }}</td>
+            <td style="max-width:180px; white-space:normal; word-break:break-word;">{{ p.category_name || '—' }}</td>
+            <td style="max-width:180px; white-space:normal; word-break:break-word;">{{ p.subcategory_name || '—' }}</td>
+            <td style="max-width:150px; white-space:normal; word-break:break-word;">{{ p.brand_name || '—' }}</td>
+
+            <td>{{ p.unit_name || '—' }}</td>
+
+            <!-- Price -->
+            <td class="fw-semibold">₹{{ p.price }}</td>
+            <td>
+              <span *ngIf="p.discount_type && p.discount_value !== '0.00'" class="badge bg-warning text-dark">
+                {{ p.discount_type === 'percent' ? p.discount_value + '%' : '₹' + p.discount_value }}
+              </span>
+              <span *ngIf="!p.discount_type || p.discount_value === '0.00'" class="text-muted">—</span>
+            </td>
+            <td class="text-success fw-semibold">₹{{ p.final_price ?? p.price }}</td>
+
+            <!-- Stock -->
+            <td>
+              <span [class.text-danger]="p.stock_quantity === 0" [class.text-success]="p.stock_quantity > 0"
+                class="fw-semibold">
+                {{ p.stock_quantity }}
+              </span>
+            </td>
+
+            <td>{{ p.HSN_code || '—' }}</td>
+            <td>{{ p.weight || '—' }}</td>
+            <td style="min-width:120px; white-space:normal; word-break:break-word;">
+              <span *ngIf="p.length || p.width || p.height">
+                {{ p.length || '—' }} × {{ p.width || '—' }} × {{ p.height || '—' }}
+              </span>
+              <span *ngIf="!p.length && !p.width && !p.height" class="text-muted">—</span>
+            </td>
+
+            <td>{{ p.manufacturing_date || '—' }}</td>
+            <td>{{ p.expiry_date || '—' }}</td>
+            <td>{{ p.best_before_duration ? p.best_before_duration + ' months' : '—' }}</td>
+
+            <!-- Specifications – full list -->
+            <!--<td style="max-width:220px; white-space:normal; word-break:break-word;">
+              <span *ngIf="p.specifications && p.specifications.length">
+                <span *ngFor="let s of p.specifications">
+                  <strong>{{ s.key }}:</strong> {{ s.value }}<br>
+                </span>
+              </span>
+              <span *ngIf="!p.specifications?.length" class="text-muted">—</span>
+            </td>-->
+
+            <td style="width:220px; max-width:220px;">
+
+              <div *ngIf="p.specifications?.length">
+
+                <div *ngFor="let s of p.specifications.slice(0, 2)" class="small text-truncate">
+
+                  <strong>{{ s.key }}:</strong>
+                  <span class="text-muted">{{ s.value }}</span>
+
+                </div>
+
+                <button *ngIf="p.specifications.length > 2" class="btn btn-link btn-sm p-0 mt-1 fw-semibold"
+                  (click)="openProductDetails(p, 'specifications')">
+
+                  +{{ p.specifications.length - 2 }} More
+
+                </button>
+
+              </div>
+
+              <span *ngIf="!p.specifications?.length" class="text-muted">
+                —
+              </span>
+
+            </td>
+
+            <!-- Variants – full list with images -->
+            <!--<td style="max-width:380px; white-space:normal; word-break:break-word;">
+              <div *ngIf="p.variants?.length">
+                <div *ngFor="let v of p.variants" class="variant-expanded-item">
+                  <img *ngIf="v.image" [src]="v.image" class="variant-thumb" />
+                  <div *ngIf="!v.image" class="variant-thumb-placeholder"></div>
+                  <div class="variant-expanded-details">
+                    <span class="badge bg-secondary variant-badge">{{ getVariantShort(v) }}</span>
+                    <span class="text-success ms-1">₹{{ v.final_price ?? v.price }}</span>
+                    <span class="text-muted ms-1">Stock: {{ v.stock_quantity }}</span>
+                    <span *ngIf="v.sku" class="text-muted ms-1">SKU: {{ v.sku }}</span>
+                  </div>
+                </div>
+              </div>
+              <span *ngIf="!p.variants?.length" class="text-muted">—</span>
+            </td>-->
+
+            <td style="width:300px; max-width:300px;">
+
+              <div *ngIf="p.variants?.length">
+
+                <!-- First Variant -->
+                <div class="d-flex align-items-center gap-2">
+
+                  <img *ngIf="p.variants[0].image" [src]="p.variants[0].image" class="rounded border"
+                    style="width:38px;height:38px;object-fit:cover;">
+
+                  <div *ngIf="!p.variants[0].image" class="rounded bg-light border" style="width:38px;height:38px;">
+                  </div>
+
+                  <div class="small">
+
+                    <div>
+                      <span class="badge bg-secondary">
+                        {{ getVariantShort(p.variants[0]) }}
+                      </span>
+                    </div>
+
+                    <div class="mt-1">
+                      <span class="text-success fw-semibold">
+                        ₹{{ p.variants[0].final_price ?? p.variants[0].price }}
+                      </span>
+
+                      <span class="text-muted ms-2">
+                        Stock: {{ p.variants[0].stock_quantity }}
+                      </span>
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <!-- More -->
+                <button *ngIf="p.variants.length > 1" class="btn btn-link btn-sm p-0 mt-1 fw-semibold"
+                  (click)="openProductDetails(p, 'variants')">
+
+                  +{{ p.variants.length - 1 }} More
+
+                </button>
+
+              </div>
+
+              <span *ngIf="!p.variants?.length" class="text-muted">
+                —
+              </span>
+
+            </td>
+
+            <!-- Flags -->
+            <td>
+              <span class="badge" [ngClass]="p.is_active ? 'bg-success' : 'bg-danger'">
+                {{ p.is_active ? 'Active' : 'Inactive' }}
+              </span>
+            </td>
+            <td>
+              <span class="badge" [ngClass]="p.is_featured ? 'bg-warning text-dark' : 'bg-light text-muted border'">
+                {{ p.is_featured ? 'Featured' : 'No' }}
+              </span>
+            </td>
+            <td>
+              <span class="badge"
+                [ngClass]="p.status === 'approved' ? 'bg-success' : p.status === 'pending' ? 'bg-warning text-dark' : 'bg-danger'">
+                {{ p.status }}
+              </span>
+            </td>
+
+            <!-- NEW COLUMNS: ISI, ISO, COD -->
+            <!-- <td>
+              <span class="badge" [ngClass]="p.ISI_certified ? 'bg-success' : 'bg-secondary'">
+                {{ p.ISI_certified ? 'Yes' : 'No' }}
+              </span>
+            </td>
+            <td>
+              <span class="badge" [ngClass]="p.ISO_certified ? 'bg-success' : 'bg-secondary'">
+                {{ p.ISO_certified ? 'Yes' : 'No' }}
+              </span>
+            </td>
+            <td>
+              <span class="badge" [ngClass]="p.COD_available ? 'bg-success' : 'bg-secondary'">
+                {{ p.COD_available ? 'Yes' : 'No' }}
+              </span>
+            </td> -->
+
+            <td class="text-muted" style="min-width:100px;">{{ p.created_at | date:'dd MMM yyyy' }}</td>
+
+          </tr>
+
+          <tr *ngIf="productList.length === 0">
+            <td colspan="34" class="text-center py-4 text-muted">
+              <i class="bi bi-inbox fs-3 d-block mb-2"></i>No products found
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- ============================================= -->
+  <!-- ===== PRODUCT FORM ===== -->
+  <!-- ============================================= -->
+  <form (ngSubmit)="submitProduct()" *ngIf="!showProductList" (change)="saveDraft()">
+    <div class="ap-body">
+
+      <!-- ===== SECTION 1: CLASSIFICATION ===== -->
+      <div class="ap-section">
+        <div class="ap-section-title"><i class="bi bi-diagram-3 me-2"></i>Classification</div>
+        <div class="ap-grid-4">
+
+          <div class="ap-field">
+            <label>Company <span class="ap-req">*</span></label>
+            <div class="ap-select-wrap">
+              <select class="ap-input" [class.ap-error]="hasError('company')" [(ngModel)]="product.company"
+                name="company" (change)="onCompanyChange(product.company)">
+                <option value="">Select Company</option>
+                <option *ngFor="let c of companies" [value]="c.id">{{c.name}}</option>
+              </select>
+              <button type="button" class="ap-add-btn" (click)="goToCompanyPage()" title="Add Company">
+                <i class="bi bi-plus"></i>
+              </button>
+            </div>
+            <span class="ap-err-msg" *ngIf="hasError('company')">{{getError('company')}}</span>
+          </div>
+
+          <div class="ap-field">
+            <label>Branch</label>
+            <div class="ap-select-wrap">
+              <select class="ap-input" [(ngModel)]="product.branch" name="branch"
+                (change)="onBranchChange(product.branch)">
+                <option value="">Select Branch</option>
+                <option *ngFor="let b of branches" [value]="b.id">{{b.name}}</option>
+              </select>
+              <button type="button" class="ap-add-btn" (click)="goToBranchPage()" title="Add Branch">
+                <i class="bi bi-plus"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="ap-field">
+            <label>Category <span class="ap-req">*</span></label>
+            <div class="ap-select-wrap">
+              <select class="ap-input" [class.ap-error]="hasError('category')" [(ngModel)]="product.category"
+                name="category" (change)="onCategoryChange(product.category)">
+                <option value="">Select Category</option>
+                <option *ngFor="let cat of categories" [value]="cat.id">{{cat.name}}</option>
+              </select>
+              <button type="button" class="ap-add-btn" (click)="goToCategoryPage()" title="Add Category">
+                <i class="bi bi-plus"></i>
+              </button>
+            </div>
+            <span class="ap-err-msg" *ngIf="hasError('category')">{{getError('category')}}</span>
+          </div>
+
+          <div class="ap-field">
+            <label>Sub Category <span class="ap-req">*</span></label>
+            <div class="ap-select-wrap">
+              <select class="ap-input" [class.ap-error]="hasError('subcategory')" [(ngModel)]="product.subcategory"
+                name="subcategory" (change)="onSubCategoryChange(product.subcategory)">
+                <option value="">Select Sub Category</option>
+                <option *ngFor="let s of subcategories" [value]="s.id">{{s.name}}</option>
+              </select>
+              <button type="button" class="ap-add-btn" (click)="goToSubCategoryPage()" title="Add Sub-Category">
+                <i class="bi bi-plus"></i>
+              </button>
+            </div>
+            <span class="ap-err-msg" *ngIf="hasError('subcategory')">{{getError('subcategory')}}</span>
+          </div>
+
+          <div class="ap-field">
+            <label>Brand <span class="ap-req">*</span></label>
+            <div class="ap-select-wrap">
+              <select class="ap-input" [class.ap-error]="hasError('brand')" [(ngModel)]="product.brand" name="brand">
+                <option value="">Select Brand</option>
+                <option *ngFor="let br of brands" [value]="br.id">{{br.name}}</option>
+              </select>
+              <button type="button" class="ap-add-btn" (click)="goToBrandPage()" title="Add Brand">
+                <i class="bi bi-plus"></i>
+              </button>
+            </div>
+            <span class="ap-err-msg" *ngIf="hasError('brand')">{{getError('brand')}}</span>
+          </div>
+
+          <div class="ap-field">
+            <label>Unit <span class="ap-req">*</span></label>
+            <div class="ap-select-wrap">
+              <select class="ap-input" [class.ap-error]="hasError('unit')" [(ngModel)]="product.unit" name="unit">
+                <option value="">Select Unit</option>
+                <option *ngFor="let u of units" [value]="u.id">{{u.name}}</option>
+              </select>
+              <button type="button" class="ap-add-btn" (click)="goToUnitPage()" title="Add Unit">
+                <i class="bi bi-plus"></i>
+              </button>
+            </div>
+            <span class="ap-err-msg" *ngIf="hasError('unit')">{{getError('unit')}}</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ===== SECTION 2: BASIC INFO ===== -->
+      <div class="ap-section">
+        <div class="ap-section-title"><i class="bi bi-info-circle me-2"></i>Basic Information</div>
+        <div class="ap-grid-4">
+
+          <div class="ap-field ap-col-2">
+            <label>Product Name <span class="ap-req">*</span></label>
+            <input type="text" class="ap-input" [class.ap-error]="hasError('name')" [(ngModel)]="product.name"
+              name="name" placeholder="Enter product name" />
+            <span class="ap-err-msg" *ngIf="hasError('name')">{{getError('name')}}</span>
+          </div>
+
+          <div class="ap-field ap-col-1">
+            <label>HSN Code</label>
+            <input type="text" class="ap-input" [(ngModel)]="product.HSN_code" name="HSN_code" placeholder="HSN Code"
+              maxlength="8" inputmode="numeric" pattern="[0-9]*" (input)="validateHSNCode()" />
+
+            <small *ngIf="hsnError" style="color: #dc3545; display: block; margin-top: 5px;">
+              HSN Code must contain 4, 6, or 8 digits.
+            </small>
+          </div>
+
+          <div class="ap-field ap-col-1">
+            <label> GST Percentage</label>
+            <input type="number" class="ap-input" [(ngModel)]="product.GST_percent" name="GST_percent">
+            <span class="ap-err-msg" *ngIf="hasError('GST_percent')">
+              {{getError('GST_percent')}}
+            </span>
+          </div>
+
+          <div class="ap-field ap-col-4">
+            <label>Description</label>
+            <textarea class="ap-input" rows="3" [(ngModel)]="product.description" name="description"
+              placeholder="Describe your product in detail..."></textarea>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ===== SECTION 2.5: FRANCHISE ===== -->
+      <div class="ap-section">
+        <div class="ap-section-title">
+          <i class="bi bi-shop me-2"></i>Franchise Availability
+          <span class="ap-section-hint">Control whether this product is offered to franchise partners</span>
+        </div>
+        <div class="ap-grid-4">
+          <div class="ap-field ap-col-4">
+            <label>Available for Franchise</label>
+            <div class="ap-franchise-control">
+              <label class="ap-franchise-checkbox">
+                <input type="checkbox" [(ngModel)]="product.is_franchise_available" name="is_franchise_available" />
+                <span class="ap-checkbox-custom"></span>
+                <span class="ap-checkbox-hint">Enable if this product can be sold through franchise partners.</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== SECTION 2.6: CERTIFICATIONS & COD ===== -->
+      <!-- <div class="ap-section">
+        <div class="ap-section-title">
+          <i class="bi bi-patch-check me-2"></i>Certifications &amp; COD
+          <span class="ap-section-hint">Optional product certifications and cash‑on‑delivery availability</span>
+        </div>
+        <div class="ap-grid-3">
+
+          <div class="ap-field">
+            <label>ISI Certified</label>
+            <div class="ap-toggle-wrap">
+              <label class="ap-toggle ap-toggle-isi">
+                <input type="checkbox" [(ngModel)]="product.ISI_certified" name="ISI_certified" />
+                <span class="ap-toggle-track">
+                  <span class="ap-toggle-thumb"></span>
+                </span>
+                <span class="ap-toggle-label">{{ product.ISI_certified ? 'Yes' : 'No' }}</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="ap-field">
+            <label>ISO Certified</label>
+            <div class="ap-toggle-wrap">
+              <label class="ap-toggle ap-toggle-iso">
+                <input type="checkbox" [(ngModel)]="product.ISO_certified" name="ISO_certified" />
+                <span class="ap-toggle-track">
+                  <span class="ap-toggle-thumb"></span>
+                </span>
+                <span class="ap-toggle-label">{{ product.ISO_certified ? 'Yes' : 'No' }}</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="ap-field">
+            <label>COD Available</label>
+            <div class="ap-toggle-wrap">
+              <label class="ap-toggle ap-toggle-cod">
+                <input type="checkbox" [(ngModel)]="product.COD_available" name="COD_available" />
+                <span class="ap-toggle-track">
+                  <span class="ap-toggle-thumb"></span>
+                </span>
+                <span class="ap-toggle-label">{{ product.COD_available ? 'Yes' : 'No' }}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+
+      <!-- ===== SECTION 3: PRICING ===== -->
+      <div class="ap-section">
+        <div class="ap-section-title"><i class="bi bi-currency-rupee me-2"></i>Pricing & Stock</div>
+        <div class="ap-grid-4">
+
+          <div class="ap-field">
+            <label>Base Price (₹) <span class="ap-req">*</span></label>
+            <input type="number" class="ap-input" [class.ap-error]="hasError('price')" [(ngModel)]="product.price"
+              name="price" placeholder="0.00" min="0" step="0.01" />
+            <span class="ap-err-msg" *ngIf="hasError('price')">{{getError('price')}}</span>
+          </div>
+
+          <div class="ap-field">
+            <label>Discount Type</label>
+            <select class="ap-input" [(ngModel)]="product.discount_type" name="discount_type">
+              <option value="">No Discount</option>
+              <option value="percent">Percentage (%)</option>
+              <option value="flat">Flat (₹)</option>
+            </select>
+          </div>
+
+          <div class="ap-field">
+            <label>Discount Value</label>
+            <input type="number" class="ap-input" [class.ap-error]="hasError('discount_value')"
+              [(ngModel)]="product.discount_value" name="discount_value" placeholder="0" min="0" />
+            <span class="ap-err-msg" *ngIf="hasError('discount_value')">{{getError('discount_value')}}</span>
+          </div>
+
+          <div class="ap-field">
+            <label>
+              Final Price (₹)
+              <small class="text-muted" *ngIf="getGstAmount() > 0">(incl. GST)</small>
+            </label>
+            <input type="number" class="ap-input ap-readonly" [value]="getFinalPrice()" readonly />
+            <small class="text-muted" *ngIf="getGstAmount() > 0">
+              After discount: ₹{{ getPriceAfterDiscount() }} + GST {{ product.GST_percent }}% (₹{{ getGstAmount() }})
+            </small>
+          </div>
+
+          <div class="ap-field">
+            <label>Stock Quantity <span class="ap-req">*</span></label>
+            <input type="number" class="ap-input" [class.ap-error]="hasError('stock_quantity')"
+              [(ngModel)]="product.stock_quantity" name="stock_quantity"
+              [placeholder]="isEditMode ? 'Add qty (0 = zero out, current: ' + originalStock + ')' : '0'" min="0" />
+            <span class="ap-err-msg" *ngIf="hasError('stock_quantity')">{{getError('stock_quantity')}}</span>
+            <small class="text-muted" *ngIf="isEditMode">
+              Current stock: <strong>{{ originalStock }}</strong> — enter qty to add, or 0 to zero out
+            </small>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ===== SECTION 4: VARIANTS ===== -->
+      <div class="ap-section">
+        <div class="ap-section-title">
+          <i class="bi bi-sliders me-2"></i>Product Variants
+          <span class="ap-section-hint">Pick a product type or build custom — each combination gets its own price, stock
+            &amp; image</span>
+        </div>
+
+        <!-- Product Type Presets -->
+        <div class="ap-preset-label">Quick Setup — Select Product Type:</div>
+        <div class="ap-preset-grid">
+          <button type="button" class="ap-preset-btn" *ngFor="let preset of productTypePresets"
+            [class.ap-preset-active]="selectedPreset === preset.label" (click)="applyPreset(preset.label)">
+            <i class="bi {{preset.icon}} me-1"></i>{{ preset.label }}
+          </button>
+        </div>
+
+        <!-- Variant Attribute Groups -->
+        <div class="ap-variant-groups" *ngIf="variantGroups.length > 0 || selectedPreset">
+          <div class="ap-variant-group" *ngFor="let group of variantGroups; let gi = index">
+            <div class="ap-vg-header">
+              <div class="ap-vg-name-wrap">
+                <input type="text" class="ap-input ap-vg-name" [(ngModel)]="group.name" [name]="'vg_name_'+gi"
+                  placeholder="Attribute name (e.g. Color, Size, Storage)" (blur)="regenerateCombinations()" />
+              </div>
+              <button type="button" class="ap-vg-remove" (click)="removeVariantGroup(gi)">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+            <!-- Suggestion chips from preset -->
+            <div class="ap-vg-suggestions" *ngIf="getPresetSuggestions(gi).length > 0">
+              <span class="ap-suggestion-label">Quick add:</span>
+              <button type="button" class="ap-suggestion-chip" *ngFor="let sug of getPresetSuggestions(gi)"
+                [class.ap-suggestion-used]="group.options.includes(sug)" (click)="addSuggestion(gi, sug)">
+                {{ sug }}
+              </button>
+            </div>
+            <div class="ap-vg-options">
+              <span class="ap-vg-tag" *ngFor="let opt of group.options; let oi = index">
+                {{ opt }}
+                <button type="button" (click)="removeVariantOption(gi, oi)"><i class="bi bi-x"></i></button>
+              </span>
+              <input class="ap-vg-tag-input" type="text"
+                [placeholder]="'Type ' + (group.name || 'option') + ' &amp; press Enter'" [(ngModel)]="group.inputVal"
+                [name]="'vg_input_'+gi" (keydown)="onVariantOptionKey($event, gi)" />
+            </div>
+          </div>
+        </div>
+
+        <button type="button" class="ap-add-group-btn" (click)="addVariantGroup()">
+          <i class="bi bi-plus-circle me-2"></i>Add Attribute Group
+        </button>
+
+        <!-- Variant Combinations Table -->
+        <div class="ap-combinations" *ngIf="variantCombinations.length > 0">
+          <div class="ap-comb-title">
+            <i class="bi bi-table me-2"></i>Variant Combinations
+            <span class="ap-section-hint">Set price, stock, SKU and image for each combination</span>
+          </div>
+          <div class="ap-comb-table-wrap">
+            <table class="ap-comb-table">
+              <thead>
+                <tr>
+                  <th *ngFor="let g of variantGroups">{{ g.name || 'Attribute' }}</th>
+                  <th>Price (₹) <span class="ap-req">*</span></th>
+                  <th>Stock <span class="ap-req">*</span></th>
+                  <th>SKU <span class="ap-req">*</span></th>
+                  <th>Image <span class="ap-req">*</span></th>
+                  <th>Preview</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let combo of variantCombinations; let ci = index"
+                  [class.ap-comb-row-error]="submitted && (combo.price === null || combo.price === undefined || combo.price <= 0 || combo.stock === null || combo.stock === undefined || combo.stock < 0)">
+                  <td *ngFor="let val of combo.values">
+                    <span class="ap-combo-val">{{ val }}</span>
+                  </td>
+                  <td>
+                    <input type="number" class="ap-input ap-comb-input" [(ngModel)]="combo.price"
+                      [name]="'combo_price_'+ci" placeholder="0.00" min="0" step="0.01" />
+                  </td>
+                  <td>
+                    <input type="number" class="ap-input ap-comb-input" [(ngModel)]="combo.stock"
+                      [name]="'combo_stock_'+ci"
+                      [placeholder]="isEditMode ? 'Add (orig: ' + originalVariantStocks[ci] + ')' : '0'" min="0" />
+                    <div *ngIf="isEditMode" style="font-size:10px;color:#718096;margin-top:2px;">
+                      orig: {{ originalVariantStocks[ci] }}
+                    </div>
+                  </td>
+                  <td>
+                    <input type="text" class="ap-input ap-comb-input" [(ngModel)]="combo.sku" [name]="'combo_sku_'+ci"
+                      placeholder="SKU-001" />
+                  </td>
+                  <td>
+                    <label class="ap-comb-img-btn">
+                      <i class="bi bi-image"></i>
+                      <input type="file" accept="image/*" hidden (change)="onVariantImageSelect($event, ci)" />
+                    </label>
+                  </td>
+                  <td>
+                    <img *ngIf="combo.imagePreview" [src]="combo.imagePreview" class="ap-comb-preview" />
+                    <span *ngIf="!combo.imagePreview" class="ap-comb-no-img">—</span>
+                  </td>
+                  <td>
+                    <button type="button" class="ap-comb-del-btn" (click)="deleteVariantCombo(ci)"
+                      title="Delete this combination">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ap-comb-summary">
+            <span><i class="bi bi-layers me-1"></i>{{ variantCombinations.length }} combinations</span>
+            <span><i class="bi bi-currency-rupee me-1"></i>Price range: ₹{{ getMinVariantPrice() }} – ₹{{
+              getMaxVariantPrice() }}</span>
+            <span><i class="bi bi-box-seam me-1"></i>Total stock: {{ getTotalVariantStock() }}</span>
+          </div>
+        </div>
+
+        <!-- No variants fallback note -->
+        <div class="ap-no-variant-note" *ngIf="variantGroups.length === 0">
+          <i class="bi bi-info-circle me-2"></i>
+          No variants added. The base price &amp; stock above will apply to the whole product.
+        </div>
+
+      </div>
+
+      <!-- ===== SECTION 5: PHYSICAL & TECHNICAL ===== -->
+      <div class="ap-section">
+        <div class="ap-section-title">
+          <i class="bi bi-rulers me-2"></i>Physical &amp; Technical Details
+          <i class="bi ms-3 text-primary" [ngClass]="showTechImage ? 'bi-eye' : 'bi-eye-slash'"
+            style="cursor: pointer; font-size: 1.2rem;" (click)="showTechImage = !showTechImage"
+            title="Show/Hide Image">
+          </i>
+        </div>
+        <div class="ap-grid-4">
+
+          <div class="ap-field">
+            <label>Weight <span class="ap-req">*</span></label>
+            <div class="ap-unit-wrap">
+              <input type="number" class="ap-input ap-unit-input" [(ngModel)]="product.weight" name="weight"
+                placeholder="e.g. 500" min="0" />
+              <select class="ap-input ap-unit-select" [(ngModel)]="product.weight_unit" name="weight_unit">
+                <option *ngFor="let u of weightUnits" [value]="u">{{u}}</option>
+              </select>
+            </div>
+            <span class="ap-err-msg" *ngIf="hasError('weight')">{{getError('weight')}}</span>
+          </div>
+
+          <div class="ap-field">
+            <label>Length <span class="ap-req">*</span></label>
+            <div class="ap-unit-wrap">
+              <input type="number" class="ap-input ap-unit-input" [(ngModel)]="product.length" name="length"
+                placeholder="e.g. 30" min="0" />
+              <select class="ap-input ap-unit-select" [(ngModel)]="product.length_unit" name="length_unit">
+                <option *ngFor="let u of dimensionUnits" [value]="u">{{u}}</option>
+              </select>
+            </div>
+            <span class="ap-err-msg" *ngIf="hasError('length')">{{getError('length')}}</span>
+          </div>
+
+          <div class="ap-field">
+            <label>Width <span class="ap-req">*</span></label>
+            <div class="ap-unit-wrap">
+              <input type="number" class="ap-input ap-unit-input" [(ngModel)]="product.width" name="width"
+                placeholder="e.g. 10" min="0" />
+              <select class="ap-input ap-unit-select" [(ngModel)]="product.width_unit" name="width_unit">
+                <option *ngFor="let u of dimensionUnits" [value]="u">{{u}}</option>
+              </select>
+            </div>
+            <span class="ap-err-msg" *ngIf="hasError('width')">{{getError('width')}}</span>
+          </div>
+
+          <div class="ap-field">
+            <label>Height <span class="ap-req">*</span></label>
+            <div class="ap-unit-wrap">
+              <input type="number" class="ap-input ap-unit-input" [(ngModel)]="product.height" name="height"
+                placeholder="e.g. 12" min="0" />
+              <select class="ap-input ap-unit-select" [(ngModel)]="product.height_unit" name="height_unit">
+                <option *ngFor="let u of dimensionUnits" [value]="u">{{u}}</option>
+              </select>
+            </div>
+            <span class="ap-err-msg" *ngIf="hasError('height')">{{getError('height')}}</span>
+          </div>
+
+          <div class="ap-field">
+            <label>Voltage</label>
+            <div class="ap-unit-wrap">
+              <input type="number" class="ap-input ap-unit-input" [(ngModel)]="product.voltage" name="voltage"
+                placeholder="e.g. 220" min="0" />
+              <select class="ap-input ap-unit-select" [(ngModel)]="product.voltage_unit" name="voltage_unit">
+                <option *ngFor="let u of voltageUnits" [value]="u">{{u}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="ap-field">
+            <label>Power</label>
+            <div class="ap-unit-wrap">
+              <input type="number" class="ap-input ap-unit-input" [(ngModel)]="product.power" name="power"
+                placeholder="e.g. 100" min="0" />
+              <select class="ap-input ap-unit-select" [(ngModel)]="product.power_unit" name="power_unit">
+                <option *ngFor="let u of powerUnits" [value]="u">{{u}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="ap-field d-flex align-items-center" *ngIf="showTechImage">
+            <img src="assets/box_img.png" alt="Technical Details"
+              style="max-width: 180px; border: 1px solid #ccc; border-radius: 5px; padding: 2px;" />
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ===== SECTION 6: SPECIFICATIONS ===== -->
+      <div class="ap-section">
+        <div class="ap-section-title"><i class="bi bi-list-check me-2"></i>Specifications</div>
+        <div class="ap-spec-list">
+          <div class="ap-spec-row" *ngFor="let spec of specifications; let i = index">
+            <input type="text" class="ap-input" [(ngModel)]="spec.key" [name]="'spec_key'+i"
+              placeholder="Name (e.g. Material)" />
+            <input type="text" class="ap-input" [(ngModel)]="spec.value" [name]="'spec_val'+i"
+              placeholder="Value (e.g. Cotton)" />
+            <button type="button" class="ap-spec-remove" (click)="removeSpecification(i)">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+        </div>
+        <button type="button" class="ap-add-spec-btn" (click)="addSpecification()">
+          <i class="bi bi-plus me-1"></i>Add Specification
+        </button>
+      </div>
+
+      <!-- ===== SECTION 7: DATES ===== -->
+      <div class="ap-section">
+        <div class="ap-section-title"><i class="bi bi-calendar-check me-2"></i>Manufacturing &amp; Expiry</div>
+        <div class="ap-grid-4">
+          <div class="ap-field">
+            <label>Manufacturing Date</label>
+            <input type="date" class="ap-input" [(ngModel)]="product.manufacturing_date" name="manufacturing_date" />
+          </div>
+          <div class="ap-field">
+            <label>Expiry Type</label>
+            <div class="ap-toggle-group">
+              <label class="ap-toggle-opt" [class.active]="expiryMode === 'duration'">
+                <input type="radio" name="expiry_mode" value="duration" [(ngModel)]="expiryMode" />
+                <i class="bi bi-hourglass-split me-1"></i>Best Before
+              </label>
+              <label class="ap-toggle-opt" [class.active]="expiryMode === 'exact'">
+                <input type="radio" name="expiry_mode" value="exact" [(ngModel)]="expiryMode" />
+                <i class="bi bi-calendar-date me-1"></i>Exact Date
+              </label>
+            </div>
+          </div>
+          <div class="ap-field" *ngIf="expiryMode === 'duration'">
+            <label>Best Before Duration</label>
+            <select class="ap-input" [(ngModel)]="product.best_before_duration" name="best_before_duration">
+              <option value="">Select Duration</option>
+              <option *ngFor="let opt of bestBeforeOptions" [value]="opt.value">{{opt.label}}</option>
+            </select>
+          </div>
+          <div class="ap-field" *ngIf="expiryMode === 'exact'">
+            <label>Expiry Date</label>
+            <input type="date" class="ap-input" [(ngModel)]="product.expiry_date" name="expiry_date" />
+          </div>
+        </div>
+        <div class="ap-shelf-life" *ngIf="getShelfLifeLabel()">
+          <i class="bi bi-clock-history me-2"></i>{{ getShelfLifeLabel() }}
+        </div>
+      </div>
+
+      <!-- ===== SECTION 8: MEDIA ===== -->
+      <div class="ap-section">
+        <div class="ap-section-title"><i class="bi bi-images me-2"></i>Product Media</div>
+        <div class="ap-grid-3">
+
+          <!-- Thumbnail -->
+          <div class="ap-media-box" [class.ap-media-error]="hasError('thumbnail')">
+            <div class="ap-media-label">Thumbnail <span class="ap-req">*</span></div>
+            <div class="ap-media-upload" *ngIf="!thumbnailPreview" (click)="thumbnailInput.click()">
+              <i class="bi bi-cloud-upload-fill"></i>
+              <span>Click to upload thumbnail</span>
+              <small>JPG, PNG, WebP — max 5MB</small>
+            </div>
+            <div class="ap-media-preview" *ngIf="thumbnailPreview">
+              <img [src]="thumbnailPreview" alt="Thumbnail" />
+              <button type="button" class="ap-media-remove" (click)="removeThumbnail()">
+                <i class="bi bi-x-circle-fill"></i>
+              </button>
+            </div>
+            <input #thumbnailInput type="file" accept="image/*" hidden (change)="onThumbnailSelect($event)" />
+            <span class="ap-err-msg" *ngIf="hasError('thumbnail')">{{getError('thumbnail')}}</span>
+          </div>
+
+          <!-- Images -->
+          <div class="ap-media-box">
+            <div class="ap-media-label">Product Images <small>(max 10)</small></div>
+            <div class="ap-media-upload" (click)="imagesInput.click()">
+              <i class="bi bi-images"></i>
+              <span>Click to upload images</span>
+              <small>Multiple allowed</small>
+            </div>
+            <input #imagesInput type="file" accept="image/*" multiple hidden (change)="onImagesSelect($event)" />
+
+            <!-- existing server images (edit mode) -->
+            <div class="ap-media-grid" *ngIf="existingImages.length > 0">
+              <div class="ap-media-thumb" *ngFor="let img of existingImages; let i = index">
+                <img [src]="img.url" />
+                <button type="button" (click)="removeExistingImage(i)" title="Delete this image">
+                  <i class="bi bi-x-circle-fill"></i>
+                </button>
+                <span class="ap-existing-badge">Saved</span>
+              </div>
+            </div>
+
+            <!-- newly selected images -->
+            <div class="ap-media-grid" *ngIf="previewUrls.length > 0">
+              <div class="ap-media-thumb" *ngFor="let img of previewUrls; let i = index">
+                <img [src]="img" />
+                <button type="button" (click)="removeImage(i)"><i class="bi bi-x-circle-fill"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Videos -->
+          <div class="ap-media-box">
+            <div class="ap-media-label">Product Videos <small>(max 5)</small></div>
+            <div class="ap-media-upload" (click)="videosInput.click()">
+              <i class="bi bi-camera-video-fill"></i>
+              <span>Click to upload videos</span>
+              <small>MP4, WebM — max 50MB each</small>
+            </div>
+            <input #videosInput type="file" accept="video/*" multiple hidden (change)="onVideosSelect($event)" />
+
+            <!-- existing server videos (edit mode) -->
+            <div class="ap-media-grid" *ngIf="existingVideos.length > 0">
+              <div class="ap-media-thumb ap-media-video" *ngFor="let v of existingVideos; let i = index">
+                <video [src]="v.url"></video>
+                <button type="button" (click)="removeExistingVideo(i)" title="Delete this video">
+                  <i class="bi bi-x-circle-fill"></i>
+                </button>
+                <span class="ap-existing-badge">Saved</span>
+              </div>
+            </div>
+
+            <!-- newly selected videos -->
+            <div class="ap-media-grid" *ngIf="videoPreviewUrls.length > 0">
+              <div class="ap-media-thumb ap-media-video" *ngFor="let v of videoPreviewUrls; let i = index">
+                <video [src]="v.url"></video>
+                <button type="button" (click)="removeVideo(i)"><i class="bi bi-x-circle-fill"></i></button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ===== SUBMIT ===== -->
+      <div class="ap-footer">
+        <button type="submit" class="ap-btn-submit" [disabled]="isSubmitting">
+          <span *ngIf="!isSubmitting">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            {{ isEditMode ? 'Update Product' : 'Create Product' }}
+          </span>
+          <span *ngIf="isSubmitting">
+            <span class="spinner-border spinner-border-sm me-2"></span>
+            Processing...
+          </span>
+        </button>
+        <button type="button" class="ap-btn-list" (click)="clearForm()">
+          <i class="bi bi-trash me-1"></i>Clear
+        </button>
+      </div>
+
+    </div>
+  </form>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<!-- Product Details Modal -->
+<div class="modal fade" id="productDetailsModal" tabindex="-1" aria-hidden="true">
+
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+
+    <div class="modal-content border-0 shadow">
+
+      <!-- Header -->
+      <div class="modal-header bg-dark text-white">
+
+        <div>
+          <h5 class="modal-title mb-1">
+            {{ selectedProduct?.name }}
+          </h5>
+
+          <small class="opacity-75">
+            Product Details
+          </small>
+        </div>
+
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal">
+        </button>
+
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body">
+
+        <!-- DESCRIPTION -->
+        <div *ngIf="selectedDetailType === 'description'">
+
+          <div class="d-flex align-items-center mb-3">
+            <i class="bi bi-card-text fs-4 me-2 text-primary"></i>
+
+            <h6 class="mb-0 fw-bold">
+              Description
+            </h6>
+          </div>
+
+          <div class="bg-light rounded p-3">
+
+            <p class="mb-0 text-secondary" style="white-space: pre-line;">
+              {{ selectedProduct?.description || 'No description available' }}
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- IMAGES -->
+        <div *ngIf="selectedDetailType === 'images'">
+
+          <div class="d-flex align-items-center mb-3">
+            <i class="bi bi-images fs-4 me-2 text-primary"></i>
+
+            <h6 class="mb-0 fw-bold">
+              Product Images
+            </h6>
+
+            <span class="badge bg-secondary ms-2">
+              {{ selectedProduct?.images?.length || 0 }}
+            </span>
+          </div>
+
+          <div class="row g-3">
+
+            <div class="col-6 col-md-4" *ngFor="let img of selectedProduct?.images">
+
+              <a [href]="img.image_s3_key" target="_blank" class="text-decoration-none">
+
+                <div class="border rounded p-2 bg-light">
+
+                  <img [src]="img.image_s3_key" class="img-fluid rounded"
+                    style="width:100%;height:150px;object-fit:cover;">
+
+                </div>
+
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- SPECIFICATIONS -->
+        <div *ngIf="selectedDetailType === 'specifications'">
+
+          <div class="d-flex align-items-center mb-3">
+            <i class="bi bi-list-check fs-4 me-2 text-primary"></i>
+
+            <h6 class="mb-0 fw-bold">
+              Specifications
+            </h6>
+
+          </div>
+
+          <div class="table-responsive">
+
+            <table class="table table-sm table-bordered align-middle mb-0">
+
+              <thead class="table-light">
+                <tr>
+                  <th style="width:35%;">Specification</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+
+              <tbody>
+
+                <tr *ngFor="let s of selectedProduct?.specifications">
+
+                  <td class="fw-semibold">
+                    {{ s.key }}
+                  </td>
+
+                  <td class="text-muted">
+                    {{ s.value }}
+                  </td>
+
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+
+        <!-- VARIANTS -->
+        <div *ngIf="selectedDetailType === 'variants'">
+
+          <div class="d-flex align-items-center mb-3">
+
+            <i class="bi bi-box-seam fs-4 me-2 text-primary"></i>
+
+            <h6 class="mb-0 fw-bold">
+              Product Variants
+            </h6>
+
+            <span class="badge bg-secondary ms-2">
+              {{ selectedProduct?.variants?.length || 0 }}
+            </span>
+
+          </div>
+
+
+          <div class="row g-3">
+
+            <div class="col-12" *ngFor="let v of selectedProduct?.variants">
+
+              <div class="border rounded p-3">
+
+                <div class="d-flex align-items-center">
+
+                  <!-- Image -->
+                  <img *ngIf="v.image" [src]="v.image" class="rounded border me-3"
+                    style="width:65px;height:65px;object-fit:cover;">
+
+                  <div *ngIf="!v.image"
+                    class="rounded bg-light border me-3 d-flex align-items-center justify-content-center"
+                    style="width:65px;height:65px;">
+
+                    <i class="bi bi-image text-muted fs-4"></i>
+
+                  </div>
+
+
+                  <!-- Details -->
+                  <div class="flex-grow-1">
+
+                    <div class="mb-1">
+
+                      <span class="badge bg-secondary">
+                        {{ getVariantShort(v) }}
+                      </span>
+
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-3 small">
+
+                      <span>
+                        <span class="text-muted">Price:</span>
+                        <strong>
+                          ₹{{ v.price }}
+                        </strong>
+                      </span>
+
+                      <span>
+                        <span class="text-muted">Final:</span>
+                        <strong class="text-success">
+                          ₹{{ v.final_price ?? v.price }}
+                        </strong>
+                      </span>
+
+                      <span>
+                        <span class="text-muted">Stock:</span>
+                        <strong>
+                          {{ v.stock_quantity }}
+                        </strong>
+                      </span>
+
+                      <span *ngIf="v.sku">
+                        <span class="text-muted">SKU:</span>
+                        <strong>
+                          {{ v.sku }}
+                        </strong>
+                      </span>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer bg-light">
+
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+
+          Close
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

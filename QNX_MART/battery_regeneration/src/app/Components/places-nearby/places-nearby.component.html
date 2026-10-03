@@ -1,0 +1,205 @@
+<div class="pn-page">
+
+  <!-- ===== HEADER ===== -->
+  <div class="pn-header">
+    <div class="pn-header-text">
+      <h2>
+        <i class="bi bi-geo-alt-fill me-2"></i>Places Nearby
+      </h2>
+      <p>Search interesting places around any location using Google Places</p>
+    </div>
+    <div class="pn-header-actions">
+      <button type="button" class="pn-btn-ghost" (click)="clearResults()">
+        <i class="bi bi-x-circle me-1"></i>Clear
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== SEARCH PANEL ===== -->
+  <div class="pn-search-wrap">
+    <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="pn-search-card">
+
+      <div class="pn-search-grid">
+
+        <div class="pn-field">
+          <label>Latitude <span class="pn-req">*</span></label>
+          <input type="number" class="pn-input" formControlName="lat" step="0.000001"
+            placeholder="e.g. 18.5204" />
+          <span class="pn-err" *ngIf="searchForm.get('lat')?.invalid && searchForm.get('lat')?.touched">
+            Enter a valid latitude (-90 to 90).
+          </span>
+        </div>
+
+        <div class="pn-field">
+          <label>Longitude <span class="pn-req">*</span></label>
+          <input type="number" class="pn-input" formControlName="lng" step="0.000001"
+            placeholder="e.g. 73.8567" />
+          <span class="pn-err" *ngIf="searchForm.get('lng')?.invalid && searchForm.get('lng')?.touched">
+            Enter a valid longitude (-180 to 180).
+          </span>
+        </div>
+
+        <div class="pn-field">
+          <label>Radius (meters) <span class="pn-req">*</span></label>
+          <input type="number" class="pn-input" formControlName="radius" min="1" max="50000"
+            placeholder="e.g. 5000" />
+          <span class="pn-err" *ngIf="searchForm.get('radius')?.invalid && searchForm.get('radius')?.touched">
+            Radius must be between 1 and 50,000 m.
+          </span>
+        </div>
+
+        <div class="pn-field">
+          <label>Keyword <span class="pn-req">*</span></label>
+          <input type="text" class="pn-input" formControlName="keyword"
+            placeholder="e.g. transport, hospital, atm" />
+          <span class="pn-err" *ngIf="searchForm.get('keyword')?.invalid && searchForm.get('keyword')?.touched">
+            Please enter a keyword.
+          </span>
+        </div>
+
+        <div class="pn-field pn-btn-field">
+          <label>&nbsp;</label>
+          <button type="button" class="pn-btn-locate" (click)="useMyLocation()" [disabled]="isLocating">
+            <span *ngIf="!isLocating"><i class="bi bi-crosshair me-1"></i>Use my location</span>
+            <span *ngIf="isLocating"><span class="pn-spin-inline"></span>Locating...</span>
+          </button>
+        </div>
+
+        <div class="pn-field pn-btn-field">
+          <label>&nbsp;</label>
+          <button type="submit" class="pn-btn-search" [disabled]="isLoading">
+            <span *ngIf="!isLoading"><i class="bi bi-search me-1"></i>Search</span>
+            <span *ngIf="isLoading"><span class="pn-spin-inline"></span>Searching...</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Quick keyword chips -->
+      <div class="pn-chips">
+        <span class="pn-chips-label">Quick picks:</span>
+        <button type="button" class="pn-chip" *ngFor="let kw of quickKeywords"
+          (click)="selectKeyword(kw)">
+          {{ kw }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- ===== LOADING ===== -->
+  <div class="pn-loading" *ngIf="isLoading">
+    <div class="pn-spinner"></div>
+    <p>Searching nearby places...</p>
+  </div>
+
+  <!-- ===== ERROR ===== -->
+  <div class="pn-error-box" *ngIf="!isLoading && errorMessage">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ errorMessage }}
+  </div>
+
+  <!-- ===== RESULTS ===== -->
+  <div class="pn-results-section" *ngIf="!isLoading && places.length > 0">
+
+    <div class="pn-results-header">
+      <div class="pn-results-title">
+        <i class="bi bi-pin-map-fill me-2"></i>Results
+        <span class="pn-results-count">{{ places.length }} places</span>
+      </div>
+      <div class="pn-results-origin">
+        <i class="bi bi-geo-alt me-1"></i>
+        Origin: {{ currentLat }}, {{ currentLng }}
+      </div>
+    </div>
+
+    <div class="pn-cards-grid">
+      <div class="pn-place-card" *ngFor="let p of places; trackBy: trackByPlaceId">
+
+        <!-- top: icon + name + open status -->
+        <div class="pn-card-head">
+          <div class="pn-card-icon-wrap">
+            <img *ngIf="p.icon" [src]="p.icon" alt="" class="pn-card-icon"
+              (error)="p.icon = ''" />
+            <i *ngIf="!p.icon" class="bi bi-shop"></i>
+          </div>
+          <div class="pn-card-title">
+            <h3>{{ p.name }}</h3>
+            <div class="pn-card-sub">
+              <span class="pn-badge" *ngIf="p.business_status === 'OPERATIONAL'">
+                <i class="bi bi-check-circle-fill me-1"></i>Operational
+              </span>
+              <span class="pn-badge pn-badge-muted"
+                *ngIf="p.business_status && p.business_status !== 'OPERATIONAL'">
+                {{ p.business_status }}
+              </span>
+              <span class="pn-badge"
+                [ngClass]="p.opening_hours.open_now ? 'pn-badge-success' : 'pn-badge-danger'"
+                *ngIf="p.opening_hours">
+                {{ p.opening_hours.open_now ? 'Open now' : 'Closed' }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- rating -->
+        <div class="pn-rating-row" *ngIf="p.rating != null">
+          <span class="pn-stars">
+            <i class="bi bi-star-fill"></i>
+            <strong>{{ p.rating }}</strong>
+          </span>
+          <span class="pn-rating-count" *ngIf="p.user_ratings_total">
+            ({{ p.user_ratings_total }} reviews)
+          </span>
+        </div>
+
+        <!-- vicinity -->
+        <div class="pn-card-row" *ngIf="p.vicinity">
+          <i class="bi bi-geo-alt"></i>
+          <span>{{ p.vicinity }}</span>
+        </div>
+
+        <!-- phone -->
+        <div class="pn-card-row" *ngIf="p.international_phone_number">
+          <i class="bi bi-telephone"></i>
+          <a [href]="'tel:' + p.international_phone_number">{{ p.international_phone_number }}</a>
+        </div>
+
+        <!-- distance -->
+        <div class="pn-card-row" *ngIf="p.distanceKm != null">
+          <i class="bi bi-signpost-2"></i>
+          <span>{{ formatDistance(p.distanceKm) }}</span>
+        </div>
+
+        <!-- types -->
+        <div class="pn-card-row" *ngIf="readableTypes(p.types)">
+          <i class="bi bi-tags"></i>
+          <span class="pn-types">{{ readableTypes(p.types) }}</span>
+        </div>
+
+        <!-- actions -->
+        <div class="pn-card-actions">
+          <a class="pn-btn-view" [href]="googleMapsUrl(p)" target="_blank" rel="noopener">
+            <i class="bi bi-map me-1"></i>View on Map
+          </a>
+          <a class="pn-btn-dir" [href]="googleDirectionsUrl(p)" target="_blank" rel="noopener">
+            <i class="bi bi-sign-turn-right me-1"></i>Directions
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="pn-note" *ngIf="nextPageToken">
+      <i class="bi bi-info-circle me-1"></i>
+      More results are available. Refine your keyword or search a slightly different location.
+    </div>
+  </div>
+
+  <!-- ===== EMPTY STATE ===== -->
+  <div class="pn-empty" *ngIf="!isLoading && places.length === 0 && !errorMessage">
+    <i class="bi bi-compass"></i>
+    <h3>Find places around you</h3>
+    <p>Enter a location and keyword above, or click <strong>Use my location</strong> to auto-fill your current coordinates.</p>
+  </div>
+
+</div>

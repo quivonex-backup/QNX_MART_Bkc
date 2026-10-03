@@ -1,0 +1,162 @@
+<div class="cu-page">
+
+  <!-- Header -->
+  <div class="cu-header">
+    <div class="cu-header-text">
+      <h2><i class="bi bi-envelope-fill me-2"></i>Contact Us</h2>
+      <p>We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+    </div>
+  </div>
+
+  <div class="cu-body">
+
+    <!-- Info + Form Row -->
+    <div class="cu-grid">
+
+      <!-- Contact Info -->
+      <div class="cu-info-card">
+        <h5 class="cu-info-title">Get In Touch</h5>
+
+        <div class="cu-info-item">
+          <div class="cu-info-icon"><i class="bi bi-geo-alt-fill"></i></div>
+          <div>
+            <strong>Office Address</strong>
+            <p>QNX Mart, Maharashtra, India</p>
+          </div>
+        </div>
+
+        <div class="cu-info-item">
+          <div class="cu-info-icon"><i class="bi bi-telephone-fill"></i></div>
+          <div>
+            <strong>Phone</strong>
+            <p>+91 9579345147</p>
+          </div>
+        </div>
+
+        <div class="cu-info-item">
+          <div class="cu-info-icon"><i class="bi bi-envelope-fill"></i></div>
+          <div>
+            <strong>Email</strong>
+            <p>qnxmartb2b&#64;gmail.com</p>
+          </div>
+        </div>
+
+        <div class="cu-info-item">
+          <div class="cu-info-icon"><i class="bi bi-clock-fill"></i></div>
+          <div>
+            <strong>Working Hours</strong>
+            <p>Mon – Sat, 9:00 AM – 6:00 PM</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="cu-form-card">
+        <h5 class="cu-form-title">Send a Message</h5>
+
+        <form (ngSubmit)="submitForm()" #contactForm="ngForm">
+          <div class="cu-row">
+            <div class="cu-field">
+              <label>Your Name <span class="cu-req">*</span></label>
+              <input type="text" class="cu-input" placeholder="Enter your name" [(ngModel)]="formData.name" name="name"
+                required minlength="2" maxlength="50" pattern="^[a-zA-Z ]+$" #name="ngModel"
+                (input)="allowOnlyName($event)" (keydown.enter)="focusNext($event, 'phone')" />
+
+              <div class="cu-error" *ngIf="name.invalid && (name.touched || name.dirty)">
+                <span *ngIf="name.errors?.['required']">
+                  Name is required.
+                </span>
+
+                <span *ngIf="name.errors?.['minlength']">
+                  Name must be at least 2 characters.
+                </span>
+
+                <span *ngIf="name.errors?.['pattern']">
+                  Name can contain only letters and spaces.
+                </span>
+              </div>
+            </div>
+            <div class="cu-field">
+              <label>Mobile Number <span class="cu-req">*</span></label>
+              <input type="tel" class="cu-input" placeholder="Enter mobile number" [(ngModel)]="formData.phone"
+                name="phone" required minlength="10" maxlength="10" pattern="^[0-9]{10}$" inputmode="numeric"
+                #phone="ngModel" (input)="allowOnlyNumber($event)" (keydown.enter)="focusNext($event, 'email')" />
+
+              <div class="cu-error" *ngIf="phone.invalid && (phone.touched || phone.dirty)">
+                <span *ngIf="phone.errors?.['required']">
+                  Mobile number is required.
+                </span>
+
+                <span *ngIf="phone.errors?.['minlength'] || phone.errors?.['pattern']">
+                  Enter a valid 10-digit mobile number.
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="cu-field cu-field-full">
+            <label>Email Address</label>
+            <input type="email" class="cu-input" placeholder="Enter email address" [(ngModel)]="formData.email"
+              name="email" email #email="ngModel" (keydown.enter)="focusNext($event, 'subject')" />
+
+            <div class="cu-error" *ngIf="email.invalid && (email.touched || email.dirty)">
+              <span *ngIf="email.errors?.['email']">
+                Please enter a valid email address.
+              </span>
+            </div>
+          </div>
+
+          <div class="cu-field cu-field-full">
+            <label>Subject <span class="cu-req">*</span></label>
+            <select class="cu-input" [(ngModel)]="formData.subject" name="subject" required #subject="ngModel">
+              <option value="">Select a query type</option>
+              <option value="complaint">Complaint</option>
+              <option value="technical">Technical Support</option>
+              <option value="account">Account</option>
+              <option value="order">Order Related</option>
+              <option value="feedback">Feedback</option>
+              <option value="other">Other</option>
+            </select>
+
+            <div class="cu-error" *ngIf="subject.invalid && (subject.touched || subject.dirty)"> <span
+                *ngIf="subject.errors?.['required']"> Please select a query type. </span> </div>
+          </div>
+
+          <div class="cu-field cu-field-full">
+            <label>Message <span class="cu-req">*</span></label>
+            <textarea class="cu-input" rows="4" placeholder="Write your message here..." [(ngModel)]="formData.message"
+              name="message" minlength="10" maxlength="1000" #message="ngModel"></textarea>
+
+            <div class="cu-error" *ngIf="message.invalid && (message.touched || message.dirty)">
+              <span *ngIf="message.errors?.['required']">
+                Message is required.
+              </span>
+
+              <span *ngIf="message.errors?.['minlength']">
+                Message must be at least 10 characters.
+              </span>
+            </div>
+          </div>
+
+          <div class="cu-submit-row">
+            <button type="submit" class="cu-submit-btn" [disabled]="isSubmitting">
+              <i class="bi bi-send-fill me-2"></i>
+              {{ isSubmitting ? 'Sending...' : 'Send Message' }}
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+
+    <!-- Map -->
+    <div class="cu-map-wrap">
+  
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3439.5804975354044!2d74.03149419999997!3d17.6735045!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2bc698ce62ea9023%3A0xeade2d7bee5d7221!2sQuivonex%20Solutions%20Pvt.%20Ltd.!5e1!3m2!1sen!2sin!4v1790141679393!5m2!1sen!2sin"
+        width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+        referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </div>
+
+  </div>
+</div>

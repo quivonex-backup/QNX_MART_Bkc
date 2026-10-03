@@ -1,0 +1,1202 @@
+<div class="pc-page">
+
+  <!-- ===== HEADER ===== -->
+  <div class="pc-header">
+    <div class="pc-header-text">
+      <h2>
+        <i
+          class="bi bi-{{ showPropertyList ? 'building-fill' : (isEditMode ? 'pencil-square' : 'building-add') }} me-2"></i>
+        {{ showPropertyList ? 'My Properties' : (isEditMode ? 'Edit Property' : 'Add Property') }}
+      </h2>
+      <p>
+        {{ showPropertyList
+        ? 'Manage and monitor your complete property portfolio'
+        : (isEditMode
+        ? 'Update the property specifications and details below'
+        : 'Fill in the comprehensive details below to list your property') }}
+      </p>
+    </div>
+
+    <div class="pc-header-actions">
+      <button type="button" class="pc-btn-ghost" *ngIf="showPropertyList" (click)="showAddForm()">
+        <i class="bi bi-plus-circle me-1"></i>Add Property
+      </button>
+
+      <button type="button" class="pc-btn-ghost" *ngIf="!showPropertyList" (click)="goToPropertyList()">
+        <i class="bi bi-list-ul me-1"></i>My Properties
+      </button>
+
+      <button type="button" class="pc-btn-ghost" *ngIf="isEditMode" (click)="cancelEdit()">
+        <i class="bi bi-x-circle me-1"></i>Cancel Edit
+      </button>
+    </div>
+  </div>
+
+  <!-- ============================================= -->
+  <!-- ===== PROPERTY LIST ========================= -->
+  <!-- ============================================= -->
+  <div class="pc-list-section" *ngIf="showPropertyList">
+
+    <!-- TOP BAR: Title + View Plans toggle -->
+    <div class="pc-list-header">
+      <div class="pc-list-title">
+        <i class="bi bi-house-door me-2"></i>Property List
+        <span class="pc-list-count" *ngIf="!propertyListLoading">{{ propertyList.length }} properties</span>
+      </div>
+
+      <button type="button" class="pc-btn-view-plans" (click)="togglePlansSection()">
+        <i class="bi bi-gem me-1"></i>
+        {{ showPlansSection ? 'Hide Subscription Plans' : 'View Subscription Plans' }}
+        <i class="bi bi-chevron-{{ showPlansSection ? 'up' : 'down' }} ms-1"></i>
+      </button>
+    </div>
+
+    <!-- SUBSCRIPTION PLANS (TOGGLEABLE) -->
+    <div class="pc-section mb-4" *ngIf="showPlansSection">
+      <div class="pc-section-title pc-section-title-flex">
+        <span>
+          <i class="bi bi-gem me-2"></i>Available Subscription Plans
+        </span>
+        <span class="pc-list-count" *ngIf="!plansLoading && subscriptionPlansList.length">
+          {{ subscriptionPlansList.length }} plan{{ subscriptionPlansList.length > 1 ? 's' : '' }}
+        </span>
+      </div>
+
+      <div class="ps-info-banner" style="margin-bottom: 20px;">
+        <i class="bi bi-info-circle-fill"></i>
+        <span>
+          Extend your property visibility by subscribing to a plan.
+          Every property stays free for the first <strong>15 days</strong>.
+        </span>
+      </div>
+
+      <div *ngIf="plansLoading" class="pc-loading">
+        <div class="pc-spinner"></div>
+        <p class="mt-2">Loading plans...</p>
+      </div>
+
+      <div class="pp-plans-grid" *ngIf="!plansLoading && subscriptionPlansList.length">
+        <div class="pp-plan-card" *ngFor="let plan of subscriptionPlansList">
+          <div class="pp-plan-header">
+            <div>
+              <div class="pp-plan-name">{{ plan.name }}</div>
+              <div class="pp-plan-days">
+                <i class="bi bi-calendar-check me-1"></i>{{ plan.days }} day<span *ngIf="plan.days > 1">s</span>
+              </div>
+            </div>
+            <div class="pp-plan-icon"><i class="bi bi-gem"></i></div>
+          </div>
+          <div class="pp-plan-price"><span class="pp-plan-currency">₹</span>{{ plan.price }}</div>
+        </div>
+      </div>
+
+      <div class="pc-empty-hint" *ngIf="!plansLoading && !subscriptionPlansList.length">
+        No active plans available right now.
+      </div>
+    </div>
+
+    <!-- 15-day free visibility notice -->
+    <div class="pc-free-period-note">
+      <i class="bi bi-info-circle-fill"></i>
+      <div>
+        <strong>Free visibility for 15 days.</strong>
+        Every property is automatically visible on the website for the first 15 days from creation.
+        After that, please purchase a subscription plan to keep it visible to buyers.
+      </div>
+    </div>
+
+    <!-- LOADING -->
+    <div class="pc-loading" *ngIf="propertyListLoading">
+      <div class="pc-spinner"></div>
+      <p class="mt-2">Loading properties...</p>
+    </div>
+
+    <!-- PROPERTY TABLE -->
+    <div class="pc-list-table-wrap" *ngIf="!propertyListLoading">
+      <table class="pc-list-table pc-list-table-wide">
+        <thead>
+          <tr>
+            <th style="width:48px;">#</th>
+            <th style="width:170px;">Action</th>
+            <th style="width:70px;">Image</th>
+            <th style="min-width:220px;">Property</th>
+            <th style="min-width:220px;">Description</th>
+            <th style="min-width:200px;">Location</th>
+            <th style="min-width:180px;">Area / Building</th>
+            <th style="min-width:140px;">Geo</th>
+            <th>RERA</th>
+            <th style="min-width:180px;">Construction</th>
+            <th style="min-width:180px;">Features</th>
+            <th style="min-width:180px;">Amenities</th>
+            <th>Status</th>
+            <th style="min-width:180px;">Free / Sub</th>
+            <th>Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of propertyList; let i = index">
+            <td class="text-muted fw-semibold">{{ i + 1 }}</td>
+
+            <!-- Action -->
+            <td>
+              <div class="pc-row-actions">
+                <button class="pc-btn-edit-row" (click)="editProperty(p)">
+                  <i class="bi bi-pencil-square"></i>Edit
+                </button>
+                <button class="pc-btn-plan-row" (click)="openPlanModal(p)" title="Purchase subscription plan">
+                  <i class="bi bi-credit-card-2-front"></i>Subscribe
+                </button>
+              </div>
+            </td>
+
+            <!-- Image -->
+            <td>
+              <div class="pp-thumb-cell" *ngIf="p.images && p.images.length">
+                <img [src]="getPropertyImageUrl(p)" alt="thumb" loading="lazy" />
+              </div>
+              <div class="pp-thumb-cell pp-thumb-empty" *ngIf="!p.images || !p.images.length">
+                <i class="bi bi-image"></i>
+              </div>
+            </td>
+
+            <!-- Property: title + badges + type badges -->
+            <td>
+              <div class="fw-semibold text-dark">{{ p.title }}</div>
+              <div class="pp-title-badges">
+                <span class="pp-mini-badge pp-mini-featured" *ngIf="p.is_featured">
+                  <i class="bi bi-star-fill"></i> Featured
+                </span>
+                <span class="pp-mini-badge pp-mini-verified" *ngIf="p.is_verified">
+                  <i class="bi bi-patch-check-fill"></i> Verified
+                </span>
+                <span class="pp-mini-badge pp-mini-negotiable" *ngIf="p.is_negotiable">
+                  <i class="bi bi-currency-exchange"></i> Negotiable
+                </span>
+              </div>
+              <div class="mt-1 pp-type-row">
+                <span class="pc-badge pc-badge-info">{{ p.property_type || '—' }}</span>
+                <span class="pc-badge pc-badge-neutral">{{ p.transaction_type || '—' }}</span>
+                <span class="pc-badge pc-badge-muted">{{ p.property_condition || '—' }}</span>
+              </div>
+            </td>
+
+            <!-- Description -->
+            <td>
+              <div class="pp-clip-2 mt-1" [title]="p.description">{{ p.description || '—' }}</div>
+            </td>
+
+            <!-- Location -->
+            <td>
+              <div class="fw-semibold">{{ p.city || '—' }}{{ p.area ? ', ' + p.area : '' }}</div>
+              <div class="pp-clip-2" [title]="p.address">{{ p.address || '—' }}</div>
+              <div class="small text-muted">
+                <span *ngIf="p.landmark"><i class="bi bi-geo me-1"></i>{{ p.landmark }}</span>
+                <span *ngIf="p.pincode" class="ms-2"><i class="bi bi-mailbox me-1"></i>{{ p.pincode }}</span>
+              </div>
+            </td>
+
+            <!-- Area / Building -->
+            <td>
+              <ng-container *ngIf="p.total_area || p.plot_area || p.total_floors || p.total_towers; else noArea">
+                <div *ngIf="p.total_area"><small class="text-muted">Total:</small> {{ p.total_area }} sqft</div>
+                <div *ngIf="p.plot_area"><small class="text-muted">Plot:</small> {{ p.plot_area }} sqft</div>
+                <div *ngIf="p.total_floors"><small class="text-muted">Floors:</small> {{ p.total_floors }}</div>
+                <div *ngIf="p.total_towers"><small class="text-muted">Towers:</small> {{ p.total_towers }}</div>
+              </ng-container>
+              <ng-template #noArea><span class="text-muted">—</span></ng-template>
+            </td>
+
+            <!-- Geo -->
+            <td class="pp-mono">
+              <ng-container *ngIf="p.latitude && p.longitude; else noGeo">
+                {{ p.latitude | number:'1.4-4' }}<br>{{ p.longitude | number:'1.4-4' }}
+              </ng-container>
+              <ng-template #noGeo><span class="text-muted">—</span></ng-template>
+            </td>
+
+            <!-- RERA -->
+            <td class="pp-mono">
+              <span *ngIf="p.rera_number; else noRera">{{ p.rera_number }}</span>
+              <ng-template #noRera><span class="text-muted">—</span></ng-template>
+            </td>
+
+            <!-- Construction / Possession -->
+            <td>
+              <span class="pp-mini-badge pp-mini-verified" *ngIf="p.ready_to_move">
+                <i class="bi bi-house-check-fill"></i> Ready
+              </span>
+              <span class="pp-mini-badge pp-mini-featured" *ngIf="p.is_under_construction">
+                <i class="bi bi-cone-striped"></i> Under Construction
+              </span>
+              <span class="text-muted" *ngIf="!p.ready_to_move && !p.is_under_construction">—</span>
+              <div class="small text-muted mt-1" *ngIf="p.possession_date">
+                Possession: {{ p.possession_date }}
+              </div>
+              <div class="small text-muted" *ngIf="p.completion_percentage">
+                Done: {{ p.completion_percentage }}%
+              </div>
+            </td>
+
+            <!-- Features -->
+            <td>
+              <ng-container *ngIf="getEnabledFeatures(p).length; else noFeat">
+                <div class="pp-chip-row">
+                  <span class="pp-chip" *ngFor="let f of getFeaturesPreview(p, 3).visible">{{ f }}</span>
+                  <span class="pp-chip pp-chip-more" *ngIf="getFeaturesPreview(p, 3).more > 0">
+                    +{{ getFeaturesPreview(p, 3).more }}
+                  </span>
+                </div>
+              </ng-container>
+              <ng-template #noFeat><span class="text-muted">—</span></ng-template>
+            </td>
+
+            <!-- Amenities -->
+            <td>
+              <ng-container *ngIf="getAmenityNames(p).length; else noAmen">
+                <div class="pp-chip-row">
+                  <span class="pp-chip pp-chip-amenity"
+                    *ngFor="let a of getAmenitiesPreview(p, 3).visible">{{ a }}</span>
+                  <span class="pp-chip pp-chip-more" *ngIf="getAmenitiesPreview(p, 3).more > 0">
+                    +{{ getAmenitiesPreview(p, 3).more }}
+                  </span>
+                </div>
+              </ng-container>
+              <ng-template #noAmen><span class="text-muted">—</span></ng-template>
+            </td>
+
+            <!-- Status / Approval -->
+            <td>
+              <div>
+                <span class="pc-badge"
+                  [ngClass]="p.status === 'active' ? 'pc-badge-success' : 'pc-badge-muted'">
+                  {{ p.status || 'draft' }}
+                </span>
+              </div>
+              <div class="mt-1">
+                <span class="pc-badge" [ngClass]="{
+                  'pc-badge-warning': p.status_approved === false,
+                  'pc-badge-success': p.status_approved === true
+                }">
+                  {{ p.status_approved ? 'approved' : 'pending' }}
+                </span>
+              </div>
+            </td>
+
+            <!-- Free Expiry / Subscription -->
+            <td>
+              <ng-container *ngIf="p.free_expiry_date; else noFree">
+                <span class="pp-expiry-badge"
+                  [ngClass]="{
+                    'pp-expiry-ok':  (getDaysUntilFreeExpiry(p) ?? 0) > 3,
+                    'pp-expiry-warn': (getDaysUntilFreeExpiry(p) ?? 0) >= 0 && (getDaysUntilFreeExpiry(p) ?? 0) <= 3,
+                    'pp-expiry-expired': isFreeExpired(p)
+                  }">
+                  <i class="bi bi-clock-history"></i>
+                  <ng-container *ngIf="isFreeExpired(p); else daysLeft">Expired</ng-container>
+                  <ng-template #daysLeft>
+                    {{ getDaysUntilFreeExpiry(p) }} day<span *ngIf="(getDaysUntilFreeExpiry(p) ?? 0) !== 1">s</span> left
+                  </ng-template>
+                </span>
+              </ng-container>
+              <ng-template #noFree><span class="text-muted small">No free window</span></ng-template>
+
+              <div class="mt-1">
+                <span class="pc-badge" *ngIf="p.subscription_active; else notSubscribed"
+                  style="background:#d1fae5;color:#065f46;">
+                  <i class="bi bi-patch-check-fill me-1"></i>Sub Active
+                </span>
+                <ng-template #notSubscribed>
+                  <span class="pc-badge pc-badge-warning">Not Subscribed</span>
+                </ng-template>
+              </div>
+              <div class="small text-muted mt-1" *ngIf="p.expiry_date">
+                Expires: {{ p.expiry_date | date:'dd MMM yyyy' }}
+              </div>
+            </td>
+
+            <!-- Created -->
+            <td class="text-muted">{{ p.created_at | date:'dd MMM yyyy' }}</td>
+          </tr>
+
+          <tr *ngIf="propertyList.length === 0">
+            <td colspan="14" class="text-center py-5 text-muted">
+              <i class="bi bi-inbox fs-2 d-block mb-2 opacity-50"></i>No properties found
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============================================= -->
+  <!-- ===== PROPERTY FORM ========================= -->
+  <!-- ============================================= -->
+  <form [formGroup]="propertyForm" (ngSubmit)="onSubmit()" *ngIf="!showPropertyList">
+    <div class="pc-body">
+
+      <!-- SUBCATEGORY & TRANSACTION/STAGE SELECTOR -->
+      <div class="pc-section mb-4">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3 pb-2 border-bottom">
+          <div class="d-flex align-items-center">
+            <div class="bg-purple rounded-1 me-2" style="width: 4px; height: 18px; background-color: #7c3aed;"></div>
+            <span class="fw-bold text-dark fs-13 tracking-wide">SELECT PROPERTY SUBCATEGORY</span>
+          </div>
+          <span class="badge rounded-pill px-3 py-2 fw-semibold fs-11"
+            style="background-color: #d1fae5; color: #065f46;">
+            Active Configuration: {{ (propertyForm.get('property_type')?.value || 'flat') | titlecase }} Form (Custom
+            Attributes Enabled)
+          </span>
+        </div>
+
+        <div>
+          <div class="row g-3 mb-4">
+            <div class="col-6 col-md-4 col-lg-2">
+              <div class="subcat-card text-center p-3 rounded-3 position-relative"
+                [class.active]="!propertyForm.get('property_type')?.value || propertyForm.get('property_type')?.value === 'flat'"
+                (click)="propertyForm.get('property_type')?.setValue('flat')">
+                <div class="fs-1 mb-2">🏢</div>
+                <div class="fw-semibold text-dark fs-13">Flat / Apt</div>
+              </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-2">
+              <div class="subcat-card text-center p-3 rounded-3 position-relative"
+                [class.active]="propertyForm.get('property_type')?.value === 'villa'"
+                (click)="propertyForm.get('property_type')?.setValue('villa')">
+                <div class="fs-1 mb-2">🏡</div>
+                <div class="fw-semibold text-dark fs-13">Villa / Bungalow</div>
+              </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-2">
+              <div class="subcat-card text-center p-3 rounded-3 position-relative"
+                [class.active]="propertyForm.get('property_type')?.value === 'plot'"
+                (click)="propertyForm.get('property_type')?.setValue('plot')">
+                <div class="fs-1 mb-2">📐</div>
+                <div class="fw-semibold text-dark fs-13">Plot / Land</div>
+              </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-2">
+              <div class="subcat-card text-center p-3 rounded-3 position-relative"
+                [class.active]="propertyForm.get('property_type')?.value === 'commercial'"
+                (click)="propertyForm.get('property_type')?.setValue('commercial')">
+                <div class="fs-1 mb-2">🏢</div>
+                <div class="fw-semibold text-dark fs-13">Commercial</div>
+              </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-2">
+              <div class="subcat-card text-center p-3 rounded-3 position-relative"
+                [class.active]="propertyForm.get('property_type')?.value === 'shop'"
+                (click)="propertyForm.get('property_type')?.setValue('shop')">
+                <div class="fs-1 mb-2">🛍️</div>
+                <div class="fw-semibold text-dark fs-13">Retail Shop</div>
+              </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-2">
+              <div class="subcat-card text-center p-3 rounded-3 position-relative"
+                [class.active]="propertyForm.get('property_type')?.value === 'office'"
+                (click)="propertyForm.get('property_type')?.setValue('office')">
+                <div class="fs-1 mb-2">💼</div>
+                <div class="fw-semibold text-dark fs-13">Office Space</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-3 border-top d-flex align-items-center flex-wrap gap-4">
+
+            <div class="d-flex align-items-center flex-wrap gap-2">
+              <span class="text-secondary fw-bold fs-11 tracking-wider">TRANSACTION TYPE:</span>
+              <div class="pill-container p-1 rounded-pill bg-light d-flex align-items-center border">
+                <button type="button" class="btn rounded-pill px-3 py-1 fs-12 fw-semibold border-0"
+                  [class.bg-purple]="!propertyForm.get('transaction_type')?.value || propertyForm.get('transaction_type')?.value === 'sale'"
+                  [class.text-white]="!propertyForm.get('transaction_type')?.value || propertyForm.get('transaction_type')?.value === 'sale'"
+                  [class.text-dark]="propertyForm.get('transaction_type')?.value && propertyForm.get('transaction_type')?.value !== 'sale'"
+                  (click)="propertyForm.get('transaction_type')?.setValue('sale')">
+                  Sale
+                </button>
+                <button type="button" class="btn rounded-pill px-3 py-1 fs-12 fw-semibold border-0"
+                  [class.bg-purple]="propertyForm.get('transaction_type')?.value === 'rent'"
+                  [class.text-white]="propertyForm.get('transaction_type')?.value === 'rent'"
+                  [class.text-dark]="propertyForm.get('transaction_type')?.value !== 'rent'"
+                  (click)="propertyForm.get('transaction_type')?.setValue('rent')">
+                  Rent
+                </button>
+                <button type="button" class="btn rounded-pill px-3 py-1 fs-12 fw-semibold border-0"
+                  [class.bg-purple]="propertyForm.get('transaction_type')?.value === 'lease'"
+                  [class.text-white]="propertyForm.get('transaction_type')?.value === 'lease'"
+                  [class.text-dark]="propertyForm.get('transaction_type')?.value !== 'lease'"
+                  (click)="propertyForm.get('transaction_type')?.setValue('lease')">
+                  Lease
+                </button>
+                <!-- PG / Hostel — only allowed for Flat & Villa -->
+                <button type="button" class="btn rounded-pill px-3 py-1 fs-12 fw-semibold border-0"
+                  [disabled]="!isPgAllowed"
+                  [class.opacity-50]="!isPgAllowed"
+                  [style.cursor]="!isPgAllowed ? 'not-allowed' : 'pointer'"
+                  [title]="!isPgAllowed ? 'PG / Hostel is only available for Flat and Villa' : ''"
+                  [class.bg-purple]="propertyForm.get('transaction_type')?.value === 'pg'"
+                  [class.text-white]="propertyForm.get('transaction_type')?.value === 'pg'"
+                  [class.text-dark]="propertyForm.get('transaction_type')?.value !== 'pg'"
+                  (click)="isPgAllowed && propertyForm.get('transaction_type')?.setValue('pg')">
+                  PG / Hostel
+                </button>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-center flex-wrap gap-2" *ngIf="isSaleTx">
+              <span class="text-secondary fw-bold fs-11 tracking-wider">CONSTRUCTION STAGE:</span>
+              <div class="pill-container p-1 rounded-pill bg-light d-flex align-items-center border">
+                <button type="button" class="btn rounded-pill px-3 py-1 fs-12 fw-semibold border-0"
+                  [class.bg-purple]="propertyForm.get('is_under_construction')?.value !== false"
+                  [class.text-white]="propertyForm.get('is_under_construction')?.value !== false"
+                  [class.text-dark]="propertyForm.get('is_under_construction')?.value === false"
+                  (click)="propertyForm.patchValue({is_under_construction: true, ready_to_move: false})">
+                  Under Construction
+                </button>
+                <button type="button" class="btn rounded-pill px-3 py-1 fs-12 fw-semibold border-0"
+                  [class.bg-purple]="propertyForm.get('ready_to_move')?.value === true"
+                  [class.text-white]="propertyForm.get('ready_to_move')?.value === true"
+                  [class.text-dark]="propertyForm.get('ready_to_move')?.value !== true"
+                  (click)="propertyForm.patchValue({ready_to_move: true, is_under_construction: false})">
+                  Ready to Move
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 1: BASIC INFO -->
+      <div class="pc-section">
+        <div class="pc-section-title"><i class="bi bi-info-circle me-2"></i>Basic Information</div>
+        <div class="pc-grid-4">
+
+          <div class="pc-field pc-col-2">
+            <label>Title <span class="pc-req">*</span></label>
+            <input type="text" class="pc-input" [class.pc-error]="isFieldInvalid('title')" formControlName="title"
+              placeholder="Enter property title" />
+            <span class="pc-err-msg" *ngIf="isFieldInvalid('title')">{{ getErrorMessage('title') }}</span>
+          </div>
+
+          <div class="pc-field">
+            <label>Property Type <span class="pc-req">*</span></label>
+            <select class="pc-input" [class.pc-error]="isFieldInvalid('property_type')" formControlName="property_type">
+              <option value="">Select Type</option>
+              <option value="flat">Flat / Apartment</option>
+              <option value="villa">Villa / Bungalow</option>
+              <option value="plot">Plot / Land</option>
+              <option value="commercial">Commercial Space</option>
+              <option value="shop">Shop / Retail</option>
+              <option value="office">Office Space</option>
+              <option value="warehouse">Warehouse</option>
+              <option value="other">Other</option>
+            </select>
+            <span class="pc-err-msg" *ngIf="isFieldInvalid('property_type')">{{ getErrorMessage('property_type') }}</span>
+          </div>
+
+          <div class="pc-field">
+            <label>Transaction Type <span class="pc-req">*</span></label>
+            <select class="pc-input" [class.pc-error]="isFieldInvalid('transaction_type')"
+              formControlName="transaction_type">
+              <option value="">Select</option>
+              <option value="sale">For Sale</option>
+              <option value="rent">For Rent</option>
+              <option value="lease">For Lease</option>
+              <!-- PG only allowed for Flat / Villa -->
+              <option value="pg" [disabled]="!isPgAllowed">PG / Hostel</option>
+            </select>
+            <span class="pc-err-msg" *ngIf="isFieldInvalid('transaction_type')">{{ getErrorMessage('transaction_type') }}</span>
+          </div>
+
+          <div class="pc-field">
+            <label>Property Condition <span class="pc-req">*</span></label>
+            <select class="pc-input" [class.pc-error]="isFieldInvalid('property_condition')"
+              formControlName="property_condition">
+              <option value="">Select</option>
+              <option value="new">New Property</option>
+              <option value="resale">Old / Resale Property</option>
+            </select>
+            <span class="pc-err-msg" *ngIf="isFieldInvalid('property_condition')">{{
+              getErrorMessage('property_condition') }}</span>
+          </div>
+
+          <div class="pc-field pc-col-4">
+            <label>Description <span class="pc-req">*</span></label>
+            <textarea class="pc-input" rows="3" formControlName="description"
+              placeholder="Describe your property in detail..."></textarea>
+            <span class="pc-err-msg" *ngIf="isFieldInvalid('description')">{{ getErrorMessage('description') }}</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- SECTION 2: PROJECT / BUILDING -->
+      <div class="pc-section">
+        <div class="pc-section-title"><i class="bi bi-buildings me-2"></i>Project &amp; Building</div>
+        <div class="pc-grid-4">
+
+          <div class="pc-field" *ngIf="showTotalArea">
+            <label>Total Area (sqft)</label>
+            <input type="number" class="pc-input" formControlName="total_area" placeholder="0" min="0"
+              (keydown.enter)="goToNext($event)" />
+          </div>
+
+          <div class="pc-field" *ngIf="showPlotArea">
+            <label>Plot Area (sqft)</label>
+            <input type="number" class="pc-input" formControlName="plot_area" placeholder="0" min="0"
+              (keydown.enter)="goToNext($event)" />
+          </div>
+
+          <div class="pc-field" *ngIf="showFloors">
+            <label>Total Floors</label>
+            <input type="number" class="pc-input" formControlName="total_floors" placeholder="0" min="0"
+              (keydown.enter)="goToNext($event)" />
+          </div>
+
+          <div class="pc-field" *ngIf="showTowers">
+            <label>Total Towers</label>
+            <input type="number" class="pc-input" formControlName="total_towers" placeholder="0" min="0"
+              (keydown.enter)="goToNext($event)" />
+          </div>
+
+          <!-- ===== Sale-only: RERA ===== -->
+          <ng-container *ngIf="showReraSection">
+            <div class="pc-field pc-col-2">
+              <label>RERA Number</label>
+              <input type="text" class="pc-input" formControlName="rera_number" placeholder="e.g. P52100012345"
+                (keydown.enter)="goToNext($event)" />
+            </div>
+
+            <div class="pc-field">
+              <label>RERA QR Code URL</label>
+              <input type="text" class="pc-input" formControlName="rera_qr_code" placeholder="https://..."
+                (keydown.enter)="goToNext($event)" />
+            </div>
+
+            <div class="pc-field">
+              <label>RERA Portal URL</label>
+              <input type="text" class="pc-input" formControlName="rera_website" placeholder="https://..."
+                (keydown.enter)="goToNext($event)" />
+            </div>
+          </ng-container>
+
+          <!-- ===== Sale-only: Possession / Completion ===== -->
+          <ng-container *ngIf="showPossessionDate">
+            <div class="pc-field">
+              <label>Possession Date</label>
+              <input type="date" class="pc-input" formControlName="possession_date" (keydown.enter)="goToNext($event)" />
+            </div>
+
+            <div class="pc-field">
+              <label>Completion %</label>
+              <input type="number" class="pc-input" formControlName="completion_percentage" placeholder="0 - 100" min="0"
+                max="100" (keydown.enter)="goToNext($event)" />
+            </div>
+          </ng-container>
+
+          <div class="pc-field pc-col-2">
+            <label>Property Website URL</label>
+            <input type="text" class="pc-input" formControlName="property_website_url" placeholder="https://..."
+              (keydown.enter)="goToNext($event)" />
+          </div>
+
+          <div class="pc-field pc-col-4">
+            <div class="pc-check-inline">
+              <!-- ===== Sale-only: Construction Stage flags ===== -->
+              <label class="pc-check-item" *ngIf="showConstructionStage">
+                <input type="checkbox" formControlName="is_under_construction">
+                <span>Under Construction</span>
+              </label>
+              <label class="pc-check-item" *ngIf="showConstructionStage">
+                <input type="checkbox" formControlName="ready_to_move">
+                <span>Ready to Move</span>
+              </label>
+              <label class="pc-check-item">
+                <input type="checkbox" formControlName="is_featured">
+                <span>Featured Property</span>
+              </label>
+              <label class="pc-check-item">
+                <input type="checkbox" formControlName="is_verified">
+                <span>Verified Property</span>
+              </label>
+              <label class="pc-check-item">
+                <input type="checkbox" formControlName="is_negotiable">
+                <span>Price Negotiable</span>
+              </label>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- SECTION 3: ADDRESS & LOCATION -->
+      <div class="pc-section">
+        <div class="pc-section-title"><i class="bi bi-geo-alt me-2"></i>Address &amp; Location</div>
+        <div class="pc-grid-4">
+
+          <div class="pc-field">
+            <label>State</label>
+            <select class="pc-input" formControlName="state">
+              <option value="">Select State</option>
+              <option *ngFor="let s of states" [value]="s.id">{{ s.state_name }}</option>
+            </select>
+          </div>
+
+          <div class="pc-field">
+            <label>District</label>
+            <select class="pc-input" formControlName="district">
+              <option value="">Select District</option>
+              <option *ngFor="let d of districts" [value]="d.id">{{ d.district_name }}</option>
+            </select>
+          </div>
+
+          <div class="pc-field">
+            <label>Taluka / Area</label>
+            <select class="pc-input" formControlName="taluka">
+              <option value="">Select Taluka</option>
+              <option *ngFor="let t of talukas" [value]="t.id">{{ t.taluka_name }}</option>
+            </select>
+          </div>
+
+          <div class="pc-field">
+            <label>Village</label>
+            <select class="pc-input" formControlName="village">
+              <option value="">Select Village</option>
+              <option *ngFor="let v of villages" [value]="v.id">{{ v.village_name }}</option>
+            </select>
+          </div>
+
+          <div class="pc-field">
+            <label>City <span class="pc-req">*</span></label>
+            <input type="text" class="pc-input" [class.pc-error]="isFieldInvalid('city')" formControlName="city"
+              placeholder="City" (keydown.enter)="goToNext($event)" />
+            <span class="pc-err-msg" *ngIf="isFieldInvalid('city')">{{ getErrorMessage('city') }}</span>
+          </div>
+
+          <div class="pc-field">
+            <label>Area <span class="pc-req">*</span></label>
+            <input type="text" class="pc-input" [class.pc-error]="isFieldInvalid('area')" formControlName="area"
+              placeholder="Area / Locality" (keydown.enter)="goToNext($event)" />
+            <span class="pc-err-msg" *ngIf="isFieldInvalid('area')">{{ getErrorMessage('area') }}</span>
+          </div>
+
+          <div class="pc-field">
+            <label>Pincode <span class="pc-req">*</span></label>
+            <input type="text" class="pc-input" [class.pc-error]="isFieldInvalid('pincode')" formControlName="pincode"
+              placeholder="6 digits" maxlength="6" (keydown.enter)="goToNext($event)" />
+            <span class="pc-err-msg" *ngIf="isFieldInvalid('pincode')">{{ getErrorMessage('pincode') }}</span>
+          </div>
+
+          <div class="pc-field">
+            <label>Landmark</label>
+            <input type="text" class="pc-input" formControlName="landmark" placeholder="Nearby landmark"
+              (keydown.enter)="goToNext($event)" />
+          </div>
+
+          <div class="pc-field pc-col-4">
+            <label>Address <span class="pc-req">*</span></label>
+            <textarea class="pc-input" rows="2" [class.pc-error]="isFieldInvalid('address')" formControlName="address"
+              placeholder="Full address"></textarea>
+            <span class="pc-err-msg" *ngIf="isFieldInvalid('address')">{{ getErrorMessage('address') }}</span>
+          </div>
+
+          <div class="pc-field pc-col-2">
+            <label>Google Location URL</label>
+            <input type="text" class="pc-input" formControlName="google_location_url"
+              placeholder="https://maps.google.com/..." (keydown.enter)="goToNext($event)" />
+          </div>
+
+          <div class="pc-field pc-col-4">
+            <label>Live Location</label>
+            <button type="button" class="pc-btn-location" (click)="getLiveLocation()" [disabled]="locationLoading">
+              <span *ngIf="!locationLoading"><i class="bi bi-geo-alt-fill me-2"></i>Get Live Location</span>
+              <span *ngIf="locationLoading"><span class="pc-loc-spinner me-2"></span>Detecting GPS...</span>
+            </button>
+            <div class="pc-loc-info" *ngIf="latitude && longitude">
+              <span><i class="bi bi-pin-map me-1"></i>Lat: {{ latitude }}, Lng: {{ longitude }}</span>
+              <button type="button" class="pc-btn-ghost text-danger border-danger px-3 py-1 fs-12"
+                (click)="clearLocation()">Clear</button>
+            </div>
+            <div class="pc-map-wrapper" *ngIf="showMap">
+              <div id="property-map" class="pc-map"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- SECTION 4: FLAT TYPES -->
+      <div class="pc-section" *ngIf="showFlatTypes">
+        <div class="pc-section-title pc-section-title-flex">
+          <span><i class="bi bi-house-door me-2"></i>Flat Types / Configurations</span>
+          <button type="button" class="pc-btn-add" (click)="addFlatType()">
+            <i class="bi bi-plus-lg me-1" style="color: white;"></i>Add Flat Type
+          </button>
+        </div>
+
+        <div formArrayName="flat_types">
+          <div class="pc-repeat-card" *ngFor="let ft of flatTypesArray.controls; let i = index" [formGroupName]="i">
+            <div class="pc-repeat-head">
+              <span class="pc-repeat-index">Configuration #{{ i + 1 }}</span>
+              <button type="button" class="pc-btn-remove" (click)="removeFlatType(i)">
+                <i class="bi bi-trash me-1"></i>Remove
+              </button>
+            </div>
+
+            <div class="pc-grid-4">
+              <div class="pc-field">
+                <label>Flat Type <span class="pc-req">*</span></label>
+                <select class="pc-input" [class.pc-error]="isArrayFieldInvalid('flat_types', i, 'flat_type')"
+                  formControlName="flat_type">
+                  <option value="">Select</option>
+                  <option *ngFor="let opt of flatTypeOptions" [value]="opt.value">{{ opt.label }}</option>
+                </select>
+              </div>
+
+              <div class="pc-field">
+                <label>Area (sqft)</label>
+                <input type="number" class="pc-input" formControlName="area_sqft" placeholder="0" min="0"
+                  (keydown.enter)="goToNext($event)" />
+              </div>
+
+              <div class="pc-field">
+                <label>Carpet Area</label>
+                <input type="number" class="pc-input" formControlName="carpet_area" placeholder="0" min="0"
+                  (keydown.enter)="goToNext($event)" />
+              </div>
+
+              <div class="pc-field">
+                <label>Built-up Area</label>
+                <input type="number" class="pc-input" formControlName="built_up_area" placeholder="0" min="0"
+                  (keydown.enter)="goToNext($event)" />
+              </div>
+
+              <div class="pc-field">
+                <label>Balcony Area</label>
+                <input type="number" class="pc-input" formControlName="balcony_area" placeholder="0" min="0"
+                  (keydown.enter)="goToNext($event)" />
+              </div>
+
+              <div class="pc-field">
+                <label>Bedrooms</label>
+                <input type="number" class="pc-input" formControlName="bedrooms" placeholder="0" min="0"
+                  (keydown.enter)="goToNext($event)" />
+              </div>
+
+              <div class="pc-field">
+                <label>Bathrooms</label>
+                <input type="number" class="pc-input" formControlName="bathrooms" placeholder="0" min="0"
+                  (keydown.enter)="goToNext($event)" />
+              </div>
+
+              <div class="pc-field">
+                <label>Balconies</label>
+                <input type="number" class="pc-input" formControlName="balconies" placeholder="0" min="0"
+                  (keydown.enter)="goToNext($event)" />
+              </div>
+
+              <div class="pc-field">
+                <label>Kitchens</label>
+                <input type="number" class="pc-input" formControlName="kitchens" placeholder="0" min="0"
+                  (keydown.enter)="goToNext($event)" />
+              </div>
+
+              <div class="pc-field">
+                <label>Parking Count</label>
+                <input type="number" class="pc-input" formControlName="parking_count" placeholder="0" min="0"
+                  (keydown.enter)="goToNext($event)" />
+              </div>
+
+              <div class="pc-field pc-col-2">
+                <label>Description</label>
+                <input type="text" class="pc-input" formControlName="description" placeholder="Short description" />
+              </div>
+
+              <div class="pc-field d-flex align-items-center">
+                <label class="pc-check-item mt-4">
+                  <input type="checkbox" formControlName="is_available">
+                  <span>Available Unit</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 5: FLOORS -->
+      <div class="pc-section" *ngIf="showFloors">
+        <div class="pc-section-title pc-section-title-flex">
+          <span><i class="bi bi-layers me-2"></i>Floors</span>
+          <button type="button" class="pc-btn-add" (click)="addFloor()">
+            <i class="bi bi-plus-lg me-1" style="color: white;"></i>Add Floor
+          </button>
+        </div>
+
+        <div formArrayName="floors">
+          <div class="pc-repeat-card" *ngFor="let f of floorsArray.controls; let i = index" [formGroupName]="i">
+            <div class="pc-repeat-head">
+              <span class="pc-repeat-index">Floor #{{ i + 1 }}</span>
+              <button type="button" class="pc-btn-remove" (click)="removeFloor(i)">
+                <i class="bi bi-trash me-1"></i>Remove
+              </button>
+            </div>
+            <div class="pc-grid-4">
+              <div class="pc-field">
+                <label>Floor Number</label>
+                <input type="number" class="pc-input" formControlName="floor_number" placeholder="0" min="0" />
+              </div>
+              <div class="pc-field">
+                <label>Floor Name</label>
+                <input type="text" class="pc-input" formControlName="floor_name" placeholder="e.g. First Floor" />
+              </div>
+              <div class="pc-field">
+                <label>Total Units</label>
+                <input type="number" class="pc-input" formControlName="total_units" placeholder="0" min="0" />
+              </div>
+              <div class="pc-field">
+                <label>Available Units</label>
+                <input type="number" class="pc-input" formControlName="available_units" placeholder="0" min="0" />
+              </div>
+            </div>
+          </div>
+          <div *ngIf="floorsArray.length === 0" class="pc-empty-hint">No floors added yet.</div>
+        </div>
+      </div>
+
+      <!-- SECTION 6: PRICING SLABS -->
+      <div class="pc-section">
+        <div class="pc-section-title pc-section-title-flex">
+          <span><i class="bi bi-currency-rupee me-2"></i>Pricing Slabs</span>
+          <!-- Plot: only one slab, no add button -->
+          <button type="button" class="pc-btn-add" *ngIf="!isPlotType" (click)="addPricingSlab()">
+            <i class="bi bi-plus-lg me-1" style="color: white;"></i>Add Slab
+          </button>
+        </div>
+
+        <div formArrayName="pricing_slabs">
+          <div class="pc-repeat-card" *ngFor="let ps of pricingSlabsArray.controls; let i = index" [formGroupName]="i">
+            <div class="pc-repeat-head">
+              <span class="pc-repeat-index">Slab #{{ i + 1 }}</span>
+              <!-- Plot: no remove button (only one slab) -->
+              <button type="button" class="pc-btn-remove" *ngIf="!isPlotType" (click)="removePricingSlab(i)">
+                <i class="bi bi-trash me-1"></i>Remove
+              </button>
+            </div>
+
+            <div class="pc-grid-4">
+              <!-- Floor: hidden for plots (backend gets static 0) -->
+              <div class="pc-field" *ngIf="!isPlotType">
+                <label>Floor</label>
+                <input type="number" class="pc-input" formControlName="floor" placeholder="0" min="0" />
+              </div>
+              <!-- Flat Type: hidden for plots (backend gets 'other') -->
+              <div class="pc-field" *ngIf="!isPlotType">
+                <label>Flat Type</label>
+                <select class="pc-input" formControlName="flat_type">
+                  <option value="">Select</option>
+                  <option *ngFor="let opt of flatTypeOptions" [value]="opt.value">{{ opt.label }}</option>
+                </select>
+              </div>
+
+              <!--
+                Price fields: when the floor + flat_type inputs are hidden (plot),
+                each spans 2 columns so the 4-column grid stays intact.
+                This keeps Payment Schedule + Additional Charges aligned on the
+                same row, exactly like in non-plot mode.
+              -->
+              <div class="pc-field" [class.pc-col-2]="isPlotType">
+                <label>{{ basePriceLabel }}</label>
+                <input type="number" class="pc-input" formControlName="base_price" placeholder="0" min="0" />
+              </div>
+              <div class="pc-field" [class.pc-col-2]="isPlotType">
+                <label>{{ pricePerSqftLabel }}</label>
+                <input type="number" class="pc-input" formControlName="price_per_sqft" placeholder="0" min="0" />
+              </div>
+
+              <!-- ===== Sale-only: Booking / Discount / GST ===== -->
+              <ng-container *ngIf="isSaleTx">
+                <div class="pc-field">
+                  <label>Booking Amount</label>
+                  <input type="number" class="pc-input" formControlName="booking_amount" placeholder="0" min="0" />
+                </div>
+                <div class="pc-field">
+                  <label>Discount %</label>
+                  <input type="number" class="pc-input" formControlName="discount_percentage" placeholder="0" min="0" />
+                </div>
+                <div class="pc-field">
+                  <label>GST %</label>
+                  <input type="number" class="pc-input" formControlName="gst_percentage" placeholder="0" min="0" />
+                </div>
+              </ng-container>
+
+              <div class="pc-field d-flex align-items-center">
+                <label class="pc-check-item mt-4">
+                  <input type="checkbox" formControlName="is_available">
+                  <span>Available</span>
+                </label>
+              </div>
+
+              <!-- ===== Sale-only: Payment Schedule ===== -->
+              <div class="pc-field pc-col-2" *ngIf="isSaleTx">
+                <div class="pc-kv-header">
+                  <label>Payment Schedule</label>
+                  <button type="button" class="pc-kv-add-btn" (click)="addPaymentScheduleRow(i)">
+                    <i class="bi bi-plus-lg"></i> Add
+                  </button>
+                </div>
+                <div class="pc-kv-list" formArrayName="payment_schedule">
+                  <div class="pc-kv-row" *ngFor="let row of getPaymentScheduleArray(i).controls; let j = index"
+                    [formGroupName]="j">
+                    <input type="text" class="pc-input" formControlName="key" placeholder="Milestone (e.g. Booking)" />
+                    <input type="text" class="pc-input" formControlName="value" placeholder="Value (e.g. 10%)" />
+                    <button type="button" class="pc-kv-remove" (click)="removePaymentScheduleRow(i, j)">
+                      <i class="bi bi-x-lg"></i>
+                    </button>
+                  </div>
+                  <div class="pc-kv-empty" *ngIf="getPaymentScheduleArray(i).length === 0">
+                    No milestones yet — click Add.
+                  </div>
+                </div>
+              </div>
+
+              <!-- ===== Sale-only: Additional Charges ===== -->
+              <div class="pc-field pc-col-2" *ngIf="isSaleTx">
+                <div class="pc-kv-header">
+                  <label>Additional Charges</label>
+                  <button type="button" class="pc-kv-add-btn" (click)="addAdditionalChargeRow(i)">
+                    <i class="bi bi-plus-lg"></i> Add
+                  </button>
+                </div>
+                <div class="pc-kv-list" formArrayName="additional_charges">
+                  <div class="pc-kv-row" *ngFor="let row of getAdditionalChargesArray(i).controls; let j = index"
+                    [formGroupName]="j">
+                    <input type="text" class="pc-input" formControlName="key" placeholder="Charge (e.g. Parking)" />
+                    <input type="text" class="pc-input" formControlName="value" placeholder="Value (e.g. 300000)" />
+                    <button type="button" class="pc-kv-remove" (click)="removeAdditionalChargeRow(i, j)">
+                      <i class="bi bi-x-lg"></i>
+                    </button>
+                  </div>
+                  <div class="pc-kv-empty" *ngIf="getAdditionalChargesArray(i).length === 0">
+                    No charges yet — click Add.
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div *ngIf="pricingSlabsArray.length === 0" class="pc-empty-hint">No pricing slabs added yet.</div>
+        </div>
+      </div>
+
+      <!-- SECTION 8: FEATURES -->
+      <div class="pc-section">
+        <div class="pc-section-title"><i class="bi bi-sliders me-2"></i>Features</div>
+        <div class="pc-check-grid">
+          <label class="pc-check-item" *ngFor="let key of featuresKeys">
+            <input type="checkbox" [(ngModel)]="features[key]" [ngModelOptions]="{standalone: true}">
+            <span>{{ key | titlecase }}</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- SECTION 9: AMENITIES -->
+      <div class="pc-section">
+        <div class="pc-section-title"><i class="bi bi-stars me-2"></i>Amenities</div>
+        <div class="pc-check-grid" *ngIf="amenitiesList.length">
+          <label class="pc-check-item" *ngFor="let amenity of amenitiesList">
+            <input type="checkbox" [id]="'amenity_'+amenity.id" [checked]="isAmenityChecked(amenity.id)"
+              (change)="onAmenityChange(amenity.id, $event)">
+            <span>
+              <i *ngIf="amenity.icon" [class]="'bi '+amenity.icon" class="me-1"></i>
+              {{ amenity.name }}
+            </span>
+          </label>
+        </div>
+        <div *ngIf="!amenitiesList.length" class="text-muted small">Loading amenities...</div>
+      </div>
+
+      <!-- SECTION 10: DOCUMENT TYPES -->
+      <div class="pc-section">
+        <div class="pc-section-title"><i class="bi bi-file-earmark-text me-2"></i>Document Types</div>
+        <div class="pc-check-grid">
+          <label class="pc-check-item" *ngFor="let key of documentTypeKeys">
+            <input type="checkbox" [(ngModel)]="documentTypes[key]" [ngModelOptions]="{standalone: true}">
+            <span>{{ key | titlecase }}</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- SECTION 12: MEDIA -->
+      <div class="pc-section">
+        <div class="pc-section-title"><i class="bi bi-images me-2"></i>Property Media</div>
+        <div class="pc-media-grid">
+
+          <div class="pc-media-box">
+            <div class="pc-media-label">Images <small class="text-muted">(max 5MB each)</small></div>
+            <label class="pc-media-upload">
+              <i class="bi bi-cloud-upload-fill"></i>
+              <span>Click to upload images</span>
+              <small>PNG, JPG, WebP</small>
+              <input type="file" hidden multiple accept="image/*" (change)="onImagesSelected($event)">
+            </label>
+            <div class="pc-media-thumbs" *ngIf="imagePreviews.length">
+              <div class="pc-media-thumb" *ngFor="let img of imagePreviews; let i = index"
+                (click)="openImageModal(img.url)" style="cursor: pointer;">
+                <img [src]="img.url" [alt]="img.name" />
+                <button type="button" (click)="$event.stopPropagation(); removeImage(i)">
+                  <i class="bi bi-x"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="pc-media-box">
+            <div class="pc-media-label">Videos <small class="text-muted">(max 20MB each)</small></div>
+            <label class="pc-media-upload">
+              <i class="bi bi-camera-video-fill"></i>
+              <span>Click to upload videos</span>
+              <small>MP4, AVI, MOV</small>
+              <input type="file" hidden multiple accept="video/*" (change)="onVideosSelected($event)">
+            </label>
+            <div class="pc-media-thumbs" *ngIf="videoPreviews.length">
+              <div class="pc-media-thumb" *ngFor="let v of videoPreviews; let i = index">
+                <video [src]="v.url"></video>
+                <button type="button" (click)="removeVideo(i)"><i class="bi bi-x"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="pc-media-box">
+            <div class="pc-media-label">Documents <small class="text-muted">(max 10MB each)</small></div>
+            <label class="pc-media-upload">
+              <i class="bi bi-file-pdf-fill"></i>
+              <span>Click to upload documents</span>
+              <small>PDF, DOC, DOCX</small>
+              <input type="file" hidden multiple accept=".pdf,.doc,.docx" (change)="onDocumentsSelected($event)">
+            </label>
+            <div class="pc-doc-list" *ngIf="documentNames.length">
+              <div class="pc-doc-item" *ngFor="let doc of documentNames; let i = index">
+                <span><i class="bi bi-file-earmark-pdf text-danger me-1"></i>{{ doc }}</span>
+                <button type="button" (click)="removeDocument(i)"><i class="bi bi-x-lg"></i></button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- FOOTER -->
+    <div class="pc-footer">
+      <button type="submit" class="pc-btn-submit" [disabled]="isSubmitting">
+        <span *ngIf="!isSubmitting">
+          <i class="bi bi-check-circle-fill me-2"></i>
+          {{ isEditMode ? 'Update Property' : 'Create Property' }}
+        </span>
+        <span *ngIf="isSubmitting">
+          <span class="pc-spinner" style="width:16px;height:16px;border-width:2px;margin-right:8px;"></span>
+          Processing...
+        </span>
+      </button>
+      <button type="button" class="pc-btn-clear" (click)="resetForm()">
+        <i class="bi bi-trash me-1"></i>Reset Form
+      </button>
+    </div>
+
+  </form>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- ===== SUBSCRIPTION PLAN MODAL (Razorpay) ================== -->
+<!-- ============================================================ -->
+<div class="ps-modal-overlay" *ngIf="showPlanModal" (click)="closePlanModal()">
+  <div class="ps-modal" (click)="$event.stopPropagation()">
+
+    <div class="ps-modal-header">
+      <div>
+        <h3 class="ps-modal-title">
+          <i class="bi bi-credit-card-2-front me-2"></i>Choose a Subscription Plan
+        </h3>
+        <p class="ps-modal-sub" *ngIf="selectedPlanProperty">
+          For property: <strong>{{ selectedPlanProperty.title }}</strong>
+        </p>
+      </div>
+      <button type="button" class="ps-modal-close" (click)="closePlanModal()" title="Close">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+
+    <div class="ps-modal-body">
+
+      <div class="ps-info-banner">
+        <i class="bi bi-info-circle-fill"></i>
+        <span>Properties stay visible free for the first <strong>15 days</strong>. Extend visibility by choosing a plan below.</span>
+      </div>
+
+      <div class="ps-plans-loading" *ngIf="plansLoading">
+        <div class="pc-spinner"></div>
+        <p class="mt-2 mb-0">Loading plans...</p>
+      </div>
+
+      <div class="ps-plans-grid" *ngIf="!plansLoading && subscriptionPlansList.length">
+        <div class="ps-plan-card"
+             *ngFor="let plan of subscriptionPlansList"
+             [class.selected]="selectedPlan?.id === plan.id"
+             (click)="selectPlan(plan)">
+
+          <div class="ps-plan-badge" *ngIf="selectedPlan?.id === plan.id">
+            <i class="bi bi-check-circle-fill"></i>
+          </div>
+
+          <div class="ps-plan-name">{{ plan.name }}</div>
+          <div class="ps-plan-days">
+            <i class="bi bi-calendar-check me-1"></i>{{ plan.days }} day<span *ngIf="plan.days > 1">s</span>
+          </div>
+          <div class="ps-plan-price">
+            <span class="ps-plan-currency">₹</span>{{ plan.price }}
+          </div>
+        </div>
+      </div>
+
+      <div class="ps-plans-empty" *ngIf="!plansLoading && !subscriptionPlansList.length">
+        <i class="bi bi-inbox fs-2 d-block mb-2 opacity-50"></i>
+        No active plans available right now.
+      </div>
+
+    </div>
+
+    <div class="ps-modal-footer">
+      <button type="button" class="ps-btn-cancel" (click)="closePlanModal()" [disabled]="isPlanPaymentProcessing">
+        Cancel
+      </button>
+      <button type="button" class="ps-btn-pay"
+              [disabled]="!selectedPlan || isPlanPaymentProcessing"
+              (click)="purchasePlan()">
+        <span *ngIf="!isPlanPaymentProcessing">
+          <i class="bi bi-credit-card-fill me-2"></i>
+          Pay ₹{{ selectedPlan?.price || 0 }}
+        </span>
+        <span *ngIf="isPlanPaymentProcessing">
+          <span class="pc-spinner" style="width:14px;height:14px;border-width:2px;margin-right:8px;"></span>
+          Processing...
+        </span>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- Full Screen Image Modal Overlay -->
+<div class="fullscreen-modal-overlay" *ngIf="selectedFullscreenImage" (click)="closeImageModal()">
+  <div class="fullscreen-modal-content" (click)="$event.stopPropagation()">
+    <button type="button" class="fullscreen-close-btn" (click)="closeImageModal()">
+      <i class="bi bi-x-lg"></i>
+    </button>
+    <img [src]="selectedFullscreenImage" alt="Fullscreen Preview" class="img-fluid rounded shadow-lg" />
+  </div>
+</div>

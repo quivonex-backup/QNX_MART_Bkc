@@ -1,0 +1,16 @@
+<!-- <app-navbar></app-navbar>
+<router-outlet></router-outlet>
+<app-footer></app-footer> -->
+
+<!-- Only show navbar if NOT on hideLayout route -->
+<app-navbar *ngIf="!hideLayout"></app-navbar>
+
+<div
+  id="google_translate_element"
+  style="display: none !important;">
+</div>
+
+<router-outlet></router-outlet>
+
+<!-- Only show footer if NOT on hideLayout route -->
+<app-footer *ngIf="!hideLayout"></app-footer>

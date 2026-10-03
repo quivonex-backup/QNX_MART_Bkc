@@ -1,0 +1,543 @@
+<!-- ===== RETURN POLICY PAGE ===== -->
+<div class="rp-page">
+
+  <!-- HERO BANNER -->
+  <div class="rp-hero">
+    <div class="rp-hero-inner">
+      <div class="rp-hero-icon"><i class="bi bi-arrow-return-left"></i></div>
+      <h1 class="rp-hero-title">Returns &amp; Refunds</h1>
+      <p class="rp-hero-sub">Easy returns · Fast refunds · Hassle-free experience</p>
+      <div class="rp-hero-badges">
+        <span class="rp-badge"><i class="bi bi-shield-check"></i> Buyer Protected</span>
+        <span class="rp-badge"><i class="bi bi-truck"></i> Free Pickup</span>
+        <span class="rp-badge"><i class="bi bi-clock-history"></i> 7–30 Day Windows</span>
+        <span class="rp-badge"><i class="bi bi-currency-rupee"></i> Full Refund</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="rp-tabs-bar">
+    <div class="rp-tabs">
+      <button class="rp-tab" [class.active]="activeTab === 'policy'" (click)="setTab('policy')">
+        <i class="bi bi-file-text"></i> Policy Details
+      </button>
+      <button class="rp-tab" [class.active]="activeTab === 'request'" (click)="setTab('request')">
+        <i class="bi bi-bag-x"></i> Request a Return
+      </button>
+      <button class="rp-tab" [class.active]="activeTab === 'track'" (click)="setTab('track')">
+        <i class="bi bi-search"></i> Track Return
+      </button>
+      <button class="rp-tab" [class.active]="activeTab === 'faq'" (click)="setTab('faq')">
+        <i class="bi bi-question-circle"></i> FAQ
+      </button>
+    </div>
+  </div>
+
+  <div class="rp-content">
+
+    <!-- =================== TAB 1: POLICY DETAILS =================== -->
+    <div *ngIf="activeTab === 'policy'">
+
+      <!-- Key Highlights -->
+      <div class="rp-highlights">
+        <div class="rp-highlight-card">
+          <div class="rp-hc-icon blue"><i class="bi bi-box-arrow-in-left"></i></div>
+          <div class="rp-hc-text">
+            <div class="rp-hc-title">Easy Returns</div>
+            <div class="rp-hc-sub">Submit online in under 2 minutes</div>
+          </div>
+        </div>
+        <div class="rp-highlight-card">
+          <div class="rp-hc-icon green"><i class="bi bi-truck"></i></div>
+          <div class="rp-hc-text">
+            <div class="rp-hc-title">Free Pickup</div>
+            <div class="rp-hc-sub">We collect from your doorstep</div>
+          </div>
+        </div>
+        <div class="rp-highlight-card">
+          <div class="rp-hc-icon orange"><i class="bi bi-lightning-charge"></i></div>
+          <div class="rp-hc-text">
+            <div class="rp-hc-title">Fast Refunds</div>
+            <div class="rp-hc-sub">Processed within 5–7 business days</div>
+          </div>
+        </div>
+        <div class="rp-highlight-card">
+          <div class="rp-hc-icon purple"><i class="bi bi-headset"></i></div>
+          <div class="rp-hc-text">
+            <div class="rp-hc-title">24/7 Support</div>
+            <div class="rp-hc-sub">Always here to help</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- How It Works -->
+      <div class="rp-section">
+        <h2 class="rp-section-title"><i class="bi bi-map"></i> How Returns Work</h2>
+        <div class="rp-steps">
+          <div class="rp-step">
+            <div class="rp-step-num">1</div>
+            <div class="rp-step-icon"><i class="bi bi-clipboard-check"></i></div>
+            <div class="rp-step-title">Submit Request</div>
+            <div class="rp-step-desc">Fill in your order details and reason for return in the "Request a Return" tab</div>
+          </div>
+          <div class="rp-step-arrow"><i class="bi bi-chevron-right"></i></div>
+          <div class="rp-step">
+            <div class="rp-step-num">2</div>
+            <div class="rp-step-icon"><i class="bi bi-check-circle"></i></div>
+            <div class="rp-step-title">Approval</div>
+            <div class="rp-step-desc">We review and approve your return within 24 hours</div>
+          </div>
+          <div class="rp-step-arrow"><i class="bi bi-chevron-right"></i></div>
+          <div class="rp-step">
+            <div class="rp-step-num">3</div>
+            <div class="rp-step-icon"><i class="bi bi-truck"></i></div>
+            <div class="rp-step-title">Pickup</div>
+            <div class="rp-step-desc">Our courier partner picks up the item from your address</div>
+          </div>
+          <div class="rp-step-arrow"><i class="bi bi-chevron-right"></i></div>
+          <div class="rp-step">
+            <div class="rp-step-num">4</div>
+            <div class="rp-step-icon"><i class="bi bi-shield-check"></i></div>
+            <div class="rp-step-title">Quality Check</div>
+            <div class="rp-step-desc">Our team inspects the returned item within 48 hours</div>
+          </div>
+          <div class="rp-step-arrow"><i class="bi bi-chevron-right"></i></div>
+          <div class="rp-step">
+            <div class="rp-step-num">5</div>
+            <div class="rp-step-icon"><i class="bi bi-currency-rupee"></i></div>
+            <div class="rp-step-title">Refund</div>
+            <div class="rp-step-desc">Refund is credited to your original payment method or QNX Wallet</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category Return Windows -->
+      <div class="rp-section">
+        <h2 class="rp-section-title"><i class="bi bi-grid"></i> Return Windows by Category</h2>
+        <div class="rp-categories">
+          <div class="rp-cat-card" *ngFor="let cat of returnCategories"
+            [class.rp-cat-ineligible]="!cat.eligible">
+            <div class="rp-cat-top">
+              <div class="rp-cat-icon"><i class="bi {{ cat.icon }}"></i></div>
+              <div class="rp-cat-info">
+                <div class="rp-cat-title">{{ cat.title }}</div>
+                <div class="rp-cat-desc">{{ cat.description }}</div>
+              </div>
+              <div class="rp-cat-window" [class.not-eligible]="!cat.eligible">
+                <span *ngIf="cat.eligible">{{ cat.window }}</span>
+                <span *ngIf="!cat.eligible">See conditions</span>
+              </div>
+            </div>
+            <ul class="rp-cat-conditions">
+              <li *ngFor="let c of cat.conditions"><i class="bi bi-chevron-right"></i> {{ c }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Non-Returnable Items -->
+      <div class="rp-section">
+        <h2 class="rp-section-title rp-title-red"><i class="bi bi-x-octagon"></i> Non-Returnable Items</h2>
+        <div class="rp-non-returnable">
+          <div class="rp-nr-item"><i class="bi bi-x-circle-fill"></i> Opened personal care &amp; hygiene products</div>
+          <div class="rp-nr-item"><i class="bi bi-x-circle-fill"></i> Digital downloads &amp; software licenses</div>
+          <div class="rp-nr-item"><i class="bi bi-x-circle-fill"></i> Customized / personalized / engraved items</div>
+          <div class="rp-nr-item"><i class="bi bi-x-circle-fill"></i> Perishables (food, flowers, plants)</div>
+          <div class="rp-nr-item"><i class="bi bi-x-circle-fill"></i> Hazardous materials</div>
+          <div class="rp-nr-item"><i class="bi bi-x-circle-fill"></i> Items marked "Non-Returnable" on product page</div>
+          <div class="rp-nr-item"><i class="bi bi-x-circle-fill"></i> Gift cards &amp; vouchers</div>
+          <div class="rp-nr-item"><i class="bi bi-x-circle-fill"></i> Items damaged due to customer misuse</div>
+        </div>
+      </div>
+
+      <!-- Refund Methods -->
+      <div class="rp-section">
+        <h2 class="rp-section-title"><i class="bi bi-wallet2"></i> Refund Methods &amp; Timeline</h2>
+        <div class="rp-refund-table">
+          <div class="rp-rt-head">
+            <span>Method</span><span>Timeline</span><span>Notes</span>
+          </div>
+          <div class="rp-rt-row">
+            <span><i class="bi bi-credit-card-2-back me-1"></i> Original Payment Method</span>
+            <span class="rp-rt-time">5–7 business days</span>
+            <span>Credit/Debit card, Net Banking, UPI</span>
+          </div>
+          <div class="rp-rt-row">
+            <span><i class="bi bi-wallet2 me-1"></i> QNX Wallet Credit</span>
+            <span class="rp-rt-time rp-rt-fast">Instant + 10% bonus</span>
+            <span>Best option for future purchases</span>
+          </div>
+          <div class="rp-rt-row">
+            <span><i class="bi bi-bank me-1"></i> Bank Transfer (NEFT)</span>
+            <span class="rp-rt-time">3–5 business days</span>
+            <span>Must provide bank details</span>
+          </div>
+          <div class="rp-rt-row">
+            <span><i class="bi bi-phone me-1"></i> UPI Refund</span>
+            <span class="rp-rt-time">24–48 hours</span>
+            <span>Fastest cash refund option</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Eligibility Checker -->
+      <div class="rp-section">
+        <h2 class="rp-section-title"><i class="bi bi-calculator"></i> Return Eligibility Checker</h2>
+        <div class="rp-checker">
+          <p class="rp-checker-sub">Check if your item is eligible for return before submitting a request.</p>
+          <div class="rp-checker-form">
+            <div class="rp-checker-field">
+              <label>Product Category</label>
+              <select [(ngModel)]="checkerCategory" (change)="eligibilityResult = null">
+                <option value="">-- Select Category --</option>
+                <option value="electronics">Electronics</option>
+                <option value="fashion">Fashion &amp; Apparel</option>
+                <option value="home">Home &amp; Kitchen</option>
+                <option value="books">Books &amp; Media</option>
+                <option value="sports">Sports &amp; Fitness</option>
+                <option value="health">Health &amp; Beauty</option>
+                <option value="automotive">Automotive</option>
+                <option value="toys">Toys &amp; Games</option>
+              </select>
+            </div>
+            <div class="rp-checker-field">
+              <label>Days Since Delivery</label>
+              <input type="number" [(ngModel)]="checkerDays" placeholder="e.g. 5"
+                min="1" max="365" (input)="eligibilityResult = null" />
+            </div>
+            <button class="rp-checker-btn" (click)="checkEligibility()">
+              <i class="bi bi-search me-1"></i> Check Eligibility
+            </button>
+          </div>
+          <div class="rp-checker-result eligible-result" *ngIf="eligibilityResult === 'eligible'">
+            <i class="bi bi-check-circle-fill"></i>
+            <div>
+              <strong>Great news! Your item is eligible for return.</strong><br />
+              <span>Click "Request a Return" tab to start your return.</span>
+            </div>
+            <button class="rp-go-btn" (click)="setTab('request')">Start Return →</button>
+          </div>
+          <div class="rp-checker-result ineligible-result" *ngIf="eligibilityResult === 'ineligible'">
+            <i class="bi bi-x-circle-fill"></i>
+            <div>
+              <strong>Sorry, your return window has passed.</strong><br />
+              <span>Contact our support team for exceptions.</span>
+            </div>
+            <a routerLink="/contact-us" class="rp-go-btn rp-go-btn-red">Contact Support →</a>
+          </div>
+          <button class="rp-reset-btn" *ngIf="eligibilityResult" (click)="resetEligibility()">
+            Reset Checker
+          </button>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="rp-cta">
+        <div class="rp-cta-inner">
+          <i class="bi bi-bag-x rp-cta-icon"></i>
+          <h3>Ready to return an item?</h3>
+          <p>It takes less than 2 minutes. We'll handle the rest.</p>
+          <button class="rp-cta-btn" (click)="setTab('request')">
+            <i class="bi bi-arrow-return-left me-2"></i>Start Return Request
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================== TAB 2: REQUEST A RETURN =================== -->
+    <div *ngIf="activeTab === 'request'">
+
+      <!-- Success State -->
+      <div class="rp-success" *ngIf="requestStep === 5">
+        <div class="rp-success-box">
+          <div class="rp-success-icon"><i class="bi bi-check-circle-fill"></i></div>
+          <h2>Return Request Submitted!</h2>
+          <p>Your return ID is <strong>{{ submittedRequestId }}</strong></p>
+          <p class="rp-success-sub">We'll review your request and send a confirmation to your email within 24 hours. Our courier will contact you to schedule pickup.</p>
+          <div class="rp-success-actions">
+            <button class="rp-btn-primary" (click)="setTab('track')">
+              <i class="bi bi-search me-1"></i> Track My Return
+            </button>
+            <button class="rp-btn-outline" (click)="resetForm()">
+              Submit Another Return
+            </button>
+            <button class="rp-btn-outline" routerLink="/home">
+              <i class="bi bi-house me-1"></i> Go Home
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Multi-step form -->
+      <div *ngIf="requestStep < 5">
+
+        <!-- Progress -->
+        <div class="rp-progress">
+          <div class="rp-prog-step" [class.active]="requestStep >= 1" [class.done]="requestStep > 1">
+            <div class="rp-prog-dot"><i class="bi bi-check" *ngIf="requestStep > 1"></i><span *ngIf="requestStep <= 1">1</span></div>
+            <span>Order Info</span>
+          </div>
+          <div class="rp-prog-line" [class.done]="requestStep > 1"></div>
+          <div class="rp-prog-step" [class.active]="requestStep >= 2" [class.done]="requestStep > 2">
+            <div class="rp-prog-dot"><i class="bi bi-check" *ngIf="requestStep > 2"></i><span *ngIf="requestStep <= 2">2</span></div>
+            <span>Reason</span>
+          </div>
+          <div class="rp-prog-line" [class.done]="requestStep > 2"></div>
+          <div class="rp-prog-step" [class.active]="requestStep >= 3" [class.done]="requestStep > 3">
+            <div class="rp-prog-dot"><i class="bi bi-check" *ngIf="requestStep > 3"></i><span *ngIf="requestStep <= 3">3</span></div>
+            <span>Refund Method</span>
+          </div>
+          <div class="rp-prog-line" [class.done]="requestStep > 3"></div>
+          <div class="rp-prog-step" [class.active]="requestStep >= 4">
+            <div class="rp-prog-dot">4</div>
+            <span>Confirm</span>
+          </div>
+        </div>
+
+        <div class="rp-form-card">
+
+          <!-- STEP 1: Order Info -->
+          <div *ngIf="requestStep === 1">
+            <div class="rp-form-title"><i class="bi bi-bag"></i> Step 1: Order Details</div>
+            <div class="rp-form-grid">
+              <div class="rp-field rp-col-2">
+                <label>Order ID <span class="rp-req">*</span></label>
+                <input type="text" [(ngModel)]="returnForm.orderId" placeholder="e.g. QNX123456" />
+              </div>
+              <div class="rp-field rp-col-2">
+                <label>Registered Email <span class="rp-req">*</span></label>
+                <input type="email" [(ngModel)]="returnForm.email" placeholder="your@email.com" />
+              </div>
+              <div class="rp-field rp-col-2">
+                <label>Item Name <span class="rp-req">*</span></label>
+                <input type="text" [(ngModel)]="returnForm.itemName" placeholder="Product name" />
+              </div>
+            </div>
+            <div class="rp-info-box">
+              <i class="bi bi-info-circle-fill"></i>
+              Find your Order ID in your email confirmation or under "My Orders" in your profile.
+            </div>
+          </div>
+
+          <!-- STEP 2: Return Reason -->
+          <div *ngIf="requestStep === 2">
+            <div class="rp-form-title"><i class="bi bi-question-circle"></i> Step 2: Why are you returning?</div>
+            <div class="rp-reason-grid">
+              <label class="rp-reason-card" *ngFor="let r of returnReasons"
+                [class.selected]="returnForm.reason === r.value">
+                <input type="radio" name="reason" [value]="r.value" [(ngModel)]="returnForm.reason" hidden />
+                <span>{{ r.label }}</span>
+                <i class="bi bi-check-circle-fill rp-reason-check" *ngIf="returnForm.reason === r.value"></i>
+              </label>
+            </div>
+            <div class="rp-field rp-mt" *ngIf="returnForm.reason">
+              <label>Additional Details <small>(optional but helps us resolve faster)</small></label>
+              <textarea [(ngModel)]="returnForm.reasonDetail" rows="3"
+                placeholder="Describe the issue in detail..."></textarea>
+            </div>
+            <div class="rp-proof-notice" *ngIf="selectedReasonNeedsProof">
+              <i class="bi bi-camera"></i>
+              <span>For this reason, attaching photos of the issue will speed up approval significantly.</span>
+            </div>
+          </div>
+
+          <!-- STEP 3: Refund Method -->
+          <div *ngIf="requestStep === 3">
+            <div class="rp-form-title"><i class="bi bi-wallet2"></i> Step 3: How would you like your refund?</div>
+            <div class="rp-refund-options">
+              <label class="rp-refund-card" *ngFor="let m of refundMethods"
+                [class.selected]="returnForm.refundMethod === m.value">
+                <input type="radio" name="refundMethod" [value]="m.value"
+                  [(ngModel)]="returnForm.refundMethod" hidden />
+                <div class="rp-refund-icon"><i class="bi {{ m.icon }}"></i></div>
+                <div class="rp-refund-info">
+                  <div class="rp-refund-label">{{ m.label }}</div>
+                  <div class="rp-refund-time">{{ m.desc }}</div>
+                </div>
+                <i class="bi bi-check-circle-fill rp-refund-check" *ngIf="returnForm.refundMethod === m.value"></i>
+              </label>
+            </div>
+            <div class="rp-wallet-tip" *ngIf="returnForm.refundMethod === 'wallet'">
+              <i class="bi bi-star-fill"></i>
+              You'll receive a <strong>10% bonus credit</strong> when you refund to QNX Wallet!
+            </div>
+          </div>
+
+          <!-- STEP 4: Confirm -->
+          <div *ngIf="requestStep === 4">
+            <div class="rp-form-title"><i class="bi bi-clipboard-check"></i> Step 4: Review &amp; Confirm</div>
+            <div class="rp-review-box">
+              <div class="rp-review-row">
+                <span class="rp-rv-label">Order ID</span>
+                <span class="rp-rv-value">{{ returnForm.orderId }}</span>
+              </div>
+              <div class="rp-review-row">
+                <span class="rp-rv-label">Email</span>
+                <span class="rp-rv-value">{{ returnForm.email }}</span>
+              </div>
+              <div class="rp-review-row">
+                <span class="rp-rv-label">Item</span>
+                <span class="rp-rv-value">{{ returnForm.itemName }}</span>
+              </div>
+              <div class="rp-review-row">
+                <span class="rp-rv-label">Return Reason</span>
+                <span class="rp-rv-value">{{ getReasonLabel(returnForm.reason) }}</span>
+              </div>
+              <div class="rp-review-row" *ngIf="returnForm.reasonDetail">
+                <span class="rp-rv-label">Details</span>
+                <span class="rp-rv-value">{{ returnForm.reasonDetail }}</span>
+              </div>
+              <div class="rp-review-row">
+                <span class="rp-rv-label">Refund Method</span>
+                <span class="rp-rv-value">{{ getRefundLabel(returnForm.refundMethod) }}</span>
+              </div>
+            </div>
+            <label class="rp-agree-check">
+              <input type="checkbox" [(ngModel)]="returnForm.agreeToPolicy" />
+              <span>I have read and agree to the <a (click)="setTab('policy')" style="cursor:pointer;color:#c7511f;">Return Policy</a>. I confirm the item is unused and in its original packaging (where applicable).</span>
+            </label>
+          </div>
+
+          <!-- Navigation Buttons -->
+          <div class="rp-form-nav">
+            <button class="rp-btn-outline" (click)="prevStep()" *ngIf="requestStep > 1">
+              <i class="bi bi-arrow-left me-1"></i> Back
+            </button>
+            <button class="rp-btn-primary" (click)="nextStep()">
+              <span *ngIf="requestStep < 4">Next <i class="bi bi-arrow-right ms-1"></i></span>
+              <span *ngIf="requestStep === 4"><i class="bi bi-send-fill me-1"></i> Submit Return</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================== TAB 3: TRACK RETURN =================== -->
+    <div *ngIf="activeTab === 'track'">
+      <div class="rp-track-section">
+        <h2 class="rp-section-title"><i class="bi bi-geo-alt"></i> Track Your Return</h2>
+
+        <!-- Search -->
+        <div class="rp-track-search" *ngIf="!trackResult">
+          <div class="rp-track-form">
+            <div class="rp-field">
+              <label>Order ID <span class="rp-req">*</span></label>
+              <input type="text" [(ngModel)]="trackOrderId" placeholder="e.g. QNX123456 or QNX654321"
+                (keyup.enter)="trackReturn()" />
+            </div>
+            <button class="rp-btn-primary rp-track-btn" (click)="trackReturn()">
+              <i class="bi bi-search me-1"></i> Track Return
+            </button>
+          </div>
+          <div class="rp-track-demo-hint">
+            <i class="bi bi-lightbulb"></i>
+            Try demo IDs: <strong>QNX123456</strong> or <strong>QNX654321</strong>
+          </div>
+        </div>
+
+        <!-- Not Found -->
+        <div class="rp-not-found" *ngIf="trackSearched && !trackResult">
+          <i class="bi bi-search rp-nf-icon"></i>
+          <h3>No Return Found</h3>
+          <p>We couldn't find a return for Order ID <strong>"{{ trackOrderId }}"</strong>. Please check and try again.</p>
+          <button class="rp-btn-outline" (click)="resetTrack()">Try Again</button>
+        </div>
+
+        <!-- Result -->
+        <div class="rp-track-result" *ngIf="trackResult">
+          <!-- Header -->
+          <div class="rp-tr-header">
+            <div>
+              <div class="rp-tr-order">Order: <strong>{{ trackResult.orderId }}</strong></div>
+              <div class="rp-tr-product">{{ trackResult.product }}</div>
+              <div class="rp-tr-reason">Reason: {{ trackResult.reason }}</div>
+            </div>
+            <div>
+              <span class="rp-status-badge" [ngClass]="getStatusClass(trackResult.status)">
+                {{ getStatusLabel(trackResult.status) }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Timeline -->
+          <div class="rp-timeline">
+            <div class="rp-tl-item" *ngFor="let step of trackResult.timeline; let last = last"
+              [class.completed]="step.done" [class.pending]="!step.done">
+              <div class="rp-tl-icon">
+                <i class="bi {{ step.icon }}"></i>
+              </div>
+              <div class="rp-tl-line" *ngIf="!last" [class.done]="step.done"></div>
+              <div class="rp-tl-content">
+                <div class="rp-tl-step">{{ step.step }}</div>
+                <div class="rp-tl-date">{{ step.date }}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Refund Details -->
+          <div class="rp-refund-detail-box">
+            <div class="rp-rd-row">
+              <i class="bi bi-currency-rupee"></i>
+              <span>Refund Amount: <strong>{{ trackResult.refundAmount }}</strong></span>
+            </div>
+            <div class="rp-rd-row">
+              <i class="bi bi-wallet2"></i>
+              <span>Refund To: <strong>{{ trackResult.refundMethod }}</strong></span>
+            </div>
+            <div class="rp-rd-row">
+              <i class="bi bi-calendar-check"></i>
+              <span>Expected Date: <strong>{{ trackResult.estimatedRefund }}</strong></span>
+            </div>
+          </div>
+
+          <button class="rp-btn-outline rp-mt" (click)="resetTrack()">
+            <i class="bi bi-arrow-left me-1"></i> Search Another
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================== TAB 4: FAQ =================== -->
+    <div *ngIf="activeTab === 'faq'">
+      <div class="rp-faq-section">
+        <h2 class="rp-section-title"><i class="bi bi-question-circle"></i> Frequently Asked Questions</h2>
+        <div class="rp-faq-list">
+          <div class="rp-faq-item" *ngFor="let faq of faqs; let i = index"
+            [class.open]="faq.open" (click)="toggleFaq(i)">
+            <div class="rp-faq-q">
+              <span>{{ faq.question }}</span>
+              <i class="bi" [class.bi-plus-circle]="!faq.open" [class.bi-dash-circle]="faq.open"></i>
+            </div>
+            <div class="rp-faq-a" *ngIf="faq.open">{{ faq.answer }}</div>
+          </div>
+        </div>
+
+        <!-- Still need help -->
+        <div class="rp-need-help">
+          <i class="bi bi-headset rp-nh-icon"></i>
+          <h3>Still need help?</h3>
+          <p>Our support team is available 24/7 to assist you.</p>
+          <div class="rp-nh-actions">
+            <a routerLink="/contact-us" class="rp-btn-primary">
+              <i class="bi bi-envelope me-1"></i> Contact Us
+            </a>
+            <a href="tel:+919579345147" class="rp-btn-outline">
+              <i class="bi bi-telephone me-1"></i> Call Support
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /rp-content -->
+
+  <!-- FOOTER STRIP -->
+  <div class="rp-footer-strip">
+    <span><i class="bi bi-shield-check me-1"></i> 100% Buyer Protection</span>
+    <span><i class="bi bi-truck me-1"></i> Free Return Pickup</span>
+    <span><i class="bi bi-currency-rupee me-1"></i> Full Refund Guaranteed</span>
+    <span><i class="bi bi-clock me-1"></i> Support 24/7</span>
+  </div>
+
+</div>

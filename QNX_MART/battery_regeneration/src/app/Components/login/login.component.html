@@ -1,0 +1,455 @@
+<div class="qnx-login-page">
+  <div class="container-fluid px-3 px-xl-4">
+    <div class="qnx-auth-card row g-0 mx-auto">
+
+      <!-- LEFT PANEL -->
+      <div class="col-lg-6 d-none d-lg-block qnx-brand-panel position-relative overflow-hidden">
+
+        <div class="brand-copy">
+          <div class="brand-logo-box">
+            <img
+              src="../../../assets/QNXMARTLOGO.jpeg"
+              alt="QNX Mart B2B"
+              class="brand-logo">
+          </div>
+
+          <p class="brand-kicker">INDIA'S TRUSTED B2B PLATFORM</p>
+
+          <h1 class="brand-title">
+            Connect.<br>
+            <span class="grow-text">Grow.</span><br>
+            <span class="business-text">Do Business</span><br>
+            Together.
+          </h1>
+
+          <p class="brand-description">
+            A platform for verified suppliers and genuine buyers across India.
+          </p>
+
+          <div class="brand-features">
+            <div class="brand-feature">
+              <span class="feature-icon blue"><i class="bi bi-people-fill"></i></span>
+              <span>Verified Businesses</span>
+            </div>
+
+            <div class="brand-feature">
+              <span class="feature-icon orange"><i class="bi bi-cart-fill"></i></span>
+              <span>Quality Products</span>
+            </div>
+
+            <div class="brand-feature">
+              <span class="feature-icon purple"><i class="bi bi-hand-thumbs-up-fill"></i></span>
+              <span>Real Opportunities</span>
+            </div>
+          </div>
+        </div>
+
+        <img
+          src="../../../assets/login-hero-art.png"
+          class="hero-art"
+          alt=""
+          aria-hidden="true">
+
+        <div class="brand-bottom-bar">
+          <div><i class="bi bi-telephone-fill"></i> +91 95793 45147</div>
+          <span class="bar-divider"></span>
+          <div><i class="bi bi-envelope-fill"></i> qnxmartb2b&#64;gmail.com</div>
+          <span class="bar-divider"></span>
+          <div><i class="bi bi-headset"></i> 24/7 Support</div>
+        </div>
+      </div>
+
+      <!-- RIGHT PANEL -->
+      <div class="col-12 col-lg-5 qnx-form-panel position-relative d-flex align-items-center">
+        <div class="form-orb orb-top"></div>
+        <div class="form-orb orb-bottom"></div>
+
+        <div class="auth-inner w-100">
+
+          <!-- POPUP -->
+          <div class="popup-overlay" *ngIf="showPopup">
+            <div class="popup-box" [ngClass]="'popup-' + popupType">
+              <div class="popup-icon">
+                <i *ngIf="popupType === 'success'" class="bi bi-check-lg"></i>
+                <i *ngIf="popupType === 'error'" class="bi bi-x-lg"></i>
+                <i *ngIf="popupType === 'warning'" class="bi bi-exclamation-lg"></i>
+                <i *ngIf="popupType === 'info'" class="bi bi-info-lg"></i>
+              </div>
+              <h4>{{ popupTitle }}</h4>
+              <p>{{ popupMessage }}</p>
+              <button *ngIf="showPopupButton"
+                      type="button"
+                      class="btn btn-primary rounded-pill px-4"
+                      (click)="closePopup()">OK</button>
+            </div>
+          </div>
+
+          <!-- LOGIN -->
+          <div *ngIf="view === 'login'" class="view-container">
+
+            <div class="auth-top d-flex justify-content-end align-items-center">
+              <span>New here?</span>
+              <button type="button"
+                      class="create-account-btn"
+                      (click)="view='signup-email'">
+                Create account
+              </button>
+            </div>
+
+            <div class="login-heading">
+              <h2>Welcome back</h2>
+              <p>Sign in to your QNX Mart B2B account</p>
+            </div>
+
+            <div class="form-block">
+              <label for="login-username" class="form-label">Username or Email</label>
+              <div class="input-group qnx-input">
+                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                <input
+                  id="login-username"
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter your username or email"
+                  [(ngModel)]="loginData.username"
+                  (keydown.enter)="focusPassword()">
+              </div>
+            </div>
+
+            <div class="form-block password-block">
+              <label for="login-password" class="form-label">Password</label>
+              <div class="input-group qnx-input">
+                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                <input
+                  #loginPassword
+                  [type]="loginPasswordVisible ? 'text' : 'password'"
+                  id="login-password"
+                  class="form-control"
+                  placeholder="Enter your password"
+                  [(ngModel)]="loginData.password"
+                  (keydown.enter)="login()">
+
+                <button
+                  type="button"
+                  class="input-group-text password-toggle"
+                  (click)="togglePasswordVisibility('login')">
+                  <i [class]="loginPasswordVisible ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="forgot-row">
+              <button type="button"
+                      class="forgot-btn"
+                      (click)="view='forgot'">
+                Forgot password?
+              </button>
+            </div>
+
+            <button
+              type="button"
+              class="signin-btn"
+              [disabled]="isSubmitting"
+              (click)="login()">
+              <span *ngIf="!showLoader">Sign in <i class="bi bi-arrow-right"></i></span>
+              <span *ngIf="showLoader" class="spinner-border spinner-border-sm"></span>
+            </button>
+
+            <!-- <div class="or-divider"><span>OR</span></div>
+
+            <button type="button" class="google-btn">
+              <span class="google-g">G</span>
+              <span>Continue with Google</span>
+            </button> -->
+
+            <div class="trust-row">
+              <div class="trust-item">
+                <i class="bi bi-shield-check"></i>
+                <span>Secure Access</span>
+              </div>
+              <div class="trust-divider"></div>
+              <div class="trust-item">
+                <i class="bi bi-lightning-charge-fill"></i>
+                <span>Reliable Platform</span>
+              </div>
+              <div class="trust-divider"></div>
+              <div class="trust-item">
+                <i class="bi bi-people"></i>
+                <span>Trusted Network</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- SIGNUP EMAIL -->
+          <div *ngIf="view === 'signup-email'" class="secondary-view">
+            <button class="back-btn" type="button" (click)="view='login'">
+              <i class="bi bi-arrow-left"></i> Back to sign in
+            </button>
+
+            <div class="login-heading compact-heading">
+              <h2>Create account</h2>
+              <p>Start your journey with QNX Mart B2B</p>
+            </div>
+
+            <div class="step-indicator">
+              <span class="step active">1</span>
+              <span class="step-line"></span>
+              <span class="step">2</span>
+              <span class="step-line"></span>
+              <span class="step">3</span>
+            </div>
+
+            <div class="form-block">
+              <label for="signup-email" class="form-label">Email address</label>
+              <div class="input-group qnx-input">
+                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                <input id="signup-email"
+                       type="email"
+                       class="form-control"
+                       placeholder="Enter your email"
+                       [(ngModel)]="signupEmail">
+              </div>
+            </div>
+
+            <button class="signin-btn"
+                    [disabled]="isSubmitting"
+                    (click)="sendSignupOtp()">
+              <span *ngIf="!showLoader">Send OTP</span>
+              <span *ngIf="showLoader" class="spinner-border spinner-border-sm"></span>
+            </button>
+          </div>
+
+          <!-- SIGNUP OTP -->
+          <div *ngIf="view === 'signup-otp'" class="secondary-view">
+            <button class="back-btn" type="button" (click)="view='signup-email'">
+              <i class="bi bi-arrow-left"></i> Change email
+            </button>
+
+            <div class="login-heading compact-heading">
+              <h2>Verify your email</h2>
+              <p>We sent a code to <strong>{{ signupEmail }}</strong></p>
+            </div>
+
+            <div class="step-indicator">
+              <span class="step done"><i class="bi bi-check"></i></span>
+              <span class="step-line active"></span>
+              <span class="step active">2</span>
+              <span class="step-line"></span>
+              <span class="step">3</span>
+            </div>
+
+            <div class="form-block">
+              <label for="signup-otp" class="form-label">Verification code</label>
+              <div class="input-group qnx-input">
+                <span class="input-group-text"><i class="bi bi-key"></i></span>
+                <input id="signup-otp"
+                       type="text"
+                       class="form-control"
+                       maxlength="6"
+                       placeholder="Enter 6-digit code"
+                       [(ngModel)]="signupOtp">
+              </div>
+            </div>
+
+            <button class="signin-btn"
+                    [disabled]="isSubmitting"
+                    (click)="verifySignupOtp()">
+              <span *ngIf="!showLoader">Verify code</span>
+              <span *ngIf="showLoader" class="spinner-border spinner-border-sm"></span>
+            </button>
+
+            <div class="text-center mt-2">
+              <button class="resend-btn"
+                      [disabled]="isSubmitting"
+                      (click)="sendSignupOtp()">Resend code</button>
+            </div>
+          </div>
+
+          <!-- SIGNUP FORM -->
+          <div *ngIf="view === 'signup-form'" class="secondary-view signup-form-view">
+            <button class="back-btn" type="button" (click)="view='login'">
+              <i class="bi bi-arrow-left"></i> Back to sign in
+            </button>
+
+            <div class="login-heading compact-heading">
+              <h2>Complete registration</h2>
+              <p>Email verified — set up your profile</p>
+            </div>
+
+            <div class="verified-badge">
+              <i class="bi bi-check-circle-fill"></i> {{ signupEmail }}
+            </div>
+
+            <div class="row g-2">
+              <div class="col-md-6">
+                <label class="form-label" for="signup-name">Full name</label>
+                <div class="input-group qnx-input">
+                  <span class="input-group-text"><i class="bi bi-person"></i></span>
+                  <input id="signup-name" class="form-control" [(ngModel)]="signupData.name">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label" for="signup-phone">Phone number</label>
+                <div class="input-group qnx-input">
+                  <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                  <input id="signup-phone" class="form-control" maxlength="10" [(ngModel)]="signupData.phone_number">
+                </div>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label" for="signup-address">Address</label>
+                <div class="input-group qnx-input">
+                  <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                  <input id="signup-address" class="form-control" [(ngModel)]="signupData.address">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label" for="signup-username">Username</label>
+                <div class="input-group qnx-input">
+                  <span class="input-group-text"><i class="bi bi-at"></i></span>
+                  <input id="signup-username" class="form-control" [(ngModel)]="signupData.username">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label" for="signup-password">Password</label>
+                <div class="input-group qnx-input">
+                  <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                  <input [type]="signupPasswordVisible ? 'text' : 'password'"
+                         id="signup-password"
+                         class="form-control"
+                         [(ngModel)]="signupData.password">
+                  <button type="button"
+                          class="input-group-text password-toggle"
+                          (click)="togglePasswordVisibility('signup')">
+                    <i [class]="signupPasswordVisible ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <small class="pwd-hint">Min 8 chars, 1 uppercase, 1 number, 1 special character</small>
+
+            <button class="signin-btn mt-3"
+                    [disabled]="isSubmitting"
+                    (click)="signup()">
+              <span *ngIf="!showLoader">Register</span>
+              <span *ngIf="showLoader" class="spinner-border spinner-border-sm"></span>
+            </button>
+          </div>
+
+          <!-- FORGOT -->
+          <div *ngIf="view === 'forgot'" class="secondary-view">
+            <button class="back-btn" type="button" (click)="view='login'">
+              <i class="bi bi-arrow-left"></i> Back to sign in
+            </button>
+
+            <div class="login-heading compact-heading">
+              <h2>Reset password</h2>
+              <p>Enter your registered email to receive an OTP</p>
+            </div>
+
+            <div class="form-block">
+              <label class="form-label" for="forgot-email">Email address</label>
+              <div class="input-group qnx-input">
+                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                <input id="forgot-email"
+                       type="email"
+                       class="form-control"
+                       [(ngModel)]="forgotEmail">
+              </div>
+            </div>
+
+            <button class="signin-btn"
+                    [disabled]="isSubmitting"
+                    (click)="sendForgotOtp()">
+              <span *ngIf="!showLoader">Send OTP</span>
+              <span *ngIf="showLoader" class="spinner-border spinner-border-sm"></span>
+            </button>
+          </div>
+
+          <!-- FORGOT OTP -->
+          <div *ngIf="view === 'forgot-otp'" class="secondary-view">
+            <button class="back-btn" type="button" (click)="view='forgot'">
+              <i class="bi bi-arrow-left"></i> Back
+            </button>
+
+            <div class="login-heading compact-heading">
+              <h2>Verify OTP</h2>
+              <p>Enter the code sent to <strong>{{ forgotEmail }}</strong></p>
+            </div>
+
+            <div class="form-block">
+              <label class="form-label" for="forgot-otp">Verification code</label>
+              <div class="input-group qnx-input">
+                <span class="input-group-text"><i class="bi bi-key"></i></span>
+                <input id="forgot-otp"
+                       type="text"
+                       maxlength="6"
+                       class="form-control"
+                       [(ngModel)]="forgotOtp">
+              </div>
+            </div>
+
+            <button class="signin-btn"
+                    [disabled]="isSubmitting"
+                    (click)="verifyForgotOtp()">
+              <span *ngIf="!showLoader">Verify code</span>
+              <span *ngIf="showLoader" class="spinner-border spinner-border-sm"></span>
+            </button>
+          </div>
+
+          <!-- RESET -->
+          <div *ngIf="view === 'reset'" class="secondary-view">
+            <div class="login-heading compact-heading">
+              <h2>Set new password</h2>
+              <p>Choose a strong, secure password</p>
+            </div>
+
+            <div class="form-block">
+              <label class="form-label" for="new-password">New password</label>
+              <div class="input-group qnx-input">
+                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                <input [type]="newPasswordVisible ? 'text' : 'password'"
+                       id="new-password"
+                       class="form-control"
+                       [(ngModel)]="newPassword">
+                <button type="button"
+                        class="input-group-text password-toggle"
+                        (click)="togglePasswordVisibility('new')">
+                  <i [class]="newPasswordVisible ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="form-block">
+              <label class="form-label" for="confirm-password">Confirm password</label>
+              <div class="input-group qnx-input">
+                <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                <input [type]="confirmPasswordVisible ? 'text' : 'password'"
+                       id="confirm-password"
+                       class="form-control"
+                       [(ngModel)]="confirmPassword">
+                <button type="button"
+                        class="input-group-text password-toggle"
+                        (click)="togglePasswordVisibility('confirm')">
+                  <i [class]="confirmPasswordVisible ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                </button>
+              </div>
+            </div>
+
+            <button class="signin-btn"
+                    [disabled]="isSubmitting"
+                    (click)="resetPassword()">
+              <span *ngIf="!showLoader">Update password</span>
+              <span *ngIf="showLoader" class="spinner-border spinner-border-sm"></span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

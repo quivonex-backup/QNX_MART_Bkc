@@ -1,0 +1,350 @@
+<div class="rl-page">
+
+  <!-- Header -->
+  <div class="rl-header">
+    <div class="rl-header-text">
+      <h2><i class="bi bi-shop me-2"></i>Products</h2>
+      <p>{{ totalItems }} product{{ totalItems !== 1 ? 's' : '' }} found</p>
+    </div>
+    <button class="rl-filter-toggle" (click)="filterOpen = !filterOpen">
+      <i class="bi bi-funnel-fill me-1"></i>Filters
+      <span class="rl-filter-badge" *ngIf="activeFilterCount > 0">{{ activeFilterCount }}</span>
+    </button>
+  </div>
+
+  <div class="rl-body">
+    <div class="rl-layout">
+
+      <div class="rl-backdrop" *ngIf="filterOpen" (click)="filterOpen = false"></div>
+
+      <!-- SIDEBAR -->
+      <aside class="rl-sidebar" [class.rl-sidebar-open]="filterOpen">
+        <div class="rl-sidebar-header">
+          <span><i class="bi bi-funnel-fill me-2"></i>Filters
+            <span class="rl-filter-badge ms-1" *ngIf="activeFilterCount > 0">{{ activeFilterCount }}</span>
+          </span>
+          <button class="rl-sidebar-close" (click)="filterOpen = false" title="Close">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+
+        <div class="rl-sidebar-scroll">
+          <div class="rl-sidebar-clear" *ngIf="activeFilterCount > 0">
+            <button (click)="clearAllFilters()">
+              <i class="bi bi-x-circle me-1"></i>Clear all filters ({{ activeFilterCount }})
+            </button>
+          </div>
+
+          <!-- Price -->
+          <div class="rl-filter-group">
+            <div class="rl-filter-group-title"><i class="bi bi-currency-rupee me-2"></i>Price Range</div>
+            <div class="rl-price-inputs">
+              <input type="number" class="rl-price-input" [(ngModel)]="priceMin" placeholder="Min ₹" min="0"
+                (change)="applyFilters()" />
+              <span class="rl-price-sep">—</span>
+              <input type="number" class="rl-price-input" [(ngModel)]="priceMax" placeholder="Max ₹" min="0"
+                (change)="applyFilters()" />
+            </div>
+          </div>
+
+          <!-- Category -->
+          <div class="rl-filter-group">
+            <div class="rl-filter-group-title"><i class="bi bi-grid me-2"></i>Category</div>
+            <select class="form-select rl-filter-select" [(ngModel)]="selectedCategory"
+              (change)="onCategoryChange(selectedCategory)">
+              <option [ngValue]="null">All Categories</option>
+              <option *ngFor="let c of categories" [ngValue]="c.id">{{ c.name }}</option>
+            </select>
+          </div>
+
+          <!-- Subcategory -->
+          <div class="rl-filter-group" *ngIf="subcategories.length">
+            <div class="rl-filter-group-title"><i class="bi bi-diagram-3 me-2"></i>Subcategory</div>
+            <select class="form-select rl-filter-select" [(ngModel)]="selectedSubcategory" (change)="applyFilters()">
+              <option [ngValue]="null">All Subcategories</option>
+              <option *ngFor="let s of subcategories" [ngValue]="s.id">{{ s.name }}</option>
+            </select>
+          </div>
+
+          <!-- Condition -->
+          <div class="rl-filter-group">
+            <div class="rl-filter-group-title"><i class="bi bi-stars me-2"></i>Condition</div>
+            <select class="form-select rl-filter-select" [(ngModel)]="selectedCondition" (change)="applyFilters()">
+              <option value="">All Conditions</option>
+              <option *ngFor="let c of conditions" [value]="c.value">{{ c.label }}</option>
+            </select>
+          </div>
+
+          <!-- Seller Type -->
+          <div class="rl-filter-group">
+            <div class="rl-filter-group-title"><i class="bi bi-person-badge me-2"></i>Seller Type</div>
+            <select class="form-select rl-filter-select" [(ngModel)]="selectedSellerType" (change)="applyFilters()">
+              <option value="">All Sellers</option>
+              <option *ngFor="let s of sellerTypes" [value]="s.value">{{ s.label }}</option>
+            </select>
+          </div>
+
+          <!-- City -->
+          <div class="rl-filter-group">
+            <div class="rl-filter-group-title"><i class="bi bi-geo-alt me-2"></i>City / Area</div>
+            <input type="text" class="rl-price-input" style="width: calc(100% - 28px); margin: 4px 14px 8px;"
+              [(ngModel)]="searchCity" placeholder="Enter city or area" (change)="applyFilters()" />
+          </div>
+        </div>
+      </aside>
+
+      <!-- MAIN -->
+      <main class="rl-main">
+        <div class="rl-topbar">
+          <div class="rl-chips" *ngIf="activeFilterCount > 0">
+            <span class="rl-chip" *ngIf="priceMin !== null || priceMax !== null">
+              ₹{{ priceMin ?? 0 }} – ₹{{ priceMax ?? '∞' }}
+              <button (click)="priceMin=null; priceMax=null; applyFilters()"><i class="bi bi-x"></i></button>
+            </span>
+            <span class="rl-chip" *ngIf="selectedCategory">
+              {{ getCategoryName(selectedCategory) }}
+              <button (click)="selectedCategory=null; selectedSubcategory=null; subcategories=[]; applyFilters()">
+                <i class="bi bi-x"></i>
+              </button>
+            </span>
+            <span class="rl-chip" *ngIf="selectedSubcategory">
+              {{ getSubcategoryName(selectedSubcategory) }}
+              <button (click)="selectedSubcategory=null; applyFilters()"><i class="bi bi-x"></i></button>
+            </span>
+            <span class="rl-chip" *ngIf="selectedCondition">
+              {{ getConditionLabel(selectedCondition) }}
+              <button (click)="selectedCondition=''; applyFilters()"><i class="bi bi-x"></i></button>
+            </span>
+            <span class="rl-chip" *ngIf="selectedSellerType">
+              {{ getSellerTypeLabel(selectedSellerType) }}
+              <button (click)="selectedSellerType=''; applyFilters()"><i class="bi bi-x"></i></button>
+            </span>
+            <span class="rl-chip" *ngIf="searchCity">
+              {{ searchCity }}
+              <button (click)="searchCity=''; applyFilters()"><i class="bi bi-x"></i></button>
+            </span>
+          </div>
+
+          <!-- <div class="rl-topbar-right">
+            <div class="rl-ipp">
+              <label>Show:</label>
+              <select [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
+                <option *ngFor="let s of pageSizeOptions" [ngValue]="s">{{ s }}</option>
+              </select>
+            </div>
+            <select class="rl-sort-select" [(ngModel)]="selectedSort" (change)="applyFilters()">
+              <option value="">Sort By</option>
+              <option value="newest">Newest First</option>
+              <option value="price_low">Price: Low → High</option>
+              <option value="price_high">Price: High → Low</option>
+              <option value="a_z">Title: A → Z</option>
+              <option value="z_a">Title: Z → A</option>
+            </select>
+            <span class="rl-count" *ngIf="totalItems > 0">
+              {{ startIndex }}–{{ endIndex }} of {{ totalItems }}
+            </span>
+          </div> -->
+        </div>
+
+        <!-- Grid -->
+        <div class="rl-grid" *ngIf="filteredListings.length > 0; else noResults">
+
+          <div class="rl-col" *ngFor="let item of filteredListings">
+
+            <div class="rl-glass-card">
+
+              <!-- FULL BACKGROUND IMAGE -->
+              <div class="rl-full-image-wrap" (click)="goToDetails(item)">
+
+                <img [src]="item.images?.length
+            ? item.images[item.currentImgIndex]?.image_url
+            : 'assets/placeholder.png'" [alt]="item.title" class="rl-full-bg" loading="lazy"
+                  onerror="this.src='assets/placeholder.png'" />
+
+                <!-- Light Overlay -->
+                <div class="rl-bg-overlay"></div>
+
+                <!-- Full Gloss Animation -->
+                <div class="rl-full-gloss"></div>
+
+              </div>
+
+
+              <!-- IMAGE NAVIGATION -->
+              <ng-container *ngIf="item.images?.length > 1">
+
+                <button type="button" class="rl-glass-nav rl-glass-prev" (click)="prevImage(item, $event)"
+                  title="Previous">
+
+                  <i class="bi bi-chevron-left"></i>
+
+                </button>
+
+
+                <button type="button" class="rl-glass-nav rl-glass-next" (click)="nextImage(item, $event)" title="Next">
+
+                  <i class="bi bi-chevron-right"></i>
+
+                </button>
+
+
+                <!-- Image Counter -->
+                <span class="rl-glass-counter">
+                  {{ item.currentImgIndex + 1 }} / {{ item.images.length }}
+                </span>
+
+
+                <!-- Image Dots -->
+                <div class="rl-glass-dots">
+
+                  <span *ngFor="let img of item.images; let i = index" class="rl-glass-dot"
+                    [class.active]="i === item.currentImgIndex" (click)="setImage(item, i, $event)">
+                  </span>
+
+                </div>
+
+              </ng-container>
+
+
+              <!-- FEATURED BADGE -->
+              <div class="rl-featured-badge" *ngIf="item.is_featured">
+
+                <i class="bi bi-star-fill"></i>
+                Featured
+
+              </div>
+
+
+              <!-- GLASS CONTENT -->
+              <div class="rl-glass-content">
+
+                <!-- CATEGORY + CONDITION -->
+                <div class="rl-glass-top">
+
+                  <span class="rl-glass-category" *ngIf="item.category_name">
+
+                    {{ item.category_name }}
+
+                  </span>
+
+
+                  <span class="rl-condition-badge">
+
+                    {{ getConditionLabel(item.condition) }}
+
+                  </span>
+
+                </div>
+
+
+                <!-- TITLE -->
+                <h6 class="rl-glass-name" (click)="goToDetails(item)">
+
+                  {{ item.title }}
+
+                </h6>
+
+
+                <!-- DESCRIPTION -->
+                <p class="rl-glass-desc" *ngIf="item.description">
+
+                  {{ item.description }}
+
+                </p>
+
+
+                <!-- LOCATION -->
+                <div class="rl-glass-location">
+
+                  <i class="bi bi-geo-alt-fill"></i>
+
+                  <span>
+                    {{ locationLine(item) }}
+                  </span>
+
+                </div>
+
+
+                <!-- DIVIDER -->
+                <div class="rl-glass-divider"></div>
+
+
+                <!-- PRICE -->
+                <div class="rl-glass-price-row">
+
+                  <span class="rl-glass-price">
+                    {{ formatPrice(item.price) }}
+                  </span>
+
+
+                  <span class="rl-glass-negotiable" *ngIf="item.is_negotiable">
+
+                    Negotiable
+
+                  </span>
+
+                </div>
+
+
+                <!-- ACTION BUTTONS -->
+                <div class="rl-glass-actions">
+
+                  <button type="button" class="rl-details-btn" (click)="goToDetails(item)">
+
+                    <i class="bi bi-eye"></i>
+                    Details
+
+                  </button>
+
+
+                  <button type="button" class="rl-enquiry-btn" (click)="goToEnquiry(item)">
+
+                    <i class="bi bi-chat-dots"></i>
+                    Enquiry
+
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Pagination -->
+        <!-- <div class="rl-pagination" *ngIf="totalPages > 1">
+          <button class="rl-page-btn" [disabled]="currentPage === 1" (click)="firstPage()">
+            <i class="bi bi-chevron-double-left"></i> First
+          </button>
+          <button class="rl-page-btn" [disabled]="currentPage === 1" (click)="previousPage()">
+            <i class="bi bi-chevron-left"></i> Prev
+          </button>
+          <div class="rl-page-numbers">
+            <button *ngFor="let page of getPageNumbers()" class="rl-page-num" [class.active]="page === currentPage"
+              [disabled]="page === '...'" (click)="goToPage(page)">
+              {{ page }}
+            </button>
+          </div>
+          <button class="rl-page-btn" [disabled]="currentPage === totalPages" (click)="nextPage()">
+            Next <i class="bi bi-chevron-right"></i>
+          </button>
+          <button class="rl-page-btn" [disabled]="currentPage === totalPages" (click)="lastPage()">
+            Last <i class="bi bi-chevron-double-right"></i>
+          </button>
+        </div> -->
+
+        <ng-template #noResults>
+          <div class="rl-empty">
+            <i class="bi bi-box-seam rl-empty-icon"></i>
+            <h5>No products found</h5>
+            <p>Try adjusting your filters or browse all listings.</p>
+            <button class="rl-btn rl-btn-primary" (click)="clearAllFilters()">Clear Filters</button>
+          </div>
+        </ng-template>
+      </main>
+    </div>
+  </div>
+</div>

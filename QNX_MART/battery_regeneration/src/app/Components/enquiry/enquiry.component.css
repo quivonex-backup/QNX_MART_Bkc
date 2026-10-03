@@ -1,0 +1,260 @@
+.enq-wrapper {
+  font-family: 'Inter', sans-serif;
+  background: #f0f2f5;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.enq-header {
+  background: linear-gradient(135deg, #2c3e50 0%, #3d5166 100%);
+  padding: 18px 28px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.enq-header-icon {
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.enq-header-icon i {
+  font-size: 20px;
+  color: #fff;
+}
+
+.enq-header-title {
+  margin: 0;
+  font-weight: 700;
+  color: #fff;
+  font-size: 20px;
+}
+
+.enq-header-sub {
+  margin: 2px 0 0;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 13px;
+}
+
+.enq-body {
+  padding: 28px;
+  background: #f8f9fb;
+}
+
+.enq-card {
+  background: #fff;
+  border: 1.5px solid #dde3ec;
+  border-radius: 10px;
+  padding: 24px;
+}
+
+.enq-section-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #2c3e50;
+  border-left: 4px solid #3498db;
+  padding-left: 10px;
+  margin-bottom: 18px;
+}
+
+.enq-label {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 6px;
+  font-size: 12px;
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.text-danger {
+  color: #e74c3c !important;
+  font-weight: 700;
+}
+
+.form-control,
+.form-select {
+  border: 1.5px solid #dde3ec;
+  border-radius: 8px;
+  padding: 0 14px;
+  height: 42px;
+  font-size: 14px;
+  line-height: 42px;
+  background-color: #fff;
+  color: #2c3e50;
+  width: 100%;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.12);
+  outline: none;
+}
+
+.form-control:hover,
+.form-select:hover {
+  border-color: #b0bec5;
+}
+
+.enq-textarea {
+  height: auto !important;
+  min-height: 100px;
+  padding: 10px 14px !important;
+  line-height: 1.6 !important;
+  resize: vertical;
+}
+
+.enq-multi-select {
+  height: 120px !important;
+  padding: 8px !important;
+  line-height: 1.6 !important;
+}
+
+.enq-multi-select option {
+  padding: 6px 8px;
+  color: #2c3e50;
+  background: #fff;
+}
+
+.enq-multi-select option:checked {
+  background: #3498db;
+  color: #fff;
+}
+
+.enq-hint {
+  font-size: 11px;
+  color: #95a5a6;
+  margin-top: 4px;
+  display: block;
+}
+
+.invalid-feedback {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #e74c3c;
+  font-weight: 500;
+}
+
+.enq-add-btn {
+  background: #fff;
+  border: 1.5px solid #3498db;
+  color: #3498db;
+  border-radius: 8px;
+  padding: 7px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+  margin-top: 4px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.enq-add-btn:hover {
+  background: #3498db;
+  color: #fff;
+}
+
+.enq-preview-img {
+  max-height: 120px;
+  border-radius: 8px;
+  border: 1.5px solid #dde3ec;
+  display: block;
+}
+
+.enq-pdf-link {
+  display: inline-flex;
+  align-items: center;
+  color: #e74c3c;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.enq-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  padding-top: 4px;
+}
+
+.enq-btn-cancel {
+  background: #fff;
+  border: 1.5px solid #dde3ec;
+  color: #7f8c8d;
+  border-radius: 8px;
+  padding: 11px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.enq-btn-cancel:hover {
+  border-color: #e74c3c;
+  color: #e74c3c;
+  background: #fff0f0;
+}
+
+.enq-btn-submit {
+  background: linear-gradient(135deg, #3498db, #27ae60);
+  border: none;
+  border-radius: 8px;
+  padding: 11px 32px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: inline-flex;
+  align-items: center;
+  box-shadow: 0 4px 14px rgba(52, 152, 219, 0.3);
+}
+
+.enq-btn-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(52, 152, 219, 0.4);
+}
+
+.input-group .form-control {
+  border-radius: 8px 0 0 8px;
+}
+
+.input-group .btn {
+  border-radius: 0 8px 8px 0;
+  height: 42px;
+}
+
+@media (max-width: 768px) {
+  .enq-body {
+    padding: 16px 12px;
+  }
+
+  .enq-card {
+    padding: 18px 16px;
+  }
+
+  .enq-actions {
+    flex-direction: column-reverse;
+  }
+
+  .enq-btn-cancel,
+  .enq-btn-submit {
+    width: 100%;
+    justify-content: center;
+  }
+}

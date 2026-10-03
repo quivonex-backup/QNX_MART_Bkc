@@ -1,0 +1,266 @@
+<div class="table-responsive">
+
+<table class="table table-bordered table-striped">
+
+<thead class="table-dark">
+<tr>
+
+<th>ID</th>
+<th>Logo</th>
+<th>Name</th>
+<th>Owner</th>
+<th>Email</th>
+<th>Phone</th>
+<th>Address</th>
+<th>State</th>
+<th>District</th>
+<th>Taluka</th>
+<th>Village</th>
+<th>Pincode</th>
+<th>GST</th>
+<th>Registration No</th>
+<th>PAN</th>
+<th>Emails</th>
+<th>Contacts</th>
+<th>Website</th>
+<th>Facebook</th>
+<th>LinkedIn</th>
+<th>Instagram</th>
+<th>IAN No</th>
+<th>Verified</th>
+<th>Active</th>
+<th>Action</th>
+<!-- <th>Created</th> -->
+
+</tr>
+</thead>
+
+<tbody>
+
+<tr *ngFor="let c of companies">
+
+<td>{{c.id}}</td>
+
+<td>
+<img *ngIf="c.logo" [src]="c.logo" width="50">
+<span *ngIf="!c.logo">No Logo</span>
+</td>
+
+<td>{{c.name}}</td>
+<td>{{c.owner_name}}</td>
+<td>{{c.email}}</td>
+<td>{{c.phone_number}}</td>
+<td>{{c.address}}</td>
+
+<td>{{c.state}}</td>
+<td>{{c.district}}</td>
+<td>{{c.taluka}}</td>
+<td>{{c.village}}</td>
+
+<td>{{c.pincode}}</td>
+<td>{{c.gst_number}}</td>
+
+<td>{{c.registration_no}}</td>
+<td>{{c.company_pan_no}}</td>
+
+<td>
+<div *ngFor="let email of c.multiple_email_ids">
+{{email}}
+</div>
+</td>
+
+<td>
+<div *ngFor="let phone of c.contacts">
+{{phone}}
+</div>
+</td>
+
+<td>
+<a [href]="c.website_url" target="_blank">
+{{c.website_url}}
+</a>
+</td>
+
+<td>
+<a *ngIf="c.social_media_accounts?.facebook"
+   [href]="c.social_media_accounts?.facebook"
+   target="_blank">
+Facebook
+</a>
+<span *ngIf="!c.social_media_accounts?.facebook">-</span>
+</td>
+
+<td>
+<a *ngIf="c.social_media_accounts?.linkedin"
+   [href]="c.social_media_accounts?.linkedin"
+   target="_blank">
+LinkedIn
+</a>
+<span *ngIf="!c.social_media_accounts?.linkedin">-</span>
+</td>
+
+<td>
+<a *ngIf="c.social_media_accounts?.instagram"
+   [href]="c.social_media_accounts?.instagram"
+   target="_blank">
+Instagram
+</a>
+<span *ngIf="!c.social_media_accounts?.instagram">-</span>
+</td>
+
+<td>{{c.IAN_No}}</td>
+
+<td>
+<span class="badge bg-success" *ngIf="c.is_verified">Yes</span>
+<span class="badge bg-danger" *ngIf="!c.is_verified">No</span>
+</td>
+
+<td>
+<span class="badge bg-success" *ngIf="c.is_active">Active</span>
+<span class="badge bg-secondary" *ngIf="!c.is_active">Inactive</span>
+</td>
+
+<td>
+<button class="btn btn-outline-primary btn-sm"  (click)="editCompany(c)">
+<i class="bi bi-pencil-square"></i>
+</button>
+</td>
+
+<!-- <td>{{c.created_at | date:'dd-MM-yyyy'}}</td> -->
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+
+
+<!-- pop up  -->
+ <!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+
+<div class="modal-header">
+<h5 class="modal-title">Update Company</h5>
+<button class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+
+<div class="modal-body">
+
+<div class="row">
+
+<div class="col-md-12 mb-3 text-center">
+<img *ngIf="editData.logo" [src]="editData.logo" width="120" class="mb-2">
+<input type="file" class="form-control" (change)="onLogoSelect($event)">
+</div>
+
+<div class="col-md-6 mb-2">
+<label>Name</label>
+<input type="text" class="form-control" [(ngModel)]="editData.name">
+</div>
+
+<div class="col-md-6 mb-2">
+<label>Owner</label>
+<input type="text" class="form-control" [(ngModel)]="editData.owner_name">
+</div>
+
+<div class="col-md-6 mb-2">
+<label>Email</label>
+<input type="text" class="form-control" [(ngModel)]="editData.email">
+</div>
+
+<div class="col-md-6 mb-2">
+<label>Phone</label>
+<input type="text" class="form-control" [(ngModel)]="editData.phone_number">
+</div>
+
+
+<div class="col-md-6 mb-2">
+<label>Address</label>
+<input type="text" class="form-control" [(ngModel)]="editData.address">
+</div>
+
+
+<div class="col-md-6 mb-2">
+<label>State</label>
+<input type="text" class="form-control" [(ngModel)]="editData.state">
+</div>
+
+<div class="col-md-6 mb-2">
+<label>District</label>
+<input type="text" class="form-control" [(ngModel)]="editData.district">
+</div>
+
+<div class="col-md-6 mb-2">
+<label>Taluka</label>
+<input type="text" class="form-control" [(ngModel)]="editData.taluka">
+</div>
+
+<div class="col-md-6 mb-2">
+<label>Village</label>
+<input type="text" class="form-control" [(ngModel)]="editData.village">
+</div>
+
+<div class="col-md-6 mb-2">
+<label>GST</label>
+<input type="text" class="form-control" [(ngModel)]="editData.gst_number">
+</div>
+
+<div class="col-md-6 mb-2">
+<label>Registration No</label>
+<input type="text" class="form-control" [(ngModel)]="editData.registration_no">
+</div>
+
+<div class="col-md-6 mb-2">
+<label>PAN</label>
+<input type="text" class="form-control" [(ngModel)]="editData.company_pan_no">
+</div>
+
+<div class="col-md-6 mb-2">
+<label>IAN No</label>
+<input type="text" class="form-control" [(ngModel)]="editData.IAN_No">
+</div>
+
+<div class="col-md-6 mb-2">
+<label>Website</label>
+<input type="text" class="form-control" [(ngModel)]="editData.website_url">
+</div>
+
+
+<div class="col-md-6 mb-2">
+<label>Facebook</label>
+<input type="text" class="form-control"
+[(ngModel)]="editData.social_media_accounts.facebook">
+</div>
+
+<div class="col-md-6 mb-2">
+<label>LinkedIn</label>
+<input type="text" class="form-control"
+[(ngModel)]="editData.social_media_accounts.linkedin">
+</div>
+
+<div class="col-md-6 mb-2">
+<label>Instagram</label>
+<input type="text" class="form-control"
+[(ngModel)]="editData.social_media_accounts.instagram">
+</div>
+
+
+
+</div>
+
+</div>
+
+<div class="modal-footer">
+<button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+<button class="btn btn-primary" (click)="updateCompany()">Update</button>
+</div>
+
+</div>
+</div>
+</div>

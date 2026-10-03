@@ -1,0 +1,154 @@
+<div class="bm-page">
+
+  <!-- Page Header -->
+  <div class="bm-page-header">
+    <div class="bm-page-header-inner">
+      <button class="bm-back-btn" onclick="window.history.back()" title="Go back">
+        <i class="bi bi-arrow-left"></i>
+      </button>
+      <div>
+        <h1 class="bm-page-title">
+          <i class="bi bi-award-fill"></i>
+          Brand Master
+        </h1>
+        <p class="bm-page-subtitle">Create and manage product brands</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Two Column Layout -->
+  <div class="bm-two-col">
+
+    <!-- Form Card -->
+    <div class="bm-form-card">
+      <div class="bm-card-header">
+        <span class="bm-card-title">
+          <i class="bi bi-{{ isEditMode ? 'pencil-square' : 'plus-circle-fill' }}"></i>
+          {{ isEditMode ? 'Edit Brand' : 'Add New Brand' }}
+        </span>
+        <button class="bm-btn-ghost" *ngIf="isEditMode" type="button" (click)="resetForm()">
+          <i class="bi bi-x-lg"></i> Cancel Edit
+        </button>
+      </div>
+
+      <form (ngSubmit)="onSubmit()" #brandForm="ngForm">
+        <div class="bm-form-body">
+          <div class="bm-form-grid">
+
+            <!-- Category -->
+            <div class="bm-field bm-field-full">
+              <label class="bm-label">Category <span class="bm-required">*</span></label>
+              <div class="bm-select-wrap">
+                <select class="bm-input bm-select" name="category" [(ngModel)]="formData.category"
+                  (change)="onCategoryChange(formData.category)" required>
+                  <option value="">-- Select Category --</option>
+                  <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+                </select>
+                <i class="bi bi-chevron-down bm-select-icon"></i>
+              </div>
+            </div>
+
+            <!-- Sub Category -->
+            <div class="bm-field bm-field-full">
+              <label class="bm-label">Sub Category <span class="bm-required">*</span></label>
+              <div class="bm-select-wrap">
+                <select class="bm-input bm-select" name="subcategory" [(ngModel)]="formData.subcategory"
+                  [disabled]="!subcategories.length" required>
+                  <option value="">{{ formData.category ? 'Select Sub Category' : 'Select Category First' }}</option>
+                  <option *ngFor="let sub of subcategories" [value]="sub.id">{{ sub.name }}</option>
+                </select>
+                <i class="bi bi-chevron-down bm-select-icon"></i>
+              </div>
+            </div>
+
+            <!-- Brand Name -->
+            <div class="bm-field bm-field-full">
+              <label class="bm-label">Brand Name <span class="bm-required">*</span></label>
+              <input type="text" class="bm-input" name="name" [(ngModel)]="formData.name" placeholder="e.g. Nike"
+                required />
+            </div>
+
+            <!-- Description -->
+            <div class="bm-field bm-field-full">
+              <label class="bm-label">Description</label>
+              <textarea class="bm-input bm-textarea" rows="3" name="description" [(ngModel)]="formData.description"
+                placeholder="Brief description..."></textarea>
+            </div>
+
+          </div>
+
+          <div class="bm-form-actions">
+            <button type="button" class="bm-btn-secondary" (click)="resetForm()">
+              <i class="bi bi-arrow-counterclockwise"></i> Reset
+            </button>
+            <button type="submit" class="bm-btn-primary" [disabled]="brandForm.invalid">
+              <i class="bi bi-{{ isEditMode ? 'check-lg' : 'plus-lg' }}"></i>
+              {{ isEditMode ? 'Update Brand' : 'Save Brand' }}
+            </button>
+          </div>
+
+        </div>
+      </form>
+    </div>
+
+    <!-- Table Card -->
+    <div class="bm-table-card">
+      <div class="bm-card-header">
+        <span class="bm-card-title">
+          <i class="bi bi-list-ul"></i> Brand List
+        </span>
+        <span class="bm-count-badge">{{ brands.length }} brands</span>
+      </div>
+
+      <div class="bm-table-wrap">
+        <table class="bm-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Brand Name</th>
+              <th>Category</th>
+              <th>Sub Category</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let b of brands; let i = index">
+              <td class="bm-td-num">{{ i + 1 }}</td>
+              <td class="bm-td-name">{{ b.name }}</td>
+              <td>{{ b.category_name }}</td>
+              <td>{{ b.subcategory_name }}</td>
+              <td>
+                <span class="bm-status-badge" [class.bm-status-active]="b.is_active"
+                  [class.bm-status-inactive]="!b.is_active">
+                  <i class="bi bi-circle-fill"></i>
+                  {{ b.is_active ? 'Active' : 'Inactive' }}
+                </span>
+              </td>
+              <td>
+                <div class="bm-action-btns">
+                  <button class="bm-icon-btn bm-icon-edit" (click)="editBrand(b)" title="Edit">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="bm-icon-btn" [class.bm-icon-deactivate]="b.is_active"
+                    [class.bm-icon-activate]="!b.is_active" (click)="toggleBrandStatus(b)"
+                    [title]="b.is_active ? 'Deactivate' : 'Activate'">
+                    <i class="bi" [class.bi-toggle-on]="b.is_active" [class.bi-toggle-off]="!b.is_active"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="brands.length === 0">
+              <td colspan="6" class="bm-empty">
+                <i class="bi bi-inbox"></i>
+                <p>No brands found. Add your first brand.</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- end bm-two-col -->
+
+</div>

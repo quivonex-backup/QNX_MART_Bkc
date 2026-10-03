@@ -1,0 +1,162 @@
+<div class="co-page">
+
+  <!-- Page Header -->
+  <div class="co-page-header">
+    <div class="co-page-header-inner">
+      <div>
+        <h1 class="co-page-title">
+          <i class="bi bi-tag-fill"></i>
+          Offer Management
+        </h1>
+        <p class="co-page-subtitle">Create and manage promotional offers</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Card -->
+  <div class="co-form-card">
+    <div class="co-form-card-header">
+      <span class="co-form-card-title">
+        <i class="bi bi-{{ isEditMode ? 'pencil-square' : 'plus-circle-fill' }}"></i>
+        {{ isEditMode ? 'Edit Offer' : 'Create New Offer' }}
+      </span>
+      <button class="co-btn-ghost" *ngIf="isEditMode" (click)="resetForm()">
+        <i class="bi bi-x-lg"></i> Cancel Edit
+      </button>
+    </div>
+
+    <div class="co-form-body">
+      <div class="co-form-grid">
+
+        <!-- Title -->
+        <div class="co-field co-field-full">
+          <label class="co-label">Offer Title <span class="co-required">*</span></label>
+          <input class="co-input" [(ngModel)]="offer.title" placeholder="e.g. Diwali Mega Sale" />
+        </div>
+
+        <!-- Description -->
+        <div class="co-field co-field-full">
+          <label class="co-label">Description <span class="co-required">*</span></label>
+          <textarea class="co-input co-textarea" [(ngModel)]="offer.description" rows="3"
+            placeholder="Brief description of the offer..."></textarea>
+        </div>
+
+        <!-- Type -->
+        <div class="co-field">
+          <label class="co-label">Offer Type</label>
+          <div class="co-select-wrap">
+            <select class="co-input co-select" [(ngModel)]="offer.offer_type">
+              <option value="">-- Select Type --</option>
+              <option value="percentage">Percentage (%)</option>
+              <option value="flat">Flat (₹)</option>
+            </select>
+            <i class="bi bi-chevron-down co-select-icon"></i>
+          </div>
+        </div>
+
+        <!-- Value -->
+        <div class="co-field">
+          <label class="co-label">
+            Discount Value
+            <span class="co-unit-hint" *ngIf="offer.offer_type === 'percentage'">(%)</span>
+            <span class="co-unit-hint" *ngIf="offer.offer_type === 'flat'">(₹)</span>
+          </label>
+          <input type="number" class="co-input" [(ngModel)]="offer.discount_value" placeholder="0" min="0" />
+        </div>
+
+        <!-- Start Date -->
+        <div class="co-field">
+          <label class="co-label">Start Date</label>
+          <input type="date" class="co-input" [(ngModel)]="offer.start_date" />
+        </div>
+
+        <!-- End Date -->
+        <div class="co-field">
+          <label class="co-label">End Date</label>
+          <input type="date" class="co-input" [(ngModel)]="offer.end_date" />
+        </div>
+
+      </div>
+
+      <!-- Actions -->
+      <div class="co-form-actions">
+        <button class="co-btn-secondary" (click)="resetForm()">
+          <i class="bi bi-arrow-counterclockwise"></i> Reset
+        </button>
+        <button class="co-btn-primary" (click)="createOffer()">
+          <i class="bi bi-{{ isEditMode ? 'check-lg' : 'plus-lg' }}"></i>
+          {{ isEditMode ? 'Update Offer' : 'Create Offer' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Offers Table Card -->
+  <div class="co-table-card">
+    <div class="co-table-card-header">
+      <span class="co-form-card-title">
+        <i class="bi bi-list-ul"></i> All Offers
+      </span>
+      <span class="co-count-badge">{{ offersList.length }} offers</span>
+    </div>
+
+    <div class="co-table-wrap">
+      <table class="co-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Type</th>
+            <th>Discount</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let o of offersList; let i = index">
+            <td class="co-td-num">{{ i + 1 }}</td>
+            <td class="co-td-title">{{ o.title }}</td>
+            <td>
+              <span class="co-type-badge co-type-{{ o.offer_type }}">
+                {{ o.offer_type === 'percentage' ? 'Percentage' : 'Flat' }}
+              </span>
+            </td>
+            <td class="co-td-value">
+              <strong>{{ o.offer_type === 'percentage' ? o.discount_value + '%' : '₹' + o.discount_value }}</strong>
+            </td>
+            <td>{{ o.start_date }}</td>
+            <td>{{ o.end_date }}</td>
+            <td>
+              <span class="co-status-badge" [class.co-status-active]="o.is_active"
+                [class.co-status-inactive]="!o.is_active">
+                <i class="bi bi-circle-fill"></i>
+                {{ o.is_active ? 'Active' : 'Inactive' }}
+              </span>
+            </td>
+            <td>
+              <div class="co-action-btns">
+                <button class="co-icon-btn co-icon-edit" (click)="editOffer(o)" title="Edit">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="co-icon-btn" [class.co-icon-deactivate]="o.is_active"
+                  [class.co-icon-activate]="!o.is_active" (click)="toggleOfferStatus(o)"
+                  [title]="o.is_active ? 'Deactivate' : 'Activate'">
+                  <i class="bi" [class.bi-toggle-on]="o.is_active" [class.bi-toggle-off]="!o.is_active"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="offersList.length === 0">
+            <td colspan="8" class="co-empty">
+              <i class="bi bi-inbox"></i>
+              <p>No offers found. Create your first offer above.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

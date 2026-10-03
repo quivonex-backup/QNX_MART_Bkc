@@ -1,0 +1,619 @@
+<div class="od-page">
+
+    <!-- HEADER -->
+    <div class="od-header">
+        <div class="od-header-inner">
+            <button class="od-back-btn" (click)="goBack()" title="Go back">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <div class="od-title-wrap">
+                <i class="fas fa-box-open"></i>
+                <div>
+                    <h1 class="od-title">Order Detail</h1>
+                    <p class="od-subtitle">#{{ order?.order_number || 'Loading...' }}</p>
+                </div>
+            </div>
+            <div class="od-status-badge" *ngIf="order">
+                <span class="mo-status" [ngClass]="getStatusBadgeClass(order.status)">
+                    {{ order.status }}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOADING -->
+    <div *ngIf="loading" class="od-loading">
+        <div class="mo-spinner"></div>
+        <p>Loading order details...</p>
+    </div>
+
+    <!-- DETAIL CONTENT -->
+    <div class="od-container" *ngIf="!loading && order">
+
+        <div class="od-grid">
+
+            <!-- LEFT COLUMN -->
+            <div class="od-left">
+
+                <!-- Product -->
+                <div class="od-section">
+                    <div class="od-section-header">
+                        <i class="fas fa-box"></i> Product Details
+                    </div>
+                    <div class="od-product-box">
+                        <img [src]="order.product?.thumbnail_s3_key || 'assets/placeholder.png'"
+                            alt="{{ order.product?.name }}" class="od-product-img"
+                            onerror="this.src='assets/placeholder.png'">
+                        <div class="od-product-info">
+                            <h3>{{ order.product?.name }}</h3>
+                            <p><strong>Quantity:</strong> {{ order.product?.quantity }}</p>
+                            <p><strong>Unit Price:</strong> ₹{{ order.price?.toFixed(2) || '0.00' }}</p>
+                            <p><strong>Subtotal:</strong> ₹{{ order.subtotal?.toFixed(2) || '0.00' }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Address -->
+                <div class="od-section">
+                    <div class="od-section-header">
+                        <i class="fas fa-map-pin"></i> Delivery Address
+                    </div>
+                    <div class="od-box">
+                        <p>{{ order.address?.city || 'N/A' }}, {{ order.address?.state || 'N/A' }}</p>
+                        <p>Pincode: {{ order.address?.pincode || 'N/A' }}</p>
+                        <p *ngIf="order.address?.mobile">Mobile: {{ order.address.mobile }}</p>
+                    </div>
+                </div>
+
+                <!-- Shipment (static info) -->
+                <div class="od-section" *ngIf="order.shipment">
+                    <div class="od-section-header">
+                        <i class="fas fa-shipping-fast"></i> Shipment Info
+                    </div>
+                    <div class="od-box">
+                        <p><strong>Courier:</strong> {{ order.shipment.courier_company || 'N/A' }}</p>
+                        <p><strong>AWB:</strong> {{ order.shipment.awb_code || 'N/A' }}</p>
+                        <p><strong>Status:</strong> {{ order.shipment.status || 'N/A' }}</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN -->
+            <div class="od-right">
+
+                <!-- Order Summary -->
+                <div class="od-section">
+                    <div class="od-section-header">
+                        <i class="fas fa-receipt"></i> Order Summary
+                    </div>
+                    <div class="od-summary-box">
+                        <div class="od-summary-row">
+                            <span>Order Number</span>
+                            <span class="od-summary-value">{{ order.order_number }}</span>
+                        </div>
+                        <div class="od-summary-row">
+                            <span>Date</span>
+                            <span class="od-summary-value">{{ order.created_at | date:'medium' }}</span>
+                        </div>
+                        <div class="od-summary-row">
+                            <span>Payment Method</span>
+                            <span class="od-summary-value">{{ order.payment_method || '—' }}</span>
+                        </div>
+                        <div class="od-summary-row">
+                            <span>Payment Status</span>
+                            <span class="od-summary-value" [class.paid]="order.payment_status"
+                                [class.pending]="!order.payment_status">
+                                {{ getPaymentStatusClass(order.payment_status) }}
+                            </span>
+                        </div>
+                        <div class="od-summary-divider"></div>
+                        <div class="od-summary-row">
+                            <span>Subtotal</span>
+                            <span class="od-summary-value">₹{{ order.subtotal?.toFixed(2) || '0.00' }}</span>
+                        </div>
+                        <div class="od-summary-row" *ngIf="order.discount_amount > 0">
+                            <span>Discount</span>
+                            <span class="od-summary-value discount">-₹{{ order.discount_amount?.toFixed(2) || '0.00'
+                                }}</span>
+                        </div>
+                        <div class="od-summary-row">
+                            <span>Shipping</span>
+                            <span class="od-summary-value">₹{{ order.shipping_charge?.toFixed(2) || '0.00' }}</span>
+                        </div>
+                        <div class="od-summary-row">
+                            <span>Tax</span>
+                            <span class="od-summary-value">₹{{ order.tax_amount?.toFixed(2) || '0.00' }}</span>
+                        </div>
+                        <div class="od-summary-divider"></div>
+                        <div class="od-summary-row total">
+                            <span>Total Amount</span>
+                            <span class="od-summary-value total">₹{{ order.total_amount?.toFixed(2) || '0.00' }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="od-section">
+                    <div class="od-section-header">
+                        <i class="fas fa-bolt"></i> Actions
+                    </div>
+                    <div class="od-actions">
+                        <button class="od-action-btn cancel" *ngIf="order.can_cancel" (click)="cancelOrder()">
+                            <i class="fas fa-times"></i> Cancel Order
+                        </button>
+                        <button class="od-action-btn primary" (click)="trackOrder()">
+                            <i class="fas fa-truck"></i> {{ showTracking ? 'Close Tracking' : 'Track' }}
+                        </button>
+                        <!-- <button class="od-action-btn success" *ngIf="order.status === 'DELIVERED'" (click)="reorder()">
+                            <i class="fas fa-redo"></i> Reorder
+                        </button> -->
+                        <!-- Return button – new -->
+                        <button class="od-action-btn warning" (click)="openReturnModal()">
+                            <i class="fas fa-undo-alt"></i> Return
+                        </button>
+                        <!-- <button class="od-action-btn secondary" (click)="downloadInvoice()">
+                            <i class="fas fa-file-pdf"></i> Invoice
+                        </button> -->
+                        <!-- <button class="od-action-btn warning" *ngIf="order.status === 'DELIVERED'" (click)="rateProduct()">
+                            <i class="fas fa-star"></i> Rate
+                        </button> -->
+                    </div>
+                </div>
+
+                <!-- Notes -->
+                <div class="od-section" *ngIf="order.notes">
+                    <div class="od-section-header">
+                        <i class="fas fa-sticky-note"></i> Notes
+                    </div>
+                    <div class="od-box">
+                        {{ order.notes }}
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ===== TRACKING PANEL – SLIDE-OUT OVERLAY ===== -->
+        <div class="od-tracking-overlay" *ngIf="showTracking">
+            <div class="od-tracking-panel">
+                <div class="od-tracking-header">
+                    <h3><i class="fas fa-truck"></i> Tracking Details</h3>
+                    <button class="od-tracking-close" (click)="closeTracking()">&times;</button>
+                </div>
+                <div class="od-tracking-body" *ngIf="trackingData">
+                    <!-- Summary -->
+                    <div class="od-tracking-summary">
+                        <div class="od-tracking-summary-item">
+                            <span class="label">Courier</span>
+                            <span class="value">{{ trackingData.shipment_track[0]?.courier_name || 'N/A' }}</span>
+                        </div>
+                        <div class="od-tracking-summary-item">
+                            <span class="label">AWB</span>
+                            <span class="value">{{ trackingData.shipment_track[0]?.awb_code || 'N/A' }}</span>
+                        </div>
+                        <div class="od-tracking-summary-item">
+                            <span class="label">Current Status</span>
+                            <span class="value">{{ trackingData.shipment_track[0]?.current_status || 'N/A' }}</span>
+                        </div>
+                        <div class="od-tracking-summary-item">
+                            <span class="label">Expected Delivery</span>
+                            <span class="value">{{ (trackingData.shipment_track[0]?.edd | date:'mediumDate') || 'N/A'
+                                }}</span>
+                        </div>
+                        <!-- Track URL (if available) -->
+                        <div class="od-tracking-summary-item full-width" *ngIf="trackingData.track_url">
+                            <span class="label">Track Online</span>
+                            <span class="value">
+                                <a [href]="trackingData.track_url" target="_blank" rel="noopener noreferrer">
+                                    View on Shiprocket <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Activities -->
+                    <div class="od-tracking-activities" *ngIf="trackingData.shipment_track_activities?.length">
+                        <h4>Activity Log</h4>
+                        <div class="od-tracking-activity"
+                            *ngFor="let activity of trackingData.shipment_track_activities">
+                            <div class="od-tracking-activity-date">{{ activity.date | date:'medium' }}</div>
+                            <div class="od-tracking-activity-status">{{ activity.status }}</div>
+                            <div class="od-tracking-activity-desc">{{ activity.activity }}</div>
+                            <div class="od-tracking-activity-location">{{ activity.location }}</div>
+                        </div>
+                    </div>
+                    <div *ngIf="!trackingData.shipment_track_activities?.length" class="od-tracking-empty">
+                        No activity logs available.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ===== END TRACKING PANEL ===== -->
+
+        <!-- ===== RETURN MODAL – SLIDE-UP OVERLAY ===== -->
+        <div class="od-tracking-overlay" *ngIf="showReturnModal">
+            <div class="od-tracking-panel">
+                <div class="od-tracking-header">
+                    <h3><i class="fas fa-undo-alt"></i> Return Order</h3>
+                    <button class="od-tracking-close" (click)="closeReturnModal()">&times;</button>
+                </div>
+                <div class="od-tracking-body">
+                    <div class="od-tracking-summary" style="grid-template-columns:1fr; gap:0.5rem;">
+                        <div class="od-tracking-summary-item">
+                            <span class="label">Order</span>
+                            <span class="value">#{{ order?.order_number }}</span>
+                        </div>
+                        <div class="od-tracking-summary-item">
+                            <span class="label">Product</span>
+                            <span class="value">{{ order?.product?.name }}</span>
+                        </div>
+                        <div class="od-tracking-summary-item">
+                            <span class="label">Available Quantity</span>
+                            <span class="value">{{ order?.product?.quantity }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Return Form -->
+                    <div class="od-return-form" style="margin-top:1.2rem;">
+                        <div class="form-group" style="margin-bottom:1rem;">
+                            <label style="font-weight:600; display:block; margin-bottom:0.3rem; color:#1e293b;">Reason
+                                *</label>
+                            <select [(ngModel)]="returnReason" class="form-control"
+                                style="width:100%; padding:0.6rem; border-radius:8px; border:1px solid #cbd5e1; font-size:0.9rem;">
+                                <option value="DAMAGED">Damaged</option>
+                                <option value="WRONG_ITEM">Wrong Item</option>
+                                <option value="SIZE_ISSUE">Size Issue</option>
+                                <option value="QUALITY_ISSUE">Quality Issue</option>
+                                <option value="OTHER">Other</option>
+                            </select>
+                        </div>
+                        <!-- <div class="form-group" style="margin-bottom:1rem;">
+                            <label style="font-weight:600; display:block; margin-bottom:0.3rem; color:#1e293b;">Quantity *</label>
+                            <input type="number" [(ngModel)]="returnQuantity" min="1" [max]="order?.product?.quantity || 1" 
+                                   style="width:100%; padding:0.6rem; border-radius:8px; border:1px solid #cbd5e1; font-size:0.9rem;">
+                        </div> -->
+                        <div class="form-group" style="margin-bottom:1rem;">
+                            <label style="font-weight:600; display:block; margin-bottom:0.3rem; color:#1e293b;">
+                                Quantity *
+                            </label>
+
+                            <input type="number" [(ngModel)]="returnQuantity" min="1"
+                                [max]="order?.product?.quantity || 1" class="form-control"
+                                [class.is-invalid]="isReturnQuantityInvalid()"
+                                style="width:100%; padding:0.6rem; border-radius:8px; border:1px solid #cbd5e1; font-size:0.9rem;">
+
+                            <!-- Quantity Error -->
+                            <div *ngIf="isReturnQuantityInvalid()" class="text-danger"
+                                style="font-size:0.82rem; margin-top:0.35rem; font-weight:500;">
+                                Return quantity cannot be greater than available quantity
+                                ({{ order?.product?.quantity }}).
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-bottom:1.5rem;">
+                            <label style="font-weight:600; display:block; margin-bottom:0.3rem; color:#1e293b;">Note
+                                (optional)</label>
+                            <textarea [(ngModel)]="returnNote" rows="3"
+                                style="width:100%; padding:0.6rem; border-radius:8px; border:1px solid #cbd5e1; font-size:0.9rem; resize:vertical;"
+                                placeholder="Add any additional details..."></textarea>
+                        </div>
+
+                        <div class="od-actions" style="justify-content:flex-end; gap:0.8rem;">
+
+                            <button type="button" class="od-action-btn secondary" (click)="showReturnPolicies = true">
+                                <i class="fas fa-file-alt me-1"></i>
+                                Return Policies
+                            </button>
+
+                            <button class="od-action-btn secondary" (click)="closeReturnModal()"
+                                [disabled]="isSubmittingReturn">Cancel</button>
+
+                            <button class="od-action-btn warning" (click)="submitReturn()"
+                                [disabled]="isSubmittingReturn">
+                                <i class="fas fa-paper-plane" *ngIf="!isSubmittingReturn"></i>
+                                <span *ngIf="isSubmittingReturn">Submitting...</span>
+                                <span *ngIf="!isSubmittingReturn">Submit Return</span>
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ===== END RETURN MODAL ===== -->
+
+    </div>
+
+</div>
+
+
+<!-- ===== RETURN POLICIES MODAL ===== -->
+<div
+    class="od-tracking-overlay"
+    *ngIf="showReturnPolicies"
+    style="z-index:9999;">
+
+    <div
+        class="od-tracking-panel return-policy-panel"
+        style="max-width:700px;">
+
+        <!-- Header -->
+        <div class="od-tracking-header">
+
+            <h3>
+                <i class="fas fa-file-contract"></i>
+                Return Policies
+            </h3>
+
+            <button
+                class="od-tracking-close"
+                (click)="closeReturnPolicies()">
+                &times;
+            </button>
+
+        </div>
+
+        <!-- Body -->
+        <div class="od-tracking-body">
+
+            <!-- Title -->
+            <div class="return-policy-title mb-3">
+
+                <h5 class="fw-bold mb-1">
+                    Return Product – Terms & Conditions
+                </h5>
+
+                <p class="text-muted mb-0">
+                    Please read the following terms and conditions
+                    carefully before submitting a return request.
+                </p>
+
+            </div>
+
+
+            <!-- Policies -->
+            <div class="return-policy-list">
+
+                <!-- 1 -->
+                <div class="return-policy-item">
+
+                    <div class="return-policy-icon">
+                        <i class="fas fa-rotate-left"></i>
+                    </div>
+
+                    <div>
+                        <h6 class="return-policy-heading">
+                            1. Return Eligibility
+                        </h6>
+
+                        <p class="mb-0">
+                            Products can be returned only if they are
+                            eligible for return and the request is raised
+                            within the specified return period.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <!-- 2 -->
+                <div class="return-policy-item">
+
+                    <div class="return-policy-icon">
+                        <i class="fas fa-box-open"></i>
+                    </div>
+
+                    <div>
+                        <h6 class="return-policy-heading">
+                            2. Product Condition
+                        </h6>
+
+                        <p class="mb-0">
+                            The product must be returned in its original
+                            condition, along with the original packaging,
+                            accessories, tags, manuals, and invoice,
+                            wherever applicable.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <!-- 3 - IMPORTANT -->
+                <div class="return-policy-item return-policy-important">
+
+                    <div class="return-policy-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+
+                    <div>
+
+                        <h6 class="return-policy-heading">
+                            3. Mandatory Unboxing Video
+                            <span class="badge bg-danger ms-1">
+                                Mandatory
+                            </span>
+                        </h6>
+
+                        <p class="mb-0">
+                            A continuous, unedited unboxing video is
+                            mandatory for all return claims. The video
+                            must clearly show the sealed package, shipping
+                            label, complete unboxing process, product,
+                            and any damage, defect, or missing item.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- 4 -->
+                <div class="return-policy-item">
+
+                    <div class="return-policy-icon">
+                        <i class="fas fa-triangle-exclamation"></i>
+                    </div>
+
+                    <div>
+
+                        <h6 class="return-policy-heading">
+                            4. Damaged / Wrong / Defective Product
+                        </h6>
+
+                        <p class="mb-0">
+                            Customers must report damaged, defective,
+                            wrong, or missing products within the
+                            applicable return period and provide the
+                            required unboxing video as proof.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- 5 -->
+                <div class="return-policy-item">
+
+                    <div class="return-policy-icon">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+
+                    <div>
+
+                        <h6 class="return-policy-heading">
+                            5. Verification
+                        </h6>
+
+                        <p class="mb-0">
+                            All return requests are subject to
+                            verification. QNX MART may reject a return
+                            if the product does not meet the return
+                            conditions or sufficient proof is not provided.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- 6 -->
+                <div class="return-policy-item">
+
+                    <div class="return-policy-icon">
+                        <i class="fas fa-ban"></i>
+                    </div>
+
+                    <div>
+
+                        <h6 class="return-policy-heading">
+                            6. Non-Returnable Products
+                        </h6>
+
+                        <p class="mb-0">
+                            Products marked as
+                            <strong>Non-Returnable</strong> or products
+                            damaged, used, modified, or misused by the
+                            customer may not be eligible for return.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- 7 -->
+                <div class="return-policy-item">
+
+                    <div class="return-policy-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+
+                    <div>
+
+                        <h6 class="return-policy-heading">
+                            7. Return Pickup
+                        </h6>
+
+                        <p class="mb-0">
+                            Once the return is approved, the product must
+                            be properly packed and made available for
+                            pickup as instructed.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- 8 -->
+                <div class="return-policy-item">
+
+                    <div class="return-policy-icon">
+                        <i class="fas fa-money-bill-transfer"></i>
+                    </div>
+
+                    <div>
+
+                        <h6 class="return-policy-heading">
+                            8. Refund / Replacement
+                        </h6>
+
+                        <p class="mb-0">
+                            After successful verification of the returned
+                            product, an eligible refund or replacement
+                            will be processed according to the applicable
+                            product policy.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Important Notice -->
+            <div class="return-policy-important-note mt-4">
+
+                <div class="return-policy-important-icon">
+                    <i class="fas fa-circle-exclamation"></i>
+                </div>
+
+                <div>
+                    <strong>Important:</strong>
+
+                    <span>
+                        Customers are advised to keep the unboxing video
+                        safely until the return period has expired and
+                        the return request, if any, has been completely
+                        resolved.
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Footer -->
+        <div
+            class="od-tracking-footer"
+            style="display:flex; justify-content:flex-end; padding:1rem;">
+
+            <button
+                class="od-action-btn secondary"
+                (click)="closeReturnPolicies()">
+
+                <i class="fas fa-times me-1"></i>
+                Close
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>

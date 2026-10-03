@@ -1,0 +1,32 @@
+<div id="qnx-info-page">
+
+  <!-- Animated background particles -->
+  <div class="bg-particles">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+  </div>
+
+  <!-- NAVBAR -->
+  <app-navbar 
+    (scrollTo)="onScrollTo($event)"
+    (termsClick)="onTermsRequest($event)">
+  </app-navbar>
+
+  <!-- MAIN CONTENT (hero → cta) -->
+  <app-main></app-main>
+
+  <!-- FOOTER -->
+  <app-footer></app-footer>
+
+  <!-- TERMS MODAL -->
+  <app-terms-modal *ngIf="showTerms" [role]="selectedRole" (close)="onCloseTerms()"></app-terms-modal>
+
+</div>

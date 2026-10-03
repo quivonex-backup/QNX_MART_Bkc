@@ -1,0 +1,218 @@
+<div class="product-catalog-wrapper">
+  <!-- Header Banner -->
+  <div class="hero-banner">
+    <div class="container">
+      <h1 class="hero-title">Premium Products</h1>
+      <p class="hero-subtitle">Discover our curated collection of high-quality materials</p>
+    </div>
+  </div>
+
+  <div class="container-fluid mt-4">
+    <!-- 🔍 Search & Filter Section -->
+    <div class="filter-section mb-4">
+      <div class="row align-items-center g-3">
+        <div class="col-lg-4 col-md-6">
+          <div class="search-wrapper">
+            <i class="bi bi-search"></i>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Search products by name or brand..."
+              [(ngModel)]="searchText"
+              (input)="onSearchChange()">
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-4">
+          <div class="sort-wrapper">
+            <i class="bi bi-arrow-down-up"></i>
+            <select
+              class="form-select"
+              [(ngModel)]="sortOrder"
+              (change)="onSortChange(sortOrder)">
+              <option value="default">Sort by: Default</option>
+              <option value="low-high">Price: Low → High</option>
+              <option value="high-low">Price: High → Low</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-lg-5 col-md-2">
+          <div class="filter-actions">
+            <span class="results-badge" *ngIf="!loading">
+              <i class="bi bi-box-seam"></i>
+              {{ filteredList.length }} Products
+            </span>
+            <button *ngIf="searchText || selectedCategory !== 'All' || sortOrder !== 'default'" 
+                    class="btn-clear" (click)="clearFilters()">
+              <i class="bi bi-x-circle"></i>
+              Clear
+            </button>
+            <button class="btn-refresh" (click)="refreshProducts()">
+              <i class="bi bi-arrow-clockwise me-1"></i>
+              Refresh
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content Row -->
+    <div class="row">
+      <!-- Categories Sidebar -->
+      <div class="col-lg-2 col-md-3 mb-4">
+        <div class="categories-sidebar">
+          <div class="sidebar-header">
+            <i class="bi bi-grid"></i>
+            <h5>Categories</h5>
+          </div>
+          
+          <ul class="categories-list">
+            <li class="category-item" 
+                [class.active]="selectedCategory === 'All'"
+                (click)="filterByCategory('All')">
+              <div class="category-info">
+                <i class="bi bi-box"></i>
+                <span>All Products</span>
+              </div>
+              <span class="category-count">{{ materials.length }}</span>
+            </li>
+            
+            <li class="category-item" 
+                *ngFor="let cat of categories"
+                [class.active]="selectedCategory === cat"
+                (click)="filterByCategory(cat)">
+              <div class="category-info">
+                <i class="bi bi-folder2"></i>
+                <span>{{ cat }}</span>
+              </div>
+              <span class="category-count">{{ getCategoryCount(cat) }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Products Grid Column -->
+      <div class="col-lg-10 col-md-9">
+        <!-- 🎯 Loading State -->
+        <div *ngIf="loading" class="loading-wrapper">
+          <div class="row g-4">
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" 
+                 *ngFor="let item of [1,2,3,4,5,6,7,8]">
+              <div class="skeleton-card">
+                <div class="skeleton skeleton-img"></div>
+                <div class="skeleton-content">
+                  <div class="skeleton skeleton-title"></div>
+                  <div class="skeleton skeleton-brand"></div>
+                  <div class="skeleton skeleton-price"></div>
+                  <div class="skeleton skeleton-buttons">
+                    <div class="skeleton skeleton-btn"></div>
+                    <div class="skeleton skeleton-btn"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 🛍️ Product Grid -->
+        <div class="product-grid" *ngIf="!loading">
+          <!-- No Results -->
+          <div *ngIf="filteredList.length === 0" class="no-results">
+            <div class="no-results-content">
+              <i class="bi bi-search"></i>
+              <h3>No Products Found</h3>
+              <p>We couldn't find any products matching your criteria.</p>
+              <button class="btn-reset" (click)="clearFilters()">
+                <i class="bi bi-arrow-clockwise me-2"></i>
+                Reset Filters
+              </button>
+            </div>
+          </div>
+
+          <!-- Products -->
+          <div class="row g-4" *ngIf="filteredList.length > 0">
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" 
+                 *ngFor="let item of filteredList">
+              <div class="product-card" [class.out-of-stock]="!item.is_active">
+                <!-- Badges -->
+                <div class="product-badges">
+                  <span class="badge-stock" [class.in-stock]="item.is_active">
+                    <i class="bi" [ngClass]="item.is_active ? 'bi-check-circle' : 'bi-x-circle'"></i>
+                    {{ item.is_active ? 'In Stock' : 'Out of Stock' }}
+                  </span>
+                  <!-- <span class="badge-category">
+                    <i class="bi bi-tag"></i>
+                    {{ item.category_name }}
+                  </span> -->
+                </div>
+
+                <!-- 🖼 Image Section -->
+                <div class="product-image">
+                  <img
+                    *ngIf="item.thumbnail_image"
+                    [src]="item.thumbnail_image"
+                    class="product-img"
+                    [alt]="item.name"
+                    (error)="hideImage($event)">
+                </div>
+
+                <!-- 📦 Product Info -->
+                <div class="product-info">
+                  <!-- Brand -->
+                  <div class="product-brand">
+                    <i class="bi bi-tag"></i>
+                    {{ item.brand }}
+                  </div>
+                  
+
+                  <!-- Product Name -->
+                  <h3 class="product-title">
+                    {{ item.name | slice:0:35 }}{{ item.name.length > 35 ? '...' : '' }}
+                  </h3>
+
+                  <!-- Description (Optional) -->
+                  <p class="product-description" *ngIf="item.material_description">
+                    {{ item.material_description | slice:0:50 }}{{ item.material_description.length > 50 ? '...' : '' }}
+                  </p>
+
+                  <!-- Specifications -->
+                  <div class="product-specs" *ngIf="item.specification && item.specification.length > 0">
+                    <span class="spec-item">
+                      <i class="bi bi-rulers"></i>
+                      {{ item.specification[0] }}
+                    </span>
+                  </div>
+
+                  <!-- Size Info -->
+                  <div class="product-size" *ngIf="item.size && item.size.length > 0">
+                    <i class="bi bi-box"></i>
+                    Size: {{ item.size[0] }}
+                  </div>
+
+                  <!-- Buttons -->
+                  <div class="product-footer d-flex justify-content-between gap-2">
+                    <button
+                      type="button"
+                      class="btn-add-to-cart"
+                      (click)="handleAddToCartClick(item)">
+                      <i class="bi bi-cart-plus me-2"></i>
+                      Add to Cart
+                    </button>
+
+                    <button
+                      class="btn-view-details"
+                      (click)="viewDetails(item)">
+                      <i class="bi bi-eye me-1"></i>
+                      View
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

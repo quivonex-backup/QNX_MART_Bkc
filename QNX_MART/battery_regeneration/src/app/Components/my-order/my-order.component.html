@@ -1,0 +1,113 @@
+<div class="mo-page">
+
+    <!-- HEADER -->
+    <div class="mo-header">
+        <div class="mo-header-inner">
+            <button class="mo-back-btn" (click)="goBack()" title="Go back">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <div class="mo-title-wrap">
+                <i class="fas fa-box-open"></i>
+                <div>
+                    <h1 class="mo-title">My Orders</h1>
+                    <p class="mo-subtitle">View and manage all your orders</p>
+                </div>
+            </div>
+            <div class="mo-count-badge">
+                <i class="fas fa-shopping-bag me-2"></i> Total: <span>{{ orders.length }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="mo-filters-wrap">
+        <button class="mo-filter-pill all" [class.active]="selectedFilter === 'all'" (click)="filterOrders('all')">
+            All <span>{{ getCount('all') }}</span>
+        </button>
+        <button class="mo-filter-pill pending" [class.active]="selectedFilter === 'pending'" (click)="filterOrders('pending')">
+            Pending <span>{{ getCount('pending') }}</span>
+        </button>
+        <button class="mo-filter-pill confirmed" [class.active]="selectedFilter === 'confirmed'" (click)="filterOrders('confirmed')">
+            Confirmed <span>{{ getCount('confirmed') }}</span>
+        </button>
+        <button class="mo-filter-pill shipped" [class.active]="selectedFilter === 'shipped'" (click)="filterOrders('shipped')">
+            Shipped <span>{{ getCount('shipped') }}</span>
+        </button>
+        <button class="mo-filter-pill delivered" [class.active]="selectedFilter === 'delivered'" (click)="filterOrders('delivered')">
+            Delivered <span>{{ getCount('delivered') }}</span>
+        </button>
+        <button class="mo-filter-pill cancelled" [class.active]="selectedFilter === 'cancelled'" (click)="filterOrders('cancelled')">
+            Cancelled <span>{{ getCount('cancelled') }}</span>
+        </button>
+    </div>
+
+    <!-- MAIN CARD -->
+    <div class="mo-card">
+
+        <div class="mo-card-header">
+            <div class="mo-card-title">
+                <i class="fas fa-list-ul"></i> Order List
+                <span class="count">({{ filteredOrders.length }} shown)</span>
+            </div>
+            <div class="mo-search-wrap">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" placeholder="Search by order #, product, company..." [(ngModel)]="searchQuery" (input)="onSearch()" />
+                <button class="mo-search-clear" *ngIf="searchQuery.length > 0" (click)="clearSearch()">
+                    <i class="fas fa-times-circle"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- LOADING -->
+        <div *ngIf="loading" class="mo-loading">
+            <div class="mo-spinner"></div>
+            <p>Loading your orders...</p>
+        </div>
+
+        <!-- EMPTY -->
+        <div *ngIf="!loading && filteredOrders.length === 0" class="mo-empty">
+            <i class="fas fa-inbox"></i>
+            <h4>No Orders Found</h4>
+            <p>{{ orders.length === 0 ? 'You have not placed any order yet.' : 'No orders match your current filter or search.' }}</p>
+        </div>
+
+        <!-- TABLE -->
+        <div *ngIf="!loading && filteredOrders.length > 0" class="mo-table-wrap">
+            <table class="mo-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Order ID</th>
+                        <th>Date</th>
+                        <th>Product</th>
+                        <th>Qty</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let order of filteredOrders; let i = index" (click)="viewOrder(order)">
+                        <td>{{ i + 1 }}</td>
+                        <td class="mo-order-id">{{ order.order_number }}</td>
+                        <td>{{ order.created_at | date:'shortDate' }}</td>
+                        <td>
+                            <div class="mo-product-cell">
+                                <img [src]="order.product?.thumbnail_s3_key || 'assets/placeholder.png'" alt="{{ order.product?.name }}" class="mo-thumb" onerror="this.src='assets/placeholder.png'">
+                                <span>{{ order.product?.name || 'N/A' }}</span>
+                            </div>
+                        </td>
+                        <td>{{ order.product?.quantity || 0 }}</td>
+                        <td class="mo-amount">₹{{ order.total_amount?.toFixed(2) || '0.00' }}</td>
+                        <td>
+                            <span class="mo-status" [ngClass]="getStatusBadgeClass(order.status)">
+                                {{ order.status }}
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
