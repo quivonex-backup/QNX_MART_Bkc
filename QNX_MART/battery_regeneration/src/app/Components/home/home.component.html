@@ -335,7 +335,7 @@
 
                         <!-- FULL IMAGE -->
                         <img [src]="product.thumbnail_s3_key" [alt]="product.name" class="product-full-bg"
-                            (click)="goToCategory(product)" onerror="this.src='assets/placeholder.png'" />
+                           (click)="viewDetails(product)" onerror="this.src='assets/placeholder.png'" />
 
                         <!-- VERY LIGHT OVERLAY -->
                         <div class="product-bg-overlay"></div>
@@ -366,10 +366,8 @@
 
                             </div>
 
-                            <h6 class="product-glass-name" (click)="goToCategory(product)">
-
-                                {{ product.name }}
-
+                            <h6 class="product-glass-name" (click)="viewDetails(product)">
+                              {{ product.name }}
                             </h6>
 
                             <div class="product-stock">
