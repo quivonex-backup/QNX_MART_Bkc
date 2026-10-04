@@ -8,6 +8,7 @@ import { DistrictMasterService } from '../../../../services/State-Master/distric
 import { CommonValidators } from '../../../common-validators';
 import * as L from 'leaflet';
 import { AlertService } from '../../../../services/alert.service';
+import { SellerRegistrationService } from '../../../../services/seller-registration.service';
 
 declare var Razorpay: any;
 
@@ -69,7 +70,8 @@ export class CompanyCreateComponent implements OnInit, AfterViewInit, OnDestroy 
     private districtService: DistrictMasterService,
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private sellerService: SellerRegistrationService,
   ) {
     this.companyForm = this.fb.group({
       // Basic Info
@@ -617,6 +619,11 @@ export class CompanyCreateComponent implements OnInit, AfterViewInit, OnDestroy 
       next: (res: any) => {
         if (res.data) {
           this.states = res.data;
+
+          // states load झाल्यावर seller information आणा
+          if (!this.isEditMode) {
+            this.loadSellerDetailsForCompany();
+          }
         }
       },
       error: (err) => {
@@ -1249,5 +1256,75 @@ export class CompanyCreateComponent implements OnInit, AfterViewInit, OnDestroy 
     this.companyForm.patchValue({ accept_terms_conditions: true });
     this.companyForm.get('accept_terms_conditions')?.markAsTouched();
     this.closeTermsModal();
+  }
+
+
+  private loadSellerDetailsForCompany() {
+    this.sellerService.getSellerList().subscribe({
+      next: (res: any) => {
+
+        if (res.status === 'success' && res.data?.length > 0) {
+
+          const sorted = [...res.data].sort(
+            (a: any, b: any) =>
+              new Date(b.created_at).getTime() -
+              new Date(a.created_at).getTime()
+          );
+
+          const seller = sorted[0];
+
+          if (!seller) return;
+
+          this.companyForm.patchValue({
+            owner_name: seller.contact_person_name || '',
+            email: seller.email || '',
+            phone_number: seller.mobile || '',
+            whatsapp_no: seller.mobile || '',
+            address: seller.address || '',
+            pincode: seller.pincode || '',
+            company_pan_no: seller.pan_number || ''
+          });
+
+          // State seller मधून auto select
+          if (seller.state) {
+            this.patchSellerState(seller.state);
+          }
+        }
+      },
+
+      error: (err: any) => {
+        console.error('Seller details load failed:', err);
+      }
+    });
+  }
+
+  private patchSellerState(sellerState: string) {
+
+    if (!sellerState || !this.states.length) return;
+
+    const stateValue = sellerState.trim().toLowerCase();
+
+    const matchedState = this.states.find((state: any) => {
+
+      const stateName = String(state.state_name || '').toLowerCase();
+      const stateCode = String(
+        state.state_code ||
+        state.code ||
+        state.short_code ||
+        ''
+      ).toLowerCase();
+
+      return (
+        stateCode === stateValue ||
+        stateName === stateValue ||
+        String(state.id) === String(sellerState)
+      );
+    });
+
+    if (matchedState) {
+      this.companyForm.patchValue({
+        state: matchedState.id
+      });
+    }
   }
 }
