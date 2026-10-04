@@ -214,7 +214,8 @@
                             <div class="sr-field">
                                 <label class="sr-label">PAN Number <span class="sr-req">*</span></label>
                                 <input type="text" class="sr-input" [(ngModel)]="sellerData.pan" name="pan"
-                                    placeholder="10-character PAN" maxlength="10" required />
+                                    placeholder="10-character PAN" maxlength="10"
+                                    (input)="sellerData.pan = sellerData.pan.toUpperCase()" required />
                                 <span class="sr-hint">Permanent Account Number</span>
                             </div>
 
