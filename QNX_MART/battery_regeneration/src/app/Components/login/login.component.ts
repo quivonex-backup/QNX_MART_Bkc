@@ -123,12 +123,41 @@ export class LoginComponent {
   }
 
   // Check if user has seller record and store seller_id
+  // private checkSellerAndNavigate() {
+  //   this.sellerRegistrationService.getSellerList().subscribe({
+  //     next: (res: any) => {
+  //       // Check if response has status and data structure
+  //       if (res.status === 'success' && res.data?.length > 0) {
+  //         // Sort by created_at descending to get latest seller
+  //         const sorted = [...res.data].sort(
+  //           (a: any, b: any) =>
+  //             new Date(b.created_at).getTime() -
+  //             new Date(a.created_at).getTime()
+  //         );
+
+  //         const seller = sorted[0];
+
+  //         if (seller && seller.id) {
+  //           sessionStorage.setItem('seller_id', seller.id.toString());
+  //         }
+  //       }
+
+  //       // Continue with navigation regardless
+  //       this.navigateAfterLogin();
+  //     },
+  //     error: (err) => {
+  //       // Even if seller check fails, continue with navigation
+  //       console.error('Failed to fetch seller info:', err);
+  //       this.navigateAfterLogin();
+  //     }
+  //   });
+  // }
+
   private checkSellerAndNavigate() {
     this.sellerRegistrationService.getSellerList().subscribe({
       next: (res: any) => {
-        // Check if response has status and data structure
         if (res.status === 'success' && res.data?.length > 0) {
-          // Sort by created_at descending to get latest seller
+
           const sorted = [...res.data].sort(
             (a: any, b: any) =>
               new Date(b.created_at).getTime() -
@@ -139,16 +168,22 @@ export class LoginComponent {
 
           if (seller && seller.id) {
             sessionStorage.setItem('seller_id', seller.id.toString());
+
+            // Seller already registered
+            this.router.navigate(['/home']);
+            return;
           }
         }
 
-        // Continue with navigation regardless
-        this.navigateAfterLogin();
+        // Seller registration not completed
+        this.router.navigate(['/seller-registration']);
       },
+
       error: (err) => {
-        // Even if seller check fails, continue with navigation
         console.error('Failed to fetch seller info:', err);
-        this.navigateAfterLogin();
+
+        // Seller info not found / check failed
+        this.router.navigate(['/seller-registration']);
       }
     });
   }
@@ -295,6 +330,14 @@ export class LoginComponent {
       next: (res: any) => {
         this.isSubmitting = false;
         this.showLoader = false;
+
+        // Save registration details for Seller Registration auto-fill
+        sessionStorage.setItem('registered_name', d.name || '');
+        sessionStorage.setItem('registered_email', d.email || '');
+        sessionStorage.setItem('registered_mobile', d.phone_number || '');
+        sessionStorage.setItem('registered_address', d.address || '');
+
+
         this.showPopupMessage('Registration Successful', res?.message || 'Your account has been created. Please sign in.', 'success', () => {
           this.view = 'login';
         });

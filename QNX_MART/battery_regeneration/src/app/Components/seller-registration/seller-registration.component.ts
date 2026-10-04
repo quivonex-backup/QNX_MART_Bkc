@@ -104,9 +104,22 @@ export class SellerRegistrationComponent implements OnInit {
             bankName: s.bank_name || '',
             branchName: s.branch_name || '',
           };
+        } else {
+
+          // New seller → auto-fill registration details
+          this.isEditMode = false;
+          this.fillRegistrationDetails();
         }
       },
-      error: (err) => console.error(err)
+      // error: (err) => console.error(err)
+      error: (err) => {
+        console.error(err);
+
+        // If seller record doesn't exist / API gives error,
+        // still fill registration details
+        this.isEditMode = false;
+        this.fillRegistrationDetails();
+      }
     });
   }
 
@@ -163,15 +176,15 @@ export class SellerRegistrationComponent implements OnInit {
             this.isEditMode = true;
             this.alertService.unialert('✅ ' + res.message);
 
-              const referralCode = sessionStorage.getItem('referral_code');
+            const referralCode = sessionStorage.getItem('referral_code');
 
-  if (referralCode) {
-    this.router.navigate(['/company_create'], {
-      queryParams: { ref: referralCode }
-    });
-  } else {
-    this.router.navigate(['/company_create']);
-  }
+            if (referralCode) {
+              this.router.navigate(['/company_create'], {
+                queryParams: { ref: referralCode }
+              });
+            } else {
+              this.router.navigate(['/company_create']);
+            }
 
           }
         },
@@ -191,15 +204,38 @@ export class SellerRegistrationComponent implements OnInit {
     this.showTermsModal = true;
     document.body.style.overflow = 'hidden';
   }
-  
+
   closeTermsModal() {
     this.showTermsModal = false;
     document.body.style.overflow = '';
   }
-  
+
   agreeAndCloseTerms() {
     this.agreedToTerms = true;
     this.closeTermsModal();
+  }
+
+  private fillRegistrationDetails() {
+    const name = sessionStorage.getItem('registered_name');
+    const email = sessionStorage.getItem('registered_email');
+    const mobile = sessionStorage.getItem('registered_mobile');
+    const address = sessionStorage.getItem('registered_address');
+
+    if (name) {
+      this.sellerData.contactPersonName = name;
+    }
+
+    if (email) {
+      this.sellerData.email = email;
+    }
+
+    if (mobile) {
+      this.sellerData.mobile = mobile;
+    }
+
+    if (address) {
+      this.sellerData.address = address;
+    }
   }
 
 }
