@@ -141,7 +141,7 @@ export class LoginComponent {
             sessionStorage.setItem('seller_id', seller.id.toString());
           }
         }
-        
+
         // Continue with navigation regardless
         this.navigateAfterLogin();
       },
@@ -247,9 +247,9 @@ export class LoginComponent {
   }
 
   // ===== SIGNUP STEP 3 — Register =====
-  isStrongPassword(p: string): boolean {
-    return /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(p);
-  }
+  // isStrongPassword(p: string): boolean {
+  //   return /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(p);
+  // }
 
   signup() {
     const d = this.signupData;
@@ -261,8 +261,30 @@ export class LoginComponent {
       this.showPopupMessage('Address Required', 'Please enter your address', 'warning');
       return;
     }
-    if (!this.isStrongPassword(d.password)) {
-      this.showPopupMessage('Weak Password', 'Password must be at least 8 characters with 1 uppercase, 1 number & 1 special character', 'warning');
+
+    // Phone number must be exactly 10 digits
+    const phone = String(d.phone_number).trim();
+
+    if (!/^[0-9]{10}$/.test(phone)) {
+      this.showPopupMessage(
+        'Invalid Phone Number',
+        'Phone number must be exactly 10 digits',
+        'warning'
+      );
+      return;
+    }
+    // if (!this.isStrongPassword(d.password)) {
+    //   this.showPopupMessage('Weak Password', 'Password must be at least 8 characters with 1 uppercase, 1 number & 1 special character', 'warning');
+    //   return;
+    // }
+
+    // Password must be at least 8 characters
+    if (d.password.length < 8) {
+      this.showPopupMessage(
+        'Invalid Password',
+        'Password must be at least 8 characters',
+        'warning'
+      );
       return;
     }
     if (this.isSubmitting) return;
@@ -347,8 +369,17 @@ export class LoginComponent {
       this.showPopupMessage('Password Mismatch', 'Passwords do not match', 'warning');
       return;
     }
-    if (!this.isStrongPassword(this.newPassword)) {
-      this.showPopupMessage('Weak Password', 'Password must be at least 8 characters with 1 uppercase, 1 number & 1 special character', 'warning');
+    // if (!this.isStrongPassword(this.newPassword)) {
+    //   this.showPopupMessage('Weak Password', 'Password must be at least 8 characters with 1 uppercase, 1 number & 1 special character', 'warning');
+    //   return;
+    // }
+
+    if (this.newPassword.length < 8) {
+      this.showPopupMessage(
+        'Invalid Password',
+        'Password must be at least 8 characters',
+        'warning'
+      );
       return;
     }
     if (this.isSubmitting) return;
@@ -373,6 +404,6 @@ export class LoginComponent {
 
   @ViewChild('loginPassword') loginPassword!: ElementRef<HTMLInputElement>;
   focusPassword() {
-  this.loginPassword.nativeElement.focus();
-}
+    this.loginPassword.nativeElement.focus();
+  }
 }
