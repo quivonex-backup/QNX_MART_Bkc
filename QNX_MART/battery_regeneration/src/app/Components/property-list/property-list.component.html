@@ -1,314 +1,690 @@
 <div class="pl-page">
 
-  <!-- Header -->
+  <!-- ===================================================== -->
+  <!-- HEADER -->
+  <!-- ===================================================== -->
+
   <div class="pl-header">
+
     <div class="pl-header-text">
-      <h2><i class="bi bi-building me-2"></i>Properties</h2>
-      <p>{{ totalItems }} property{{ totalItems !== 1 ? 's' : '' }} found</p>
+
+      <h2>
+        <i class="bi bi-building me-2"></i>
+        Properties
+      </h2>
+
+      <p>
+        {{ totalItems }}
+        property{{ totalItems !== 1 ? 's' : '' }}
+        found
+      </p>
+
     </div>
-    <button class="pl-filter-toggle" (click)="filterOpen = !filterOpen">
-      <i class="bi bi-funnel-fill me-1"></i>Filters
-      <span class="pl-filter-badge" *ngIf="activeFilterCount > 0">{{ activeFilterCount }}</span>
+
+    <button
+      class="pl-filter-toggle"
+      (click)="filterOpen = !filterOpen">
+
+      <i class="bi bi-funnel-fill me-1"></i>
+
+      Filters
+
+      <span
+        class="pl-filter-badge"
+        *ngIf="activeFilterCount > 0">
+
+        {{ activeFilterCount }}
+
+      </span>
+
     </button>
+
   </div>
 
+  <!-- ===================================================== -->
+  <!-- BODY -->
+  <!-- ===================================================== -->
+
   <div class="pl-body">
+
     <div class="pl-layout">
 
-      <!-- ===== SIDEBAR ===== -->
-      <div class="pl-backdrop" *ngIf="filterOpen" (click)="filterOpen = false"></div>
+      <!-- ================================================= -->
+      <!-- SIDEBAR BACKDROP -->
+      <!-- ================================================= -->
 
-      <aside class="pl-sidebar" [class.pl-sidebar-open]="filterOpen">
+      <div
+        class="pl-backdrop"
+        *ngIf="filterOpen"
+        (click)="filterOpen = false">
+      </div>
+
+      <!-- ================================================= -->
+      <!-- SIDEBAR -->
+      <!-- ================================================= -->
+
+      <aside
+        class="pl-sidebar"
+        [class.pl-sidebar-open]="filterOpen">
+
         <div class="pl-sidebar-header">
-          <span><i class="bi bi-funnel-fill me-2"></i>Filters
-            <span class="pl-filter-badge ms-1" *ngIf="activeFilterCount > 0">{{ activeFilterCount }}</span>
+
+          <span>
+
+            <i class="bi bi-funnel-fill me-2"></i>
+
+            Filters
+
+            <span
+              class="pl-filter-badge ms-1"
+              *ngIf="activeFilterCount > 0">
+
+              {{ activeFilterCount }}
+
+            </span>
+
           </span>
-          <button class="pl-sidebar-close" (click)="filterOpen = false" title="Close">
+
+          <button
+            class="pl-sidebar-close"
+            (click)="filterOpen = false"
+            title="Close">
+
             <i class="bi bi-x-lg"></i>
+
           </button>
+
         </div>
 
         <div class="pl-sidebar-scroll">
-          <div class="pl-sidebar-clear" *ngIf="activeFilterCount > 0">
-            <button (click)="clearAllFilters()">
-              <i class="bi bi-x-circle me-1"></i>Clear all filters ({{ activeFilterCount }})
+
+          <!-- CLEAR FILTER -->
+
+          <div
+            class="pl-sidebar-clear"
+            *ngIf="activeFilterCount > 0">
+
+            <button
+              (click)="clearAllFilters()">
+
+              <i class="bi bi-x-circle me-1"></i>
+
+              Clear all filters
+              ({{ activeFilterCount }})
+
             </button>
+
           </div>
 
-          <!-- Price Range -->
+          <!-- PRICE RANGE -->
+
           <div class="pl-filter-group">
+
             <div class="pl-filter-group-title">
-              <i class="bi bi-currency-rupee me-2"></i>Price Range
+
+              <i class="bi bi-currency-rupee me-2"></i>
+
+              Price Range
+
             </div>
+
             <div class="pl-price-inputs">
-              <input type="number" class="pl-price-input" [(ngModel)]="priceMin" placeholder="Min ₹" min="0"
+
+              <input
+                type="number"
+                class="pl-price-input"
+                [(ngModel)]="priceMin"
+                placeholder="Min ₹"
+                min="0"
                 (change)="applyFilters()" />
-              <span class="pl-price-sep">—</span>
-              <input type="number" class="pl-price-input" [(ngModel)]="priceMax" placeholder="Max ₹" min="0"
+
+              <span class="pl-price-sep">
+                —
+              </span>
+
+              <input
+                type="number"
+                class="pl-price-input"
+                [(ngModel)]="priceMax"
+                placeholder="Max ₹"
+                min="0"
                 (change)="applyFilters()" />
+
             </div>
+
           </div>
 
-          <!-- State -->
+          <!-- STATE -->
+
           <div class="pl-filter-group">
+
             <div class="pl-filter-group-title">
-              <i class="bi bi-geo-alt me-2"></i>State
+
+              <i class="bi bi-geo-alt me-2"></i>
+
+              State
+
             </div>
-            <select class="form-select pl-filter-select" [(ngModel)]="selectedState"
+
+            <select
+              class="form-select pl-filter-select"
+              [(ngModel)]="selectedState"
               (change)="onStateChange(selectedState)">
-              <option [value]="null">All States</option>
-              <option *ngFor="let s of states" [value]="s.id">{{ s.state_name }}</option>
+
+              <option [value]="null">
+                All States
+              </option>
+
+              <option
+                *ngFor="let s of states"
+                [value]="s.id">
+
+                {{ s.state_name }}
+
+              </option>
+
             </select>
+
           </div>
 
-          <!-- District -->
-          <div class="pl-filter-group">
-            <div class="pl-filter-group-title">
-              <i class="bi bi-geo me-2"></i>District / City
-            </div>
-            <select class="form-select pl-filter-select" [(ngModel)]="selectedDistrict" (change)="applyFilters()">
-              <option [value]="null">All Districts</option>
-              <option *ngFor="let d of districts" [value]="d.id">{{ d.district_name }}</option>
-            </select>
-          </div>
+          <!-- DISTRICT -->
 
-          <!-- Property Type -->
           <div class="pl-filter-group">
-            <div class="pl-filter-group-title">
-              <i class="bi bi-building me-2"></i>Property Type
-            </div>
-            <select class="form-select pl-filter-select" [(ngModel)]="selectedPropertyType" (change)="applyFilters()">
-              <option value="">All Types</option>
-              <option *ngFor="let pt of propertyTypes" [value]="pt.value">{{ pt.label }}</option>
-            </select>
-          </div>
 
-          <!-- Transaction Type -->
-          <div class="pl-filter-group">
             <div class="pl-filter-group-title">
-              <i class="bi bi-arrow-left-right me-2"></i>Transaction Type
+
+              <i class="bi bi-geo me-2"></i>
+
+              District / City
+
             </div>
-            <select class="form-select pl-filter-select" [(ngModel)]="selectedTransactionType"
+
+            <select
+              class="form-select pl-filter-select"
+              [(ngModel)]="selectedDistrict"
               (change)="applyFilters()">
-              <option value="">All</option>
-              <option *ngFor="let tt of transactionTypes" [value]="tt.value">{{ tt.label }}</option>
+
+              <option [value]="null">
+                All Districts
+              </option>
+
+              <option
+                *ngFor="let d of districts"
+                [value]="d.id">
+
+                {{ d.district_name }}
+
+              </option>
+
             </select>
+
           </div>
 
-          <!-- Amenities -->
+          <!-- PROPERTY TYPE -->
+
           <div class="pl-filter-group">
+
             <div class="pl-filter-group-title">
-              <i class="bi bi-star me-2"></i>Amenities
+
+              <i class="bi bi-building me-2"></i>
+
+              Property Type
+
             </div>
-            <div *ngIf="amenitiesList.length; else loadingAmenities">
-              <div class="pl-filter-check" *ngFor="let amenity of amenitiesList">
+
+            <select
+              class="form-select pl-filter-select"
+              [(ngModel)]="selectedPropertyType"
+              (change)="applyFilters()">
+
+              <option value="">
+                All Types
+              </option>
+
+              <option
+                *ngFor="let pt of propertyTypes"
+                [value]="pt.value">
+
+                {{ pt.label }}
+
+              </option>
+
+            </select>
+
+          </div>
+
+          <!-- TRANSACTION -->
+
+          <div class="pl-filter-group">
+
+            <div class="pl-filter-group-title">
+
+              <i class="bi bi-arrow-left-right me-2"></i>
+
+              Transaction Type
+
+            </div>
+
+            <select
+              class="form-select pl-filter-select"
+              [(ngModel)]="selectedTransactionType"
+              (change)="applyFilters()">
+
+              <option value="">
+                All
+              </option>
+
+              <option
+                *ngFor="let tt of transactionTypes"
+                [value]="tt.value">
+
+                {{ tt.label }}
+
+              </option>
+
+            </select>
+
+          </div>
+
+          <!-- AMENITIES -->
+
+          <div class="pl-filter-group">
+
+            <div class="pl-filter-group-title">
+
+              <i class="bi bi-star me-2"></i>
+
+              Amenities
+
+            </div>
+
+            <div
+              *ngIf="
+                amenitiesList.length;
+                else loadingAmenities
+              ">
+
+              <div
+                class="pl-filter-check"
+                *ngFor="let amenity of amenitiesList">
+
                 <label>
-                  <input type="checkbox" [value]="amenity.id" (change)="toggleAmenity(amenity.id, $event)"
+
+                  <input
+                    type="checkbox"
+                    [value]="amenity.id"
+                    (change)="toggleAmenity(amenity.id, $event)"
                     [checked]="selectedAmenities.includes(amenity.id)" />
-                  <i *ngIf="amenity.icon" [class]="'fas ' + amenity.icon"></i>
+
+                  <i
+                    *ngIf="amenity.icon"
+                    [class]="'fas ' + amenity.icon">
+                  </i>
+
                   {{ amenity.name }}
+
                 </label>
+
               </div>
+
             </div>
+
             <ng-template #loadingAmenities>
-              <div class="pl-filter-loading">Loading amenities...</div>
+
+              <div class="pl-filter-loading">
+
+                Loading amenities...
+
+              </div>
+
             </ng-template>
+
           </div>
 
         </div>
+
       </aside>
 
-      <!-- ===== MAIN ===== -->
+      <!-- ================================================= -->
+      <!-- MAIN PROPERTY AREA -->
+      <!-- ================================================= -->
+
       <main class="pl-main">
+
+        <!-- FILTER CHIPS -->
+
         <div class="pl-topbar">
-          <div class="pl-chips" *ngIf="activeFilterCount > 0">
-            <span class="pl-chip" *ngIf="priceMin !== null || priceMax !== null">
-              ₹{{ priceMin ?? 0 }} – ₹{{ priceMax ?? '∞' }}
-              <button (click)="priceMin=null; priceMax=null; applyFilters()"><i class="bi bi-x"></i></button>
+
+          <div
+            class="pl-chips"
+            *ngIf="activeFilterCount > 0">
+
+            <span
+              class="pl-chip"
+              *ngIf="priceMin !== null || priceMax !== null">
+
+              ₹{{ priceMin ?? 0 }}
+              –
+              ₹{{ priceMax ?? '∞' }}
+
+              <button
+                (click)="
+                  priceMin=null;
+                  priceMax=null;
+                  applyFilters()
+                ">
+
+                <i class="bi bi-x"></i>
+
+              </button>
+
             </span>
-            <span class="pl-chip" *ngIf="selectedState">
+
+            <span
+              class="pl-chip"
+              *ngIf="selectedState">
+
               {{ getStateName(selectedState) }}
-              <button (click)="selectedState=null; selectedDistrict=null; districts=[]; applyFilters()"><i
-                  class="bi bi-x"></i></button>
+
+              <button
+                (click)="
+                  selectedState=null;
+                  selectedDistrict=null;
+                  districts=[];
+                  applyFilters()
+                ">
+
+                <i class="bi bi-x"></i>
+
+              </button>
+
             </span>
-            <span class="pl-chip" *ngIf="selectedDistrict">
+
+            <span
+              class="pl-chip"
+              *ngIf="selectedDistrict">
+
               {{ getDistrictName(selectedDistrict) }}
-              <button (click)="selectedDistrict=null; applyFilters()"><i class="bi bi-x"></i></button>
+
+              <button
+                (click)="
+                  selectedDistrict=null;
+                  applyFilters()
+                ">
+
+                <i class="bi bi-x"></i>
+
+              </button>
+
             </span>
-            <span class="pl-chip" *ngIf="selectedPropertyType">
-              {{ getPropertyTypeLabel(selectedPropertyType) }}
-              <button (click)="selectedPropertyType=''; applyFilters()"><i class="bi bi-x"></i></button>
+
+            <span
+              class="pl-chip"
+              *ngIf="selectedPropertyType">
+
+              {{
+                getPropertyTypeLabel(
+                  selectedPropertyType
+                )
+              }}
+
+              <button
+                (click)="
+                  selectedPropertyType='';
+                  applyFilters()
+                ">
+
+                <i class="bi bi-x"></i>
+
+              </button>
+
             </span>
-            <span class="pl-chip" *ngIf="selectedTransactionType">
-              {{ getTransactionTypeLabel(selectedTransactionType) }}
-              <button (click)="selectedTransactionType=''; applyFilters()"><i class="bi bi-x"></i></button>
+
+            <span
+              class="pl-chip"
+              *ngIf="selectedTransactionType">
+
+              {{
+                getTransactionTypeLabel(
+                  selectedTransactionType
+                )
+              }}
+
+              <button
+                (click)="
+                  selectedTransactionType='';
+                  applyFilters()
+                ">
+
+                <i class="bi bi-x"></i>
+
+              </button>
+
             </span>
-            <span class="pl-chip" *ngIf="selectedAmenities.length">
-              {{ selectedAmenities.length }} amenity(ies)
-              <button (click)="selectedAmenities=[]; applyFilters()"><i class="bi bi-x"></i></button>
+
+            <span
+              class="pl-chip"
+              *ngIf="selectedAmenities.length">
+
+              {{ selectedAmenities.length }}
+              amenity(ies)
+
+              <button
+                (click)="
+                  selectedAmenities=[];
+                  applyFilters()
+                ">
+
+                <i class="bi bi-x"></i>
+
+              </button>
+
             </span>
+
           </div>
 
-          <!-- <div class="pl-topbar-right">
-            <div class="pl-ipp">
-              <label>Show:</label>
-              <select [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
-                <option *ngFor="let s of pageSizeOptions" [ngValue]="s">{{ s }}</option>
-              </select>
-            </div>
-            <select class="pl-sort-select" [(ngModel)]="selectedSort" (change)="applyFilters()">
-              <option value="">Sort By</option>
-              <option value="price_low">Price: Low → High</option>
-              <option value="price_high">Price: High → Low</option>
-              <option value="a_z">Type: A → Z</option>
-              <option value="z_a">Type: Z → A</option>
-            </select>
-            <span class="pl-count" *ngIf="totalItems > 0">
-              {{ startIndex }}–{{ endIndex }} of {{ totalItems }}
-            </span>
-
-            <span class="pl-count" *ngIf="filteredProperties.length > 0">
-              {{ filteredProperties.length }} Properties
-            </span>
-          </div> -->
         </div>
 
-        <!-- Property Grid -->
-        <div class="pl-grid" *ngIf="filteredProperties.length > 0; else noResults">
+        <!-- ================================================= -->
+        <!-- PROPERTY GRID -->
+        <!-- EXISTING DESIGN SAME -->
+        <!-- ================================================= -->
 
-          <div class="pl-card" *ngFor="let property of filteredProperties">
+        <div
+          class="pl-grid"
+          *ngIf="
+            filteredProperties.length > 0;
+            else noResults
+          ">
 
-            <!-- ===================================== -->
-            <!-- FULL PROPERTY BACKGROUND IMAGE -->
-            <!-- ===================================== -->
+          <div
+            class="pl-card"
+            *ngFor="let property of filteredProperties">
 
-            <img [src]="property.images?.[property.currentImgIndex || 0]?.image_s3_key" [alt]="publicTitle(property)"
-              class="pl-full-bg" loading="lazy" (click)="goToDetails(property)"
+            <!-- PROPERTY IMAGE -->
+
+            <img
+              [src]="
+                property.images?.[
+                  property.currentImgIndex || 0
+                ]?.image_s3_key
+              "
+              [alt]="publicTitle(property)"
+              class="pl-full-bg"
+              loading="lazy"
+              (click)="goToDetails(property)"
               onerror="this.src='assets/placeholder.png'" />
 
-            <!-- VERY LIGHT IMAGE OVERLAY -->
+            <!-- OVERLAY -->
+
             <div class="pl-bg-overlay"></div>
 
-            <!-- FULL IMAGE GLOSSY LOOP -->
+            <!-- GLOSS -->
+
             <div class="pl-full-card-gloss"></div>
 
+            <!-- IMAGE CAROUSEL -->
 
-            <!-- ===================================== -->
-            <!-- IMAGE CAROUSEL CONTROLS -->
-            <!-- ===================================== -->
-
-            <ng-container *ngIf="property.images && property.images.length > 1">
+            <ng-container
+              *ngIf="
+                property.images &&
+                property.images.length > 1
+              ">
 
               <!-- PREVIOUS -->
-              <button type="button" class="pl-img-nav pl-img-prev" (click)="prevImage(property, $event)"
-                title="Previous image">
-                <i class="bi bi-chevron-left"></i>
-              </button>
 
+              <button
+                type="button"
+                class="pl-img-nav pl-img-prev"
+                (click)="prevImage(property, $event)"
+                title="Previous image">
+
+                <i class="bi bi-chevron-left"></i>
+
+              </button>
 
               <!-- NEXT -->
-              <button type="button" class="pl-img-nav pl-img-next" (click)="nextImage(property, $event)"
+
+              <button
+                type="button"
+                class="pl-img-nav pl-img-next"
+                (click)="nextImage(property, $event)"
                 title="Next image">
+
                 <i class="bi bi-chevron-right"></i>
+
               </button>
 
-
               <!-- IMAGE COUNTER -->
+
               <span class="pl-img-counter">
 
-                {{ (property.currentImgIndex || 0) + 1 }}
+                {{
+                  (property.currentImgIndex || 0)
+                  + 1
+                }}
+
                 /
-                {{ property.images.length }}
+
+                {{
+                  property.images.length
+                }}
 
               </span>
 
+              <!-- DOTS -->
 
-              <!-- IMAGE DOTS -->
               <div class="pl-img-dots">
 
-                <button type="button" *ngFor="let img of property.images; let i = index" class="pl-img-dot"
-                  [class.active]="i === (property.currentImgIndex || 0)" (click)="setImage(property, i, $event)">
+                <button
+                  type="button"
+                  *ngFor="
+                    let img of property.images;
+                    let i = index
+                  "
+                  class="pl-img-dot"
+                  [class.active]="
+                    i ===
+                    (property.currentImgIndex || 0)
+                  "
+                  (click)="
+                    setImage(
+                      property,
+                      i,
+                      $event
+                    )
+                  ">
                 </button>
 
               </div>
 
             </ng-container>
 
-
-            <!-- ===================================== -->
-            <!-- BOTTOM GLASS DETAIL CARD -->
-            <!-- ===================================== -->
+            <!-- ================================================= -->
+            <!-- BOTTOM GLASS CONTENT -->
+            <!-- EXISTING SAME -->
+            <!-- ================================================= -->
 
             <div class="pl-glass-content">
 
-              <!-- TYPE BADGES -->
               <div class="pl-top-meta">
 
                 <span class="pl-glass-category">
 
-                  {{ getPropertyTypeLabel(property.property_type) }}
+                  {{
+                    getPropertyTypeLabel(
+                      property.property_type
+                    )
+                  }}
 
                 </span>
 
                 <span class="pl-glass-transaction">
 
-                  {{ getTransactionTypeLabel(property.transaction_type) }}
+                  {{
+                    getTransactionTypeLabel(
+                      property.transaction_type
+                    )
+                  }}
 
                 </span>
 
               </div>
 
+              <h6
+                class="pl-glass-name"
+                (click)="goToDetails(property)">
 
-              <!-- PROPERTY NAME -->
-              <h6 class="pl-glass-name" (click)="goToDetails(property)">
-
-                {{ publicTitle(property) }}
+                {{
+                  publicTitle(property)
+                }}
 
               </h6>
 
-
-              <!-- DESCRIPTION -->
               <p class="pl-glass-desc">
 
-                {{ publicDescription(property) }}
+                {{
+                  publicDescription(property)
+                }}
 
               </p>
 
-
-              <!-- LOCATION -->
               <div class="pl-glass-location">
 
                 <i class="bi bi-geo-alt-fill"></i>
 
                 <span>
 
-                  {{ locationLine(property) }}
+                  {{
+                    locationLine(property)
+                  }}
 
                 </span>
 
               </div>
 
-
-              <!-- DIVIDER -->
               <div class="pl-glass-divider"></div>
 
-
-              <!-- PRICE -->
               <div class="pl-glass-price-row">
 
                 <span class="pl-glass-price">
 
-                  {{ formatPrice(property.price) }}
+                  {{
+                    formatPrice(
+                      property.price
+                    )
+                  }}
 
                 </span>
 
               </div>
 
-
-              <!-- ACTION BUTTONS -->
               <div class="pl-glass-actions">
 
-                <button type="button" class="pl-glass-details-btn" (click)="goToDetails(property)">
+                <button
+                  type="button"
+                  class="pl-glass-details-btn"
+                  (click)="goToDetails(property)">
 
                   <i class="bi bi-eye"></i>
 
@@ -316,8 +692,10 @@
 
                 </button>
 
-
-                <button type="button" class="pl-glass-enquiry-btn" (click)="goToEnquiry(property)">
+                <button
+                  type="button"
+                  class="pl-glass-enquiry-btn"
+                  (click)="goToEnquiry(property)">
 
                   <i class="bi bi-chat-dots"></i>
 
@@ -333,37 +711,485 @@
 
         </div>
 
-        <!-- Pagination -->
-        <!-- <div class="pl-pagination" *ngIf="totalPages > 1">
-          <button class="pl-page-btn" [disabled]="currentPage === 1" (click)="firstPage()">
-            <i class="bi bi-chevron-double-left"></i> First
-          </button>
-          <button class="pl-page-btn" [disabled]="currentPage === 1" (click)="previousPage()">
-            <i class="bi bi-chevron-left"></i> Prev
-          </button>
-          <div class="pl-page-numbers">
-            <button *ngFor="let page of getPageNumbers()" class="pl-page-num" [class.active]="page === currentPage"
-              [disabled]="page === '...'" (click)="goToPage(page)">
-              {{ page }}
-            </button>
-          </div>
-          <button class="pl-page-btn" [disabled]="currentPage === totalPages" (click)="nextPage()">
-            Next <i class="bi bi-chevron-right"></i>
-          </button>
-          <button class="pl-page-btn" [disabled]="currentPage === totalPages" (click)="lastPage()">
-            Last <i class="bi bi-chevron-double-right"></i>
-          </button>
-        </div> -->
+        <!-- ================================================= -->
+        <!-- NO RESULT -->
+        <!-- ================================================= -->
 
         <ng-template #noResults>
+
           <div class="pl-empty">
+
             <i class="bi bi-building pl-empty-icon"></i>
-            <h5>No properties found</h5>
-            <p>Try adjusting your filters or browse all listings.</p>
-            <button class="pl-btn pl-btn-primary" (click)="clearAllFilters()">Clear Filters</button>
+
+            <h5>
+              No properties found
+            </h5>
+
+            <p>
+              Try adjusting your filters
+              or browse all listings.
+            </p>
+
+            <button
+              class="pl-btn pl-btn-primary"
+              (click)="clearAllFilters()">
+
+              Clear Filters
+
+            </button>
+
           </div>
+
         </ng-template>
+
       </main>
+
+      <!-- ===================================================== -->
+      <!-- RIGHT SIDE PROPERTY-WISE REELS -->
+      <!-- ===================================================== -->
+
+      <aside class="property-reels-column">
+
+        <div
+          class="
+            d-flex
+            flex-column
+            gap-3
+            sticky-lg-top
+            reels-sticky
+          ">
+
+          <!-- REEL HEADER -->
+
+          <div
+            class="
+              bg-white
+              p-3
+              rounded-4
+              shadow-sm
+              d-flex
+              justify-content-between
+              align-items-center
+              reels-header-card
+            ">
+
+            <div>
+
+              <div
+                class="
+                  d-flex
+                  align-items-center
+                  gap-2
+                ">
+
+                <span class="live-dot"></span>
+
+                <h6
+                  class="
+                    fw-bold
+                    text-dark
+                    mb-0
+                    reels-title
+                  ">
+
+                  Property Reels & Tours
+
+                </h6>
+
+              </div>
+
+              <small
+                class="
+                  text-muted
+                  reels-subtitle
+                ">
+
+                Property-wise videos
+
+              </small>
+
+            </div>
+
+          </div>
+
+          <!-- ================================================= -->
+          <!-- SEPARATE CARD FOR EACH PROPERTY -->
+          <!-- ================================================= -->
+
+          <ng-container
+            *ngIf="
+              propertiesWithVideos.length > 0;
+              else noPropertyVideos
+            ">
+
+            <div
+              class="property-reel-item"
+              *ngFor="
+                let property
+                of propertiesWithVideos
+              ">
+
+              <!-- PROPERTY TITLE ABOVE ITS VIDEO CARD -->
+
+              <div class="property-reel-property-title">
+
+                <span>
+
+                  {{
+                    publicTitle(
+                      property
+                    )
+                  }}
+
+                </span>
+
+                <small>
+
+                  {{
+                    property.propertyVideos.length
+                  }}
+
+                  video{{
+                    property.propertyVideos.length !== 1
+                      ? 's'
+                      : ''
+                  }}
+
+                </small>
+
+              </div>
+
+              <!-- ================================================= -->
+              <!-- HOME STYLE REEL CARD -->
+              <!-- ================================================= -->
+
+              <div class="reel-card">
+
+                <!-- CURRENT VIDEO OF THIS PROPERTY ONLY -->
+
+                <video
+                  #propertyReelVideo
+                  class="reel-video"
+
+                  [src]="
+                    property.propertyVideos[
+                      property.currentVideoIndex || 0
+                    ]?.video_url
+                  "
+
+                  autoplay
+                  [muted]="true"
+                  loop
+                  playsinline
+                  preload="metadata"
+
+                  (loadedmetadata)="
+                    forcePropertyVideoMute(
+                      propertyReelVideo
+                    )
+                  "
+
+                  (canplay)="
+                    forcePropertyVideoMute(
+                      propertyReelVideo
+                    )
+                  "
+
+                  (play)="
+                    property.isVideoPlaying = true
+                  "
+
+                  (pause)="
+                    property.isVideoPlaying = false
+                  "
+
+                  (click)="
+                    togglePropertyVideo(
+                      property,
+                      propertyReelVideo,
+                      $event
+                    )
+                  ">
+                </video>
+
+                <!-- VIDEO LABEL -->
+
+                <div class="reel-video-label">
+
+                  <i class="bi bi-camera-video-fill"></i>
+
+                  PROPERTY VIDEO
+
+                </div>
+
+                <!-- GRADIENT -->
+
+                <div class="reel-gradient"></div>
+
+                <!-- TOUR BADGE -->
+
+                <div class="reel-live-badge">
+
+                  <span class="reel-live-dot"></span>
+
+                  PROPERTY TOUR
+
+                </div>
+
+                <!-- MUTE -->
+
+                <div class="reel-actions">
+
+                  <button
+                    type="button"
+                    class="reel-action-btn"
+                    title="Mute / Unmute"
+
+                    (click)="
+                      togglePropertyVideoMute(
+                        propertyReelVideo,
+                        $event
+                      )
+                    ">
+
+                    <i
+                      class="bi"
+
+                      [ngClass]="
+                        propertyReelVideo.muted
+                          ? 'bi-volume-mute-fill'
+                          : 'bi-volume-up-fill'
+                      ">
+                    </i>
+
+                  </button>
+
+                </div>
+
+                <!-- PLAY PAUSE -->
+
+                <button
+                  type="button"
+                  class="reel-center-control"
+
+                  [attr.aria-label]="
+                    property.isVideoPlaying
+                      ? 'Pause video'
+                      : 'Play video'
+                  "
+
+                  (click)="
+                    togglePropertyVideo(
+                      property,
+                      propertyReelVideo,
+                      $event
+                    )
+                  ">
+
+                  <i
+                    class="bi"
+
+                    [ngClass]="
+                      property.isVideoPlaying
+                        ? 'bi-pause-fill'
+                        : 'bi-play-fill'
+                    ">
+                  </i>
+
+                </button>
+
+                <!-- ================================================= -->
+                <!-- PROPERTY DETAILS -->
+                <!-- ================================================= -->
+
+                <div class="reel-product-info">
+
+                  <div class="reel-product-name">
+
+                    {{
+                      publicTitle(
+                        property
+                      )
+                    }}
+
+                  </div>
+
+                  <div
+                    class="reel-property-location"
+                    *ngIf="locationLine(property)">
+
+                    <i class="bi bi-geo-alt-fill me-1"></i>
+
+                    {{
+                      locationLine(
+                        property
+                      )
+                    }}
+
+                  </div>
+
+                  <div
+                    class="reel-product-price"
+                    *ngIf="property.price">
+
+                    {{
+                      formatPrice(
+                        property.price
+                      )
+                    }}
+
+                  </div>
+
+                  <button
+                    type="button"
+                    class="reel-shop-btn"
+
+                    (click)="
+                      goToDetails(
+                        property
+                      );
+                      $event.stopPropagation()
+                    ">
+
+                    <i class="bi bi-building me-1"></i>
+
+                    View Property
+
+                  </button>
+
+                </div>
+
+                <!-- ================================================= -->
+                <!-- PREVIOUS VIDEO -->
+                <!-- ONLY FOR THIS PROPERTY -->
+                <!-- ================================================= -->
+
+                <button
+                  *ngIf="
+                    property.propertyVideos.length > 1
+                  "
+
+                  type="button"
+
+                  class="
+                    reel-navigation
+                    reel-prev
+                  "
+
+                  (click)="
+                    previousPropertyVideo(
+                      property,
+                      $event
+                    )
+                  ">
+
+                  <i class="bi bi-chevron-up"></i>
+
+                </button>
+
+                <!-- ================================================= -->
+                <!-- NEXT VIDEO -->
+                <!-- ONLY FOR THIS PROPERTY -->
+                <!-- ================================================= -->
+
+                <button
+                  *ngIf="
+                    property.propertyVideos.length > 1
+                  "
+
+                  type="button"
+
+                  class="
+                    reel-navigation
+                    reel-next
+                  "
+
+                  (click)="
+                    nextPropertyVideo(
+                      property,
+                      $event
+                    )
+                  ">
+
+                  <i class="bi bi-chevron-down"></i>
+
+                </button>
+
+                <!-- ================================================= -->
+                <!-- PROPERTY VIDEO COUNTER -->
+                <!-- ================================================= -->
+
+                <div
+                  class="reel-counter"
+
+                  *ngIf="
+                    property.propertyVideos.length > 1
+                  ">
+
+                  {{
+                    (property.currentVideoIndex || 0)
+                    + 1
+                  }}
+
+                  /
+
+                  {{
+                    property.propertyVideos.length
+                  }}
+
+                </div>
+
+                <!-- PLAY STATUS -->
+
+                <div class="reel-status">
+
+                  <span
+                    class="reel-status-dot"
+                    [class.playing]="
+                      property.isVideoPlaying
+                    ">
+                  </span>
+
+                  {{
+                    property.isVideoPlaying
+                      ? 'Playing'
+                      : 'Paused'
+                  }}
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </ng-container>
+
+          <!-- ================================================= -->
+          <!-- NO VIDEOS -->
+          <!-- ================================================= -->
+
+          <ng-template #noPropertyVideos>
+
+            <div class="reel-empty">
+
+              <i class="bi bi-camera-video"></i>
+
+              <p class="mb-0">
+
+                No property videos available
+
+              </p>
+
+            </div>
+
+          </ng-template>
+
+        </div>
+
+      </aside>
+
     </div>
+
   </div>
+
 </div>
