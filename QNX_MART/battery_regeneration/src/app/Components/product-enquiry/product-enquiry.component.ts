@@ -52,14 +52,14 @@ export class ProductEnquiryComponent implements OnInit {
     // ####################
 
     ngOnInit() {
-        const userId = sessionStorage.getItem('user_id');
-        if (!userId) {
-            this.alertService.unialert('⚠️ Login First');
-            sessionStorage.setItem('returnUrl', this.router.url);
-            this.router.navigate(['/login']);
-            return;
-        }
-        sessionStorage.removeItem('returnUrl');
+        // const userId = sessionStorage.getItem('user_id');
+        // if (!userId) {
+        //     this.alertService.unialert('⚠️ Login First');
+        //     sessionStorage.setItem('returnUrl', this.router.url);
+        //     this.router.navigate(['/login']);
+        //     return;
+        // }
+        // sessionStorage.removeItem('returnUrl');
 
         this.buildForm();
 

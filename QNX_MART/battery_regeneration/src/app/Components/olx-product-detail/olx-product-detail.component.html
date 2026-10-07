@@ -1,191 +1,482 @@
 <div class="rd-page">
 
-  <!-- LOADING -->
+  <!-- ================= LOADING ================= -->
   <div class="rd-loading" *ngIf="loading">
     <div class="rd-spinner"></div>
     <p>Loading product details...</p>
   </div>
 
-  <!-- NOT FOUND -->
+  <!-- ================= NOT FOUND ================= -->
   <div class="rd-empty" *ngIf="!loading && !product">
     <i class="bi bi-box-seam rd-empty-icon"></i>
+
     <h5>Product not found</h5>
-    <p>The product you are looking for may have been removed or is unavailable.</p>
+
+    <p>
+      The product you are looking for may have been removed or is unavailable.
+    </p>
+
     <button class="rd-btn rd-btn-primary" (click)="goBack()">
-      <i class="bi bi-arrow-left me-1"></i>Go Back
+      <i class="bi bi-arrow-left me-1"></i>
+      Go Back
     </button>
   </div>
 
-  <!-- CONTENT -->
-  <ng-container *ngIf="!loading && product">
 
-    <!-- ===== HEADER (unchanged, location line removed) ===== -->
-    <div class="rd-header">
-      <button class="rd-back-btn" (click)="goBack()" title="Back">
-        <i class="bi bi-arrow-left"></i>
-      </button>
-      <div class="rd-header-text">
-        <h2><i class="bi bi-box-seam me-2"></i>Product Details</h2>
-      </div>
-    </div>
+  <!-- ================= CONTENT ================= -->
+  <ng-container *ngIf="!loading && product">
 
     <div class="rd-container">
 
-      <!-- ===== PRODUCT MAIN (e-commerce split) ===== -->
+
+      <!-- =====================================================
+           TOP BREADCRUMB
+      ====================================================== -->
+      <div class="rd-page-breadcrumb">
+
+        <button type="button" class="rd-breadcrumb-back" (click)="goBack()" title="Back">
+          <i class="bi bi-house-door-fill"></i>
+        </button>
+
+        <i class="bi bi-chevron-right"></i>
+
+        <span *ngIf="product.category_name">
+          {{ product.category_name }}
+        </span>
+
+        <i class="bi bi-chevron-right" *ngIf="product.subcategory_name"></i>
+
+        <span class="active" *ngIf="product.subcategory_name">
+          {{ product.subcategory_name }}
+        </span>
+
+      </div>
+
+
+      <!-- =====================================================
+           PRODUCT MAIN
+      ====================================================== -->
       <div class="rd-product">
 
-        <!-- ---------- GALLERY ---------- -->
-        <div class="rd-gallery">
-          <!-- Thumbnails rail -->
-          <div class="rd-thumbs-rail" *ngIf="product.images.length > 1">
-            <button *ngFor="let img of product.images; let i = index"
-                    type="button"
-                    class="rd-thumb"
-                    [class.active]="i === currentImgIndex"
-                    (click)="setImage(i, $event)"
-                    [attr.aria-label]="'Image ' + (i + 1)">
-              <img [src]="img.image_url" [alt]="product.title" />
-            </button>
-          </div>
 
-          <!-- Main image -->
-          <div class="rd-gallery-main">
-            <img [src]="currentImage" [alt]="product.title" class="rd-gallery-img" />
+        <!-- =================================================
+             LEFT : PRODUCT GALLERY
+        ================================================== -->
+        <div class="rd-gallery-card">
 
-            <ng-container *ngIf="product.images.length > 1">
-              <button class="rd-img-nav rd-img-prev" (click)="prevImage($event)" title="Previous">
-                <i class="bi bi-chevron-left"></i>
+          <div class="rd-gallery">
+
+
+            <!-- THUMBNAILS -->
+            <div class="rd-thumbs-rail" *ngIf="product.images.length > 1">
+              <!-- 
+              <button *ngFor="
+                  let img of product.images | slice:0:3;
+                  let i = index
+                " type="button" class="rd-thumb" [class.active]="i === currentImgIndex" (click)="setImage(i, $event)"
+                [attr.aria-label]="'Image ' + (i + 1)">
+                <img [src]="img.image_url" [alt]="product.title" />
+              </button> -->
+
+              <button *ngFor="let img of product.images; let i = index" type="button" class="rd-thumb"
+                [class.active]="i === currentImgIndex" (click)="setImage(i, $event)"
+                [attr.aria-label]="'Image ' + (i + 1)">
+                <img [src]="img.image_url" [alt]="product.title" />
               </button>
-              <button class="rd-img-nav rd-img-next" (click)="nextImage($event)" title="Next">
-                <i class="bi bi-chevron-right"></i>
+
+              <!-- MORE IMAGES -->
+              <button type="button" class="rd-more-images" *ngIf="product.images.length > 3">
+                <strong>
+                  +{{ product.images.length - 3 }}
+                </strong>
+
+                <span>More</span>
               </button>
-              <span class="rd-img-counter">
-                {{ currentImgIndex + 1 }} / {{ product.images.length }}
+
+            </div>
+
+
+            <!-- MAIN IMAGE -->
+            <div class="rd-gallery-main">
+
+              <img [src]="currentImage" [alt]="product.title" class="rd-gallery-img" />
+
+
+              <!-- PREVIOUS / NEXT -->
+              <ng-container *ngIf="product.images.length > 1">
+
+                <button class="rd-img-nav rd-img-prev" type="button" (click)="prevImage($event)" title="Previous">
+                  <i class="bi bi-chevron-left"></i>
+                </button>
+
+
+                <button class="rd-img-nav rd-img-next" type="button" (click)="nextImage($event)" title="Next">
+                  <i class="bi bi-chevron-right"></i>
+                </button>
+
+
+                <span class="rd-img-counter">
+                  {{ currentImgIndex + 1 }}
+                  /
+                  {{ product.images.length }}
+                </span>
+
+              </ng-container>
+
+
+              <!-- FEATURED -->
+              <span class="rd-featured-flag" *ngIf="product.is_featured">
+                <i class="bi bi-star-fill"></i>
+                Featured
               </span>
-            </ng-container>
 
-            <!-- Featured flag overlay -->
-            <span class="rd-featured-flag" *ngIf="product.is_featured">
-              <i class="bi bi-star-fill"></i> Featured
-            </span>
+            </div>
+
           </div>
+
         </div>
 
-        <!-- ---------- INFO PANEL ---------- -->
+
+
+        <!-- =================================================
+             RIGHT : PRODUCT INFORMATION
+        ================================================== -->
         <aside class="rd-info">
 
-          <!-- Category breadcrumb-style line -->
-          <div class="rd-breadcrumb" *ngIf="product.category_name">
-            <span>{{ product.category_name }}</span>
-            <i class="bi bi-chevron-right"></i>
-            <span *ngIf="product.subcategory_name">{{ product.subcategory_name }}</span>
+
+          <!-- TOP -->
+          <div class="rd-info-top">
+
+            <div class="rd-category-pills" *ngIf="product.category_name">
+
+              <span class="rd-category-pill">
+                <i class="bi bi-phone"></i>
+                {{ product.category_name }}
+              </span>
+
+              <i class="bi bi-chevron-right rd-category-arrow" *ngIf="product.subcategory_name"></i>
+
+              <span class="rd-category-pill" *ngIf="product.subcategory_name">
+                {{ product.subcategory_name }}
+              </span>
+
+            </div>
+
+
+            <!-- OPTIONAL ACTION ICONS -->
+            <div class="rd-top-actions">
+
+              <button type="button" class="rd-circle-action" title="Save Product">
+                <i class="bi bi-heart"></i>
+              </button>
+
+              <button type="button" class="rd-circle-action" title="Share Product">
+                <i class="bi bi-share"></i>
+              </button>
+
+            </div>
+
           </div>
 
-          <h1 class="rd-title">{{ product.title }}</h1>
 
-          <!-- Badges -->
+
+          <!-- TITLE -->
+          <h1 class="rd-title">
+            {{ product.title }}
+          </h1>
+
+
+
+          <!-- BADGES -->
           <div class="rd-badges">
+
             <span class="rd-badge rd-badge-condition">
-              <i class="bi bi-patch-check-fill me-1"></i>
+              <i class="bi bi-check-circle-fill"></i>
               {{ getConditionLabel(product.condition) }}
             </span>
+
             <span class="rd-badge rd-badge-seller">
-              <i class="bi bi-person-badge me-1"></i>
+              <i class="bi bi-person-fill"></i>
               {{ getSellerTypeLabel(product.seller_type) }}
             </span>
+
           </div>
 
-          <!-- Price block -->
+
+
+          <!-- PRICE -->
           <div class="rd-price-block">
-            <span class="rd-price">{{ formatPrice(product.price) }}</span>
-            <span class="rd-negotiable" *ngIf="product.is_negotiable">
-              <i class="bi bi-tag-fill me-1"></i>Negotiable
+
+            <span class="rd-price">
+              {{ formatPrice(product.price) }}
             </span>
+
+            <span class="rd-negotiable" *ngIf="product.is_negotiable">
+              <i class="bi bi-tag-fill"></i>
+              Negotiable
+            </span>
+
           </div>
 
-          <!-- Quick specs (top 4 attributes) -->
+
+
+          <!-- QUICK SPECS -->
           <div class="rd-quick-specs" *ngIf="attributeEntries.length">
+
             <div class="rd-quick-spec" *ngFor="let a of attributeEntries.slice(0, 4)">
-              <span class="rd-quick-spec-label">{{ formatKey(a.key) }}</span>
-              <span class="rd-quick-spec-value">{{ formatValue(a.value) }}</span>
+
+              <div class="rd-spec-icon-box">
+
+                <i *ngIf="a.key.toLowerCase().includes('color')" class="bi bi-palette"></i>
+
+                <i *ngIf="a.key.toLowerCase().includes('brand')" class="bi bi-tag"></i>
+
+                <i *ngIf="a.key.toLowerCase().includes('storage')" class="bi bi-device-ssd"></i>
+
+                <i *ngIf="
+      !a.key.toLowerCase().includes('color') &&
+      !a.key.toLowerCase().includes('brand') &&
+      !a.key.toLowerCase().includes('storage')
+    " class="bi bi-box"></i>
+
+              </div>
+
+              <div class="rd-quick-spec-content">
+
+                <span class="rd-quick-spec-label">
+                  {{ formatKey(a.key) }}
+                </span>
+
+                <span class="rd-quick-spec-value">
+                  {{ formatValue(a.value) }}
+                </span>
+
+              </div>
+
             </div>
+
           </div>
 
-          <!-- Location pill -->
+
+
+          <!-- LOCATION -->
           <div class="rd-loc-pill" *ngIf="shortLocation">
+
             <i class="bi bi-geo-alt-fill"></i>
-            <span>{{ shortLocation }}</span>
+
+            <span>
+              {{ shortLocation }}
+            </span>
+
           </div>
 
-          <!-- Actions -->
+
+
+          <!-- ACTION -->
           <div class="rd-actions">
-            <button class="rd-btn rd-btn-primary rd-btn-lg" (click)="goToEnquiry()">
-              <i class="bi bi-chat-dots-fill me-2"></i>Enquire Now
-            </button>
-          </div>
 
-          <!-- Seller card -->
-          <!-- <div class="rd-seller" *ngIf="product.username">
-            <div class="rd-seller-avatar">{{ sellerInitial }}</div>
-            <div class="rd-seller-meta">
-              <div class="rd-seller-label">Posted by</div>
-              <div class="rd-seller-name">{{ product.username }}</div>
-              <div class="rd-seller-type">{{ getSellerTypeLabel(product.seller_type) }}</div>
-            </div>
-          </div> -->
+            <button class="rd-btn
+                     rd-btn-primary
+                     rd-btn-lg" type="button" (click)="goToEnquiry()">
+
+              <i class="bi bi-chat-dots-fill"></i>
+
+              <span>Enquire Now</span>
+
+              <i class="bi bi-arrow-right"></i>
+
+            </button>
+
+          </div>
 
         </aside>
+
       </div>
 
-      <!-- ===== DESCRIPTION ===== -->
-      <div class="rd-card" *ngIf="product.description">
-        <div class="rd-section-title">
-          <i class="bi bi-file-text me-2"></i>Description
-        </div>
-        <p class="rd-desc-full">{{ product.description }}</p>
-      </div>
 
-      <!-- ===== SPECIFICATIONS ===== -->
-      <div class="rd-card" *ngIf="attributeEntries.length">
-        <div class="rd-section-title">
-          <i class="bi bi-list-stars me-2"></i>Specifications
+
+      <!-- =====================================================
+           DESCRIPTION
+      ====================================================== -->
+      <section class="rd-card" *ngIf="product.description">
+
+        <div class="rd-section-heading">
+
+          <div class="rd-section-icon">
+            <i class="bi bi-file-earmark-text-fill"></i>
+          </div>
+
+          <h2>Description</h2>
+
         </div>
+
+
+        <p class="rd-desc-full">
+          {{ product.description }}
+        </p>
+
+      </section>
+
+
+
+      <!-- =====================================================
+           SPECIFICATIONS
+      ====================================================== -->
+      <section class="rd-card" *ngIf="attributeEntries.length">
+
+        <div class="rd-section-heading">
+
+          <div class="rd-section-icon">
+            <i class="bi bi-gear-fill"></i>
+          </div>
+
+          <h2>Specifications</h2>
+
+        </div>
+
+
         <div class="rd-spec-grid">
+
           <div class="rd-spec-item" *ngFor="let a of attributeEntries">
-            <span class="rd-spec-label">{{ formatKey(a.key) }}</span>
-            <span class="rd-spec-value">{{ formatValue(a.value) }}</span>
-          </div>
-        </div>
-      </div>
 
-      <!-- ===== LOCATION ===== -->
-      <div class="rd-card">
-        <div class="rd-section-title">
-          <i class="bi bi-geo-alt me-2"></i>Location
+            <div class="rd-spec-bottom-icon">
+              <i class="bi bi-box"></i>
+            </div>
+
+
+            <div class="rd-spec-bottom-content">
+
+              <span class="rd-spec-label">
+                {{ formatKey(a.key) }}
+              </span>
+
+              <span class="rd-spec-value">
+                {{ formatValue(a.value) }}
+              </span>
+
+            </div>
+
+          </div>
+
         </div>
+
+      </section>
+
+
+
+      <!-- =====================================================
+           LOCATION
+      ====================================================== -->
+      <section class="rd-card">
+
+        <div class="rd-section-heading">
+
+          <div class="rd-section-icon">
+            <i class="bi bi-geo-alt-fill"></i>
+          </div>
+
+          <h2>Location</h2>
+
+        </div>
+
+
         <div class="rd-loc-row">
-          <div class="rd-loc-item" *ngIf="product.city">
-            <span class="rd-loc-label">City</span>
-            <span class="rd-loc-value">{{ product.city }}</span>
-          </div>
-          <div class="rd-loc-item" *ngIf="product.area">
-            <span class="rd-loc-label">Area</span>
-            <span class="rd-loc-value">{{ product.area }}</span>
-          </div>
-        </div>
-      </div>
 
-      <!-- ===== CTA BANNER ===== -->
-      <div class="rd-cta">
-        <div class="rd-cta-text">
-          <h3>Interested in this product?</h3>
-          <p>Send an enquiry and we'll get back to you soon.</p>
+
+          <!-- CITY -->
+          <div class="rd-loc-item" *ngIf="product.city">
+
+            <div class="rd-loc-icon">
+              <i class="bi bi-buildings"></i>
+            </div>
+
+
+            <div>
+
+              <span class="rd-loc-label">
+                City
+              </span>
+
+              <span class="rd-loc-value">
+                {{ product.city }}
+              </span>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- AREA -->
+          <div class="rd-loc-item" *ngIf="product.area">
+
+            <div class="rd-loc-icon">
+              <i class="bi bi-map"></i>
+            </div>
+
+
+            <div>
+
+              <span class="rd-loc-label">
+                Area
+              </span>
+
+              <span class="rd-loc-value">
+                {{ product.area }}
+              </span>
+
+            </div>
+
+          </div>
+
         </div>
-        <button class="rd-btn rd-btn-primary" (click)="goToEnquiry()">
-          <i class="bi bi-chat-dots-fill me-2"></i>Enquire Now
+
+      </section>
+
+
+
+      <!-- =====================================================
+           CTA
+      ====================================================== -->
+      <section class="rd-cta">
+
+        <div class="rd-cta-left">
+
+          <div class="rd-cta-icon">
+            <i class="bi bi-chat-left-text-fill"></i>
+          </div>
+
+
+          <div class="rd-cta-text">
+
+            <h3>
+              Interested in this product?
+            </h3>
+
+            <p>
+              Send an enquiry and we'll get back to you soon.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <button class="rd-btn rd-cta-btn" type="button" (click)="goToEnquiry()">
+
+          <i class="bi bi-chat-dots-fill"></i>
+
+          <span>Enquire Now</span>
+
+          <i class="bi bi-arrow-right"></i>
+
         </button>
-      </div>
+
+      </section>
+
 
     </div>
+
   </ng-container>
+
 </div>

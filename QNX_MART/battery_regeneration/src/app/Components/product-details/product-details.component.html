@@ -1,401 +1,361 @@
 <!-- Loading -->
 <div class="pd-loading" *ngIf="!product">
-    <div class="pd-spinner"></div>
-    <p>Loading product details...</p>
+  <div class="pd-spinner"></div>
+  <p>Loading product details...</p>
 </div>
 
 <div class="pd-page" *ngIf="product">
 
-    <!-- Breadcrumb -->
-    <div class="pd-breadcrumb">
-        <a routerLink="/">Home</a>
-        <i class="bi bi-chevron-right"></i>
-        <a routerLink="/product_list">{{ product.category_name }}</a>
-        <i class="bi bi-chevron-right"></i>
-        <span>{{ product.subcategory_name }}</span>
-        <i class="bi bi-chevron-right"></i>
-        <span class="pd-bc-active">{{ product.name }}</span>
-    </div>
+  <!-- Breadcrumb -->
+  <nav class="pd-breadcrumb" aria-label="Breadcrumb">
+    <a routerLink="/">Home</a>
+    <i class="bi bi-chevron-right"></i>
+    <a routerLink="/product_list">{{ product.category_name }}</a>
+    <i class="bi bi-chevron-right"></i>
+    <span>{{ product.subcategory_name }}</span>
+    <i class="bi bi-chevron-right"></i>
+    <span class="pd-bc-active">{{ product.name }}</span>
+  </nav>
 
-    <!-- Main Layout -->
-    <div class="pd-layout">
+  <!-- Main product area -->
+  <section class="pd-layout">
 
-        <!-- ===== COL 1: IMAGE GALLERY ===== -->
-        <div class="pd-gallery-col">
-            <div class="pd-gallery-sticky">
-                <div class="pd-gallery-inner">
-
-                    <!-- Thumbnail Strip -->
-                    <div class="pd-thumb-strip">
-                        <div class="pd-thumb-item" *ngFor="let img of allImages"
-                            [class.active]="selectedImage === img && !isVideo" (click)="changeImage(img)">
-                            <img [src]="img" alt="thumb" />
-                        </div>
-                        <div class="pd-thumb-item pd-thumb-vid" *ngFor="let vid of product.videos"
-                            [class.active]="selectedVideo === vid.video_s3_key && isVideo"
-                            (click)="playVideo(vid.video_s3_key)">
-                            <i class="bi bi-play-circle-fill"></i>
-                        </div>
-                    </div>
-
-                    <!-- Main Image -->
-                    <div class="pd-main-img-box" (mousemove)="onMouseMove($event)" (mouseleave)="onMouseLeave()">
-                        <div class="pd-discount-badge" *ngIf="discountBadgeText">
-                            {{ discountBadgeText }}
-                        </div>
-                        <img *ngIf="!isVideo" [src]="selectedImage" [ngStyle]="zoomStyle" class="pd-main-img"
-                            alt="{{ product.name }}" />
-                        <video *ngIf="isVideo" [src]="selectedVideo" controls autoplay class="pd-main-img"></video>
-                    </div>
-
-                </div>
-
-                <!-- Action row under image -->
-                <div class="pd-img-actions">
-                    <!-- <button class="pd-img-action-btn" (click)="addToCart()">
-                        <i class="bi bi-cart-plus"></i> Add to Cart
-                    </button> -->
-                    <!-- <button class="pd-img-action-btn pd-img-action-wish">
-                        <i class="bi bi-heart"></i> Wishlist
-                    </button> -->
-                    <!-- <button class="pd-img-action-btn pd-img-action-share">
-                        <i class="bi bi-share"></i> Share
-                    </button> -->
-                </div>
-
-            </div>
-        </div>
-
-        <!-- ===== COL 2: PRODUCT INFO ===== -->
-        <div class="pd-info-col">
-
-            <!-- Brand + Share -->
-            <div class="pd-brand-share-row">
-                <div class="pd-brand-link"> <span>Brand: </span> <a>{{ product.brand_name }}</a> </div> <button
-                    class="pd-share-btn" (click)="shareProduct()" type="button"> <i class="bi bi-share-fill"></i> Share
-                </button>
-            </div>
-
-            <!-- Title -->
-            <h1 class="pd-title">{{ product.name }}</h1>
-
-            <!-- Rating -->
-            <div class="pd-rating-row">
-                <div class="pd-stars">
-                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-half"></i>
-                </div>
-                <span class="pd-rating-count">4.5 (128 ratings)</span>
-                <span class="pd-sep">|</span>
-                <span class="pd-sold-count">500+ bought in past month</span>
-            </div>
-
-            <div class="pd-divider-line"></div>
-
-            <!-- Price -->
-            <div class="pd-price-section">
-                <div class="pd-price-row">
-                    <span class="pd-label-small">Price:</span>
-                    <div class="pd-price-block">
-                        <span class="pd-final-price">₹{{ displayPrice }}</span>
-                        <!-- show strikethrough only when there's an actual saving -->
-                        <span class="pd-original-price" *ngIf="hasDiscount">
-                            M.R.P: <s>₹{{ originalPrice }}</s>
-                        </span>
-                        <span class="pd-save-badge" *ngIf="saveBadgeText">
-                            {{ saveBadgeText }}
-                        </span>
-                    </div>
-                </div>
-                <p class="pd-inclusive">Inclusive of all taxes</p>
-                <div class="pd-emi-note" *ngIf="+displayPrice > 999">
-                    <i class="bi bi-credit-card me-1"></i>
-                    EMI starts at ₹{{ (+displayPrice / 12) | number:'1.0-0' }}/month
-                </div>
-            </div>
-
-            <div class="pd-divider-line"></div>
-
-            <!-- Variants -->
-            <div class="pd-variants" *ngIf="variantAttributeKeys.length > 0">
-                <div class="pd-variant-group" *ngFor="let key of variantAttributeKeys">
-                    <div class="pd-variant-label">
-                        {{ key }}: <strong>{{ selectedAttributes[key] }}</strong>
-                    </div>
-                    <div class="pd-variant-options">
-                        <button type="button" class="pd-variant-btn" *ngFor="let opt of getOptionsForAttribute(key)"
-                            [class.pd-variant-selected]="selectedAttributes[key] === opt"
-                            [class.pd-variant-unavailable]="!isOptionAvailable(key, opt)"
-                            (click)="selectAttribute(key, opt)">
-                            {{ opt }}
-                        </button>
-                    </div>
-                </div>
-                <div class="pd-divider-line"></div>
-            </div>
-
-            <!-- Stock Status -->
-            <div class="pd-stock-row">
-                <span class="pd-in-stock" *ngIf="inStock">
-                    <i class="bi bi-check-circle-fill"></i> In Stock
-                    <span class="pd-stock-count" *ngIf="displayStock <= 10"> — Only {{ displayStock }} left!</span>
-                </span>
-                <span class="pd-out-stock" *ngIf="!inStock">
-                    <i class="bi bi-x-circle-fill"></i> Currently unavailable
-                </span>
-            </div>
-
-            <!-- Quantity -->
-            <div class="pd-qty-row" *ngIf="inStock">
-                <span class="pd-label-small">Qty:</span>
-                <div class="pd-qty-ctrl">
-                    <button (click)="decreaseQty()" [disabled]="quantity <= 1">−</button>
-                    <span>{{ quantity }}</span>
-                    <button (click)="increaseQty()" [disabled]="quantity >= displayStock">+</button>
-                </div>
-            </div>
-
-            <!-- CTA Buttons -->
-            <div class="pd-cta-row" *ngIf="inStock">
-                <button class="pd-btn-cart" (click)="addToCart()" [class.pd-btn-added]="addedToCart">
-                    <i class="bi" [class.bi-cart-plus-fill]="!addedToCart"
-                        [class.bi-check-circle-fill]="addedToCart"></i>
-                    {{ addedToCart ? 'Added to Cart!' : 'Add to Cart' }}
-                </button>
-                <!-- <button class="pd-btn-buy" (click)="buyNow()">
-                    <i class="bi bi-lightning-charge-fill"></i> Buy Now
-                </button> -->
-            </div>
-
-            <div class="pd-cta-row" *ngIf="!inStock">
-                <button class="pd-btn-notify">
-                    <i class="bi bi-bell"></i> Notify Me When Available
-                </button>
-            </div>
-
-            <!-- Delivery Info -->
-            <div class="pd-delivery-box">
-                <div class="pd-delivery-row">
-                    <i class="bi bi-truck"></i>
-                    <div>
-                        <span class="pd-del-label">Safe Delivery</span>
-                        <span class="pd-del-val"> for all orders</span>
-                    </div>
-                </div>
-                <div class="pd-delivery-row">
-                    <i class="bi bi-arrow-repeat"></i>
-                    <div>
-                        <span class="pd-del-label">7 Days</span>
-                        <span class="pd-del-val"> Replacement Policy</span>
-                    </div>
-                </div>
-                <div class="pd-delivery-row">
-                    <i class="bi bi-shield-check"></i>
-                    <div>
-                        <span class="pd-del-label">Secure</span>
-                        <span class="pd-del-val"> Transaction</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sold By -->
-            <div class="pd-sold-by">
-                <div class="pd-sold-row">
-                    <span class="pd-sold-label">Sold by</span>
-                    <span class="pd-sold-val">{{ product.company_name }}</span>
-                </div>
-                <div class="pd-sold-row" *ngIf="product.HSN_code">
-                    <span class="pd-sold-label">HSN Code</span>
-                    <span class="pd-sold-val">{{ product.HSN_code }}</span>
-                </div>
-                <div class="pd-sold-row">
-                    <span class="pd-sold-label">Category</span>
-                    <span class="pd-sold-val">{{ product.category_name }} › {{ product.subcategory_name }}</span>
-                </div>
-            </div>
-
-            <!-- Enquiry -->
-            <button class="pd-btn-enquiry" (click)="getEnquiry()">
-                <i class="bi bi-headset me-2"></i>Get Enquiry / Bulk Order
+    <!-- Gallery -->
+    <div class="pd-gallery-col">
+      <div class="pd-gallery-sticky">
+        <div class="pd-gallery-inner">
+          <div class="pd-thumb-strip">
+            <button
+              type="button"
+              class="pd-thumb-item"
+              *ngFor="let img of allImages"
+              [class.active]="selectedImage === img && !isVideo"
+              (click)="changeImage(img)">
+              <img [src]="img" alt="{{ product.name }} thumbnail" />
             </button>
 
+            <button
+              type="button"
+              class="pd-thumb-item pd-thumb-vid"
+              *ngFor="let vid of product.videos"
+              [class.active]="selectedVideo === vid.video_s3_key && isVideo"
+              (click)="playVideo(vid.video_s3_key)"
+              aria-label="Play product video">
+              <i class="bi bi-play-circle-fill"></i>
+            </button>
+          </div>
+
+          <div class="pd-main-img-box" (mousemove)="onMouseMove($event)" (mouseleave)="onMouseLeave()">
+            <div class="pd-discount-badge" *ngIf="discountBadgeText">{{ discountBadgeText }}</div>
+
+            <img
+              *ngIf="!isVideo"
+              [src]="selectedImage"
+              [ngStyle]="zoomStyle"
+              class="pd-main-img"
+              alt="{{ product.name }}" />
+
+            <video
+              *ngIf="isVideo"
+              [src]="selectedVideo"
+              controls
+              autoplay
+              class="pd-main-img"></video>
+          </div>
         </div>
-
-        <!-- ===== COL 3: BUY BOX ===== -->
-        <div class="pd-buybox-col">
-            <div class="pd-buybox">
-
-                <div class="pd-bb-price">₹{{ displayPrice }}</div>
-                <div class="pd-bb-delivery">
-                    <i class="bi bi-truck me-1"></i>Safe delivery
-                    <!-- <strong> Tomorrow</strong> -->
-                </div>
-                <div class="pd-bb-location">
-                    <i class="bi bi-geo-alt me-1"></i>Deliver to your location
-                </div>
-
-                <div class="pd-bb-stock pd-in-stock" *ngIf="inStock">
-                    <i class="bi bi-check-circle-fill me-1"></i>In Stock
-                </div>
-                <div class="pd-bb-stock pd-out-stock" *ngIf="!inStock">
-                    <i class="bi bi-x-circle-fill me-1"></i>Out of Stock
-                </div>
-
-                <div class="pd-bb-qty" *ngIf="inStock">
-                    <label>Qty:</label>
-                    <div class="pd-qty-ctrl">
-                        <button (click)="decreaseQty()" [disabled]="quantity <= 1">−</button>
-                        <span>{{ quantity }}</span>
-                        <button (click)="increaseQty()" [disabled]="quantity >= displayStock">+</button>
-                    </div>
-                </div>
-
-                <button class="pd-bb-btn-cart" (click)="addToCart()" *ngIf="inStock" [class.pd-btn-added]="addedToCart">
-                    <i class="bi" [class.bi-cart-plus-fill]="!addedToCart"
-                        [class.bi-check-circle-fill]="addedToCart"></i>
-                    {{ addedToCart ? 'Added!' : 'Add to Cart' }}
-                </button>
-                <!-- <button class="pd-bb-btn-buy" (click)="buyNow()" *ngIf="inStock">
-                    <i class="bi bi-lightning-charge-fill"></i> Buy Now
-                </button> -->
-
-                <div class="pd-bb-meta">
-                    <div><i class="bi bi-shield-check me-1"></i>Secure transaction</div>
-                    <div><i class="bi bi-building me-1"></i>Ships from {{ product.company_name }}</div>
-                    <div><i class="bi bi-person-check me-1"></i>Sold by {{ product.company_name }}</div>
-                </div>
-
-                <button class="pd-bb-btn-enquiry" (click)="getEnquiry()">
-                    <i class="bi bi-headset me-1"></i>Get Enquiry
-                </button>
-
-            </div>
-        </div>
-
+      </div>
     </div>
 
-    <!-- ===== BOTTOM: DESCRIPTION + SPECS ===== -->
-    <div class="pd-bottom">
+    <!-- Product information -->
+    <div class="pd-info-col">
+      <div class="pd-brand-share-row">
+        <div class="pd-brand-pill">Brand: <strong>{{ product.brand_name }}</strong></div>
+        <button class="pd-share-btn" (click)="shareProduct()" type="button">
+          <i class="bi bi-share"></i>
+          <span>Share</span>
+        </button>
+      </div>
 
-        <!-- Description -->
-        <div class="pd-bottom-section">
-            <h2 class="pd-bottom-title">About this item</h2>
-            <p class="pd-about-text">{{ product.description }}</p>
+      <h1 class="pd-title">{{ product.name }}</h1>
+
+      <div class="pd-rating-row">
+        <div class="pd-stars" aria-label="4.5 out of 5 stars">
+          <i class="bi bi-star-fill"></i>
+          <i class="bi bi-star-fill"></i>
+          <i class="bi bi-star-fill"></i>
+          <i class="bi bi-star-fill"></i>
+          <i class="bi bi-star-half"></i>
         </div>
+        <span class="pd-rating-count">4.5 (128 ratings)</span>
+        <span class="pd-sep"></span>
+        <span class="pd-sold-count">500+ bought in past month</span>
+      </div>
 
-        <!-- Specifications -->
-        <div class="pd-bottom-section" *ngIf="product.specifications?.length">
-            <h2 class="pd-bottom-title">Technical Details</h2>
-            <div class="pd-spec-table">
-                <div class="pd-spec-row" *ngFor="let spec of product.specifications; let i = index"
-                    [class.pd-spec-alt]="i % 2 === 0">
-                    <span class="pd-spec-key">{{ spec.key }}</span>
-                    <span class="pd-spec-val">{{ spec.value }}</span>
-                </div>
-                <div class="pd-spec-row" *ngIf="product.weight"
-                    [class.pd-spec-alt]="product.specifications.length % 2 === 0">
-                    <span class="pd-spec-key">Weight</span>
-                    <span class="pd-spec-val">{{ product.weight }}</span>
-                </div>
-                <div class="pd-spec-row" *ngIf="product.length">
-                    <span class="pd-spec-key">Dimensions</span>
-                    <span class="pd-spec-val">{{ product.length }} × {{ product.width }} × {{ product.height }}</span>
-                </div>
+      <div class="pd-divider-line"></div>
+
+      <div class="pd-price-section">
+        <div class="pd-price-row">
+          <span class="pd-final-price">₹{{ displayPrice }}</span>
+          <span class="pd-original-price" *ngIf="hasDiscount">₹{{ originalPrice }}</span>
+          <span class="pd-save-badge" *ngIf="saveBadgeText">{{ saveBadgeText }}</span>
+        </div>
+        <p class="pd-inclusive">Inclusive of all taxes</p>
+
+        <details class="pd-emi-details" *ngIf="+displayPrice > 999">
+          <summary class="pd-emi-note">
+            <span class="pd-emi-icon"><i class="bi bi-wallet2"></i></span>
+            <span>EMI starts at <strong>₹{{ (+displayPrice / 12) | number:'1.0-0' }}/month</strong></span>
+            <span class="pd-emi-link">
+              View Plans <i class="bi bi-chevron-down"></i>
+            </span>
+          </summary>
+
+          <div class="pd-emi-plans">
+            <div class="pd-emi-plan-row">
+              <span>3 months</span>
+              <strong>₹{{ (+displayPrice / 3) | number:'1.0-0' }}/month</strong>
             </div>
-        </div>
-
-        <!-- Variants Table -->
-        <div class="pd-bottom-section" *ngIf="product.variants?.length">
-            <h2 class="pd-bottom-title">Available Variants</h2>
-            <div class="pd-variant-table-wrap">
-                <table class="pd-variant-table">
-                    <thead>
-                        <tr>
-                            <th *ngFor="let key of variantAttributeKeys">{{ key }}</th>
-                            <th>Price</th>
-                            <th>Stock</th>
-                            <th>SKU</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let v of product.variants" [class.pd-vt-active]="activeVariant?.id === v.id"
-                            (click)="selectVariantRow(v)">
-                            <td *ngFor="let key of variantAttributeKeys">
-                                <span class="pd-vt-badge">{{ v.attributes[key] }}</span>
-                            </td>
-                            <td>
-                                <strong>₹{{ v.final_price ?? v.price }}</strong>
-                                <s *ngIf="v.final_price" class="pd-vt-original-price"> ₹{{ v.price }}</s>
-                            </td>
-                            <td>
-                                <span [class.pd-vt-instock]="v.stock_quantity > 0"
-                                    [class.pd-vt-outstock]="v.stock_quantity === 0">
-                                    {{ v.stock_quantity > 0 ? v.stock_quantity + ' left' : 'Out of stock' }}
-                                </span>
-                            </td>
-                            <td class="pd-vt-sku">{{ v.sku || '—' }}</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="pd-emi-plan-row">
+              <span>6 months</span>
+              <strong>₹{{ (+displayPrice / 6) | number:'1.0-0' }}/month</strong>
             </div>
-        </div>
+            <div class="pd-emi-plan-row">
+              <span>9 months</span>
+              <strong>₹{{ (+displayPrice / 9) | number:'1.0-0' }}/month</strong>
+            </div>
+            <div class="pd-emi-plan-row pd-emi-plan-best">
+              <span>12 months <small>Lowest monthly</small></span>
+              <strong>₹{{ (+displayPrice / 12) | number:'1.0-0' }}/month</strong>
+            </div>
+            <p class="pd-emi-disclaimer">Approximate EMI only. Final EMI, interest and charges may vary by bank or payment provider.</p>
+          </div>
+        </details>
+      </div>
 
+      <!-- Variants -->
+      <div class="pd-variants" *ngIf="variantAttributeKeys.length > 0">
+        <div class="pd-variant-group" *ngFor="let key of variantAttributeKeys">
+          <div class="pd-variant-label">{{ key }}</div>
+          <div class="pd-variant-options">
+            <button
+              type="button"
+              class="pd-variant-btn"
+              *ngFor="let opt of getOptionsForAttribute(key)"
+              [class.pd-variant-selected]="selectedAttributes[key] === opt"
+              [class.pd-variant-unavailable]="!isOptionAvailable(key, opt)"
+              (click)="selectAttribute(key, opt)">
+              {{ opt }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="pd-info-stock" *ngIf="inStock">
+        <i class="bi bi-check-circle-fill"></i>
+        <span>In Stock</span>
+        <small *ngIf="displayStock <= 10">Only {{ displayStock }} left!</small>
+      </div>
+
+      <div class="pd-info-stock pd-info-stock-out" *ngIf="!inStock">
+        <i class="bi bi-x-circle-fill"></i>
+        <span>Currently unavailable</span>
+      </div>
     </div>
 
-    <!-- ===== RELATED PRODUCTS ===== -->
-    <div class="related-products-section">
-        <h4>Related Products</h4>
-        <div class="row" *ngIf="relatedProducts.length > 0">
-            <div class="col-md-3 col-sm-4 col-6 mb-3" *ngFor="let item of relatedProducts">
-                <div class="card" (click)="goToProduct(item)">
-                    <img [src]="item.thumbnail" class="card-img-top" alt="{{ item.name }}" />
-                    <div class="card-body">
-                        <h6>{{ item.name }}</h6>
-                        <p class="price">₹{{ item.price }}</p>
-                    </div>
-                </div>
+    <!-- Buy box -->
+    <aside class="pd-buybox-col">
+      <div class="pd-buybox">
+        <div class="pd-bb-price">₹{{ displayPrice }}</div>
+
+        <div class="pd-bb-line">
+          <i class="bi bi-truck"></i>
+          <span>Safe Delivery</span>
+        </div>
+        <div class="pd-bb-line pd-bb-location">
+          <i class="bi bi-geo-alt"></i>
+          <span>Deliver to your location</span>
+        </div>
+
+        <!-- <div class="pd-bb-stock pd-in-stock" *ngIf="inStock">
+          <i class="bi bi-check-circle-fill"></i>
+          <div>
+            <strong>In Stock</strong>
+            <small *ngIf="displayStock <= 10">Only {{ displayStock }} left!</small>
+          </div>
+        </div> -->
+
+        <div class="pd-bb-stock pd-out-stock" *ngIf="!inStock">
+          <i class="bi bi-x-circle-fill"></i>
+          <strong>Out of Stock</strong>
+        </div>
+
+        <div class="pd-bb-qty" *ngIf="inStock">
+          <label>Qty:</label>
+          <div class="pd-qty-ctrl">
+            <button type="button" (click)="decreaseQty()" [disabled]="quantity <= 1">−</button>
+            <span>{{ quantity }}</span>
+            <button type="button" (click)="increaseQty()" [disabled]="quantity >= displayStock">+</button>
+          </div>
+        </div>
+
+        <button class="pd-bb-btn-cart" (click)="addToCart()" *ngIf="inStock" [class.pd-btn-added]="addedToCart">
+          <i class="bi" [class.bi-cart-plus-fill]="!addedToCart" [class.bi-check-circle-fill]="addedToCart"></i>
+          {{ addedToCart ? 'Added!' : 'Add to Cart' }}
+        </button>
+
+        <button class="pd-bb-btn-enquiry" (click)="getEnquiry()">
+          <i class="bi bi-chat-dots"></i>
+          Get Enquiry
+        </button>
+
+        <div class="pd-bb-meta">
+          <div class="pd-bb-meta-item"><i class="bi bi-shield-check"></i><span>Secure Transaction</span></div>
+          <div class="pd-bb-meta-item pd-bb-replacement">
+            <span class="pd-bb-replacement-icon"><i class="bi bi-arrow-repeat"></i></span>
+            <div>
+              <strong>7 Days Replacement</strong>
+              <small>Easy replacement policy</small>
             </div>
+          </div>
+          <div class="pd-bb-meta-item"><i class="bi bi-shop"></i><span>Sold by {{ product.company_name }}</span></div>
         </div>
-        <div *ngIf="relatedProducts.length === 0" class="text-center text-muted py-4">
-            No related products found
-        </div>
+      </div>
+    </aside>
+  </section>
+
+  <!-- Trust / benefit strip -->
+  <section class="pd-benefits">
+    <div class="pd-benefit-item">
+      <span class="pd-benefit-icon"><i class="bi bi-wifi"></i></span>
+      <div><strong>Fast Connectivity</strong><small>Reliable everyday performance</small></div>
+    </div>
+    <div class="pd-benefit-item">
+      <span class="pd-benefit-icon"><i class="bi bi-camera"></i></span>
+      <div><strong>Quality Experience</strong><small>Designed for daily use</small></div>
+    </div>
+    <div class="pd-benefit-item">
+      <span class="pd-benefit-icon pd-benefit-green"><i class="bi bi-battery-charging"></i></span>
+      <div><strong>Long Battery Life</strong><small>Stay connected longer</small></div>
+    </div>
+    <div class="pd-benefit-item">
+      <span class="pd-benefit-icon"><i class="bi bi-phone"></i></span>
+      <div><strong>Smooth Experience</strong><small>Built for modern users</small></div>
+    </div>
+    <div class="pd-benefit-item">
+      <span class="pd-benefit-icon"><i class="bi bi-shield-check"></i></span>
+      <div><strong>Secure Purchase</strong><small>Trusted buying experience</small></div>
+    </div>
+  </section>
+
+  <!-- Product details -->
+  <section class="pd-details-card">
+    <div class="pd-details-tabs">
+      <button class="active" type="button">Overview</button>
+      <button type="button">Specifications</button>
+      <button type="button" *ngIf="product.variants?.length">Available Variants</button>
     </div>
 
-</div> <!-- end pd-page -->
+    <div class="pd-details-content">
+      <div class="pd-about-panel">
+        <h2>About this item</h2>
+        <p>{{ product.description }}</p>
+      </div>
 
+      <div class="pd-spec-panel" *ngIf="product.specifications?.length || product.weight || product.length">
+        <div class="pd-spec-row" *ngFor="let spec of product.specifications">
+          <span class="pd-spec-key">{{ spec.key }}</span>
+          <span class="pd-spec-val">{{ spec.value }}</span>
+        </div>
+        <div class="pd-spec-row" *ngIf="product.weight">
+          <span class="pd-spec-key">Weight</span>
+          <span class="pd-spec-val">{{ product.weight }}</span>
+        </div>
+        <div class="pd-spec-row" *ngIf="product.length">
+          <span class="pd-spec-key">Dimensions</span>
+          <span class="pd-spec-val">{{ product.length }} × {{ product.width }} × {{ product.height }}</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <!-- Variants table -->
+  <section class="pd-variants-table-section" *ngIf="product.variants?.length">
+    <div class="pd-section-heading">
+      <div>
+        <h2>Available Variants</h2>
+        <p>Choose the option that best fits your requirement</p>
+      </div>
+    </div>
 
+    <div class="pd-variant-table-wrap">
+      <table class="pd-variant-table">
+        <thead>
+          <tr>
+            <th *ngFor="let key of variantAttributeKeys">{{ key }}</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>SKU</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let v of product.variants" [class.pd-vt-active]="activeVariant?.id === v.id" (click)="selectVariantRow(v)">
+            <td *ngFor="let key of variantAttributeKeys"><span class="pd-vt-badge">{{ v.attributes[key] }}</span></td>
+            <td>
+              <strong>₹{{ v.final_price ?? v.price }}</strong>
+              <s *ngIf="v.final_price" class="pd-vt-original-price">₹{{ v.price }}</s>
+            </td>
+            <td>
+              <span [class.pd-vt-instock]="v.stock_quantity > 0" [class.pd-vt-outstock]="v.stock_quantity === 0">
+                {{ v.stock_quantity > 0 ? v.stock_quantity + ' left' : 'Out of stock' }}
+              </span>
+            </td>
+            <td class="pd-vt-sku">{{ v.sku || '—' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
 
+  <!-- Related Products -->
+  <section class="related-products-section">
+    <div class="related-head">
+      <div>
+        <h2>Related Products</h2>
+        <p>Explore similar products you might like</p>
+      </div>
+      <a routerLink="/product_list" class="related-view-all">View All <i class="bi bi-arrow-right"></i></a>
+    </div>
 
-
-<!-- releted products -->
-<!-- <div class="container mt-4">
-
-    <h4>Related Products</h4>
-
-    <div class="row" *ngIf="relatedProducts.length > 0"> -->
-
-<!-- <div class="col-md-3 mb-3" *ngFor="let item of relatedProducts" (click)="goToProduct(item.id)"> -->
-<!-- <div class="col-md-3 mb-3" *ngFor="let item of relatedProducts" (click)="goToProduct(item)">
-
-            <div class="card h-100 shadow-sm">
-
-                <img [src]="item.thumbnail" class="card-img-top" alt="product">
-
-                <div class="card-body text-center">
-                    <h6>{{ item.name }}</h6>
-                    <p class="text-success">₹{{ item.price }}</p>
-                </div>
-
-            </div>
-
+    <div class="related-grid" *ngIf="relatedProducts.length > 0">
+      <article class="related-card" *ngFor="let item of relatedProducts" (click)="goToProduct(item)">
+        <div class="related-image-wrap">
+          <img [src]="item.thumbnail" alt="{{ item.name }}" />
+          <!-- <button type="button" class="related-heart" aria-label="Save product" (click)="$event.stopPropagation()">
+            <i class="bi bi-heart"></i>
+          </button> -->
         </div>
 
+        <div class="related-body">
+          <h3>{{ item.name }}</h3>
+          <div class="related-mini-rating">
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-half"></i>
+            <span>4.5</span>
+          </div>
+          <div class="related-price">₹{{ item.price }}</div>
+          <div class="related-stock"><i class="bi bi-check-circle-fill"></i> In Stock</div>
+          <button type="button" class="related-cart-btn" (click)="$event.stopPropagation(); goToProduct(item)">
+            <i class="bi bi-cart3"></i>
+            View Product
+          </button>
+        </div>
+      </article>
     </div>
 
-    <div *ngIf="relatedProducts.length === 0">
-        No related products found
-    </div>
+    <div *ngIf="relatedProducts.length === 0" class="related-empty">No related products found</div>
+  </section>
 
-</div> -->
+</div>
