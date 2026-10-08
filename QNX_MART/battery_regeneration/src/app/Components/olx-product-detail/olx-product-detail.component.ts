@@ -69,6 +69,31 @@ export class OlxProductDetailComponent implements OnInit, OnDestroy {
     this.loadProduct(id);
   }
 
+  async shareProduct(): Promise<void> {
+    const productUrl = window.location.href;
+
+    const shareData = {
+      title: 'Check out this product on QNX Mart',
+      text: 'Check out this product on QNX Mart B2B!',
+      url: productUrl
+    };
+
+    try {
+      // Mobile / supported browsers
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        // Desktop fallback
+        await navigator.clipboard.writeText(productUrl);
+        alert('Product link copied successfully!');
+      }
+    } catch (error: any) {
+      if (error?.name !== 'AbortError') {
+        console.error('Product sharing failed:', error);
+      }
+    }
+  }
+
   // ---------- LOAD ----------
   loadProduct(id: number | string): void {
     this.olxService.getListingDetail(id).subscribe({

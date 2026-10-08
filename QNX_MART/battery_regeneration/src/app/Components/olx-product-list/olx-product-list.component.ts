@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { OlxService } from '../../../services/olx.service';
 import { AlertService } from '../../../services/alert.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-olx-product-list',
@@ -60,6 +61,8 @@ export class OlxProductListComponent implements OnInit {
     { value: 'individual', label: 'Individual' },
     { value: 'business', label: 'Business' }
   ];
+
+  loading = false;
 
   constructor(
     private olxService: OlxService,
@@ -143,39 +146,46 @@ export class OlxProductListComponent implements OnInit {
 
   // ---------- LOAD ----------
   loadListings(): void {
-    this.olxService.getListings().subscribe({
-      next: (res: any) => {
-        if (res?.success && Array.isArray(res.data)) {
-          this.allListings = res.data
-            // .filter((p: any) => p.status === 'active')
-            .map((p: any) => {
-              const images = (p.images && p.images.length > 0)
-                ? [...p.images].sort((a: any, b: any) =>
-                  (b.is_primary ? 1 : 0) - (a.is_primary ? 1 : 0))
-                : [{
-                  image_url: 'https://via.placeholder.com/400x300/cccccc/ffffff?text=No+Image',
-                  is_primary: true
-                }];
+    this.loading = true;
 
-              return {
-                ...p,
-                price: parseFloat(p.price) || 0,
-                images,
-                currentImgIndex: 0
-              };
-            });
-        } else {
+    this.olxService.getListings()
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+        })
+      ).subscribe({
+        next: (res: any) => {
+          if (res?.success && Array.isArray(res.data)) {
+            this.allListings = res.data
+              // .filter((p: any) => p.status === 'active')
+              .map((p: any) => {
+                const images = (p.images && p.images.length > 0)
+                  ? [...p.images].sort((a: any, b: any) =>
+                    (b.is_primary ? 1 : 0) - (a.is_primary ? 1 : 0))
+                  : [{
+                    image_url: 'https://via.placeholder.com/400x300/cccccc/ffffff?text=No+Image',
+                    is_primary: true
+                  }];
+
+                return {
+                  ...p,
+                  price: parseFloat(p.price) || 0,
+                  images,
+                  currentImgIndex: 0
+                };
+              });
+          } else {
+            this.allListings = [];
+          }
+          this.applyFilters();
+        },
+        error: (err) => {
+          console.error('Listings load error', err);
+          this.alertService.unialert('❌ Failed to load listings.');
           this.allListings = [];
+          this.applyFilters();
         }
-        this.applyFilters();
-      },
-      error: (err) => {
-        console.error('Listings load error', err);
-        this.alertService.unialert('❌ Failed to load listings.');
-        this.allListings = [];
-        this.applyFilters();
-      }
-    });
+      });
   }
 
   loadCategories(): void {
