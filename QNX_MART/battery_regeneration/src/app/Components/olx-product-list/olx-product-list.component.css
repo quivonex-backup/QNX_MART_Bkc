@@ -1014,7 +1014,7 @@
 
 .rl-glass-desc {
 
-    margin: 0 0 4px;
+    /* margin: 0 0 4px; */
 
     color: #132238;
 
@@ -1052,7 +1052,7 @@
 
     min-width: 0;
 
-    margin-bottom: 4px;
+    /* margin-bottom: 0; */
 
     color: #071426;
 
@@ -1525,6 +1525,710 @@
 
         font-size: 8px;
 
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =============================================
+   QNX REMART - PREMIUM PRODUCT CARD ONLY
+   ============================================= */
+
+/* MAIN CARD */
+
+.rl-page .rl-glass-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    overflow: hidden;
+
+    background: #ffffff;
+    border: 1px solid #e5eaf3;
+    border-radius: 18px;
+
+    box-shadow:
+        0 4px 12px rgba(15, 23, 42, 0.04),
+        0 10px 24px rgba(15, 23, 42, 0.06);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.rl-page .rl-glass-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 26px rgba(15, 23, 42, 0.10);
+}
+
+/* IMAGE SECTION */
+
+.rl-page .rl-full-image-wrap {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: 205px;
+    flex: 0 0 205px;
+    overflow: hidden;
+    background: #edf2f8;
+    cursor: pointer;
+}
+
+.rl-page .rl-full-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: 100% 100%;
+    object-position: center;
+    transition: transform 0.4s ease;
+}
+
+.rl-page .rl-glass-card:hover .rl-full-bg {
+    transform: scale(1.045);
+}
+
+/* REMOVE OLD GLASS EFFECTS */
+
+.rl-page .rl-bg-overlay,
+.rl-page .rl-full-gloss {
+    display: none;
+}
+
+/* IMAGE NAVIGATION */
+
+.rl-page .rl-glass-nav {
+    position: absolute;
+    top: 102px;
+    z-index: 9;
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(15, 23, 42, 0.58);
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: 50%;
+    color: #ffffff;
+    font-size: 13px;
+    opacity: 1;
+    cursor: pointer;
+}
+
+.rl-page .rl-glass-prev {
+    left: 10px;
+}
+
+.rl-page .rl-glass-next {
+    right: 10px;
+}
+
+.rl-page .rl-glass-nav:hover {
+    background: #0963ed;
+}
+
+.rl-page .rl-glass-counter {
+    top: 170px;
+    right: 12px;
+    padding: 5px 8px;
+    background: rgba(15,23,42,0.74);
+    color: #ffffff;
+    border-radius: 20px;
+    font-size: 10px;
+}
+
+.rl-page .rl-glass-dots {
+    top: 177px;
+    bottom: auto;
+    left: 50%;
+    max-width: 45%;
+    overflow: hidden;
+    padding: 0;
+    gap: 5px;
+    background: transparent;
+    backdrop-filter: none;
+}
+
+.rl-page .rl-glass-dot {
+    width: 6px;
+    height: 6px;
+    flex: 0 0 6px;
+    background: rgba(255,255,255,0.6);
+}
+
+.rl-page .rl-glass-dot.active {
+    width: 14px;
+    flex-basis: 14px;
+    border-radius: 10px;
+    background: #ffffff;
+    transform: none;
+}
+
+/* FEATURED BADGE */
+
+.rl-page .rl-featured-badge {
+    top: 12px;
+    left: 12px;
+    padding: 6px 10px;
+
+    background: #f5ac17;
+    color: #ffffff;
+    border: none;
+    border-radius: 20px;
+
+    font-size: 10px;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+
+.rl-page .rl-featured-badge i {
+    color: #ffffff;
+}
+
+/* WHITE CARD CONTENT */
+
+.rl-page .rl-glass-content {
+    position: relative;
+    inset: auto;
+    z-index: auto;
+
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    width: 100%;
+    min-width: 0;
+    padding: 14px 15px 15px;
+    overflow: visible;
+
+    background: #ffffff;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.rl-page .rl-glass-content::before,
+.rl-page .rl-glass-content::after {
+    display: none;
+    animation: none;
+}
+
+/* CATEGORY AND CONDITION */
+
+.rl-page .rl-glass-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    margin-bottom: 9px;
+}
+
+.rl-page .rl-glass-category {
+    min-width: 0;
+    padding: 5px 9px;
+
+    background: #eaf2ff;
+    border-radius: 5px;
+    color: #0963ed;
+
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: none;
+}
+
+.rl-page .rl-condition-badge {
+    padding: 5px 8px;
+    border: none;
+    border-radius: 5px;
+
+    background: #e8f8ee;
+    color: #16834a;
+
+    font-size: 10px;
+    font-weight: 600;
+}
+
+/* PRODUCT TITLE */
+
+.rl-page .rl-glass-name {
+    margin: 0 0 7px;
+
+    color: #101c36;
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1.4;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    overflow: hidden;
+
+    cursor: pointer;
+}
+
+.rl-page .rl-glass-name:hover {
+    color: #0963ed;
+}
+
+/* DESCRIPTION */
+
+.rl-page .rl-glass-desc {
+    min-height: 32px;
+    margin: 0;
+
+    color: #748096;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.5;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+}
+
+/* LOCATION */
+
+.rl-page .rl-glass-location {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 5px;
+
+    color: #53627b;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.rl-page .rl-glass-location i {
+    color: #155fd7;
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+.rl-page .rl-glass-location span {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* DIVIDER */
+
+.rl-page .rl-glass-divider {
+    width: 100%;
+    height: 1px;
+    margin: auto 0 3px;
+    background: #d5d6d8;
+}
+
+/* PRICE */
+
+.rl-page .rl-glass-price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 5px;
+}
+
+.rl-page .rl-glass-price {
+    color: #0963ed;
+    font-size: 17px;
+    font-weight: 800;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+}
+
+.rl-page .rl-glass-negotiable {
+    padding: 5px 7px;
+    background: #fff7e8;
+    border: none;
+    border-radius: 5px;
+    color: #a25c07;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+/* BUTTONS */
+
+.rl-page .rl-glass-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+    width: 100%;
+}
+
+.rl-page .rl-details-btn,
+.rl-page .rl-enquiry-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+    width: 100%;
+    min-width: 0;
+    height: 37px;
+    padding: 6px 5px;
+
+    border-radius: 7px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+
+    cursor: pointer;
+    box-shadow: none;
+    backdrop-filter: none;
+    transition: background 0.2s ease,
+                transform 0.2s ease;
+}
+
+.rl-page .rl-details-btn {
+    background: #ffffff;
+    border: 1px solid #0963ed;
+    color: #0963ed;
+}
+
+.rl-page .rl-details-btn:hover {
+    background: #eaf2ff;
+    transform: translateY(-1px);
+}
+
+.rl-page .rl-enquiry-btn {
+    background: #0963ed;
+    border: 1px solid #0963ed;
+    color: #ffffff;
+}
+
+.rl-page .rl-enquiry-btn:hover {
+    background: #004fc8;
+    transform: translateY(-1px);
+}
+
+/* MOBILE RESPONSIVE */
+
+@media (max-width: 600px) {
+
+    .rl-page .rl-glass-card {
+        height: 100%;
+        border-radius: 12px;
+    }
+
+    .rl-page .rl-full-image-wrap {
+        height: 145px;
+        flex-basis: 145px;
+    }
+
+    .rl-page .rl-glass-content {
+        padding: 10px;
+    }
+
+    .rl-page .rl-glass-name {
+        font-size: 12px;
+    }
+
+    .rl-page .rl-glass-desc {
+        font-size: 10px;
+        min-height: 30px;
+    }
+
+    .rl-page .rl-glass-location {
+        font-size: 10px;
+    }
+
+    .rl-page .rl-glass-category,
+    .rl-page .rl-condition-badge {
+        font-size: 9px;
+        padding: 4px 6px;
+    }
+
+    .rl-page .rl-glass-price {
+        font-size: 14px;
+    }
+
+    .rl-page .rl-glass-actions {
+        gap: 6px;
+    }
+
+    .rl-page .rl-details-btn,
+    .rl-page .rl-enquiry-btn {
+        height: 32px;
+        padding: 5px 3px;
+        font-size: 9px;
+    }
+
+    .rl-page .rl-glass-nav {
+        top: 72px;
+        width: 25px;
+        height: 25px;
+    }
+
+    .rl-page .rl-glass-counter {
+        top: 110px;
+        right: 7px;
+        font-size: 8px;
+    }
+
+    .rl-page .rl-glass-dots {
+        top: 119px;
+    }
+
+    .rl-page .rl-featured-badge {
+        top: 7px;
+        left: 7px;
+        padding: 4px 7px;
+        font-size: 8px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+/* ==========================================
+   QNX REMART PREMIUM PRODUCT PAGE LOADER
+   ========================================== */
+
+.rl-loading-grid {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(min(100%, 250px), 1fr)
+    );
+    gap: 20px;
+    width: 100%;
+}
+
+/* SKELETON CARD */
+
+.rl-skeleton-card {
+    background: #ffffff;
+    border: 1px solid #e5eaf3;
+    border-radius: 18px;
+    overflow: hidden;
+
+    box-shadow:
+        0 4px 12px rgba(15, 23, 42, 0.04),
+        0 10px 24px rgba(15, 23, 42, 0.06);
+}
+
+/* IMAGE */
+
+.rl-skeleton-image {
+    height: 205px;
+    position: relative;
+}
+
+/* BADGE */
+
+.rl-skeleton-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    width: 90px;
+    height: 24px;
+    border-radius: 20px;
+    background: #e4eaf3;
+}
+
+/* CONTENT */
+
+.rl-skeleton-content {
+    padding: 14px 15px 15px;
+}
+
+/* CATEGORY */
+
+.rl-skeleton-category {
+    width: 40%;
+    height: 21px;
+    border-radius: 5px;
+    margin-bottom: 12px;
+}
+
+/* TITLE */
+
+.rl-skeleton-title {
+    width: 76%;
+    height: 19px;
+    border-radius: 5px;
+    margin-bottom: 13px;
+}
+
+/* DESCRIPTION */
+
+.rl-skeleton-description {
+    width: 95%;
+    height: 28px;
+    border-radius: 5px;
+    margin-bottom: 12px;
+}
+
+/* LOCATION */
+
+.rl-skeleton-location {
+    width: 55%;
+    height: 13px;
+    border-radius: 5px;
+    margin-bottom: 18px;
+}
+
+/* PRICE */
+
+.rl-skeleton-price {
+    width: 48%;
+    height: 21px;
+    border-radius: 5px;
+    margin-bottom: 16px;
+}
+
+/* BUTTONS */
+
+.rl-skeleton-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+}
+
+.rl-skeleton-btn {
+    height: 37px;
+    border-radius: 7px;
+}
+
+/* PREMIUM BLUE SHIMMER */
+
+.rl-shimmer {
+    background: linear-gradient(
+        100deg,
+        #e9eef5 10%,
+        #f7faff 35%,
+        #dceaff 50%,
+        #f7faff 65%,
+        #e9eef5 90%
+    );
+
+    background-size: 200% 100%;
+    animation: rlShimmer 1.5s linear infinite;
+}
+
+@keyframes rlShimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* TABLET */
+
+@media (max-width: 1199px) {
+
+    .rl-loading-grid {
+        gap: 16px;
+    }
+
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    .rl-loading-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .rl-skeleton-card {
+        border-radius: 12px;
+    }
+
+    .rl-skeleton-image {
+        height: 145px;
+    }
+
+    .rl-skeleton-content {
+        padding: 10px;
+    }
+
+    .rl-skeleton-title {
+        height: 15px;
+    }
+
+    .rl-skeleton-buttons {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+
+    .rl-skeleton-btn {
+        height: 31px;
+    }
+
+}
+
+/* SMALL MOBILE */
+
+@media (max-width: 380px) {
+
+    .rl-loading-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .rl-skeleton-image {
+        height: 195px;
+    }
+
+    .rl-skeleton-buttons {
+        grid-template-columns: 1fr 1fr;
+    }
+
+}
+
+/* ACCESSIBILITY */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .rl-shimmer {
+        animation: none;
     }
 
 }

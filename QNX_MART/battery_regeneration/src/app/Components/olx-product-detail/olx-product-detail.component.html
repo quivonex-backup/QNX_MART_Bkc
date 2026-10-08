@@ -166,11 +166,11 @@
             <!-- OPTIONAL ACTION ICONS -->
             <div class="rd-top-actions">
 
-              <button type="button" class="rd-circle-action" title="Save Product">
+              <!-- <button type="button" class="rd-circle-action" title="Save Product">
                 <i class="bi bi-heart"></i>
-              </button>
+              </button> -->
 
-              <button type="button" class="rd-circle-action" title="Share Product">
+              <button type="button" class="rd-circle-action" title="Share Product" (click)="shareProduct()">
                 <i class="bi bi-share"></i>
               </button>
 
@@ -220,6 +220,7 @@
 
 
 
+
           <!-- QUICK SPECS -->
           <div class="rd-quick-specs" *ngIf="attributeEntries.length">
 
@@ -227,17 +228,38 @@
 
               <div class="rd-spec-icon-box">
 
-                <i *ngIf="a.key.toLowerCase().includes('color')" class="bi bi-palette"></i>
+                <!-- RAM -->
+                <i *ngIf="a.key.toLowerCase().includes('ram')" class="bi bi-memory">
+                </i>
 
-                <i *ngIf="a.key.toLowerCase().includes('brand')" class="bi bi-tag"></i>
-
-                <i *ngIf="a.key.toLowerCase().includes('storage')" class="bi bi-device-ssd"></i>
-
+                <!-- ROM / STORAGE -->
                 <i *ngIf="
-      !a.key.toLowerCase().includes('color') &&
-      !a.key.toLowerCase().includes('brand') &&
-      !a.key.toLowerCase().includes('storage')
-    " class="bi bi-box"></i>
+          a.key.toLowerCase().includes('rom') ||
+          a.key.toLowerCase().includes('storage')
+        " class="bi bi-device-ssd">
+                </i>
+
+                <!-- COLOUR / COLOR -->
+                <i *ngIf="
+          a.key.toLowerCase().includes('colour') ||
+          a.key.toLowerCase().includes('color')
+        " class="bi bi-palette-fill">
+                </i>
+
+                <!-- BRAND -->
+                <i *ngIf="a.key.toLowerCase().includes('brand')" class="bi bi-tag-fill">
+                </i>
+
+                <!-- DEFAULT -->
+                <i *ngIf="
+          !a.key.toLowerCase().includes('ram') &&
+          !a.key.toLowerCase().includes('rom') &&
+          !a.key.toLowerCase().includes('storage') &&
+          !a.key.toLowerCase().includes('colour') &&
+          !a.key.toLowerCase().includes('color') &&
+          !a.key.toLowerCase().includes('brand')
+        " class="bi bi-box">
+                </i>
 
               </div>
 
@@ -319,9 +341,11 @@
 
 
 
-      <!-- =====================================================
-           SPECIFICATIONS
-      ====================================================== -->
+
+      <!-- ========================================= -->
+      <!-- SPECIFICATIONS -->
+      <!-- ========================================= -->
+
       <section class="rd-card" *ngIf="attributeEntries.length">
 
         <div class="rd-section-heading">
@@ -334,16 +358,77 @@
 
         </div>
 
-
         <div class="rd-spec-grid">
 
           <div class="rd-spec-item" *ngFor="let a of attributeEntries">
 
+            <!-- DYNAMIC SPECIFICATION ICON -->
             <div class="rd-spec-bottom-icon">
-              <i class="bi bi-box"></i>
+
+              <!-- RAM -->
+              <i *ngIf="a.key.toLowerCase().includes('ram')" class="bi bi-cpu">
+              </i>
+
+              <!-- ROM / STORAGE -->
+              <i *ngIf="
+            a.key.toLowerCase().includes('rom') ||
+            a.key.toLowerCase().includes('storage')
+          " class="bi bi-device-ssd">
+              </i>
+
+              <!-- COLOUR / COLOR -->
+              <i *ngIf="
+            a.key.toLowerCase().includes('colour') ||
+            a.key.toLowerCase().includes('color')
+          " class="bi bi-palette-fill">
+              </i>
+
+              <!-- BRAND -->
+              <i *ngIf="a.key.toLowerCase().includes('brand')" class="bi bi-tag-fill">
+              </i>
+
+              <!-- BATTERY -->
+              <i *ngIf="a.key.toLowerCase().includes('battery')" class="bi bi-battery-charging">
+              </i>
+
+              <!-- DISPLAY / SCREEN -->
+              <i *ngIf="
+            a.key.toLowerCase().includes('display') ||
+            a.key.toLowerCase().includes('screen')
+          " class="bi bi-phone">
+              </i>
+
+              <!-- CAMERA -->
+              <i *ngIf="a.key.toLowerCase().includes('camera')" class="bi bi-camera-fill">
+              </i>
+
+              <!-- PROCESSOR / CPU -->
+              <i *ngIf="
+            a.key.toLowerCase().includes('processor') ||
+            a.key.toLowerCase().includes('cpu')
+          " class="bi bi-cpu-fill">
+              </i>
+
+              <!-- DEFAULT ICON -->
+              <i *ngIf="
+            !a.key.toLowerCase().includes('ram') &&
+            !a.key.toLowerCase().includes('rom') &&
+            !a.key.toLowerCase().includes('storage') &&
+            !a.key.toLowerCase().includes('colour') &&
+            !a.key.toLowerCase().includes('color') &&
+            !a.key.toLowerCase().includes('brand') &&
+            !a.key.toLowerCase().includes('battery') &&
+            !a.key.toLowerCase().includes('display') &&
+            !a.key.toLowerCase().includes('screen') &&
+            !a.key.toLowerCase().includes('camera') &&
+            !a.key.toLowerCase().includes('processor') &&
+            !a.key.toLowerCase().includes('cpu')
+          " class="bi bi-box-seam">
+              </i>
+
             </div>
 
-
+            <!-- SPECIFICATION DETAILS -->
             <div class="rd-spec-bottom-content">
 
               <span class="rd-spec-label">
@@ -361,6 +446,7 @@
         </div>
 
       </section>
+
 
 
 

@@ -6,6 +6,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PropertyCreateService } from '../../../services/property-create.service';
 import { StateMasterService } from '../../../services/State-Master/state-master.service';
 import { DistrictMasterService } from '../../../services/State-Master/district-master.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-property-list',
@@ -104,6 +105,10 @@ export class PropertyListComponent implements OnInit, OnDestroy {
   // ============================================================
 
   private propertySliderInterval: any;
+  loading = false;
+
+  videoPopupProperty: any = null;
+  popupVideoIndex = 0;
 
   // ============================================================
   // CONSTRUCTOR
@@ -164,6 +169,26 @@ export class PropertyListComponent implements OnInit, OnDestroy {
 
     }
 
+  }
+
+
+  openPropertyVideoPopup(property: any, event?: Event): void {
+    event?.stopPropagation();
+    if (!property?.propertyVideos?.length) return;
+    this.videoPopupProperty = property;
+    this.popupVideoIndex = 0;
+  }
+
+  closePropertyVideoPopup(): void {
+    // Removing the *ngIf video element stops playback and releases it.
+    this.videoPopupProperty = null;
+    this.popupVideoIndex = 0;
+  }
+
+  changePopupVideo(direction: number): void {
+    const count = this.videoPopupProperty?.propertyVideos?.length || 0;
+    if (!count) return;
+    this.popupVideoIndex = (this.popupVideoIndex + direction + count) % count;
   }
 
   // ============================================================
@@ -227,8 +252,16 @@ export class PropertyListComponent implements OnInit, OnDestroy {
 
   loadProperties(): void {
 
+    this.loading = true;
+
     this.propertyService
       .getApprovedProperties()
+      .pipe(
+        finalize(() => {
+          // Hide skeleton loader on success or error
+          this.loading = false;
+        })
+      )
       .subscribe({
 
         next: (res: any) => {
@@ -286,12 +319,12 @@ export class PropertyListComponent implements OnInit, OnDestroy {
                     )
                       ? [...p.images]
                       : [
-                          {
-                            image_s3_key:
-                              'https://via.placeholder.com/400x300/cccccc/ffffff?text=No+Image',
-                            is_primary: false
-                          }
-                        ];
+                        {
+                          image_s3_key:
+                            'https://via.placeholder.com/400x300/cccccc/ffffff?text=No+Image',
+                          is_primary: false
+                        }
+                      ];
 
                   // Primary image first
                   images.sort(
@@ -310,41 +343,41 @@ export class PropertyListComponent implements OnInit, OnDestroy {
                     Array.isArray(p?.videos)
 
                       ? p.videos
-                          .map(
-                            (video: any) => {
+                        .map(
+                          (video: any) => {
 
-                              const videoUrl =
-                                video?.video_s3_key
-                                ||
-                                video?.video_url
-                                ||
-                                video?.url
-                                ||
-                                video?.file_url
-                                ||
-                                '';
+                            const videoUrl =
+                              video?.video_s3_key
+                              ||
+                              video?.video_url
+                              ||
+                              video?.url
+                              ||
+                              video?.file_url
+                              ||
+                              '';
 
-                              if (!videoUrl) {
+                            if (!videoUrl) {
 
-                                return null;
-
-                              }
-
-                              return {
-
-                                ...video,
-
-                                video_url:
-                                  videoUrl
-
-                              };
+                              return null;
 
                             }
-                          )
-                          .filter(
-                            (video: any) =>
-                              video !== null
-                          )
+
+                            return {
+
+                              ...video,
+
+                              video_url:
+                                videoUrl
+
+                            };
+
+                          }
+                        )
+                        .filter(
+                          (video: any) =>
+                            video !== null
+                        )
 
                       : [];
 
@@ -1049,7 +1082,7 @@ export class PropertyListComponent implements OnInit, OnDestroy {
 
     // SORT
     switch (
-      this.selectedSort
+    this.selectedSort
     ) {
 
       case 'price_low':
@@ -1196,7 +1229,7 @@ export class PropertyListComponent implements OnInit, OnDestroy {
     if (
       page >= 1 &&
       page <=
-        this.totalPages
+      this.totalPages
     ) {
 
       this.currentPage =
@@ -1561,9 +1594,9 @@ export class PropertyListComponent implements OnInit, OnDestroy {
     return found
       ? found.label
       : (
-          value ||
-          ''
-        );
+        value ||
+        ''
+      );
 
   }
 
@@ -1585,9 +1618,9 @@ export class PropertyListComponent implements OnInit, OnDestroy {
     return found
       ? found.label
       : (
-          value ||
-          ''
-        );
+        value ||
+        ''
+      );
 
   }
 

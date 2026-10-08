@@ -146,33 +146,88 @@
           </div> -->
         </div>
 
-        <!-- Grid -->
-        <div class="rl-grid" *ngIf="filteredListings.length > 0; else noResults">
+
+        <!-- ========================================= -->
+        <!-- QNX REMART PRODUCT SKELETON LOADER -->
+        <!-- ========================================= -->
+
+        <div class="rl-loading-grid" *ngIf="loading">
+
+          <div class="rl-skeleton-card" *ngFor="let skeleton of [1, 2, 3, 4, 5, 6]">
+
+            <!-- IMAGE -->
+            <div class="rl-skeleton-image rl-shimmer">
+              <div class="rl-skeleton-badge"></div>
+            </div>
+
+            <!-- CONTENT -->
+            <div class="rl-skeleton-content">
+
+              <!-- CATEGORY -->
+              <div class="rl-skeleton-category rl-shimmer"></div>
+
+              <!-- TITLE -->
+              <div class="rl-skeleton-title rl-shimmer"></div>
+
+              <!-- DESCRIPTION -->
+              <div class="rl-skeleton-description rl-shimmer"></div>
+
+              <!-- LOCATION -->
+              <div class="rl-skeleton-location rl-shimmer"></div>
+
+              <!-- PRICE -->
+              <div class="rl-skeleton-price rl-shimmer"></div>
+
+              <!-- BUTTONS -->
+              <div class="rl-skeleton-buttons">
+                <div class="rl-skeleton-btn rl-shimmer"></div>
+                <div class="rl-skeleton-btn rl-shimmer"></div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ========================================= -->
+        <!-- ACTUAL PRODUCT LISTING GRID -->
+        <!-- ========================================= -->
+
+        <div class="rl-grid" *ngIf="!loading && filteredListings.length > 0">
 
           <div class="rl-col" *ngFor="let item of filteredListings">
 
             <div class="rl-glass-card">
 
-              <!-- FULL BACKGROUND IMAGE -->
+              <!-- ================================= -->
+              <!-- PRODUCT IMAGE -->
+              <!-- ================================= -->
+
               <div class="rl-full-image-wrap" (click)="goToDetails(item)">
 
                 <img [src]="item.images?.length
-            ? item.images[item.currentImgIndex]?.image_url
+            ? item.images[item.currentImgIndex || 0]?.image_url
             : 'assets/placeholder.png'" [alt]="item.title" class="rl-full-bg" loading="lazy"
                   onerror="this.src='assets/placeholder.png'" />
 
                 <!-- Light Overlay -->
                 <div class="rl-bg-overlay"></div>
 
-                <!-- Full Gloss Animation -->
+                <!-- Gloss Effect -->
                 <div class="rl-full-gloss"></div>
 
               </div>
 
 
+              <!-- ================================= -->
               <!-- IMAGE NAVIGATION -->
+              <!-- ================================= -->
+
               <ng-container *ngIf="item.images?.length > 1">
 
+                <!-- PREVIOUS IMAGE -->
                 <button type="button" class="rl-glass-nav rl-glass-prev" (click)="prevImage(item, $event)"
                   title="Previous">
 
@@ -180,25 +235,27 @@
 
                 </button>
 
-
+                <!-- NEXT IMAGE -->
                 <button type="button" class="rl-glass-nav rl-glass-next" (click)="nextImage(item, $event)" title="Next">
 
                   <i class="bi bi-chevron-right"></i>
 
                 </button>
 
-
-                <!-- Image Counter -->
+                <!-- IMAGE COUNTER -->
                 <span class="rl-glass-counter">
-                  {{ item.currentImgIndex + 1 }} / {{ item.images.length }}
+
+                  {{ (item.currentImgIndex || 0) + 1 }}
+                  /
+                  {{ item.images.length }}
+
                 </span>
 
-
-                <!-- Image Dots -->
+                <!-- IMAGE DOTS -->
                 <div class="rl-glass-dots">
 
                   <span *ngFor="let img of item.images; let i = index" class="rl-glass-dot"
-                    [class.active]="i === item.currentImgIndex" (click)="setImage(item, i, $event)">
+                    [class.active]="i === (item.currentImgIndex || 0)" (click)="setImage(item, i, $event)">
                   </span>
 
                 </div>
@@ -206,7 +263,10 @@
               </ng-container>
 
 
+              <!-- ================================= -->
               <!-- FEATURED BADGE -->
+              <!-- ================================= -->
+
               <div class="rl-featured-badge" *ngIf="item.is_featured">
 
                 <i class="bi bi-star-fill"></i>
@@ -215,7 +275,10 @@
               </div>
 
 
-              <!-- GLASS CONTENT -->
+              <!-- ================================= -->
+              <!-- PRODUCT INFORMATION -->
+              <!-- ================================= -->
+
               <div class="rl-glass-content">
 
                 <!-- CATEGORY + CONDITION -->
@@ -227,7 +290,6 @@
 
                   </span>
 
-
                   <span class="rl-condition-badge">
 
                     {{ getConditionLabel(item.condition) }}
@@ -237,8 +299,8 @@
                 </div>
 
 
-                <!-- TITLE -->
-                <h6 class="rl-glass-name" (click)="goToDetails(item)">
+                <!-- PRODUCT TITLE -->
+                <h6 class="rl-glass-name" (click)="goToDetails(item)" [title]="item.title">
 
                   {{ item.title }}
 
@@ -258,8 +320,10 @@
 
                   <i class="bi bi-geo-alt-fill"></i>
 
-                  <span>
+                  <span [title]="locationLine(item)">
+
                     {{ locationLine(item) }}
+
                   </span>
 
                 </div>
@@ -269,13 +333,17 @@
                 <div class="rl-glass-divider"></div>
 
 
-                <!-- PRICE -->
+                <!-- ================================= -->
+                <!-- PRODUCT PRICE -->
+                <!-- ================================= -->
+
                 <div class="rl-glass-price-row">
 
                   <span class="rl-glass-price">
-                    {{ formatPrice(item.price) }}
-                  </span>
 
+                    {{ formatPrice(item.price) }}
+
+                  </span>
 
                   <span class="rl-glass-negotiable" *ngIf="item.is_negotiable">
 
@@ -286,20 +354,26 @@
                 </div>
 
 
+                <!-- ================================= -->
                 <!-- ACTION BUTTONS -->
+                <!-- ================================= -->
+
                 <div class="rl-glass-actions">
 
+                  <!-- DETAILS -->
                   <button type="button" class="rl-details-btn" (click)="goToDetails(item)">
 
                     <i class="bi bi-eye"></i>
+
                     Details
 
                   </button>
 
-
+                  <!-- ENQUIRY -->
                   <button type="button" class="rl-enquiry-btn" (click)="goToEnquiry(item)">
 
                     <i class="bi bi-chat-dots"></i>
+
                     Enquiry
 
                   </button>
@@ -313,6 +387,30 @@
           </div>
 
         </div>
+
+
+        <!-- ========================================= -->
+        <!-- NO PRODUCTS FOUND -->
+        <!-- ========================================= -->
+
+        <div class="rl-empty" *ngIf="!loading && filteredListings.length === 0">
+
+          <i class="bi bi-box-seam rl-empty-icon"></i>
+
+          <h5>No products found</h5>
+
+          <p>
+            Try adjusting your filters or browse all listings.
+          </p>
+
+          <button type="button" class="rl-btn rl-btn-primary" (click)="clearAllFilters()">
+
+            Clear Filters
+
+          </button>
+
+        </div>
+
 
         <!-- Pagination -->
         <!-- <div class="rl-pagination" *ngIf="totalPages > 1">
@@ -337,7 +435,7 @@
         </div> -->
 
         <ng-template #noResults>
-          <div class="rl-empty">
+          <div class="rl-empty" *ngIf="!loading">
             <i class="bi bi-box-seam rl-empty-icon"></i>
             <h5>No products found</h5>
             <p>Try adjusting your filters or browse all listings.</p>
