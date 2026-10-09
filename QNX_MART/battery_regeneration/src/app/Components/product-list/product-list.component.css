@@ -784,8 +784,13 @@
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes slideUp {
@@ -793,6 +798,7 @@
         opacity: 0;
         transform: translate(-50%, -45%);
     }
+
     to {
         opacity: 1;
         transform: translate(-50%, -50%);
@@ -1014,7 +1020,9 @@
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* Franchise Enquiry Form Popup */
@@ -1309,4 +1317,144 @@
 .pl-page-btn i.bi-chevron-double-left,
 .pl-page-btn i.bi-chevron-double-right {
     font-size: 12px;
+}
+
+
+
+.pl-price-filter {
+    width: 100%;
+}
+
+.pl-range-badge {
+    font-size: 11px;
+    font-weight: 700;
+    color: #2563eb;
+    background: #eff6ff;
+    padding: 5px 8px;
+    border-radius: 8px;
+    white-space: normal;
+    text-align: right;
+}
+
+.pl-range-container {
+    position: relative;
+    height: 22px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.pl-range-track {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: #e2e8f0;
+    border-radius: 10px;
+}
+
+.pl-range-active {
+    position: absolute;
+    height: 5px;
+    background: linear-gradient(90deg, #3525cd, #06b6d4);
+    border-radius: 10px;
+    pointer-events: none;
+}
+
+.pl-range-input {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 22px;
+    margin: 0;
+    background: transparent;
+    appearance: none;
+    -webkit-appearance: none;
+    pointer-events: none;
+}
+
+.pl-range-input::-webkit-slider-runnable-track {
+    background: transparent;
+    height: 5px;
+}
+
+.pl-range-input::-moz-range-track {
+    background: transparent;
+    height: 5px;
+}
+
+.pl-range-input::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid #3525cd;
+    box-shadow: 0 2px 7px rgba(53, 37, 205, 0.2);
+    cursor: pointer;
+    pointer-events: auto;
+    margin-top: -6px;
+}
+
+.pl-range-input::-moz-range-thumb {
+    width: 13px;
+    height: 13px;
+    border: 3px solid #3525cd;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.pl-range-min {
+    z-index: 3;
+}
+
+.pl-range-max {
+    z-index: 4;
+}
+
+.pl-range-limit {
+    color: #64748b;
+    font-size: 11px;
+}
+
+.pl-price-field {
+    flex: 1;
+    min-width: 0;
+}
+
+.pl-price-field label {
+    display: block;
+    font-size: 10px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #64748b;
+}
+
+.pl-price-field input {
+    width: 100%;
+    height: 34px;
+    border-radius: 8px;
+    border: 1px solid #dbe3ef;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.pl-price-field input:focus {
+    border-color: #3525cd;
+    box-shadow: 0 0 0 2px rgba(53, 37, 205, 0.1);
+}
+
+.pl-price-separator {
+    margin-top: 17px;
+    color: #94a3b8;
+}
+
+.pl-price-filter .btn {
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 8px;
 }

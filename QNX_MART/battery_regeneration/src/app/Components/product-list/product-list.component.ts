@@ -52,6 +52,9 @@ export class ProductListComponent implements OnInit {
   franchiseError = '';
   showNoPlansMessage = false;
 
+  sliderMaxPrice: number = 5000;
+  priceStep: number = 10;
+
   constructor(
     private productService: ProductService,
     private router: Router,
@@ -117,6 +120,51 @@ export class ProductListComponent implements OnInit {
         this.applyFilters(search);
       });
     });
+  }
+
+
+  onMinPriceChange(value: number | string): void {
+    const n = Number(value);
+    if (!Number.isFinite(n)) return;
+
+    this.priceMin = Math.max(
+      0,
+      Math.min(n, this.priceMax ?? this.sliderMaxPrice)
+    );
+  }
+
+  onMaxPriceChange(value: number | string): void {
+    const n = Number(value);
+    if (!Number.isFinite(n)) return;
+
+    this.priceMax = Math.min(
+      this.sliderMaxPrice,
+      Math.max(n, this.priceMin ?? 0)
+    );
+  }
+
+  getMinPricePercent(): number {
+    return this.sliderMaxPrice > 0
+      ? ((this.priceMin ?? 0) / this.sliderMaxPrice) * 100
+      : 0;
+  }
+
+  getMaxPricePercent(): number {
+    return this.sliderMaxPrice > 0
+      ? ((this.priceMax ?? this.sliderMaxPrice) / this.sliderMaxPrice) * 100
+      : 100;
+  }
+
+  // Increase or decrease slider range
+  changePriceRange(value: number): void {
+    this.sliderMaxPrice = value === 0
+      ? this.maxProductPrice
+      : value;
+
+    this.priceStep = this.sliderMaxPrice <= 5000 ? 10 : 100;
+
+    this.priceMin = null;
+    this.priceMax = null;
   }
 
   // ngOnInit() {
@@ -288,29 +336,110 @@ export class ProductListComponent implements OnInit {
     return count;
   }
 
+  // applyFilters(search: string = '') {
+  //   let temp = [...this.products];
+
+  //   if (this.activeCat) temp = temp.filter(p => p.category_name === this.activeCat);
+  //   if (this.activeSubCat) temp = temp.filter(p => p.subcategory_name === this.activeSubCat);
+  //   if (this.activeBrand) temp = temp.filter(p => p.brand_name === this.activeBrand);
+
+  //   if (this.priceMin !== null) temp = temp.filter(p => Number(p.final_price || p.price) >= this.priceMin!);
+  //   if (this.priceMax !== null) temp = temp.filter(p => Number(p.final_price || p.price) <= this.priceMax!);
+
+  //   if (search) {
+  //     temp = temp.filter(p =>
+  //       p.name?.toLowerCase().includes(search) ||
+  //       p.category_name?.toLowerCase().includes(search) ||
+  //       p.description?.toLowerCase().includes(search)
+  //     );
+  //   }
+
+  //   switch (this.selectedSort) {
+  //     case 'price_low': temp.sort((a, b) => Number(a.final_price || a.price) - Number(b.final_price || b.price)); break;
+  //     case 'price_high': temp.sort((a, b) => Number(b.final_price || b.price) - Number(a.final_price || a.price)); break;
+  //     case 'a_z': temp.sort((a, b) => a.name.localeCompare(b.name)); break;
+  //     case 'z_a': temp.sort((a, b) => b.name.localeCompare(a.name)); break;
+  //   }
+
+  //   this.filteredProducts = temp;
+  //   this.resetPagination();
+  // }
+
   applyFilters(search: string = '') {
     let temp = [...this.products];
 
-    if (this.activeCat) temp = temp.filter(p => p.category_name === this.activeCat);
-    if (this.activeSubCat) temp = temp.filter(p => p.subcategory_name === this.activeSubCat);
-    if (this.activeBrand) temp = temp.filter(p => p.brand_name === this.activeBrand);
-
-    if (this.priceMin !== null) temp = temp.filter(p => Number(p.final_price || p.price) >= this.priceMin!);
-    if (this.priceMax !== null) temp = temp.filter(p => Number(p.final_price || p.price) <= this.priceMax!);
-
-    if (search) {
-      temp = temp.filter(p =>
-        p.name?.toLowerCase().includes(search) ||
-        p.category_name?.toLowerCase().includes(search) ||
-        p.description?.toLowerCase().includes(search)
+    // Category Filter
+    if (this.activeCat) {
+      temp = temp.filter(
+        p => p.category_name === this.activeCat
       );
     }
 
+    // Subcategory Filter
+    if (this.activeSubCat) {
+      temp = temp.filter(
+        p => p.subcategory_name === this.activeSubCat
+      );
+    }
+
+    // Brand Filter
+    if (this.activeBrand) {
+      temp = temp.filter(
+        p => p.brand_name === this.activeBrand
+      );
+    }
+
+    // Minimum Price Filter
+    if (this.priceMin !== null) {
+      temp = temp.filter(
+        p => this.getFinalPrice(p) >= this.priceMin!
+      );
+    }
+
+    // Maximum Price Filter
+    if (this.priceMax !== null) {
+      temp = temp.filter(
+        p => this.getFinalPrice(p) <= this.priceMax!
+      );
+    }
+
+    // Search Filter
+    const searchText = search.trim().toLowerCase();
+
+    if (searchText) {
+      temp = temp.filter(p =>
+        p.name?.toLowerCase().includes(searchText) ||
+        p.category_name?.toLowerCase().includes(searchText) ||
+        p.description?.toLowerCase().includes(searchText)
+      );
+    }
+
+    // Sorting
     switch (this.selectedSort) {
-      case 'price_low': temp.sort((a, b) => Number(a.final_price || a.price) - Number(b.final_price || b.price)); break;
-      case 'price_high': temp.sort((a, b) => Number(b.final_price || b.price) - Number(a.final_price || a.price)); break;
-      case 'a_z': temp.sort((a, b) => a.name.localeCompare(b.name)); break;
-      case 'z_a': temp.sort((a, b) => b.name.localeCompare(a.name)); break;
+
+      case 'price_low':
+        temp.sort(
+          (a, b) => this.getFinalPrice(a) - this.getFinalPrice(b)
+        );
+        break;
+
+      case 'price_high':
+        temp.sort(
+          (a, b) => this.getFinalPrice(b) - this.getFinalPrice(a)
+        );
+        break;
+
+      case 'a_z':
+        temp.sort(
+          (a, b) => (a.name || '').localeCompare(b.name || '')
+        );
+        break;
+
+      case 'z_a':
+        temp.sort(
+          (a, b) => (b.name || '').localeCompare(a.name || '')
+        );
+        break;
     }
 
     this.filteredProducts = temp;

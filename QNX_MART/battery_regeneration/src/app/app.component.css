@@ -1,0 +1,75 @@
+/* Default: Desktop & Tablet - Hidden */
+.qnx-mobile-bottom-nav {
+  display: none !important;
+}
+
+/* Only Mobile View */
+@media screen and (max-width: 767px) {
+
+  .qnx-mobile-bottom-nav {
+    display: flex !important;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    width: 100%;
+    height: calc(58px + env(safe-area-inset-bottom, 0px));
+    padding: 4px 6px env(safe-area-inset-bottom, 0px);
+
+    background: #ffffff;
+    border-top: 1px solid #e8edf4;
+
+    align-items: center;
+    justify-content: space-around;
+    z-index: 9999;
+
+    box-shadow: 0 -3px 15px rgba(0, 0, 0, 0.05);
+  }
+
+  .qnx-nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+
+    color: #6c7890;
+    text-decoration: none;
+    font-size: 9px;
+    font-weight: 500;
+  }
+
+  .qnx-nav-icon {
+    width: 44px;
+    height: 26px;
+    border-radius: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .qnx-nav-icon i {
+    font-size: 19px;
+    line-height: 1;
+  }
+
+  /* Icons Color */
+  .qnx-nav-item:nth-child(1) .qnx-nav-icon { color: #246cff; }
+  .qnx-nav-item:nth-child(2) .qnx-nav-icon { color: #a855f7; }
+  .qnx-nav-item:nth-child(3) .qnx-nav-icon { color: #f97316; }
+  .qnx-nav-item:nth-child(4) .qnx-nav-icon { color: #16a89a; }
+  .qnx-nav-item:nth-child(5) .qnx-nav-icon { color: #ec4899; }
+
+  /* Active Navigation */
+  .qnx-nav-item.active {
+    color: #246cff;
+    font-weight: 700;
+  }
+
+  .qnx-nav-item.active .qnx-nav-icon {
+    background: #e7f0ff;
+  }
+}

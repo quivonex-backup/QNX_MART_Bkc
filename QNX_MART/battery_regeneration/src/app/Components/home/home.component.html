@@ -335,7 +335,7 @@
 
                         <!-- FULL IMAGE -->
                         <img [src]="product.thumbnail_s3_key" [alt]="product.name" class="product-full-bg"
-                           (click)="viewDetails(product)" onerror="this.src='assets/placeholder.png'" />
+                            (click)="viewDetails(product)" onerror="this.src='assets/placeholder.png'" />
 
                         <!-- VERY LIGHT OVERLAY -->
                         <div class="product-bg-overlay"></div>
@@ -367,7 +367,7 @@
                             </div>
 
                             <h6 class="product-glass-name" (click)="viewDetails(product)">
-                              {{ product.name }}
+                                {{ product.name }}
                             </h6>
 
                             <div class="product-stock">
@@ -389,15 +389,14 @@
 
                             <div class="product-glass-price">
 
+                                <!-- Final Price -->
                                 <span class="final-price">
-                                    ₹{{ product.final_price }}
+                                    ₹{{ getFinalPrice(product) }}
                                 </span>
 
-                                <span class="original-price"
-                                    *ngIf="product.price && product.price > product.final_price">
-
-                                    ₹{{ product.price }}
-
+                                <!-- Original Price -->
+                                <span class="original-price" *ngIf="getOriginalPrice(product) > getFinalPrice(product)">
+                                    ₹{{ getOriginalPrice(product) }}
                                 </span>
 
                             </div>
@@ -701,25 +700,79 @@
         </ul>
     </div>
 
-    <!-- 4. PRICE RANGE -->
-    <div class="mb-3 pb-3 border-bottom">
-        <div class="d-flex justify-content-between align-items-center mb-2">
-            <span class="fw-bold text-dark" style="font-size: 13px;"><i class="bi bi-currency-rupee me-1"></i>Price
-                Range</span>
+    <!-- 4. PREMIUM PRICE RANGE FILTER -->
+    <div class="pl-price-filter mb-3 pb-3 border-bottom">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <span class="fw-bold text-dark" style="font-size: 13px;">
+                <i class="bi bi-currency-rupee me-1"></i>
+                Price Range
+            </span>
+
+            <span class="pl-range-badge">
+                ₹{{ priceMin ?? 0 }} - ₹{{ priceMax ?? maxProductPrice }}
+            </span>
         </div>
-        <div class="pl-price-inputs d-flex align-items-center gap-2 mb-2 px-0">
-            <input type="number" class="form-control form-control-sm" [(ngModel)]="priceMin" placeholder="Min ₹" min="0"
-                (change)="applyFilters()" style="font-size: 12px;" />
-            <span class="text-muted">—</span>
-            <input type="number" class="form-control form-control-sm" [(ngModel)]="priceMax" placeholder="Max ₹" min="0"
-                (change)="applyFilters()" style="font-size: 12px;" />
+
+        <!-- DUAL RANGE SLIDER -->
+        <div class="pl-range-container">
+
+            <div class="pl-range-track"></div>
+
+            <div class="pl-range-active" [style.left.%]="getMinPricePercent()"
+                [style.right.%]="100 - getMaxPricePercent()">
+            </div>
+
+            <!-- MINIMUM PRICE SLIDER -->
+            <input type="range" class="pl-range-input pl-range-min" [min]="0" [max]="maxProductPrice" [step]="priceStep"
+                [ngModel]="priceMin ?? 0" (ngModelChange)="onMinPriceChange($event)" aria-label="Minimum price" />
+
+            <!-- MAXIMUM PRICE SLIDER -->
+            <input type="range" class="pl-range-input pl-range-max" [min]="0" [max]="maxProductPrice" [step]="priceStep"
+                [ngModel]="priceMax ?? maxProductPrice" (ngModelChange)="onMaxPriceChange($event)"
+                aria-label="Maximum price" />
+
         </div>
-        <div class="d-flex gap-2">
-            <button class="btn btn-sm btn-primary w-100 py-1" style="font-size: 11px;"
-                (click)="applyFilters()">Apply</button>
-            <button class="btn btn-sm btn-outline-secondary w-100 py-1" style="font-size: 11px;"
-                *ngIf="priceMin !== null || priceMax !== null" (click)="clearPriceFilter()">Clear</button>
+
+        <!-- MIN MAX LABELS -->
+        <div class="d-flex justify-content-between mt-2 mb-3">
+            <span class="pl-range-limit">₹0</span>
+            <span class="pl-range-limit">₹{{ maxProductPrice }}</span>
         </div>
+
+        <!-- MANUAL PRICE INPUTS -->
+        <div class="pl-price-inputs d-flex align-items-center gap-2">
+
+            <div class="pl-price-field">
+                <label>Minimum</label>
+                <input type="number" class="form-control form-control-sm" [ngModel]="priceMin ?? 0"
+                    (ngModelChange)="onMinPriceChange($event)" min="0" [max]="maxProductPrice" />
+            </div>
+
+            <span class="pl-price-separator">—</span>
+
+            <div class="pl-price-field">
+                <label>Maximum</label>
+                <input type="number" class="form-control form-control-sm" [ngModel]="priceMax ?? maxProductPrice"
+                    (ngModelChange)="onMaxPriceChange($event)" min="0" [max]="maxProductPrice" />
+            </div>
+
+        </div>
+
+        <!-- BUTTONS -->
+        <div class="d-flex gap-2 mt-3">
+
+            <button class="btn btn-primary btn-sm w-100" (click)="applyFilters()">
+                <i class="bi bi-check2 me-1"></i>
+                Apply
+            </button>
+
+            <button class="btn btn-outline-secondary btn-sm w-100" (click)="clearPriceFilter()">
+                Clear
+            </button>
+
+        </div>
+
     </div>
 
     <!-- Customer Rating Section -->

@@ -556,51 +556,133 @@
   transform: translateY(-7.5px) rotate(-45deg);
 }
 
-/* ===== MOBILE SEARCH ===== */
+/* ===== MOBILE SEARCH DROPDOWN ===== */
+
 .qnx-mobile-search {
-  display: none;
+  position: relative;
+  overflow: visible !important;
+}
+
+.qnx-mobile-search-box {
+  position: relative;
+  width: 100%;
+}
+
+.qnx-mobile-search-btn {
+  border: 0;
+  background: #3525cd;
+  color: #fff;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  margin: 4px;
+  display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 10px 16px 16px;
-  background: #ffffff;
-  border-top: 1px solid var(--nav-border);
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-.qnx-mobile-search i {
-  color: var(--nav-text-muted);
-  font-size: 16px;
+.qnx-mobile-results {
+  position: absolute;
+  top: calc(100% + 7px);
+  left: 0;
+  right: 0;
+  z-index: 1100;
+
+  background: #fff;
+  border: 1px solid #e8edf5;
+  border-radius: 14px;
+
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.16);
+
+  max-height: min(360px, 55vh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
-.qnx-mobile-search input {
-  flex: 1;
+.qnx-mobile-results-list {
+  padding: 5px;
+}
+
+.qnx-mobile-result-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px;
+
   border: none;
-  outline: none;
-  background: rgba(0, 0, 0, 0.02);
-  border-radius: 50px;
-  padding: 10px 16px;
-  font-size: 14px;
-  color: var(--nav-text) !important;
-  border: 1px solid #e2e8f0;
-  transition: border-color 0.2s;
+  background: #fff;
+  text-align: left;
+  border-bottom: 1px solid #f0f2f6;
+  cursor: pointer;
 }
 
-.qnx-mobile-search input:focus {
-  border-color: var(--nav-active-color);
+.qnx-mobile-result-item:last-child {
+  border-bottom: none;
 }
 
-.qnx-mobile-search input::placeholder {
-  color: var(--nav-text-muted);
+.qnx-mobile-result-item:active {
+  background: #f3f4ff;
 }
 
-/* Clear button for mobile search */
-.qnx-mobile-search .search-clear-btn {
-  padding: 0 8px;
-  font-size: 16px;
-  color: var(--nav-text-muted);
+.qnx-mobile-result-image {
+  width: 46px;
+  height: 46px;
+  border-radius: 9px;
+  object-fit: contain;
+  border: 1px solid #eef0f4;
+  flex-shrink: 0;
 }
 
-.qnx-mobile-search .search-clear-btn:hover {
-  color: var(--nav-text);
+.qnx-mobile-result-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.qnx-mobile-result-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #17233b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.qnx-mobile-result-category {
+  font-size: 10px;
+  color: #8791a2;
+}
+
+.qnx-mobile-result-price {
+  font-size: 13px;
+  color: #3525cd;
+  font-weight: 700;
+}
+
+.qnx-result-arrow {
+  font-size: 12px;
+  color: #98a2b3;
+}
+
+.qnx-mobile-no-results {
+  text-align: center;
+  padding: 22px 12px;
+  color: #8791a2;
+}
+
+.qnx-mobile-no-results p {
+  font-size: 12px;
+  margin: 8px 0 0;
+}
+
+@media (min-width: 992px) {
+  .qnx-mobile-results {
+    display: none !important;
+  }
 }
 
 /* ===== MOBILE MENU ===== */
@@ -988,3 +1070,69 @@
   transform: translateX(4px);
 }
 
+
+
+
+
+
+
+
+/* MOBILE SEARCH DROPDOWN VISIBILITY FIX */
+
+@media screen and (max-width: 991px) {
+
+  .qnx-nav {
+    overflow: visible !important;
+  }
+
+  .qnx-mobile-search {
+    position: relative !important;
+    display: block !important;
+    overflow: visible !important;
+    z-index: 5000 !important;
+    isolation: isolate;
+  }
+
+  .qnx-mobile-search-box {
+    position: relative !important;
+    width: 100%;
+    overflow: visible !important;
+  }
+
+  .qnx-mobile-search-box .input-group {
+    position: relative;
+    overflow: visible !important;
+  }
+
+  .qnx-mobile-results {
+    display: block !important;
+    position: absolute !important;
+
+    top: calc(100% + 8px) !important;
+    left: 0 !important;
+    right: 0 !important;
+
+    width: 100% !important;
+    max-height: 350px !important;
+    overflow-y: auto !important;
+
+    background: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 12px !important;
+
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18) !important;
+
+    z-index: 99999 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  .qnx-mobile-result-item {
+    position: relative;
+    width: 100%;
+    display: flex !important;
+    align-items: center;
+    cursor: pointer;
+  }
+}

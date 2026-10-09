@@ -31,9 +31,13 @@
           <span class="input-group-text bg-transparent border-0 ps-3 text-primary">
             <i class="bi bi-stars"></i>
           </span>
-          <input type="text" class="form-control bg-transparent border-0 shadow-none ps-1 py-2 small"
-            placeholder="Search products,cars, furniture and more..." [(ngModel)]="searchQuery"
-            (keyup)="onSearchKey($event)" (keydown.enter)="search()" />
+          <input type="text" class="form-control bg-transparent border-0 shadow-none ps-1 py-2 small" [placeholder]="
+  isRealEstateRoute
+    ? 'Search flats, plots, villas, properties...'
+    : isRemartRoute
+      ? 'Search used cars, bikes, furniture...'
+      : 'Search products, brands, categories...'
+" [(ngModel)]="searchQuery" (keyup)="onSearchKey($event)" (keydown.enter)="search()" />
           <button class="btn btn-link text-muted text-decoration-none px-2" *ngIf="searchQuery.length > 0"
             (click)="clearSearch()" title="Clear search" type="button">
             <i class="bi bi-x-lg"></i>
@@ -49,11 +53,31 @@
           <div *ngIf="searchResults.length > 0">
             <div class="dropdown-item d-flex align-items-center gap-3 py-2 rounded-3 cursor-pointer"
               *ngFor="let item of searchResults" (click)="goToProduct(item)" role="button">
-              <img [src]="item.thumbnail_s3_key || 'assets/no-image.png'" width="40" height="40"
-                class="rounded-3 object-fit-cover" />
+              <!-- Product / Property / Remart Image -->
+              <img [src]="searchResultType === 'property'
+    ? (item.images?.[0]?.image_s3_key || 'assets/no-image.png')
+    : searchResultType === 'remart'
+        ? (item.images?.[0]?.image_url || item.thumbnail_s3_key || 'assets/no-image.png')
+    : (item.thumbnail_s3_key || 'assets/no-image.png')" [alt]="item.name || item.title || 'Search result'" width="40"
+                height="40" class="rounded-3 object-fit-cover" />
+
               <div class="flex-grow-1">
-                <span class="fw-semibold text-dark d-block text-truncate">{{ item.name }}</span>
-                <span class="text-primary fw-bold small">₹{{ item.final_price || item.price }}</span>
+
+                <!-- Name -->
+                <span class="fw-semibold text-dark d-block text-truncate">
+                  {{ item.name || item.title }}
+                </span>
+
+                <!-- Property Location -->
+                <span *ngIf="searchResultType === 'property'" class="text-muted small d-block">
+                  {{ item.city }} {{ item.area }}
+                </span>
+
+                <!-- Product / Remart Price -->
+                <span *ngIf="searchResultType !== 'property'" class="text-primary fw-bold small">
+                  ₹{{ item.final_price ?? item.price }}
+                </span>
+
               </div>
             </div>
           </div>
@@ -245,18 +269,100 @@
 
   <!-- ===== MOBILE SEARCH ===== -->
   <div class="qnx-mobile-search bg-light px-3 py-2 d-lg-none border-top">
-    <div class="input-group bg-white rounded-pill border overflow-hidden shadow-sm">
-      <span class="input-group-text bg-transparent border-0 ps-3 text-primary">
-        <i class="bi bi-search"></i>
-      </span>
-      <input type="text" class="form-control bg-transparent border-0 shadow-none ps-1 py-1.5 small"
-        placeholder="Search products, services..." [(ngModel)]="searchQuery" (keyup)="onSearchKey($event)"
-        (keydown.enter)="search()" />
-      <button class="btn btn-link text-muted text-decoration-none px-2" *ngIf="searchQuery.length > 0"
-        (click)="clearSearch()" title="Clear search" type="button">
-        <i class="bi bi-x-lg"></i>
-      </button>
+
+    <div class="qnx-mobile-search-box">
+
+      <div class="input-group bg-white rounded-pill border shadow-sm">
+
+        <!-- Search Icon -->
+        <span class="input-group-text bg-transparent border-0 ps-3">
+          <i class="bi bi-search text-primary"></i>
+        </span>
+
+        <!-- Input -->
+        <input type="text" class="form-control bg-transparent border-0 shadow-none ps-1 py-2 small" [placeholder]="
+  isRealEstateRoute
+    ? 'Search flats, plots, villas, properties...'
+    : isRemartRoute
+      ? 'Search used cars, bikes, furniture...'
+      : 'Search products, brands, categories...'
+" [(ngModel)]="searchQuery" (keyup)="onSearchKey($event)" (keydown.enter)="search()" autocomplete="off" />
+
+        <!-- Clear -->
+        <button *ngIf="searchQuery.length > 0" type="button" class="btn btn-link text-muted px-2"
+          (click)="clearSearch()">
+
+          <i class="bi bi-x-lg"></i>
+
+        </button>
+
+        <!-- Search Button -->
+        <button type="button" class="qnx-mobile-search-btn" (click)="search()">
+
+          <i class="bi bi-arrow-right"></i>
+
+        </button>
+
+      </div>
+
+      <!-- MOBILE SEARCH DROPDOWN -->
+      <div class="qnx-mobile-results" *ngIf="showResults && searchQuery.trim()">
+
+        <div *ngIf="searchResults.length > 0" class="qnx-mobile-results-list">
+
+          <button type="button" class="qnx-mobile-result-item" *ngFor="let item of searchResults"
+            (click)="goToProduct(item)">
+
+            <!-- Image -->
+            <img [src]="searchResultType === 'property'
+      ? (item.images?.[0]?.image_s3_key || 'assets/no-image.png')
+       : searchResultType === 'remart'
+        ? (item.images?.[0]?.image_url || item.thumbnail_s3_key || 'assets/no-image.png')
+      : (item.thumbnail_s3_key || 'assets/no-image.png')" [alt]="item.name || item.title || 'Search result'"
+              class="qnx-mobile-result-image" />
+
+            <div class="qnx-mobile-result-info">
+
+              <!-- Name -->
+              <span class="qnx-mobile-result-name">
+                {{ item.name || item.title }}
+              </span>
+
+              <!-- Property Location -->
+              <span *ngIf="searchResultType === 'property'" class="qnx-mobile-result-category">
+                {{ item.city }} {{ item.area }}
+              </span>
+
+              <!-- Product Category -->
+              <span *ngIf="searchResultType !== 'property'" class="qnx-mobile-result-category">
+                {{ item.category_name }}
+              </span>
+
+              <!-- Product / Remart Price -->
+              <strong *ngIf="searchResultType !== 'property'" class="qnx-mobile-result-price">
+                ₹{{ item.final_price ?? item.price }}
+              </strong>
+
+            </div>
+
+            <i class="bi bi-chevron-right qnx-result-arrow"></i>
+
+          </button>
+
+        </div>
+
+        <!-- NO RESULTS -->
+        <div *ngIf="searchResults.length === 0" class="qnx-mobile-no-results">
+
+          <i class="bi bi-search"></i>
+          <p>No matching products found</p>
+
+        </div>
+
+      </div>
+
     </div>
+
   </div>
 
   <!-- ===== MOBILE MENU ===== -->
@@ -287,8 +393,7 @@
       <div class="d-flex flex-nowrap align-items-center gap-2" style="width: max-content;">
 
         <!-- A. QNXMart Shopping Categories Button (Only shown on Shopping Routes) -->
-        <a *ngIf="isShoppingRoute" routerLink="/product_list"
-          (click)="selectCategory('');"
+        <a *ngIf="isShoppingRoute" routerLink="/product_list" (click)="selectCategory('');"
           class="btn d-flex align-items-center gap-2 px-3 py-1.5 rounded-pill flex-shrink-0 shadow-sm border-0 text-white bg-primary text-decoration-none"
           style="height: 30px;" [ngClass]="{'bg-primary text-white': !activeCat, 'border': activeCat}">
           <i class="bi bi-grid-3x3-gap-fill" style="font-size: 15px;"></i>
@@ -750,7 +855,7 @@
     <div class="drawer-section border-bottom p-3">
 
       <div class="fw-bold text-dark mb-2" style="font-size: 15px;">
-       QNX ReMart
+        QNX ReMart
       </div>
 
       <a class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"

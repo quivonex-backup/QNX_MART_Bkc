@@ -54,7 +54,7 @@
 
 
 import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './Components/navbar/navbar.component';
 import { FooterComponent } from './Components/footer/footer.component';
 import { SellerRegistrationService } from '../services/seller-registration.service';
@@ -65,7 +65,7 @@ import { IdleService } from '../services/idle.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, NavbarComponent, FooterComponent],
+  imports: [CommonModule, RouterOutlet, NavbarComponent, FooterComponent,RouterLinkActive,RouterLink],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

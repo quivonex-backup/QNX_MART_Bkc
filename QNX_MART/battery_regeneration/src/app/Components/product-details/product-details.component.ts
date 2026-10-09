@@ -175,12 +175,47 @@ export class ProductDetailsComponent implements OnInit {
     }
   }
 
-  get displayPrice(): string {
-    if (this.activeVariant) {
-      // variant final_price is already calculated by backend (offer or product discount applied)
-      return this.activeVariant.final_price ?? this.activeVariant.price;
+  // get displayPrice(): string {
+  //   if (this.activeVariant) {
+  //     // variant final_price is already calculated by backend (offer or product discount applied)
+  //     return this.activeVariant.final_price ?? this.activeVariant.price;
+  //   }
+  //   return this.product?.final_price ?? this.product?.price ?? '0';
+  // }
+
+  get displayPrice(): number {
+    const item = this.activeVariant || this.product;
+
+    return this.getCalculatedFinalPrice(item);
+  }
+
+  getCalculatedFinalPrice(item: any): number {
+    if (!item) return 0;
+
+    const price = Number(item.price) || 0;
+
+    // Backend calculated offer price
+    if (item.applied_offer && item.final_price != null) {
+      return Math.round(
+        Math.max(0, Number(item.final_price) || 0)
+      );
     }
-    return this.product?.final_price ?? this.product?.price ?? '0';
+
+    const discount = Number(item.discount_value) || 0;
+
+    if (item.discount_type === 'percent') {
+      return Math.round(
+        Math.max(0, price - (price * discount / 100))
+      );
+    }
+
+    if (item.discount_type === 'flat') {
+      return Math.round(
+        Math.max(0, price - discount)
+      );
+    }
+
+    return Math.round(price);
   }
 
   // true when there's an actual saving to show strikethrough
@@ -362,35 +397,35 @@ export class ProductDetailsComponent implements OnInit {
   }
 
 
-async shareProduct(): Promise<void> {
-  const shareUrl = window.location.href;
+  async shareProduct(): Promise<void> {
+    const shareUrl = window.location.href;
 
-  const shareData = {
-    title: this.product?.name || 'Product',
-    text: `Check out this product: ${this.product?.name || ''}`,
-    url: shareUrl
-  };
+    const shareData = {
+      title: this.product?.name || 'Product',
+      text: `Check out this product: ${this.product?.name || ''}`,
+      url: shareUrl
+    };
 
-  // Mobile / supported browsers
-  if (navigator.share) {
-    try {
-      await navigator.share(shareData);
-    } catch (error) {
-      // User closed share popup
-      console.log('Share cancelled');
+    // Mobile / supported browsers
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (error) {
+        // User closed share popup
+        console.log('Share cancelled');
+      }
+      return;
     }
-    return;
-  }
 
-  // Desktop / unsupported browsers
-  try {
-    await navigator.clipboard.writeText(shareUrl);
+    // Desktop / unsupported browsers
+    try {
+      await navigator.clipboard.writeText(shareUrl);
 
-    alert('Product link copied successfully!');
-  } catch (error) {
-    console.error('Failed to copy link:', error);
-    alert('Unable to copy product link.');
+      alert('Product link copied successfully!');
+    } catch (error) {
+      console.error('Failed to copy link:', error);
+      alert('Unable to copy product link.');
+    }
   }
-}
 
 }

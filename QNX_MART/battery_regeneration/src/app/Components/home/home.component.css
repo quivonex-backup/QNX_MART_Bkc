@@ -3120,3 +3120,143 @@
     box-shadow:
         0 0 0 3px rgba(40, 167, 69, 0.18);
 }
+
+
+
+/* PREMIUM PRICE RANGE FILTER */
+
+.pl-price-filter {
+  width: 100%;
+}
+
+.pl-range-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: #2563eb;
+  background: #eff6ff;
+  padding: 5px 9px;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+.pl-range-container {
+  position: relative;
+  height: 22px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.pl-range-track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: #e2e8f0;
+  border-radius: 10px;
+}
+
+.pl-range-active {
+  position: absolute;
+  height: 5px;
+  background: linear-gradient(90deg, #2563eb, #06b6d4);
+  border-radius: 10px;
+  pointer-events: none;
+}
+
+.pl-range-input {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 22px;
+  margin: 0;
+  background: transparent;
+  pointer-events: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.pl-range-input::-webkit-slider-runnable-track {
+  background: transparent;
+  height: 5px;
+}
+
+.pl-range-input::-moz-range-track {
+  background: transparent;
+  height: 5px;
+}
+
+.pl-range-input::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  height: 17px;
+  width: 17px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 3px solid #2563eb;
+  box-shadow: 0 2px 7px rgba(37, 99, 235, 0.25);
+  cursor: pointer;
+  pointer-events: auto;
+  margin-top: -6px;
+}
+
+.pl-range-input::-moz-range-thumb {
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 3px solid #2563eb;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.pl-range-min {
+  z-index: 3;
+}
+
+.pl-range-max {
+  z-index: 4;
+}
+
+.pl-range-limit {
+  color: #64748b;
+  font-size: 11px;
+}
+
+.pl-price-field {
+  flex: 1;
+  min-width: 0;
+}
+
+.pl-price-field label {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #64748b;
+}
+
+.pl-price-field input {
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid #dbe3ef;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.pl-price-field input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+
+.pl-price-separator {
+  margin-top: 17px;
+  color: #94a3b8;
+}
+
+.pl-price-filter .btn {
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 8px;
+}

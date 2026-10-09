@@ -70,6 +70,10 @@ export class HomeComponent implements OnInit {
 
   isReelPlaying: boolean = true;
 
+  // Price range configuration
+  maxProductPrice: number = 500000;
+  priceStep: number = 1;
+
   constructor(
     private http: HttpClient,
     private cartService: AddCartService,
@@ -109,6 +113,15 @@ export class HomeComponent implements OnInit {
         } else {
           this.products = this.allProducts;
           this.discountLabel = '';
+
+          const highestPrice = Math.max(
+            0,
+            ...this.allProducts.map((p: any) =>
+              this.getFinalPrice(p)
+            )
+          );
+
+          this.maxProductPrice = Math.max(1, Math.ceil(highestPrice));
         }
 
         this.buildSidebarData();
@@ -132,6 +145,47 @@ export class HomeComponent implements OnInit {
     });
 
 
+  }
+
+  // Minimum price change
+  onMinPriceChange(value: number | string): void {
+    const numberValue = Number(value);
+    if (!Number.isFinite(numberValue)) return;
+
+    const newValue = Math.max(
+      0,
+      Math.min(numberValue, this.priceMax ?? this.maxProductPrice)
+    );
+
+    this.priceMin = newValue === 0 ? null : newValue;
+  }
+
+  // Maximum price change
+  onMaxPriceChange(value: number | string): void {
+    const numberValue = Number(value);
+    if (!Number.isFinite(numberValue)) return;
+
+    const newValue = Math.min(
+      this.maxProductPrice,
+      Math.max(numberValue, this.priceMin ?? 0)
+    );
+
+    this.priceMax =
+      newValue === this.maxProductPrice ? null : newValue;
+  }
+
+  // Minimum percentage
+  getMinPricePercent(): number {
+    if (this.maxProductPrice <= 0) return 0;
+
+    return ((this.priceMin ?? 0) / this.maxProductPrice) * 100;
+  }
+
+  // Maximum percentage
+  getMaxPricePercent(): number {
+    if (this.maxProductPrice <= 0) return 100;
+
+    return ((this.priceMax ?? this.maxProductPrice) / this.maxProductPrice) * 100;
   }
 
   @HostListener('window:scroll', [])
@@ -318,8 +372,16 @@ export class HomeComponent implements OnInit {
     if (this.activeSubCat) temp = temp.filter(p => p.subcategory_name === this.activeSubCat);
     if (this.activeBrand) temp = temp.filter(p => p.brand_name === this.activeBrand);
 
-    if (this.priceMin !== null) temp = temp.filter(p => Number(p.final_price || p.price) >= this.priceMin!);
-    if (this.priceMax !== null) temp = temp.filter(p => Number(p.final_price || p.price) <= this.priceMax!);
+    // if (this.priceMin !== null) temp = temp.filter(p => Number(p.final_price || p.price) >= this.priceMin!);
+    // if (this.priceMax !== null) temp = temp.filter(p => Number(p.final_price || p.price) <= this.priceMax!);
+
+    if (this.priceMin !== null) {
+      temp = temp.filter(p => this.getFinalPrice(p) >= this.priceMin!);
+    }
+
+    if (this.priceMax !== null) {
+      temp = temp.filter(p => this.getFinalPrice(p) <= this.priceMax!);
+    }
 
     if (search) {
       temp = temp.filter(p =>
@@ -329,11 +391,34 @@ export class HomeComponent implements OnInit {
       );
     }
 
+    // switch (this.selectedSort) {
+    //   case 'price_low': temp.sort((a, b) => Number(a.final_price || a.price) - Number(b.final_price || b.price)); break;
+    //   case 'price_high': temp.sort((a, b) => Number(b.final_price || b.price) - Number(a.final_price || a.price)); break;
+    //   case 'a_z': temp.sort((a, b) => a.name.localeCompare(b.name)); break;
+    //   case 'z_a': temp.sort((a, b) => b.name.localeCompare(a.name)); break;
+    // }
+
     switch (this.selectedSort) {
-      case 'price_low': temp.sort((a, b) => Number(a.final_price || a.price) - Number(b.final_price || b.price)); break;
-      case 'price_high': temp.sort((a, b) => Number(b.final_price || b.price) - Number(a.final_price || a.price)); break;
-      case 'a_z': temp.sort((a, b) => a.name.localeCompare(b.name)); break;
-      case 'z_a': temp.sort((a, b) => b.name.localeCompare(a.name)); break;
+
+      case 'price_low':
+        temp.sort((a, b) =>
+          this.getFinalPrice(a) - this.getFinalPrice(b)
+        );
+        break;
+
+      case 'price_high':
+        temp.sort((a, b) =>
+          this.getFinalPrice(b) - this.getFinalPrice(a)
+        );
+        break;
+
+      case 'a_z':
+        temp.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+
+      case 'z_a':
+        temp.sort((a, b) => b.name.localeCompare(a.name));
+        break;
     }
 
     // Direct assignment to latestProducts since pagination is no longer needed
@@ -378,16 +463,52 @@ export class HomeComponent implements OnInit {
     return parseFloat(product.price) || 0;
   }
 
+  // getFinalPrice(product: any): number {
+  //   if (product.applied_offer) {
+  //     return parseFloat(product.final_price) || parseFloat(product.price) || 0;
+  //   }
+  //   const price = parseFloat(product.price) || 0;
+  //   const discVal = parseFloat(product.discount_value) || 0;
+  //   if (!discVal) return price;
+  //   if (product.discount_type === 'percent') return Math.max(0, price - (price * discVal / 100));
+  //   if (product.discount_type === 'flat') return Math.max(0, price - discVal);
+  //   return price;
+  // }
+
   getFinalPrice(product: any): number {
+
     if (product.applied_offer) {
-      return parseFloat(product.final_price) || parseFloat(product.price) || 0;
+      return Math.round(
+        parseFloat(product.final_price) ||
+        parseFloat(product.price) ||
+        0
+      );
     }
+
     const price = parseFloat(product.price) || 0;
     const discVal = parseFloat(product.discount_value) || 0;
-    if (!discVal) return price;
-    if (product.discount_type === 'percent') return Math.max(0, price - (price * discVal / 100));
-    if (product.discount_type === 'flat') return Math.max(0, price - discVal);
-    return price;
+
+    if (!discVal) {
+      return Math.round(price);
+    }
+
+    if (product.discount_type === 'percent') {
+      const finalPrice = price - (price * discVal / 100);
+
+      return Math.round(
+        Math.max(0, finalPrice)
+      );
+    }
+
+    if (product.discount_type === 'flat') {
+      const finalPrice = price - discVal;
+
+      return Math.round(
+        Math.max(0, finalPrice)
+      );
+    }
+
+    return Math.round(price);
   }
 
   getRecentlyViewedProducts() {
