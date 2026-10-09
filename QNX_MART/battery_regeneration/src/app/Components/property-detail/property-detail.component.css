@@ -1168,3 +1168,17 @@
     background: rgba(255, 255, 255, 0.3);
     transform: rotate(90deg);
 }
+
+
+
+.pd-share-btn{display:inline-flex; align-items:center; gap:9px; padding:10px 15px; flex:none;
+  background:#fff; border:1px solid #d7e2f1; color:var(--pd-blue); border-radius:11px;
+  font-size:13px; font-weight:650; cursor:pointer; transition:background .2s,border-color .2s;
+}
+.pd-share-btn:hover{background:#f0f5ff;border-color:#b7cdfb;}
+
+
+@media(max-width:520px){
+
+  .pd-share-btn{padding:9px 10px;}.pd-share-btn span{display:none;}
+}

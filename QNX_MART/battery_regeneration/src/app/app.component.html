@@ -5,12 +5,55 @@
 <!-- Only show navbar if NOT on hideLayout route -->
 <app-navbar *ngIf="!hideLayout"></app-navbar>
 
-<div
-  id="google_translate_element"
-  style="display: none !important;">
+<div id="google_translate_element" style="display: none !important;">
 </div>
 
 <router-outlet></router-outlet>
 
 <!-- Only show footer if NOT on hideLayout route -->
 <app-footer *ngIf="!hideLayout"></app-footer>
+
+<!-- MOBILE BOTTOM NAVIGATION -->
+<nav class="qnx-mobile-bottom-nav" *ngIf="!hideLayout" aria-label="Mobile bottom navigation">
+
+  <!-- HOME -->
+  <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="qnx-nav-item">
+    <div class="qnx-nav-icon">
+      <i class="bi bi-house-door-fill"></i>
+    </div>
+    <span>Home</span>
+  </a>
+
+  <!-- PRODUCTS -->
+  <a routerLink="/product_list" routerLinkActive="active" class="qnx-nav-item">
+    <div class="qnx-nav-icon">
+      <i class="bi bi-shop"></i>
+    </div>
+    <span>Products</span>
+  </a>
+
+  <!-- CART -->
+  <a routerLink="/add_to_cart" routerLinkActive="active" class="qnx-nav-item">
+    <div class="qnx-nav-icon">
+      <i class="bi bi-cart3"></i>
+    </div>
+    <span>Cart</span>
+  </a>
+
+  <!-- ORDERS -->
+  <a routerLink="/my-orders" routerLinkActive="active" class="qnx-nav-item">
+    <div class="qnx-nav-icon">
+      <i class="bi bi-truck"></i>
+    </div>
+    <span>Orders</span>
+  </a>
+
+  <!-- ACCOUNT -->
+  <a routerLink="/profile" routerLinkActive="active" class="qnx-nav-item">
+    <div class="qnx-nav-icon">
+      <i class="bi bi-person"></i>
+    </div>
+    <span>Account</span>
+  </a>
+
+</nav>

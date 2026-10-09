@@ -70,6 +70,29 @@ export class PropertyDetailComponent implements OnInit, OnDestroy {
   }
 
 
+  async shareProperty(): Promise<void> {
+    const url = window.location.href;
+    const title = this.publicTitle || 'Property on QNX Mart';
+    const shareData = { title, text: `Check out ${title} on QNX Mart`, url };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+        return;
+      } catch (err: unknown) {
+        // A user dismissing the native share sheet is not an error.
+        if (err instanceof DOMException && err.name === 'AbortError') return;
+      }
+    }
+
+    try {
+      await navigator.clipboard.writeText(url);
+      window.alert('Property link copied!');
+    } catch {
+      window.prompt('Copy this property link:', url);
+    }
+  }
+
   openImageFullscreen(imageUrl: string): void {
     this.fullscreenImage = imageUrl;
     document.body.style.overflow = 'hidden';
@@ -820,3 +843,4 @@ export class PropertyDetailComponent implements OnInit, OnDestroy {
     this.stopAutoSlide();
   }
 }
+

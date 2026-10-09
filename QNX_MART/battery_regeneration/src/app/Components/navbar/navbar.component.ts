@@ -99,6 +99,10 @@ export class NavbarComponent implements OnInit {
   activeRemartCat: any = '';
   isShoppingRoute: boolean = false;
 
+  searchResultType: 'product' | 'property' | 'remart' = 'product';
+
+  private searchRequestId = 0;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -418,8 +422,8 @@ export class NavbarComponent implements OnInit {
     this.activeBrand = '';
 
     if (!cat) {
-      
-      this.router.navigate(['/product_list']); 
+
+      this.router.navigate(['/product_list']);
     } else {
       // इतर कॅटेगरीवर क्लिक केल्यास प्रॉडक्ट लिस्ट पेजवर जा
       this.router.navigate(['/product_list'], {
@@ -631,30 +635,190 @@ export class NavbarComponent implements OnInit {
     }
   }
 
-  onSearchKey(event: KeyboardEvent) {
-    if (event.key === 'Enter') {
-      this.search();
-      return;
-    }
+  // onSearchKey(event: KeyboardEvent) {
+  //   if (event.key === 'Enter') {
+  //     this.search();
+  //     return;
+  //   }
+  //   clearTimeout(this.searchTimeout);
+  //   const q = this.searchQuery.trim();
+  //   if (!q) {
+  //     this.showResults = false;
+  //     this.searchResults = [];
+  //     return;
+  //   }
+  //   this.searchTimeout = setTimeout(() => {
+  //     this.productService.searchApprovedProducts(q).subscribe({
+  //       next: (res: any) => {
+  //         this.searchResults = res.data || [];
+  //         this.showResults = true;
+  //       },
+  //       error: () => {
+  //         this.searchResults = [];
+  //         this.showResults = false;
+  //       }
+  //     });
+  //   }, 400);
+  // }
+
+  onSearchKey(event: Event): void {
     clearTimeout(this.searchTimeout);
-    const q = this.searchQuery.trim();
+
+    const q = this.searchQuery.trim().toLowerCase();
+    const requestId = ++this.searchRequestId;
+
     if (!q) {
-      this.showResults = false;
       this.searchResults = [];
+      this.showResults = false;
       return;
     }
+
     this.searchTimeout = setTimeout(() => {
-      this.productService.searchApprovedProducts(q).subscribe({
-        next: (res: any) => {
-          this.searchResults = res.data || [];
-          this.showResults = true;
-        },
-        error: () => {
-          this.searchResults = [];
-          this.showResults = false;
-        }
-      });
-    }, 400);
+
+      if (this.isRealEstateRoute) {
+
+        this.searchResultType = 'property';
+
+        this.propertyService.getApprovedProperties().subscribe({
+          next: (res: any) => {
+            if (requestId !== this.searchRequestId) return;
+
+            const properties = Array.isArray(res.data)
+              ? res.data
+              : [];
+
+            this.searchResults = properties.filter((p: any) => {
+              const text = [
+                p.title,
+                p.name,
+                p.city,
+                p.area,
+                p.description,
+                p.property_type
+              ].filter(Boolean).join(' ').toLowerCase();
+
+              return text.includes(q);
+            });
+
+            this.showResults = true;
+          },
+          error: () => {
+            if (requestId !== this.searchRequestId) return;
+            this.searchResults = [];
+            this.showResults = false;
+          }
+        });
+
+      } else if (this.isRemartRoute) {
+
+        this.searchResultType = 'remart';
+
+        // Remart listing API जोडण्यासाठी खाली दिलेली
+        // loadRemartSearchResults method वापरा.
+        this.loadRemartSearchResults(q, requestId);
+
+      } else {
+
+        this.searchResultType = 'product';
+
+        this.productService.getProducts({}).subscribe({
+          next: (res: any) => {
+            if (requestId !== this.searchRequestId) return;
+
+            const products = Array.isArray(res.data)
+              ? res.data
+              : [];
+
+            this.searchResults = products.filter((p: any) => {
+              const text = [
+                p.name,
+                p.brand_name,
+                p.category_name,
+                p.description
+              ].filter(Boolean).join(' ').toLowerCase();
+
+              return p.is_active === true &&
+                p.status === 'approved' &&
+                text.includes(q);
+            });
+
+            this.showResults = true;
+          },
+          error: () => {
+            if (requestId !== this.searchRequestId) return;
+            this.searchResults = [];
+            this.showResults = false;
+          }
+        });
+      }
+
+    }, 350);
+  }
+
+  loadRemartSearchResults(q: string, requestId: number): void {
+
+    this.olxService.getListings().subscribe({
+
+      next: (res: any) => {
+
+        // Prevent old search responses from overwriting new results
+        if (requestId !== this.searchRequestId) return;
+
+        // Handle API response
+        const listings = Array.isArray(res.data)
+          ? res.data
+          : Array.isArray(res.data?.results)
+            ? res.data.results
+            : Array.isArray(res.results)
+              ? res.results
+              : Array.isArray(res)
+                ? res
+                : [];
+
+        const searchText = q.trim().toLowerCase();
+
+        // Search in Remart listings
+        this.searchResults = listings.filter((item: any) => {
+
+          const searchableText = [
+            item.title,
+            item.name,
+            item.description,
+            item.category_name,
+            item.subcategory_name,
+            item.brand,
+            item.location,
+            item.city,
+            item.area
+          ]
+            .filter(value => typeof value === 'string')
+            .join(' ')
+            .toLowerCase();
+
+          return searchableText.includes(searchText);
+
+        });
+
+        this.searchResultType = 'remart';
+        this.showResults = true;
+
+        console.log('Remart Search Results:', this.searchResults);
+
+      },
+
+      error: (err) => {
+
+        if (requestId !== this.searchRequestId) return;
+
+        console.error('Remart search error:', err);
+
+        this.searchResults = [];
+        this.showResults = false;
+
+      }
+
+    });
+
   }
 
   clearSearch() {
@@ -686,21 +850,72 @@ export class NavbarComponent implements OnInit {
 
   searchQuery = '';
 
-  search() {
+  // search() {
+  //   const q = this.searchQuery.trim();
+  //   if (!q) return;
+  //   this.router.navigate(['/product-list'], { queryParams: { search: q } });
+  //   this.searchQuery = '';
+  //   this.isMobileMenuOpen = false;
+  // }
+
+  search(): void {
     const q = this.searchQuery.trim();
+
     if (!q) return;
-    this.router.navigate(['/product-list'], { queryParams: { search: q } });
+
+    let path = '/product_list';
+
+    if (this.isRealEstateRoute) {
+      path = '/property-list';
+    } else if (this.isRemartRoute) {
+      path = '/remart-product-list';
+    }
+
+    this.router.navigate([path], {
+      queryParams: { search: q }
+    });
+
     this.searchQuery = '';
-    this.isMobileMenuOpen = false;
+    this.searchResults = [];
+    this.showResults = false;
   }
 
-  goToProduct(product: any) {
-    this.router.navigate(['/product-details', product.slug]);
-    this.activeDropdown = '';
-    this.showResults = false;
+  goToProduct(item: any): void {
+
+    if (this.searchResultType === 'property') {
+      // तुमच्या property-detail route प्रमाणे वापरा
+      this.router.navigate(['/property-detail', item.slug]);
+
+    } else if (this.searchResultType === 'remart') {
+
+      const listingId = item.id ?? item.listing_id;
+
+      console.log('Selected Remart Product:', item);
+
+      this.router.navigate(['/remart-product-detail'], {
+        state: {
+          product: item,
+          listing: item,
+          listingId: listingId
+        }
+      });
+
+    } else {
+      this.router.navigate(['/product-details', item.slug]);
+    }
+
     this.searchResults = [];
+    this.showResults = false;
     this.searchQuery = '';
   }
+
+  // goToProduct(product: any) {
+  //   this.router.navigate(['/product-details', product.slug]);
+  //   this.activeDropdown = '';
+  //   this.showResults = false;
+  //   this.searchResults = [];
+  //   this.searchQuery = '';
+  // }
 
   goToProductList() {
     this.router.navigate(['/product_list']);
