@@ -1,14 +1,22 @@
-<nav class="qnx-nav fixed-top bg-white bg-opacity-95 backdrop-blur shadow-sm z-50" [class.scrolled]="isScrolled">
+<nav
+  class="qnx-nav fixed-top bg-white bg-opacity-95 backdrop-blur shadow-sm z-50"
+  [class.scrolled]="isScrolled"
+>
   <div class="container-fluid max-w-xxl px-3 py-2">
     <div class="d-flex align-items-center justify-content-between gap-3">
-
       <!-- ===== LOGO ===== -->
-      <a class="d-flex align-items-center gap-2 text-decoration-none shrink-0" routerLink="/home">
-
+      <a
+        class="d-flex align-items-center gap-2 text-decoration-none shrink-0"
+        routerLink="/home"
+      >
         <!-- Logo ani tyachya khali 'Go to Home' text vertical stack keli ahe -->
         <div class="d-flex flex-column align-items-center home-logo">
-          <img src="../../../assets/QNXMARTLOGO-removebg-preview.png" alt="QNXMart Logo" height="45"
-            class="object-contain" />
+          <img
+            src="../../../assets/QNXMARTLOGO-removebg-preview.png"
+            alt="QNXMart Logo"
+            height="45"
+            class="object-contain"
+          />
 
           <span class="go-home">
             Go to Home ◀️
@@ -19,119 +27,180 @@
         <!-- <span class="fw-bold fs-5 text-primary tracking-tight">QNXMart</span> -->
         <span
           class="badge rounded-pill bg-info text-dark d-none d-sm-inline-flex align-items-center gap-1 font-monospace"
-          style="font-size: 10px;">
-          <span class="spinner-grow spinner-grow-sm text-primary" style="width: 6px; height: 6px;" role="status"></span>
+          style="font-size: 10px"
+        >
+          <span
+            class="spinner-grow spinner-grow-sm text-primary"
+            style="width: 6px; height: 6px"
+            role="status"
+          ></span>
           Live Market
         </span>
       </a>
 
       <!-- ===== SEARCH with clear button & dropdown ===== -->
-      <div class="flex-grow-1 mx-2 d-none d-lg-block position-relative" style="max-width: 650px;">
-        <div class="input-group bg-light rounded-pill border overflow-hidden shadow-sm">
-          <span class="input-group-text bg-transparent border-0 ps-3 text-primary">
+      <div
+        class="flex-grow-1 mx-2 d-none d-lg-block position-relative"
+        style="max-width: 650px"
+      >
+        <div
+          class="input-group bg-light rounded-pill border overflow-hidden shadow-sm"
+        >
+          <span
+            class="input-group-text bg-transparent border-0 ps-3 text-primary"
+          >
             <i class="bi bi-stars"></i>
           </span>
-          <input type="text" class="form-control bg-transparent border-0 shadow-none ps-1 py-2 small" [placeholder]="
-  isRealEstateRoute
-    ? 'Search flats, plots, villas, properties...'
-    : isRemartRoute
-      ? 'Search used cars, bikes, furniture...'
-      : 'Search products, brands, categories...'
-" [(ngModel)]="searchQuery" (keyup)="onSearchKey($event)" (keydown.enter)="search()" />
-          <button class="btn btn-link text-muted text-decoration-none px-2" *ngIf="searchQuery.length > 0"
-            (click)="clearSearch()" title="Clear search" type="button">
+          <input
+            type="text"
+            class="form-control bg-transparent border-0 shadow-none ps-1 py-2 small"
+            [placeholder]="
+              isRealEstateRoute
+                ? 'Search flats, plots, villas, properties...'
+                : isRemartRoute
+                  ? 'Search used cars, bikes, furniture...'
+                  : 'Search products, brands, categories...'
+            "
+            [(ngModel)]="searchQuery"
+            (keyup)="onSearchKey($event)"
+            (keydown.enter)="search()"
+          />
+          <button
+            class="btn btn-link text-muted text-decoration-none px-2"
+            *ngIf="searchQuery.length > 0"
+            (click)="clearSearch()"
+            title="Clear search"
+            type="button"
+          >
             <i class="bi bi-x-lg"></i>
           </button>
-          <button class="btn btn-primary bg-primary px-4 rounded-pill m-1" type="button" (click)="search()">
+          <button
+            class="btn btn-primary bg-primary px-4 rounded-pill m-1"
+            type="button"
+            (click)="search()"
+          >
             <i class="bi bi-search me-1"></i> Search
           </button>
         </div>
 
         <!-- Search Dropdown Results -->
-        <div class="dropdown-menu w-100 shadow-lg border-0 rounded-4 mt-2 p-2 show" *ngIf="showResults && searchQuery"
-          style="max-height: 350px; overflow-y: auto; position: absolute; left: 0; right: 0; z-index: 1000;">
+        <div
+          class="dropdown-menu w-100 shadow-lg border-0 rounded-4 mt-2 p-2 show"
+          *ngIf="showResults && searchQuery"
+          style="
+            max-height: 350px;
+            overflow-y: auto;
+            position: absolute;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+          "
+        >
           <div *ngIf="searchResults.length > 0">
-            <div class="dropdown-item d-flex align-items-center gap-3 py-2 rounded-3 cursor-pointer"
-              *ngFor="let item of searchResults" (click)="goToProduct(item)" role="button">
+            <div
+              class="dropdown-item d-flex align-items-center gap-3 py-2 rounded-3 cursor-pointer"
+              *ngFor="let item of searchResults"
+              (click)="goToProduct(item)"
+              role="button"
+            >
               <!-- Product / Property / Remart Image -->
-              <img [src]="searchResultType === 'property'
-    ? (item.images?.[0]?.image_s3_key || 'assets/no-image.png')
-    : searchResultType === 'remart'
-        ? (item.images?.[0]?.image_url || item.thumbnail_s3_key || 'assets/no-image.png')
-    : (item.thumbnail_s3_key || 'assets/no-image.png')" [alt]="item.name || item.title || 'Search result'" width="40"
-                height="40" class="rounded-3 object-fit-cover" />
+              <img
+                [src]="
+                  searchResultType === 'property'
+                    ? item.images?.[0]?.image_s3_key || 'assets/no-image.png'
+                    : searchResultType === 'remart'
+                      ? item.images?.[0]?.image_url ||
+                        item.thumbnail_s3_key ||
+                        'assets/no-image.png'
+                      : item.thumbnail_s3_key || 'assets/no-image.png'
+                "
+                [alt]="item.name || item.title || 'Search result'"
+                width="40"
+                height="40"
+                class="rounded-3 object-fit-cover"
+              />
 
               <div class="flex-grow-1">
-
                 <!-- Name -->
                 <span class="fw-semibold text-dark d-block text-truncate">
                   {{ item.name || item.title }}
                 </span>
 
                 <!-- Property Location -->
-                <span *ngIf="searchResultType === 'property'" class="text-muted small d-block">
+                <span
+                  *ngIf="searchResultType === 'property'"
+                  class="text-muted small d-block"
+                >
                   {{ item.city }} {{ item.area }}
                 </span>
 
                 <!-- Product / Remart Price -->
-                <span *ngIf="searchResultType !== 'property'" class="text-primary fw-bold small">
+                <span
+                  *ngIf="searchResultType !== 'property'"
+                  class="text-primary fw-bold small"
+                >
                   ₹{{ item.final_price ?? item.price }}
                 </span>
-
               </div>
             </div>
           </div>
-          <div *ngIf="searchResults.length === 0" class="text-center text-muted py-3 small">No products found</div>
+          <div
+            *ngIf="searchResults.length === 0"
+            class="text-center text-muted py-3 small"
+          >
+            No products found
+          </div>
         </div>
       </div>
 
       <!-- ===== RIGHT SIDE ACTIONS ===== -->
       <div class="d-flex align-items-center gap-2 flex-shrink-0">
+      
+        <!-- LANGUAGE SELECTION -->
+<div class="dropdown d-flex notranslate language-dropdown-wrap">
 
-        <!-- Language Button -->
-        <div class="dropdown d-flex notranslate">
+  <button
+    type="button"
+    class="qnx-premium-action qnx-language-btn dropdown-toggle"
+    data-bs-toggle="dropdown"
+    data-bs-auto-close="true"
+    aria-expanded="false">
 
-          <button
-            class="btn btn-light btn-sm d-flex align-items-center gap-1 rounded-pill px-2 py-1 text-secondary dropdown-toggle"
-            type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="qnx-action-icon">
+      <i class="bi bi-globe2"></i>
+    </span>
 
-            <i class="bi bi-globe"></i>
+    <span class="qnx-action-label">
+      {{ getLanguageLabel() }}
+    </span>
 
-            <span>
-              {{ getLanguageLabel() }}
-            </span>
+    <i class="bi bi-chevron-down qnx-action-arrow"></i>
+  </button>
 
-          </button>
+  <ul class="dropdown-menu language-dropdown-menu shadow-lg border-0">
+    <li>
+      <button class="dropdown-item" type="button"
+        (click)="changeLanguage('en')">
+        English
+      </button>
+    </li>
 
-          <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+    <li>
+      <button class="dropdown-item" type="button"
+        (click)="changeLanguage('mr')">
+        मराठी
+      </button>
+    </li>
 
-            <li>
-              <button class="dropdown-item" type="button" (click)="changeLanguage('en')">
+    <li>
+      <button class="dropdown-item" type="button"
+        (click)="changeLanguage('hi')">
+        हिन्दी
+      </button>
+    </li>
+  </ul>
 
-                🇬🇧 English
-
-              </button>
-            </li>
-
-            <li>
-              <button class="dropdown-item" type="button" (click)="changeLanguage('mr')">
-
-                🇮🇳 मराठी
-
-              </button>
-            </li>
-
-            <li>
-              <button class="dropdown-item" type="button" (click)="changeLanguage('hi')">
-
-                🇮🇳 हिन्दी
-
-              </button>
-            </li>
-
-          </ul>
-
-        </div>
+</div>
 
         <!-- Extra Badges (Notifications, Saved, Messages) -->
         <!-- <div class="d-flex align-items-center gap-1">
@@ -150,52 +219,100 @@
         </div> -->
 
         <!-- Cart Button -->
-        <a class="btn btn-light btn-sm rounded-circle position-relative p-2 text-decoration-none text-dark d-flex align-items-center justify-content-center"
-          routerLink="/add_to_cart" title="Shopping Cart" style="width: 36px; height: 36px;">
-          <i class="bi bi-cart3 fs-6"></i>
-          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
-            *ngIf="cartCount > 0" style="font-size: 9px;">{{ cartCount }}</span>
-        </a>
+       <a
+  routerLink="/add_to_cart"
+  class="qnx-premium-action qnx-cart-btn"
+  title="Shopping Cart">
+
+  <span class="qnx-action-icon">
+    <i class="bi bi-cart3"></i>
+  </span>
+
+  <span class="qnx-action-label">Cart</span>
+
+  <span class="qnx-premium-cart-count"
+    *ngIf="cartCount > 0">
+    {{ cartCount }}
+  </span>
+
+</a>
 
         <!-- Post Listing / Sell Button -->
-        <a class="d-none sm-inline-flex align-items-center gap-1 btn btn-primary btn-sm rounded-pill px-3 py-2 shadow-sm text-nowrap"
-          routerLink="/add_products" style="background-color: #3525cd;">
+        <a
+          class="d-none sm-inline-flex align-items-center gap-1 btn btn-primary btn-sm rounded-pill px-3 py-2 shadow-sm text-nowrap"
+          routerLink="/add_products"
+          style="background-color: #3525cd"
+        >
           <i class="bi bi-plus-circle-fill"></i>
           <span>+ Sell / Post Listing</span>
         </a>
 
         <!-- Account Dropdown -->
-        <div class="dropdown nav-dropdown-wrap" [class.show]="isDropdownOpen('signin')">
-          <button
-            class="btn btn-light btn-sm rounded-pill d-flex align-items-center gap-1 px-2 py-1 text-dark dropdown-toggle"
-            type="button" (click)="toggleDropdown('signin')">
-            <i class="bi bi-person-circle fs-5 text-secondary"></i>
-            <span class="d-none d-xxl-inline small fw-semibold" *ngIf="!isLoggedIn">My Account</span>
-            <span class="d-none d-xxl-inline small fw-semibold" *ngIf="isLoggedIn">{{ username || '—' }}</span>
-          </button>
-          <div class="dropdown-menu dropdown-menu-start shadow-lg border-0 rounded-4 p-2 mt-2"
-            [class.show]="isDropdownOpen('signin')" (click)="$event.stopPropagation(); closeDropdown()"
-            style="min-width: 200px;">
-            <div class="p-2 text-center" *ngIf="!isLoggedIn">
-              <button class="btn btn-primary w-100 rounded-pill py-2" (click)="goToLogin(); activeDropdown=''"
-                style="background-color: #3525cd;">
-                <i class="bi bi-box-arrow-in-right me-1"></i> Sign In
-              </button>
-            </div>
-            <div *ngIf="isLoggedIn">
-              <button class="dropdown-item rounded-3 py-2 text-danger" (click)="logout()">
-                <i class="bi bi-box-arrow-right me-2"></i> Logout
-              </button>
-            </div>
-            <div class="dropdown-divider" *ngIf="isLoggedIn"></div>
-            <a class="dropdown-item rounded-3 py-2" routerLink="/profile">
-              <i class="bi bi-person-fill me-2 text-primary"></i> My Profile
-            </a>
-            <a class="dropdown-item rounded-3 py-2" routerLink="/seller-registration" (click)="activeDropdown=''">
-              <i class="bi bi-person-badge-fill me-2 text-primary"></i> Seller Profile
-            </a>
-          </div>
-        </div>
+      <div class="dropdown nav-dropdown-wrap qnx-account-wrap"
+  [class.show]="isDropdownOpen('signin')">
+
+  <button
+    type="button"
+    class="qnx-premium-action qnx-account-btn"
+    (click)="toggleDropdown('signin')"
+    [attr.aria-expanded]="isDropdownOpen('signin')">
+
+    <span class="qnx-action-icon">
+      <i class="bi bi-person-circle"></i>
+    </span>
+
+    <span class="qnx-action-label">
+      {{ isLoggedIn ? (username || 'My Account') : 'My Account' }}
+    </span>
+
+    <i class="bi bi-chevron-down qnx-action-arrow"></i>
+
+  </button>
+
+  <div
+    class="dropdown-menu dropdown-menu-end qnx-account-dropdown shadow-lg border-0"
+    [class.show]="isDropdownOpen('signin')"
+    (click)="$event.stopPropagation()">
+
+    <div class="qnx-account-heading">
+      <i class="bi bi-person-circle"></i>
+      <div>
+        <strong>{{ isLoggedIn ? (username || 'My Account') : 'Welcome to QNX Mart' }}</strong>
+        <small>{{ isLoggedIn ? 'Manage your account' : 'Sign in to continue' }}</small>
+      </div>
+    </div>
+
+    <div class="p-2" *ngIf="!isLoggedIn">
+      <button type="button"
+        class="qnx-account-signin"
+        (click)="goToLogin(); activeDropdown=''">
+        <i class="bi bi-box-arrow-in-right"></i>
+        Sign In
+      </button>
+    </div>
+
+    <a class="dropdown-item" routerLink="/profile"
+      (click)="activeDropdown=''">
+      <i class="bi bi-person-fill"></i>
+      My Profile
+    </a>
+
+    <a class="dropdown-item" routerLink="/seller-registration"
+      (click)="activeDropdown=''">
+      <i class="bi bi-shop"></i>
+      Seller Profile
+    </a>
+
+    <button *ngIf="isLoggedIn"
+      type="button"
+      class="dropdown-item text-danger"
+      (click)="logout()">
+      <i class="bi bi-box-arrow-right"></i>
+      Logout
+    </button>
+
+  </div>
+</div>
 
         <!-- Hamburger Menu Button -->
         <!-- <button class="navbar-toggler border-0 p-2 rounded-3 bg-light d-flex flex-column justify-content-center align-items-center gap-1" (click)="toggleMobileMenu()" [class.active]="isMobileMenuOpen" style="width: 40px; height: 40px;" type="button">
@@ -203,166 +320,211 @@
           <span class="bg-dark rounded-pill" style="width: 20px; height: 2px;"></span>
           <span class="bg-dark rounded-pill" style="width: 20px; height: 2px;"></span>
         </button> -->
-
       </div>
     </div>
 
     <!-- ===== VERTICAL NAVIGATION TABS (फक्त मोबाईलवर एरो दिसतील) ===== -->
     <div
-      class="d-flex align-items-center justify-content-between overflow-hidden pt-1 border-top px-3 position-relative">
-
+      class="d-flex align-items-center justify-content-between overflow-hidden pt-1 border-top px-3 position-relative"
+    >
       <!-- डावीकडील रिकामी जागा (मोबाईलवर लपलेली राहील) -->
-      <div class="d-none d-xl-flex flex-shrink-0" style="width: 180px;"></div>
+      <div class="d-none d-xl-flex flex-shrink-0" style="width: 180px"></div>
 
       <!-- LEFT SCROLL ARROW -->
-      <button *ngIf="showNavLeftArrow" (click)="scrollNavTabs(navTabsScroll, -200)"
+      <button
+        *ngIf="showNavLeftArrow"
+        (click)="scrollNavTabs(navTabsScroll, -200)"
         class="btn btn-light border shadow-sm position-absolute start-0 ms-1 d-flex align-items-center justify-content-center rounded-circle z-2 bg-white"
-        style="width: 32px; height: 32px; top: 50%; transform: translateY(-50%);">
-        <i class="bi bi-chevron-left text-dark" style="font-size: 14px;"></i>
+        style="width: 32px; height: 32px; top: 50%; transform: translateY(-50%)"
+      >
+        <i class="bi bi-chevron-left text-dark" style="font-size: 14px"></i>
       </button>
 
       <!-- सेंटरला असलेले नेव्हिगेशन टॅब्स (इथे px-1 ऐवजी px-5 केले आहे) -->
-      <div id="navTabsScroll" #navTabsScroll (scroll)="checkNavScroll(navTabsScroll)"
+      <div
+        id="navTabsScroll"
+        #navTabsScroll
+        (scroll)="checkNavScroll(navTabsScroll)"
         class="w-100 px-1 mx-auto d-flex justify-content-start justify-content-xl-center overflow-auto"
-        style="scrollbar-width: none; scroll-behavior: smooth;">
-
-        <nav class="nav nav-pills gap-2 flex-nowrap align-items-center" style="width: max-content;">
+        style="scrollbar-width: none; scroll-behavior: smooth"
+      >
+        <nav
+          class="nav nav-pills gap-2 flex-nowrap align-items-center"
+          style="width: max-content"
+        >
           <!-- QNXMart Tab -->
-          <a class="nav-link rounded-pill px-3 py-1.5 fw-semibold small text-nowrap border"
-            style="font-size: 15px; background-color: #f0f4ff; color: #303f9f; border-color: #d1e0fc !important;"
-            routerLink="/home" routerLinkActive="bg-primary text-white border-primary shadow-sm"
-            [routerLinkActiveOptions]="{exact: true}">
+          <a
+            class="nav-link rounded-pill px-3 py-1.5 fw-semibold small text-nowrap border"
+            style="
+              font-size: 15px;
+              background-color: #f0f4ff;
+              color: #303f9f;
+              border-color: #d1e0fc !important;
+            "
+            routerLink="/home"
+            [class.bg-primary]="isShoppingRoute"
+            [class.text-white]="isShoppingRoute"
+            [class.shadow-sm]="isShoppingRoute"
+            [class.qnx-main-tab-active]="isShoppingRoute"
+          >
             QNXMart — Shopping & Products
           </a>
 
           <!-- Real Estate Tab -->
-          <a class="nav-link rounded-pill px-3 py-1.5 fw-semibold small text-nowrap border"
-            style="font-size: 15px; background-color: #f0f4ff; color: #303f9f; border-color: #d1e0fc !important;"
-            routerLink="/property-list" routerLinkActive="bg-primary text-white border-primary shadow-sm"
-            [routerLinkActiveOptions]="{exact: true}">
+          <a
+            class="nav-link rounded-pill px-3 py-1.5 fw-semibold small text-nowrap border"
+            style="
+              font-size: 15px;
+              background-color: #f0f4ff;
+              color: #303f9f;
+              border-color: #d1e0fc !important;
+            "
+            routerLink="/property-list"
+            [class.qnx-main-tab-active]="isRealEstateRoute"
+          >
             Real Estate — Buy, Sell & Rent
           </a>
 
           <!-- Old Market Tab -->
-          <a class="nav-link rounded-pill px-3 py-1.5 fw-semibold small text-nowrap border"
-            style="font-size: 15px; background-color: #f0f4ff; color: #303f9f; border-color: #d1e0fc !important;"
-            routerLink="/remart-product-list" routerLinkActive="bg-primary text-white border-primary shadow-sm"
-            [routerLinkActiveOptions]="{exact: true}">
+          <a
+            class="nav-link rounded-pill px-3 py-1.5 fw-semibold small text-nowrap border"
+            style="
+              font-size: 15px;
+              background-color: #f0f4ff;
+              color: #303f9f;
+              border-color: #d1e0fc !important;
+            "
+            routerLink="/remart-product-list"
+            [class.qnx-main-tab-active]="isRemartRoute"
+          >
             QNXRemart — Used & Resale
           </a>
         </nav>
-
       </div>
 
       <!-- RIGHT SCROLL ARROW -->
-      <button *ngIf="showNavRightArrow" (click)="scrollNavTabs(navTabsScroll, 200)"
+      <button
+        *ngIf="showNavRightArrow"
+        (click)="scrollNavTabs(navTabsScroll, 200)"
         class="btn btn-light border shadow-sm position-absolute end-0 me-1 d-flex align-items-center justify-content-center rounded-circle z-2 bg-white"
-        style="width: 32px; height: 32px; top: 50%; transform: translateY(-50%);">
-        <i class="bi bi-chevron-right text-dark" style="font-size: 14px;"></i>
+        style="width: 32px; height: 32px; top: 50%; transform: translateY(-50%)"
+      >
+        <i class="bi bi-chevron-right text-dark" style="font-size: 14px"></i>
       </button>
 
       <!-- उजवीकडील रिकामी जागा (मोबाईलवर लपलेली राहील) -->
-      <div class="d-none d-xl-flex flex-shrink-0" style="width: 180px;"></div>
-
+      <div class="d-none d-xl-flex flex-shrink-0" style="width: 180px"></div>
     </div>
   </div>
 
   <!-- ===== MOBILE SEARCH ===== -->
   <div class="qnx-mobile-search bg-light px-3 py-2 d-lg-none border-top">
-
     <div class="qnx-mobile-search-box">
-
       <div class="input-group bg-white rounded-pill border shadow-sm">
-
         <!-- Search Icon -->
         <span class="input-group-text bg-transparent border-0 ps-3">
           <i class="bi bi-search text-primary"></i>
         </span>
 
         <!-- Input -->
-        <input type="text" class="form-control bg-transparent border-0 shadow-none ps-1 py-2 small" [placeholder]="
-  isRealEstateRoute
-    ? 'Search flats, plots, villas, properties...'
-    : isRemartRoute
-      ? 'Search used cars, bikes, furniture...'
-      : 'Search products, brands, categories...'
-" [(ngModel)]="searchQuery" (keyup)="onSearchKey($event)" (keydown.enter)="search()" autocomplete="off" />
+        <input
+          type="text"
+          class="form-control bg-transparent border-0 shadow-none ps-1 py-2 small"
+          [placeholder]="
+            isRealEstateRoute
+              ? 'Search flats, plots, villas, properties...'
+              : isRemartRoute
+                ? 'Search used cars, bikes, furniture...'
+                : 'Search products, brands, categories...'
+          "
+          [(ngModel)]="searchQuery"
+          (keyup)="onSearchKey($event)"
+          (keydown.enter)="search()"
+          autocomplete="off"
+        />
 
         <!-- Clear -->
-        <button *ngIf="searchQuery.length > 0" type="button" class="btn btn-link text-muted px-2"
-          (click)="clearSearch()">
-
+        <button
+          *ngIf="searchQuery.length > 0"
+          type="button"
+          class="btn btn-link text-muted px-2"
+          (click)="clearSearch()"
+        >
           <i class="bi bi-x-lg"></i>
-
         </button>
 
         <!-- Search Button -->
         <button type="button" class="qnx-mobile-search-btn" (click)="search()">
-
           <i class="bi bi-arrow-right"></i>
-
         </button>
-
       </div>
 
       <!-- MOBILE SEARCH DROPDOWN -->
       <div class="qnx-mobile-results" *ngIf="showResults && searchQuery.trim()">
-
         <div *ngIf="searchResults.length > 0" class="qnx-mobile-results-list">
-
-          <button type="button" class="qnx-mobile-result-item" *ngFor="let item of searchResults"
-            (click)="goToProduct(item)">
-
+          <button
+            type="button"
+            class="qnx-mobile-result-item"
+            *ngFor="let item of searchResults"
+            (click)="goToProduct(item)"
+          >
             <!-- Image -->
-            <img [src]="searchResultType === 'property'
-      ? (item.images?.[0]?.image_s3_key || 'assets/no-image.png')
-       : searchResultType === 'remart'
-        ? (item.images?.[0]?.image_url || item.thumbnail_s3_key || 'assets/no-image.png')
-      : (item.thumbnail_s3_key || 'assets/no-image.png')" [alt]="item.name || item.title || 'Search result'"
-              class="qnx-mobile-result-image" />
+            <img
+              [src]="
+                searchResultType === 'property'
+                  ? item.images?.[0]?.image_s3_key || 'assets/no-image.png'
+                  : searchResultType === 'remart'
+                    ? item.images?.[0]?.image_url ||
+                      item.thumbnail_s3_key ||
+                      'assets/no-image.png'
+                    : item.thumbnail_s3_key || 'assets/no-image.png'
+              "
+              [alt]="item.name || item.title || 'Search result'"
+              class="qnx-mobile-result-image"
+            />
 
             <div class="qnx-mobile-result-info">
-
               <!-- Name -->
               <span class="qnx-mobile-result-name">
                 {{ item.name || item.title }}
               </span>
 
               <!-- Property Location -->
-              <span *ngIf="searchResultType === 'property'" class="qnx-mobile-result-category">
+              <span
+                *ngIf="searchResultType === 'property'"
+                class="qnx-mobile-result-category"
+              >
                 {{ item.city }} {{ item.area }}
               </span>
 
               <!-- Product Category -->
-              <span *ngIf="searchResultType !== 'property'" class="qnx-mobile-result-category">
+              <span
+                *ngIf="searchResultType !== 'property'"
+                class="qnx-mobile-result-category"
+              >
                 {{ item.category_name }}
               </span>
 
               <!-- Product / Remart Price -->
-              <strong *ngIf="searchResultType !== 'property'" class="qnx-mobile-result-price">
+              <strong
+                *ngIf="searchResultType !== 'property'"
+                class="qnx-mobile-result-price"
+              >
                 ₹{{ item.final_price ?? item.price }}
               </strong>
-
             </div>
 
             <i class="bi bi-chevron-right qnx-result-arrow"></i>
-
           </button>
-
         </div>
 
         <!-- NO RESULTS -->
         <div *ngIf="searchResults.length === 0" class="qnx-mobile-no-results">
-
           <i class="bi bi-search"></i>
           <p>No matching products found</p>
-
         </div>
-
       </div>
-
     </div>
-
   </div>
 
   <!-- ===== MOBILE MENU ===== -->
@@ -371,105 +533,213 @@
   </div>
 
   <!-- ===== HORIZONTAL NAVBAR CATEGORY / FILTER BAR ===== -->
-  <div class="container-fluid px-2 bg-white shadow-sm border-bottom position-relative d-flex align-items-center py-1">
-
+  <div
+    class="container-fluid px-2 bg-white shadow-sm border-bottom position-relative d-flex align-items-center py-1"
+  >
     <!-- 1. THREE LINES SIDEBAR TOGGLE BUTTON -->
-    <button (click)="toggleCategorySidebar()"
+    <button
+      (click)="toggleCategorySidebar()"
       class="btn bg-white border shadow-sm px-3 py-2 d-flex align-items-center justify-content-center flex-shrink-0 me-2 rounded-3 z-2"
-      style="height: 40px;" title="Open Sidebar Menu">
-      <i class="bi bi-list text-dark" style="font-size: 20px;"></i>
+      style="height: 40px"
+      title="Open Sidebar Menu"
+    >
+      <i class="bi bi-list text-dark" style="font-size: 20px"></i>
     </button>
 
     <!-- LEFT SCROLL ARROW -->
-    <button *ngIf="showLeftArrow" (click)="scrollCategories(categoryScroll, -200)"
+    <button
+      *ngIf="showLeftArrow"
+      (click)="scrollCategories(categoryScroll, -200)"
       class="btn btn-light border shadow-sm position-absolute start-0 d-flex align-items-center justify-content-center rounded-circle z-2 bg-white"
-      style="width: 32px; height: 32px; top: 50%; transform: translateY(-50%); margin-left: 15%;">
-      <i class="bi bi-chevron-left text-dark" style="font-size: 14px;"></i>
+      style="
+        width: 32px;
+        height: 32px;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-left: 15%;
+      "
+    >
+      <i class="bi bi-chevron-left text-dark" style="font-size: 14px"></i>
     </button>
 
     <!-- Scrollable Container -->
-    <div id="categoryScroll" #categoryScroll (scroll)="checkScroll(categoryScroll)"
-      class="overflow-auto w-100 px-1 mx-2" style="scrollbar-width: none; scroll-behavior: smooth;">
-      <div class="d-flex flex-nowrap align-items-center gap-2" style="width: max-content;">
-
+    <div
+      id="categoryScroll"
+      #categoryScroll
+      (scroll)="checkScroll(categoryScroll)"
+      class="overflow-auto w-100 px-1 mx-2"
+      style="scrollbar-width: none; scroll-behavior: smooth"
+    >
+      <div
+        class="d-flex flex-nowrap align-items-center gap-2"
+        style="width: max-content"
+      >
         <!-- A. QNXMart Shopping Categories Button (Only shown on Shopping Routes) -->
-        <a *ngIf="isShoppingRoute" routerLink="/product_list" (click)="selectCategory('');"
-          class="btn d-flex align-items-center gap-2 px-3 py-1.5 rounded-pill flex-shrink-0 shadow-sm border-0 text-white bg-primary text-decoration-none"
-          style="height: 30px;" [ngClass]="{'bg-primary text-white': !activeCat, 'border': activeCat}">
-          <i class="bi bi-grid-3x3-gap-fill" style="font-size: 15px;"></i>
-          <span class="fw-semibold" style="font-size: 13.5px;">All Categories</span>
+        <a
+          *ngIf="isShoppingRoute"
+          routerLink="/product_list"
+          (click)="selectCategory('')"
+          class="btn d-flex align-items-center gap-2 px-3 py-1.5 rounded-pill flex-shrink-0 shadow-sm border text-decoration-none"
+          [class.bg-primary]="!activeCat"
+          [class.text-white]="!activeCat"
+          [class.border-primary]="!activeCat"
+          [style.background-color]="activeCat ? '#f0f4ff' : null"
+          [style.color]="activeCat ? '#303f9f' : null"
+          [style.border-color]="activeCat ? '#d1e0fc' : null"
+          style="height: 30px"
+        >
+          <i class="bi bi-grid-3x3-gap-fill" style="font-size: 15px"></i>
+
+          <span class="fw-semibold" style="font-size: 13.5px">
+            All Categories
+          </span>
         </a>
 
         <!-- B. Real Estate Properties Button (Only shown on Real Estate Routes) -->
-        <a *ngIf="isRealEstateRoute" routerLink="/property-list" (click)="selectPropertyType('')"
+        <a
+          *ngIf="isRealEstateRoute"
+          routerLink="/property-list"
+          (click)="selectPropertyType('')"
           class="btn d-flex align-items-center gap-2 px-3 py-1.5 rounded-pill flex-shrink-0 shadow-sm border-0 text-white bg-primary text-decoration-none"
-          style="height: 30px;">
-          <i class="bi bi-building-fill" style="font-size: 15px;"></i>
-          <span class="fw-semibold" style="font-size: 13.5px;">All Properties</span>
+          style="height: 30px"
+        >
+          <i class="bi bi-building-fill" style="font-size: 15px"></i>
+          <span class="fw-semibold" style="font-size: 13.5px"
+            >All Properties</span
+          >
         </a>
 
         <!-- C. QNXRemart (OLX) Used Products Button (Only shown on Remart Routes) -->
-        <a *ngIf="isRemartRoute" routerLink="/remart-product-list" (click)="selectAllRemartItems()"
+        <a
+          *ngIf="isRemartRoute"
+          routerLink="/remart-product-list"
+          (click)="selectAllRemartItems()"
           class="btn d-flex align-items-center gap-2 px-3 py-1.5 rounded-pill flex-shrink-0 shadow-sm border-0 text-white bg-primary text-decoration-none"
-          style="height: 30px;">
-          <i class="bi bi-recycle" style="font-size: 15px;"></i>
-          <span class="fw-semibold" style="font-size: 13.5px;">All Remart Items</span>
+          style="height: 30px"
+        >
+          <i class="bi bi-recycle" style="font-size: 15px"></i>
+          <span class="fw-semibold" style="font-size: 13.5px"
+            >All Remart Items</span
+          >
         </a>
 
         <!-- 1. SHOPPING CATEGORIES LIST -->
         <ng-container *ngIf="isShoppingRoute">
-          <button *ngFor="let cat of categories" (click)="selectCategory(cat)"
+          <button
+            *ngFor="let cat of categories"
+            (click)="selectCategory(cat)"
             class="btn d-flex align-items-center gap-2 px-3 py-1.5 rounded-pill flex-shrink-0 transition-all border shadow-sm"
-            [ngClass]="activeCat === cat ? 'bg-primary text-white border-primary' : ''"
+            [ngClass]="
+              activeCat === cat ? 'bg-primary text-white border-primary' : ''
+            "
             [style.background-color]="activeCat === cat ? '' : '#f0f4ff'"
             [style.color]="activeCat === cat ? '#ffffff' : '#303f9f'"
-            [style.border-color]="activeCat === cat ? '#3525cd' : '#d1e0fc'" type="button" style="height: 32px;">
-            <i class="bi" [ngClass]="getCategoryIcon(cat)" style="font-size: 14px;"
-              [style.color]="activeCat === cat ? '#ffffff' : '#303f9f'"></i>
-            <span class="fw-medium text-truncate" style="font-size: 13.5px; max-width: 200px;">{{ cat }}</span>
+            [style.border-color]="activeCat === cat ? '#3525cd' : '#d1e0fc'"
+            type="button"
+            style="height: 32px"
+          >
+            <i
+              class="bi"
+              [ngClass]="getCategoryIcon(cat)"
+              style="font-size: 14px"
+              [style.color]="activeCat === cat ? '#ffffff' : '#303f9f'"
+            ></i>
+            <span
+              class="fw-medium text-truncate"
+              style="font-size: 13.5px; max-width: 200px"
+              >{{ cat }}</span
+            >
           </button>
         </ng-container>
 
         <!-- 2. REAL ESTATE PROPERTY TYPES LIST -->
         <ng-container *ngIf="isRealEstateRoute">
-          <button *ngFor="let pt of propertyTypes" (click)="selectPropertyType(pt.value)"
+          <button
+            *ngFor="let pt of propertyTypes"
+            (click)="selectPropertyType(pt.value)"
             class="btn d-flex align-items-center gap-2 px-3 py-1.5 rounded-pill flex-shrink-0 transition-all border shadow-sm"
-            [ngClass]="activePropertyType === pt.value ? 'bg-primary text-white border-primary' : ''"
-            [style.background-color]="activePropertyType === pt.value ? '' : '#f0f4ff'"
-            [style.color]="activePropertyType === pt.value ? '#ffffff' : '#303f9f'"
-            [style.border-color]="activePropertyType === pt.value ? '#3525cd' : '#d1e0fc'" type="button"
-            style="height: 32px;">
-            <i class="bi" [ngClass]="pt.icon" style="font-size: 14px;"
-              [style.color]="activePropertyType === pt.value ? '#ffffff' : '#303f9f'"></i>
-            <span class="fw-medium text-truncate" style="font-size: 13.5px; max-width: 200px;">{{ pt.label }}</span>
+            [ngClass]="
+              activePropertyType === pt.value
+                ? 'bg-primary text-white border-primary'
+                : ''
+            "
+            [style.background-color]="
+              activePropertyType === pt.value ? '' : '#f0f4ff'
+            "
+            [style.color]="
+              activePropertyType === pt.value ? '#ffffff' : '#303f9f'
+            "
+            [style.border-color]="
+              activePropertyType === pt.value ? '#3525cd' : '#d1e0fc'
+            "
+            type="button"
+            style="height: 32px"
+          >
+            <i
+              class="bi"
+              [ngClass]="pt.icon"
+              style="font-size: 14px"
+              [style.color]="
+                activePropertyType === pt.value ? '#ffffff' : '#303f9f'
+              "
+            ></i>
+            <span
+              class="fw-medium text-truncate"
+              style="font-size: 13.5px; max-width: 200px"
+              >{{ pt.label }}</span
+            >
           </button>
         </ng-container>
 
         <!-- 3. QNXREMART (OLX) CATEGORIES LIST -->
         <ng-container *ngIf="isRemartRoute">
-          <button *ngFor="let cat of remartCategories" (click)="selectRemartCategory(cat)"
+          <button
+            *ngFor="let cat of remartCategories"
+            (click)="selectRemartCategory(cat)"
             class="btn d-flex align-items-center gap-2 px-3 py-1.5 rounded-pill flex-shrink-0 transition-all border shadow-sm"
-            [ngClass]="activeRemartCat?.id === cat.id ? 'bg-primary text-white border-primary' : ''"
-            [style.background-color]="activeRemartCat?.id === cat.id ? '' : '#f0f4ff'"
-            [style.color]="activeRemartCat?.id === cat.id ? '#ffffff' : '#303f9f'"
-            [style.border-color]="activeRemartCat?.id === cat.id ? '#3525cd' : '#d1e0fc'" type="button"
-            style="height: 32px;">
-            <i class="bi bi-tag-fill" style="font-size: 14px;"
-              [style.color]="activeRemartCat?.id === cat.id ? '#ffffff' : '#303f9f'"></i>
-            <span class="fw-medium text-truncate" style="font-size: 13.5px; max-width: 200px;">{{ cat.name }}</span>
+            [ngClass]="
+              activeRemartCat?.id === cat.id
+                ? 'bg-primary text-white border-primary'
+                : ''
+            "
+            [style.background-color]="
+              activeRemartCat?.id === cat.id ? '' : '#f0f4ff'
+            "
+            [style.color]="
+              activeRemartCat?.id === cat.id ? '#ffffff' : '#303f9f'
+            "
+            [style.border-color]="
+              activeRemartCat?.id === cat.id ? '#3525cd' : '#d1e0fc'
+            "
+            type="button"
+            style="height: 32px"
+          >
+            <i
+              class="bi bi-tag-fill"
+              style="font-size: 14px"
+              [style.color]="
+                activeRemartCat?.id === cat.id ? '#ffffff' : '#303f9f'
+              "
+            ></i>
+            <span
+              class="fw-medium text-truncate"
+              style="font-size: 13.5px; max-width: 200px"
+              >{{ cat.name }}</span
+            >
           </button>
         </ng-container>
-
       </div>
     </div>
 
     <!-- RIGHT SCROLL ARROW -->
-    <button *ngIf="showRightArrow" (click)="scrollCategories(categoryScroll, 200)"
+    <button
+      *ngIf="showRightArrow"
+      (click)="scrollCategories(categoryScroll, 200)"
       class="btn btn-light border shadow-sm position-absolute end-0 me-2 d-flex align-items-center justify-content-center rounded-circle z-2 bg-white"
-      style="width: 32px; height: 32px; top: 50%; transform: translateY(-50%);">
-      <i class="bi bi-chevron-right text-dark" style="font-size: 14px;"></i>
+      style="width: 32px; height: 32px; top: 50%; transform: translateY(-50%)"
+    >
+      <i class="bi bi-chevron-right text-dark" style="font-size: 14px"></i>
     </button>
-
   </div>
 </nav>
 
@@ -660,54 +930,72 @@
   </div>
 </div> -->
 
-
-
-
-
 <!-- ===== AMAZON STYLE SIDEBAR / DRAWER (Opened via 3-lines icon on left) ===== -->
-<div class="qnx-sidebar-backdrop position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 z-50"
-  *ngIf="isCategorySidebarOpen" (click)="toggleCategorySidebar()"></div>
+<div
+  class="qnx-sidebar-backdrop position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 z-50"
+  *ngIf="isCategorySidebarOpen"
+  (click)="toggleCategorySidebar()"
+></div>
 <div
   class="qnx-side-drawer position-fixed top-0 start-0 h-100 bg-white shadow-lg z-50 overflow-hidden d-flex flex-column"
   [class.open]="isCategorySidebarOpen"
-  style="width: 320px; transition: transform 0.3s ease-in-out; transform: translateX(-100%);"
-  [style.transform]="isCategorySidebarOpen ? 'translateX(0)' : 'translateX(-100%)'">
-
+  style="
+    width: 320px;
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(-100%);
+  "
+  [style.transform]="
+    isCategorySidebarOpen ? 'translateX(0)' : 'translateX(-100%)'
+  "
+>
   <!-- Drawer Header -->
-  <div class="drawer-header bg-dark text-white p-3 d-flex flex-column flex-shrink-0">
-
+  <div
+    class="drawer-header bg-dark text-white p-3 d-flex flex-column flex-shrink-0"
+  >
     <!-- Company Name Row -->
-    <div class="d-flex align-items-center gap-2 mb-2 pb-2 border-bottom border-secondary">
+    <div
+      class="d-flex align-items-center gap-2 mb-2 pb-2 border-bottom border-secondary"
+    >
       <!-- <i class="bi bi-building-fill text-warning fs-5"></i> -->
-      <span class="fw-bold text-white" style="font-size: 15px;">Quivonex Solutions Pvt. Ltd.</span>
+      <span class="fw-bold text-white" style="font-size: 15px"
+        >Quivonex Solutions Pvt. Ltd.</span
+      >
     </div>
 
     <!-- User Sign In / Profile Row -->
     <div class="d-flex align-items-center justify-content-between w-100">
       <div class="d-flex align-items-center gap-2">
         <i class="bi bi-person-circle fs-4"></i>
-        <span class="fw-bold fs-6 text-truncate">{{ isLoggedIn ? (username || 'Hello, User') : 'Hello, sign in'
-          }}</span>
+        <span class="fw-bold fs-6 text-truncate">{{
+          isLoggedIn ? username || "Hello, User" : "Hello, sign in"
+        }}</span>
       </div>
-      <button class="btn btn-link text-white p-0 fs-4 text-decoration-none" (click)="toggleCategorySidebar()">
+      <button
+        class="btn btn-link text-white p-0 fs-4 text-decoration-none"
+        (click)="toggleCategorySidebar()"
+      >
         <i class="bi bi-x-lg"></i>
       </button>
     </div>
-
   </div>
 
   <!-- Drawer Body -->
-  <div class="drawer-body overflow-auto p-0 flex-grow-1" style="max-height: calc(100vh - 65px);">
-
+  <div
+    class="drawer-body overflow-auto p-0 flex-grow-1"
+    style="max-height: calc(100vh - 65px)"
+  >
     <!-- Account Section -->
     <div class="drawer-section border-bottom p-3">
-
       <!-- Home Menu -->
       <div class="drawer-section border-bottom p-1">
         <b>
-          <a class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-dark"
-            routerLink="/home" (click)="toggleCategorySidebar()">
-            <span><i class="bi bi-house-door-fill me-2 text-primary"></i>
+          <a
+            class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-dark"
+            routerLink="/home"
+            (click)="toggleCategorySidebar()"
+          >
+            <span
+              ><i class="bi bi-house-door-fill me-2 text-primary"></i>
               <span class="notranslate">Home</span>
             </span>
             <i class="bi bi-chevron-right small"></i>
@@ -716,9 +1004,11 @@
       </div>
 
       <!-- Sign In -->
-      <a *ngIf="!isLoggedIn"
+      <a
+        *ngIf="!isLoggedIn"
         class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
-        (click)="goToLogin(); toggleCategorySidebar()">
+        (click)="goToLogin(); toggleCategorySidebar()"
+      >
         <span>
           <i class="bi bi-box-arrow-in-right me-2 text-primary"></i>
           Sign In
@@ -727,8 +1017,11 @@
       </a>
 
       <!-- My Profile -->
-      <a class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
-        routerLink="/profile" (click)="toggleCategorySidebar()">
+      <a
+        class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
+        routerLink="/profile"
+        (click)="toggleCategorySidebar()"
+      >
         <span>
           <i class="bi bi-person-fill me-2 text-primary"></i>
           My Profile
@@ -737,8 +1030,11 @@
       </a>
 
       <!-- Seller Profile -->
-      <a class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
-        routerLink="/seller-registration" (click)="toggleCategorySidebar()">
+      <a
+        class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
+        routerLink="/seller-registration"
+        (click)="toggleCategorySidebar()"
+      >
         <span>
           <i class="bi bi-person-badge-fill me-2 text-primary"></i>
           Seller Profile
@@ -747,68 +1043,121 @@
       </a>
 
       <!-- Logout -->
-      <a *ngIf="isLoggedIn"
+      <a
+        *ngIf="isLoggedIn"
         class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-danger"
-        (click)="logout(); toggleCategorySidebar()">
+        (click)="logout(); toggleCategorySidebar()"
+      >
         <span>
           <i class="bi bi-box-arrow-right me-2"></i>
           Logout
         </span>
         <i class="bi bi-chevron-right small"></i>
       </a>
-
     </div>
 
     <!-- Quick Links -->
     <div class="drawer-section border-bottom p-3">
-      <div class="fw-bold text-dark mb-2" style="font-size: 15px;">Trending & Quick Links</div>
-      <a class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
-        routerLink="/product_list" (click)="toggleCategorySidebar()">
-        <span><i class="bi bi-grid-fill me-2 text-primary"></i> All Products</span>
+      <div class="fw-bold text-dark mb-2" style="font-size: 15px">
+        Trending & Quick Links
+      </div>
+      <a
+        class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
+        routerLink="/product_list"
+        (click)="toggleCategorySidebar()"
+      >
+        <span
+          ><i class="bi bi-grid-fill me-2 text-primary"></i> All Products</span
+        >
         <i class="bi bi-chevron-right small"></i>
       </a>
-      <a class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
-        routerLink="/add_to_cart" (click)="toggleCategorySidebar()">
-        <span><i class="bi bi-cart3 me-2 text-primary"></i> Cart ({{cartCount}})</span>
+      <a
+        class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
+        routerLink="/add_to_cart"
+        (click)="toggleCategorySidebar()"
+      >
+        <span
+          ><i class="bi bi-cart3 me-2 text-primary"></i> Cart ({{
+            cartCount
+          }})</span
+        >
         <i class="bi bi-chevron-right small"></i>
       </a>
     </div>
 
     <!-- Sell Section (Visible when logged in) -->
     <div class="drawer-section border-bottom p-3" *ngIf="isLoggedIn">
-      <div class="fw-bold text-dark mb-2" style="font-size: 15px;">Sell & Management</div>
-      <a class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
-        routerLink="/company_create" (click)="toggleCategorySidebar()">
-        <span><i class="bi bi-building-fill-add me-2 text-primary"></i> Add Company</span>
+      <div class="fw-bold text-dark mb-2" style="font-size: 15px">
+        Sell & Management
+      </div>
+      <a
+        class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
+        routerLink="/company_create"
+        (click)="toggleCategorySidebar()"
+      >
+        <span
+          ><i class="bi bi-building-fill-add me-2 text-primary"></i> Add
+          Company</span
+        >
         <i class="bi bi-chevron-right small"></i>
       </a>
-      <a class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
-        routerLink="/add_products" (click)="toggleCategorySidebar()">
-        <span><i class="bi bi-box-seam-fill me-2 text-primary"></i> Add Product</span>
+      <a
+        class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
+        routerLink="/add_products"
+        (click)="toggleCategorySidebar()"
+      >
+        <span
+          ><i class="bi bi-box-seam-fill me-2 text-primary"></i> Add
+          Product</span
+        >
         <i class="bi bi-chevron-right small"></i>
       </a>
-      <a class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
-        routerLink="/Branch_Master" (click)="toggleCategorySidebar()">
-        <span><i class="bi bi-diagram-3-fill me-2 text-primary"></i> Add Branch</span>
+      <a
+        class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
+        routerLink="/Branch_Master"
+        (click)="toggleCategorySidebar()"
+      >
+        <span
+          ><i class="bi bi-diagram-3-fill me-2 text-primary"></i> Add
+          Branch</span
+        >
         <i class="bi bi-chevron-right small"></i>
       </a>
-      <a class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
-        routerLink="/Category_Master" (click)="toggleCategorySidebar()">
-        <span><i class="bi bi-grid-3x3-gap-fill me-2 text-primary"></i> Add Category</span>
+      <a
+        class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
+        routerLink="/Category_Master"
+        (click)="toggleCategorySidebar()"
+      >
+        <span
+          ><i class="bi bi-grid-3x3-gap-fill me-2 text-primary"></i> Add
+          Category</span
+        >
         <i class="bi bi-chevron-right small"></i>
       </a>
-      <a class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
-        routerLink="/Sub-Category_Master" (click)="toggleCategorySidebar()">
-        <span><i class="bi bi-list-nested me-2 text-primary"></i> Add SubCategory</span>
+      <a
+        class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
+        routerLink="/Sub-Category_Master"
+        (click)="toggleCategorySidebar()"
+      >
+        <span
+          ><i class="bi bi-list-nested me-2 text-primary"></i> Add
+          SubCategory</span
+        >
         <i class="bi bi-chevron-right small"></i>
       </a>
-      <a class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
-        routerLink="/Brand_Master" (click)="toggleCategorySidebar()">
+      <a
+        class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
+        routerLink="/Brand_Master"
+        (click)="toggleCategorySidebar()"
+      >
         <span><i class="bi bi-tags-fill me-2 text-primary"></i> Add Brand</span>
         <i class="bi bi-chevron-right small"></i>
       </a>
-      <a class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
-        routerLink="/Unit_Master" (click)="toggleCategorySidebar()">
+      <a
+        class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
+        routerLink="/Unit_Master"
+        (click)="toggleCategorySidebar()"
+      >
         <span><i class="bi bi-rulers me-2 text-primary"></i> Add Unit</span>
         <i class="bi bi-chevron-right small"></i>
       </a>
@@ -825,14 +1174,14 @@
       </b>
     </div> -->
     <div class="drawer-section border-bottom p-3">
-
-      <div class="fw-bold text-dark mb-2" style="font-size: 15px;">
-        Property
-      </div>
+      <div class="fw-bold text-dark mb-2" style="font-size: 15px">Property</div>
 
       <!-- Add Property -->
-      <a class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
-        routerLink="/property-create" (click)="toggleCategorySidebar()">
+      <a
+        class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
+        routerLink="/property-create"
+        (click)="toggleCategorySidebar()"
+      >
         <span>
           <i class="bi bi-plus-square me-2 text-primary"></i>
           Add Property
@@ -841,25 +1190,29 @@
       </a>
 
       <!-- All Properties -->
-      <a class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
-        routerLink="/property-list" (click)="toggleCategorySidebar()">
+      <a
+        class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
+        routerLink="/property-list"
+        (click)="toggleCategorySidebar()"
+      >
         <span>
           <i class="bi bi-grid-3x3-gap me-2 text-primary"></i>
           All Properties
         </span>
         <i class="bi bi-chevron-right small text-muted"></i>
       </a>
-
     </div>
 
     <div class="drawer-section border-bottom p-3">
-
-      <div class="fw-bold text-dark mb-2" style="font-size: 15px;">
+      <div class="fw-bold text-dark mb-2" style="font-size: 15px">
         QNX ReMart
       </div>
 
-      <a class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
-        routerLink="/remart-product-create" (click)="toggleCategorySidebar()">
+      <a
+        class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
+        routerLink="/remart-product-create"
+        (click)="toggleCategorySidebar()"
+      >
         <span>
           <i class="bi bi-plus-square me-2 text-primary"></i>
           Add Product
@@ -867,42 +1220,71 @@
         <i class="bi bi-chevron-right small text-muted"></i>
       </a>
 
-      <a class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
-        routerLink="/remart-product-list" (click)="toggleCategorySidebar()">
+      <a
+        class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
+        routerLink="/remart-product-list"
+        (click)="toggleCategorySidebar()"
+      >
         <span>
           <i class="bi bi-grid-3x3-gap me-2 text-primary"></i>
           All Products
         </span>
         <i class="bi bi-chevron-right small text-muted"></i>
       </a>
-
     </div>
     <!-- Help & Support -->
     <div class="drawer-section p-3">
-      <div class="fw-bold text-dark mb-2" style="font-size: 15px;">Help & Support</div>
-      <a class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
-        routerLink="/help_buying" (click)="toggleCategorySidebar()">
-        <span><i class="bi bi-cart-check-fill me-2 text-primary"></i> For Buying</span>
+      <div class="fw-bold text-dark mb-2" style="font-size: 15px">
+        Help & Support
+      </div>
+      <a
+        class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
+        routerLink="/help_buying"
+        (click)="toggleCategorySidebar()"
+      >
+        <span
+          ><i class="bi bi-cart-check-fill me-2 text-primary"></i> For
+          Buying</span
+        >
         <i class="bi bi-chevron-right small"></i>
       </a>
-      <a class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
-        routerLink="/help-selling" (click)="toggleCategorySidebar()">
-        <span><i class="bi bi-shop-window me-2 text-primary"></i> For Selling</span>
+      <a
+        class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
+        routerLink="/help-selling"
+        (click)="toggleCategorySidebar()"
+      >
+        <span
+          ><i class="bi bi-shop-window me-2 text-primary"></i> For Selling</span
+        >
         <i class="bi bi-chevron-right small"></i>
       </a>
-      <a class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
-        routerLink="/faq" (click)="toggleCategorySidebar()">
+      <a
+        class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
+        routerLink="/faq"
+        (click)="toggleCategorySidebar()"
+      >
         <span><i class="bi bi-question-circle me-2 text-primary"></i> FAQ</span>
         <i class="bi bi-chevron-right small"></i>
       </a>
-      <a class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
-        routerLink="/about" (click)="toggleCategorySidebar()">
-        <span><i class="bi bi-info-circle me-2 text-primary"></i> About Us</span>
+      <a
+        class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
+        routerLink="/about"
+        (click)="toggleCategorySidebar()"
+      >
+        <span
+          ><i class="bi bi-info-circle me-2 text-primary"></i> About Us</span
+        >
         <i class="bi bi-chevron-right small"></i>
       </a>
-      <a class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
-        routerLink="/contact-us" (click)="toggleCategorySidebar()">
-        <span><i class="bi bi-chat-left-text-fill me-2 text-primary"></i> Contact Us</span>
+      <a
+        class="drawer-item d-flex align-items-center justify-content-between py-2 text-decoration-none text-body"
+        routerLink="/contact-us"
+        (click)="toggleCategorySidebar()"
+      >
+        <span
+          ><i class="bi bi-chat-left-text-fill me-2 text-primary"></i> Contact
+          Us</span
+        >
         <i class="bi bi-chevron-right small"></i>
       </a>
       <div class="text-body small mt-3 pt-2 border-top">
@@ -910,6 +1292,5 @@
         <div><i class="bi bi-telephone me-1"></i> +91 9579345147</div>
       </div>
     </div>
-
   </div>
 </div>

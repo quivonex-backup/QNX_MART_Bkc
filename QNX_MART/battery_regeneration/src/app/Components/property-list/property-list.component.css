@@ -4,28 +4,16 @@
 
    ============================================================ */
 *,
-
 *::before,
-
 *::after {
-
-    box-sizing: border-box;
-
+  box-sizing: border-box;
 }
-
-
 
 .pl-page {
+  background: #f8f9fb;
 
-    background: #f8f9fb;
-
-    min-height: 100vh;
-
+  min-height: 100vh;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -33,77 +21,39 @@
 
    ============================================================ */
 
-
-
 .pl-header {
+  background: linear-gradient(135deg, #2c3e50, #3d5166);
 
-    background: linear-gradient(
+  padding: 16px 32px;
 
-        135deg,
+  color: #fff;
 
-        #2c3e50,
+  display: flex;
 
-        #3d5166
+  align-items: center;
 
-    );
+  justify-content: space-between;
 
+  flex-wrap: wrap;
 
-
-    padding: 16px 32px;
-
-
-
-    color: #fff;
-
-
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    flex-wrap: wrap;
-
-
-
-    gap: 10px;
-
+  gap: 10px;
 }
-
-
 
 .pl-header-text h2 {
+  font-size: 1.4rem;
 
-    font-size: 1.4rem;
+  font-weight: 700;
 
-    font-weight: 700;
-
-
-
-    margin: 0 0 4px;
-
+  margin: 0 0 4px;
 }
-
-
 
 .pl-header-text p {
+  margin: 0;
 
-    margin: 0;
+  opacity: 0.75;
 
-
-
-    opacity: 0.75;
-
-
-
-    font-size: 0.88rem;
-
+  font-size: 0.88rem;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -111,127 +61,55 @@
 
    ============================================================ */
 
-
-
 .pl-filter-toggle {
+  display: none;
 
-    display: none;
+  align-items: center;
 
+  gap: 6px;
 
+  background: rgba(255, 255, 255, 0.15);
 
-    align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.3);
 
+  color: #fff;
 
+  padding: 8px 16px;
 
-    gap: 6px;
+  border-radius: 6px;
 
+  cursor: pointer;
 
+  font-size: 13px;
 
-    background:
+  font-weight: 600;
 
-        rgba(
-
-            255,
-
-            255,
-
-            255,
-
-            0.15
-
-        );
-
-
-
-    border:
-
-        1px solid
-
-        rgba(
-
-            255,
-
-            255,
-
-            255,
-
-            0.3
-
-        );
-
-
-
-    color: #fff;
-
-
-
-    padding: 8px 16px;
-
-
-
-    border-radius: 6px;
-
-
-
-    cursor: pointer;
-
-
-
-    font-size: 13px;
-
-    font-weight: 600;
-
-
-
-    position: relative;
-
+  position: relative;
 }
-
-
 
 .pl-filter-badge {
+  background: #e74c3c;
 
-    background: #e74c3c;
+  color: #fff;
 
+  font-size: 11px;
 
+  font-weight: 700;
 
-    color: #fff;
+  min-width: 18px;
 
+  height: 18px;
 
+  border-radius: 20px;
 
-    font-size: 11px;
+  display: inline-flex;
 
-    font-weight: 700;
+  align-items: center;
 
+  justify-content: center;
 
-
-    min-width: 18px;
-
-    height: 18px;
-
-
-
-    border-radius: 20px;
-
-
-
-    display: inline-flex;
-
-
-
-    align-items: center;
-
-    justify-content: center;
-
-
-
-    padding: 0 4px;
-
+  padding: 0 4px;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -239,33 +117,17 @@
 
    ============================================================ */
 
-
-
 .pl-body {
-
-    padding: 20px 24px;
-
+  padding: 20px 24px;
 }
-
-
 
 .pl-layout {
+  display: flex;
 
-    display: flex;
+  gap: 20px;
 
-
-
-    gap: 20px;
-
-
-
-    align-items: flex-start;
-
+  align-items: flex-start;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -273,241 +135,103 @@
 
    ============================================================ */
 
-
-
 .pl-sidebar {
+  width: 230px;
 
-    width: 230px;
+  flex-shrink: 0;
 
+  background: #fff;
 
+  border: 1px solid #dde3ec;
 
-    flex-shrink: 0;
+  border-radius: 8px;
 
+  overflow: hidden;
 
+  position: sticky;
 
-    background: #fff;
+  top: 76px;
 
+  max-height: calc(100vh - 96px);
 
+  display: flex;
 
-    border:
-
-        1px solid
-
-        #dde3ec;
-
-
-
-    border-radius: 8px;
-
-
-
-    overflow: hidden;
-
-
-
-    position: sticky;
-
-
-
-    top: 76px;
-
-
-
-    max-height:
-
-        calc(
-
-            100vh - 96px
-
-        );
-
-
-
-    display: flex;
-
-
-
-    flex-direction: column;
-
+  flex-direction: column;
 }
-
-
 
 .pl-sidebar-header {
+  display: flex;
 
-    display: flex;
+  align-items: center;
 
+  justify-content: space-between;
 
+  padding: 12px 14px;
 
-    align-items: center;
+  background: linear-gradient(135deg, #2c3e50, #3d5166);
 
-    justify-content: space-between;
+  color: #fff;
 
+  font-size: 13px;
 
+  font-weight: 700;
 
-    padding: 12px 14px;
-
-
-
-    background:
-
-        linear-gradient(
-
-            135deg,
-
-            #2c3e50,
-
-            #3d5166
-
-        );
-
-
-
-    color: #fff;
-
-
-
-    font-size: 13px;
-
-    font-weight: 700;
-
-
-
-    flex-shrink: 0;
-
+  flex-shrink: 0;
 }
-
-
 
 .pl-sidebar-close {
+  background: none;
 
-    background: none;
+  border: none;
 
+  color: #fff;
 
+  cursor: pointer;
 
-    border: none;
+  font-size: 16px;
 
+  padding: 2px 4px;
 
+  border-radius: 4px;
 
-    color: #fff;
+  display: flex;
 
+  align-items: center;
 
-
-    cursor: pointer;
-
-
-
-    font-size: 16px;
-
-
-
-    padding: 2px 4px;
-
-
-
-    border-radius: 4px;
-
-
-
-    display: flex;
-
-
-
-    align-items: center;
-
-
-
-    transition:
-
-        background
-
-        0.15s;
-
+  transition: background 0.15s;
 }
-
-
 
 .pl-sidebar-close:hover {
-
-    background:
-
-        rgba(
-
-            255,
-
-            255,
-
-            255,
-
-            0.2
-
-        );
-
+  background: rgba(255, 255, 255, 0.2);
 }
-
-
 
 .pl-sidebar-scroll {
+  overflow-y: auto;
 
-    overflow-y: auto;
+  flex: 1;
 
+  scrollbar-width: thin;
 
-
-    flex: 1;
-
-
-
-    scrollbar-width: thin;
-
-
-
-    scrollbar-color:
-
-        #ccd3dc
-
-        #f8f9fb;
-
+  scrollbar-color: #ccd3dc #f8f9fb;
 }
-
-
 
 .pl-sidebar-scroll::-webkit-scrollbar {
-
-    width: 5px;
-
+  width: 5px;
 }
-
-
 
 .pl-sidebar-scroll::-webkit-scrollbar-track {
-
-    background: #f8f9fb;
-
+  background: #f8f9fb;
 }
-
-
 
 .pl-sidebar-scroll::-webkit-scrollbar-thumb {
+  background: #ccd3dc;
 
-    background: #ccd3dc;
-
-
-
-    border-radius: 10px;
-
+  border-radius: 10px;
 }
-
-
 
 .pl-sidebar-scroll::-webkit-scrollbar-thumb:hover {
-
-    background: #aab4c0;
-
+  background: #aab4c0;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -515,45 +239,17 @@
 
    ============================================================ */
 
-
-
 .pl-backdrop {
+  display: none;
 
-    display: none;
+  position: fixed;
 
+  inset: 0;
 
+  background: rgba(0, 0, 0, 0.45);
 
-    position: fixed;
-
-
-
-    inset: 0;
-
-
-
-    background:
-
-        rgba(
-
-            0,
-
-            0,
-
-            0,
-
-            0.45
-
-        );
-
-
-
-    z-index: 1099;
-
+  z-index: 1099;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -561,71 +257,35 @@
 
    ============================================================ */
 
-
-
 .pl-sidebar-clear {
+  padding: 10px 14px;
 
-    padding: 10px 14px;
-
-
-
-    border-bottom:
-
-        1px solid
-
-        #f0f0f0;
-
+  border-bottom: 1px solid #f0f0f0;
 }
-
-
 
 .pl-sidebar-clear button {
+  background: none;
 
-    background: none;
+  border: none;
 
+  color: #e74c3c;
 
+  font-size: 12px;
 
-    border: none;
+  font-weight: 600;
 
+  cursor: pointer;
 
+  padding: 0;
 
-    color: #e74c3c;
+  display: flex;
 
-
-
-    font-size: 12px;
-
-    font-weight: 600;
-
-
-
-    cursor: pointer;
-
-
-
-    padding: 0;
-
-
-
-    display: flex;
-
-
-
-    align-items: center;
-
+  align-items: center;
 }
-
-
 
 .pl-sidebar-clear button:hover {
-
-    text-decoration: underline;
-
+  text-decoration: underline;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -633,89 +293,37 @@
 
    ============================================================ */
 
-
-
 .pl-filter-group {
+  border-bottom: 1px solid #f0f0f0;
 
-    border-bottom:
-
-        1px solid
-
-        #f0f0f0;
-
-
-
-    padding:
-
-        14px
-
-        0
-
-        10px;
-
+  padding: 14px 0 10px;
 }
-
-
 
 .pl-filter-group:last-child {
-
-    border-bottom: none;
-
+  border-bottom: none;
 }
-
-
 
 .pl-filter-group-title {
+  font-size: 12px;
 
-    font-size: 12px;
+  font-weight: 700;
 
+  text-transform: uppercase;
 
+  letter-spacing: 0.5px;
 
-    font-weight: 700;
+  color: #2c3e50;
 
+  padding: 0 14px 8px;
 
+  display: flex;
 
-    text-transform: uppercase;
+  align-items: center;
 
+  flex-wrap: wrap;
 
-
-    letter-spacing: 0.5px;
-
-
-
-    color: #2c3e50;
-
-
-
-    padding:
-
-        0
-
-        14px
-
-        8px;
-
-
-
-    display: flex;
-
-
-
-    align-items: center;
-
-
-
-    flex-wrap: wrap;
-
-
-
-    gap: 4px;
-
+  gap: 4px;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -723,99 +331,45 @@
 
    ============================================================ */
 
-
-
 .pl-price-inputs {
+  display: flex;
 
-    display: flex;
+  align-items: center;
 
+  gap: 6px;
 
-
-    align-items: center;
-
-
-
-    gap: 6px;
-
-
-
-    padding:
-
-        0
-
-        14px
-
-        8px;
-
+  padding: 0 14px 8px;
 }
-
-
 
 .pl-price-input {
+  flex: 1;
 
-    flex: 1;
+  height: 34px;
 
+  border: 1px solid #ccd3dc;
 
+  border-radius: 6px;
 
-    height: 34px;
+  padding: 0 8px;
 
+  font-size: 12px;
 
+  outline: none;
 
-    border:
-
-        1px solid
-
-        #ccd3dc;
-
-
-
-    border-radius: 6px;
-
-
-
-    padding: 0 8px;
-
-
-
-    font-size: 12px;
-
-
-
-    outline: none;
-
-
-
-    width: 0;
-
+  width: 0;
 }
-
-
 
 .pl-price-input:focus {
-
-    border-color: #3498db;
-
+  border-color: #3498db;
 }
-
-
 
 .pl-price-sep {
+  color: #aaa;
 
-    color: #aaa;
+  font-size: 12px;
 
-
-
-    font-size: 12px;
-
-
-
-    flex-shrink: 0;
-
+  flex-shrink: 0;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -823,99 +377,33 @@
 
    ============================================================ */
 
-
-
 .pl-filter-select {
+  width: calc(100% - 28px);
 
-    width:
+  height: 36px;
 
-        calc(
+  border: 1px solid #ccd3dc;
 
-            100% - 28px
+  border-radius: 6px;
 
-        );
+  padding: 0 10px;
 
+  font-size: 13px;
 
+  background-color: #fff;
 
-    height: 36px;
+  margin: 4px 14px 8px;
 
+  outline: none;
 
-
-    border:
-
-        1px solid
-
-        #ccd3dc;
-
-
-
-    border-radius: 6px;
-
-
-
-    padding:
-
-        0
-
-        10px;
-
-
-
-    font-size: 13px;
-
-
-
-    background-color: #fff;
-
-
-
-    margin:
-
-        4px
-
-        14px
-
-        8px;
-
-
-
-    outline: none;
-
-
-
-    cursor: pointer;
-
+  cursor: pointer;
 }
-
-
 
 .pl-filter-select:focus {
+  border-color: #3498db;
 
-    border-color: #3498db;
-
-
-
-    box-shadow:
-
-        0 0 0 3px
-
-        rgba(
-
-            52,
-
-            152,
-
-            219,
-
-            0.1
-
-        );
-
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
 }
-
-
-
-
 
 /* ============================================================
 
@@ -923,115 +411,53 @@
 
    ============================================================ */
 
-
-
 .pl-filter-check {
+  padding: 4px 14px;
 
-    padding:
+  font-size: 13px;
 
-        4px
-
-        14px;
-
-
-
-    font-size: 13px;
-
-
-
-    color: #444;
-
+  color: #444;
 }
-
-
 
 .pl-filter-check label {
+  display: flex;
 
-    display: flex;
+  align-items: center;
 
+  gap: 8px;
 
+  cursor: pointer;
 
-    align-items: center;
+  width: 100%;
 
-
-
-    gap: 8px;
-
-
-
-    cursor: pointer;
-
-
-
-    width: 100%;
-
-
-
-    padding:
-
-        4px
-
-        0;
-
+  padding: 4px 0;
 }
-
-
 
 .pl-filter-check input[type="checkbox"] {
+  width: 16px;
 
-    width: 16px;
+  height: 16px;
 
-    height: 16px;
+  accent-color: #3498db;
 
+  cursor: pointer;
 
-
-    accent-color: #3498db;
-
-
-
-    cursor: pointer;
-
-
-
-    flex-shrink: 0;
-
+  flex-shrink: 0;
 }
-
-
 
 .pl-filter-check label i {
+  width: 18px;
 
-    width: 18px;
-
-
-
-    color: #3498db;
-
+  color: #3498db;
 }
-
-
 
 .pl-filter-loading {
+  padding: 8px 14px;
 
-    padding:
+  font-size: 13px;
 
-        8px
-
-        14px;
-
-
-
-    font-size: 13px;
-
-
-
-    color: #7f8c8d;
-
+  color: #7f8c8d;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -1039,21 +465,11 @@
 
    ============================================================ */
 
-
-
 .pl-main {
+  flex: 1;
 
-    flex: 1;
-
-
-
-    min-width: 0;
-
+  min-width: 0;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -1061,129 +477,61 @@
 
    ============================================================ */
 
-
-
 .pl-chips {
+  display: flex;
 
-    display: flex;
+  flex-wrap: wrap;
 
+  gap: 6px;
 
-
-    flex-wrap: wrap;
-
-
-
-    gap: 6px;
-
-
-
-    flex: 1;
-
+  flex: 1;
 }
-
-
 
 .pl-chip {
+  display: inline-flex;
 
-    display: inline-flex;
+  align-items: center;
 
+  gap: 5px;
 
+  background: #eaf4fd;
 
-    align-items: center;
+  color: #2980b9;
 
+  border: 1px solid #bee3f8;
 
+  border-radius: 20px;
 
-    gap: 5px;
+  padding: 3px 10px;
 
+  font-size: 12px;
 
-
-    background: #eaf4fd;
-
-
-
-    color: #2980b9;
-
-
-
-    border:
-
-        1px solid
-
-        #bee3f8;
-
-
-
-    border-radius: 20px;
-
-
-
-    padding:
-
-        3px
-
-        10px;
-
-
-
-    font-size: 12px;
-
-
-
-    font-weight: 600;
-
+  font-weight: 600;
 }
-
-
 
 .pl-chip button {
+  background: none;
 
-    background: none;
+  border: none;
 
+  color: #2980b9;
 
+  cursor: pointer;
 
-    border: none;
+  padding: 0;
 
+  font-size: 12px;
 
+  line-height: 1;
 
-    color: #2980b9;
+  display: flex;
 
-
-
-    cursor: pointer;
-
-
-
-    padding: 0;
-
-
-
-    font-size: 12px;
-
-
-
-    line-height: 1;
-
-
-
-    display: flex;
-
-
-
-    align-items: center;
-
+  align-items: center;
 }
-
-
 
 .pl-chip button:hover {
-
-    color: #e74c3c;
-
+  color: #e74c3c;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -1193,39 +541,13 @@
 
    ============================================================ */
 
-
-
 .pl-grid {
+  display: grid;
 
-    display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 
-
-
-    grid-template-columns:
-
-        repeat(
-
-            auto-fill,
-
-            minmax(
-
-                250px,
-
-                1fr
-
-            )
-
-        );
-
-
-
-    gap: 18px;
-
+  gap: 18px;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -1235,141 +557,39 @@
 
    ============================================================ */
 
-
-
 .pl-card {
+  position: relative;
 
-    position: relative;
+  width: 100%;
 
+  height: 380px;
 
+  border-radius: 22px;
 
-    width: 100%;
+  overflow: hidden;
 
+  background: #0b1b35;
 
+  border: 1px solid rgba(255, 255, 255, 0.3);
 
-    height: 380px;
+  box-shadow:
+    0 8px 22px rgba(15, 23, 42, 0.12),
+    0 2px 6px rgba(15, 23, 42, 0.08);
 
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
 
-
-    border-radius: 22px;
-
-
-
-    overflow: hidden;
-
-
-
-    background: #0b1b35;
-
-
-
-    border:
-
-        1px solid
-
-        rgba(
-
-            255,
-
-            255,
-
-            255,
-
-            0.30
-
-        );
-
-
-
-    box-shadow:
-
-        0 8px 22px
-
-        rgba(
-
-            15,
-
-            23,
-
-            42,
-
-            0.12
-
-        ),
-
-        0 2px 6px
-
-        rgba(
-
-            15,
-
-            23,
-
-            42,
-
-            0.08
-
-        );
-
-
-
-    transition:
-
-        transform 0.35s ease,
-
-        box-shadow 0.35s ease;
-
-
-
-    isolation: isolate;
-
+  isolation: isolate;
 }
-
-
 
 .pl-card:hover {
+  transform: translateY(-6px);
 
-    transform:
-
-        translateY(-6px);
-
-
-
-    box-shadow:
-
-        0 18px 45px
-
-        rgba(
-
-            15,
-
-            23,
-
-            42,
-
-            0.20
-
-        ),
-
-        0 5px 15px
-
-        rgba(
-
-            59,
-
-            130,
-
-            246,
-
-            0.12
-
-        );
-
+  box-shadow:
+    0 18px 45px rgba(15, 23, 42, 0.2),
+    0 5px 15px rgba(59, 130, 246, 0.12);
 }
-
-
-
-
 
 /* ============================================================
 
@@ -1377,67 +597,31 @@
 
    ============================================================ */
 
-
-
 .pl-full-bg {
+  position: absolute;
 
-    position: absolute;
+  inset: 0;
 
+  width: 100%;
 
+  height: 100%;
 
-    inset: 0;
+  object-fit: fill;
 
+  object-position: center;
 
+  display: block;
 
-    width: 100%;
+  z-index: 0;
 
-    height: 100%;
+  cursor: pointer;
 
-
-
-    object-fit: fill;
-
-
-
-    object-position: center;
-
-
-
-    display: block;
-
-
-
-    z-index: 0;
-
-
-
-    cursor: pointer;
-
-
-
-    transition:
-
-        transform
-
-        0.6s
-
-        ease;
-
+  transition: transform 0.6s ease;
 }
-
-
 
 .pl-card:hover .pl-full-bg {
-
-    transform:
-
-        scale(1.04);
-
+  transform: scale(1.04);
 }
-
-
-
-
 
 /* ============================================================
 
@@ -1445,47 +629,27 @@
 
    ============================================================ */
 
-
-
 .pl-bg-overlay {
+  position: absolute;
 
-    position: absolute;
+  inset: 0;
 
+  z-index: 1;
 
+  pointer-events: none;
 
-    inset: 0;
+  background: linear-gradient(
+    to bottom,
 
+    rgba(255, 255, 255, 0) 0%,
 
+    rgba(255, 255, 255, 0) 55%,
 
-    z-index: 1;
+    rgba(255, 255, 255, 0.03) 75%,
 
-
-
-    pointer-events: none;
-
-
-
-    background:
-
-        linear-gradient(
-
-            to bottom,
-
-            rgba(255,255,255,0.00) 0%,
-
-            rgba(255,255,255,0.00) 55%,
-
-            rgba(255,255,255,0.03) 75%,
-
-            rgba(255,255,255,0.06) 100%
-
-        );
-
+    rgba(255, 255, 255, 0.06) 100%
+  );
 }
-
-
-
-
 
 /* ============================================================
 
@@ -1493,133 +657,66 @@
 
    ============================================================ */
 
-
-
 .pl-full-card-gloss {
+  position: absolute;
 
-    position: absolute;
+  inset: 0;
 
+  z-index: 2;
 
+  overflow: hidden;
 
-    inset: 0;
+  pointer-events: none;
 
-
-
-    z-index: 2;
-
-
-
-    overflow: hidden;
-
-
-
-    pointer-events: none;
-
-
-
-    border-radius: inherit;
-
+  border-radius: inherit;
 }
-
-
 
 .pl-full-card-gloss::before {
+  content: "";
 
-    content: "";
+  position: absolute;
 
+  top: -40%;
 
+  left: -70%;
 
-    position: absolute;
+  width: 38%;
 
+  height: 190%;
 
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
 
-    top: -40%;
+    rgba(255, 255, 255, 0.03) 25%,
 
-    left: -70%;
+    rgba(255, 255, 255, 0.24) 48%,
 
+    rgba(255, 255, 255, 0.38) 52%,
 
+    rgba(255, 255, 255, 0.1) 70%,
 
-    width: 38%;
+    transparent 100%
+  );
 
-    height: 190%;
+  transform: rotate(20deg);
 
-
-
-    background:
-
-        linear-gradient(
-
-            90deg,
-
-            transparent 0%,
-
-            rgba(255,255,255,0.03) 25%,
-
-            rgba(255,255,255,0.24) 48%,
-
-            rgba(255,255,255,0.38) 52%,
-
-            rgba(255,255,255,0.10) 70%,
-
-            transparent 100%
-
-        );
-
-
-
-    transform:
-
-        rotate(20deg);
-
-
-
-    animation:
-
-        propertyFullGloss
-
-        5s
-
-        ease-in-out
-
-        infinite;
-
+  animation: propertyFullGloss 5s ease-in-out infinite;
 }
-
-
 
 @keyframes propertyFullGloss {
+  0% {
+    left: -70%;
+  }
 
+  45% {
+    left: 140%;
+  }
 
-
-    0% {
-
-        left: -70%;
-
-    }
-
-
-
-    45% {
-
-        left: 140%;
-
-    }
-
-
-
-    100% {
-
-        left: 140%;
-
-    }
-
-
-
+  100% {
+    left: 140%;
+  }
 }
-
-
-
-
 
 /* ============================================================
 
@@ -1627,161 +724,57 @@
 
    ============================================================ */
 
-
-
 .pl-img-nav {
+  position: absolute;
 
-    position: absolute;
+  top: 37%;
 
+  transform: translateY(-50%);
 
+  width: 32px;
 
-    top: 37%;
+  height: 32px;
 
+  border: 1px solid rgba(255, 255, 255, 0.5);
 
+  border-radius: 50%;
 
-    transform:
+  background: rgba(0, 0, 0, 0.38);
 
-        translateY(-50%);
+  color: #fff;
 
+  display: flex;
 
+  align-items: center;
 
-    width: 32px;
+  justify-content: center;
 
-    height: 32px;
+  cursor: pointer;
 
+  z-index: 20;
 
+  pointer-events: auto;
 
-    border:
+  backdrop-filter: blur(5px);
 
-        1px solid
+  -webkit-backdrop-filter: blur(5px);
 
-        rgba(
-
-            255,
-
-            255,
-
-            255,
-
-            0.50
-
-        );
-
-
-
-    border-radius: 50%;
-
-
-
-    background:
-
-        rgba(
-
-            0,
-
-            0,
-
-            0,
-
-            0.38
-
-        );
-
-
-
-    color: #fff;
-
-
-
-    display: flex;
-
-
-
-    align-items: center;
-
-    justify-content: center;
-
-
-
-    cursor: pointer;
-
-
-
-    z-index: 20;
-
-
-
-    pointer-events: auto;
-
-
-
-    backdrop-filter:
-
-        blur(5px);
-
-
-
-    -webkit-backdrop-filter:
-
-        blur(5px);
-
-
-
-    transition:
-
-        background
-
-        0.25s
-
-        ease,
-
-        transform
-
-        0.25s
-
-        ease;
-
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease;
 }
-
-
 
 .pl-img-nav:hover {
-
-    background:
-
-        rgba(
-
-            0,
-
-            0,
-
-            0,
-
-            0.72
-
-        );
-
+  background: rgba(0, 0, 0, 0.72);
 }
-
-
 
 .pl-img-prev {
-
-    left: 9px;
-
+  left: 9px;
 }
-
-
 
 .pl-img-next {
-
-    right: 9px;
-
+  right: 9px;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -1789,97 +782,33 @@
 
    ============================================================ */
 
-
-
 .pl-img-counter {
+  position: absolute;
 
-    position: absolute;
+  top: 10px;
 
+  right: 10px;
 
+  z-index: 20;
 
-    top: 10px;
+  padding: 4px 9px;
 
-    right: 10px;
+  border-radius: 20px;
 
+  background: rgba(0, 0, 0, 0.5);
 
+  color: #fff;
 
-    z-index: 20;
+  border: 1px solid rgba(255, 255, 255, 0.35);
 
+  backdrop-filter: blur(6px);
 
+  -webkit-backdrop-filter: blur(6px);
 
-    padding:
+  font-size: 10px;
 
-        4px
-
-        9px;
-
-
-
-    border-radius: 20px;
-
-
-
-    background:
-
-        rgba(
-
-            0,
-
-            0,
-
-            0,
-
-            0.50
-
-        );
-
-
-
-    color: #fff;
-
-
-
-    border:
-
-        1px solid
-
-        rgba(
-
-            255,
-
-            255,
-
-            255,
-
-            0.35
-
-        );
-
-
-
-    backdrop-filter:
-
-        blur(6px);
-
-
-
-    -webkit-backdrop-filter:
-
-        blur(6px);
-
-
-
-    font-size: 10px;
-
-
-
-    font-weight: 700;
-
+  font-weight: 700;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -1887,147 +816,59 @@
 
    ============================================================ */
 
-
-
 .pl-img-dots {
+  position: absolute;
 
-    position: absolute;
+  top: 205px;
 
+  left: 50%;
 
+  transform: translateX(-50%);
 
-    top: 205px;
+  display: flex;
 
+  align-items: center;
 
+  gap: 5px;
 
-    left: 50%;
+  padding: 4px 8px;
 
+  border-radius: 20px;
 
+  backdrop-filter: blur(5px);
 
-    transform:
+  -webkit-backdrop-filter: blur(5px);
 
-        translateX(-50%);
-
-
-
-    display: flex;
-
-
-
-    align-items: center;
-
-
-
-    gap: 5px;
-
-
-
-    padding:
-
-        4px
-
-        8px;
-
-
-
-    border-radius: 20px;
-
-
-
-    backdrop-filter:
-
-        blur(5px);
-
-
-
-    -webkit-backdrop-filter:
-
-        blur(5px);
-
-
-
-    z-index: 20;
-
+  z-index: 20;
 }
-
-
 
 .pl-img-dot {
+  width: 6px;
 
-    width: 6px;
+  height: 6px;
 
-    height: 6px;
+  padding: 0;
 
+  border: none;
 
+  border-radius: 50%;
 
-    padding: 0;
+  cursor: pointer;
 
-
-
-    border: none;
-
-
-
-    border-radius: 50%;
-
-
-
-    cursor: pointer;
-
-
-
-    transition:
-
-        background
-
-        0.2s
-
-        ease,
-
-        transform
-
-        0.2s
-
-        ease;
-
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
 }
-
-
 
 .pl-img-dot:hover {
-
-    background:
-
-        rgba(
-
-            255,
-
-            255,
-
-            255,
-
-            0.90
-
-        );
-
+  background: rgba(255, 255, 255, 0.9);
 }
-
-
 
 .pl-img-dot.active {
+  background: #fff;
 
-    background: #fff;
-
-
-
-    transform:
-
-        scale(1.1);
-
+  transform: scale(1.1);
 }
-
-
-
-
 
 /* ============================================================
 
@@ -2035,289 +876,112 @@
 
    ============================================================ */
 
-
-
 .pl-glass-content {
+  position: absolute;
 
-    position: absolute;
+  left: 0;
 
+  right: 0;
 
+  bottom: 0;
 
-    left: 0;
+  z-index: 5;
 
-    right: 0;
+  padding: 10px 14px 12px;
 
-    bottom: 0;
+  border-radius: 22px 22px 20px 20px;
 
+  overflow: hidden;
 
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.58) 0%,
 
-    z-index: 5;
+    rgba(255, 255, 255, 0.39) 45%,
 
+    rgba(220, 240, 255, 0.29) 100%
+  );
 
+  backdrop-filter: blur(2px) saturate(115%);
 
-    padding:
+  -webkit-backdrop-filter: blur(2px) saturate(115%);
 
-        10px
+  border-top: 1px solid rgba(255, 255, 255, 0.85);
 
-        14px
-
-        12px;
-
-
-
-    border-radius:
-
-        22px
-
-        22px
-
-        20px
-
-        20px;
-
-
-
-    overflow: hidden;
-
-
-
-    background:
-
-        linear-gradient(
-
-            135deg,
-
-            rgba(255,255,255,0.58) 0%,
-
-            rgba(255,255,255,0.39) 45%,
-
-            rgba(220,240,255,0.29) 100%
-
-        );
-
-
-
-    backdrop-filter:
-
-        blur(2px)
-
-        saturate(115%);
-
-
-
-    -webkit-backdrop-filter:
-
-        blur(2px)
-
-        saturate(115%);
-
-
-
-    border-top:
-
-        1px solid
-
-        rgba(
-
-            255,
-
-            255,
-
-            255,
-
-            0.85
-
-        );
-
-
-
-    box-shadow:
-
-        inset
-
-        0 1px 0
-
-        rgba(
-
-            255,
-
-            255,
-
-            255,
-
-            0.65
-
-        ),
-
-        0 -5px 18px
-
-        rgba(
-
-            0,
-
-            0,
-
-            0,
-
-            0.04
-
-        );
-
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.65),
+    0 -5px 18px rgba(0, 0, 0, 0.04);
 }
-
-
 
 .pl-glass-content::before {
+  content: "";
 
-    content: "";
+  position: absolute;
 
+  inset: 0;
 
+  pointer-events: none;
 
-    position: absolute;
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.3) 0%,
 
+    rgba(255, 255, 255, 0.08) 28%,
 
+    transparent 45%
+  );
 
-    inset: 0;
-
-
-
-    pointer-events: none;
-
-
-
-    background:
-
-        linear-gradient(
-
-            160deg,
-
-            rgba(255,255,255,0.30) 0%,
-
-            rgba(255,255,255,0.08) 28%,
-
-            transparent 45%
-
-        );
-
-
-
-    z-index: 0;
-
+  z-index: 0;
 }
-
-
 
 .pl-glass-content::after {
+  content: "";
 
-    content: "";
+  position: absolute;
 
+  top: -30%;
 
+  left: -60%;
 
-    position: absolute;
+  width: 60%;
 
+  height: 180%;
 
+  transform: rotate(24deg);
 
-    top: -30%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
 
-    left: -60%;
+    rgba(255, 255, 255, 0.06) 35%,
 
+    rgba(255, 255, 255, 0.22) 50%,
 
+    rgba(255, 255, 255, 0.05) 65%,
 
-    width: 60%;
+    rgba(255, 255, 255, 0) 100%
+  );
 
-    height: 180%;
+  pointer-events: none;
 
-
-
-    transform:
-
-        rotate(24deg);
-
-
-
-    background:
-
-        linear-gradient(
-
-            90deg,
-
-            rgba(255,255,255,0) 0%,
-
-            rgba(255,255,255,0.06) 35%,
-
-            rgba(255,255,255,0.22) 50%,
-
-            rgba(255,255,255,0.05) 65%,
-
-            rgba(255,255,255,0) 100%
-
-        );
-
-
-
-    pointer-events: none;
-
-
-
-    animation:
-
-        propertyGlassSweep
-
-        5.5s
-
-        ease-in-out
-
-        infinite;
-
+  animation: propertyGlassSweep 5.5s ease-in-out infinite;
 }
-
-
 
 @keyframes propertyGlassSweep {
+  0% {
+    transform: translateX(-120%) rotate(24deg);
+  }
 
-
-
-    0% {
-
-        transform:
-
-            translateX(-120%)
-
-            rotate(24deg);
-
-    }
-
-
-
-    100% {
-
-        transform:
-
-            translateX(320%)
-
-            rotate(24deg);
-
-    }
-
-
-
+  100% {
+    transform: translateX(320%) rotate(24deg);
+  }
 }
-
-
 
 .pl-glass-content > * {
+  position: relative;
 
-    position: relative;
-
-
-
-    z-index: 2;
-
+  z-index: 2;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -2325,131 +989,51 @@
 
    ============================================================ */
 
-
-
 .pl-top-meta {
+  display: flex;
 
-    display: flex;
+  align-items: center;
 
+  justify-content: space-between;
 
+  gap: 6px;
 
-    align-items: center;
-
-
-
-    justify-content: space-between;
-
-
-
-    gap: 6px;
-
-
-
-    margin-bottom: 5px;
-
+  margin-bottom: 5px;
 }
-
-
 
 .pl-glass-category {
+  color: #10213a;
 
-    color: #10213a;
+  font-size: 8px;
 
+  font-weight: 800;
 
+  text-transform: uppercase;
 
-    font-size: 8px;
+  overflow: hidden;
 
+  white-space: nowrap;
 
-
-    font-weight: 800;
-
-
-
-    text-transform: uppercase;
-
-
-
-    overflow: hidden;
-
-
-
-    white-space: nowrap;
-
-
-
-    text-overflow: ellipsis;
-
+  text-overflow: ellipsis;
 }
-
-
 
 .pl-glass-transaction {
+  color: #10213a;
 
-    color: #10213a;
+  font-size: 8px;
 
+  font-weight: 800;
 
+  white-space: nowrap;
 
-    font-size: 8px;
+  padding: 3px 8px;
 
+  border-radius: 15px;
 
+  background: rgba(255, 255, 255, 0.42);
 
-    font-weight: 800;
-
-
-
-    white-space: nowrap;
-
-
-
-    padding:
-
-        3px
-
-        8px;
-
-
-
-    border-radius: 15px;
-
-
-
-    background:
-
-        rgba(
-
-            255,
-
-            255,
-
-            255,
-
-            0.42
-
-        );
-
-
-
-    border:
-
-        1px solid
-
-        rgba(
-
-            20,
-
-            60,
-
-            100,
-
-            0.45
-
-        );
-
+  border: 1px solid rgba(20, 60, 100, 0.45);
 }
-
-
-
-
 
 /* ============================================================
 
@@ -2457,69 +1041,31 @@
 
    ============================================================ */
 
-
-
 .pl-glass-name {
+  color: #071426;
 
-    color: #071426;
+  font-size: 14px;
 
+  font-weight: 900;
 
+  line-height: 1.18;
 
-    font-size: 14px;
+  margin: 4px 0;
 
+  cursor: pointer;
 
+  display: -webkit-box;
 
-    font-weight: 900;
+  -webkit-line-clamp: 1;
 
+  line-clamp: 1;
 
+  -webkit-box-orient: vertical;
 
-    line-height: 1.18;
+  overflow: hidden;
 
-
-
-    margin:
-
-        4px
-
-        0;
-
-
-
-    cursor: pointer;
-
-
-
-    display:
-
-        -webkit-box;
-
-
-
-    -webkit-line-clamp: 1;
-
-
-
-    line-clamp: 1;
-
-
-
-    -webkit-box-orient:
-
-        vertical;
-
-
-
-    overflow: hidden;
-
-
-
-    text-shadow: none;
-
+  text-shadow: none;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -2527,63 +1073,27 @@
 
    ============================================================ */
 
-
-
 .pl-glass-desc {
+  color: #172435;
 
-    color: #172435;
+  font-size: 12px;
 
+  font-weight: 600;
 
+  line-height: 1.3;
 
-    font-size: 12px;
+  margin: 0 0 5px;
 
+  display: -webkit-box;
 
+  -webkit-line-clamp: 1;
 
-    font-weight: 600;
+  line-clamp: 1;
 
+  -webkit-box-orient: vertical;
 
-
-    line-height: 1.3;
-
-
-
-    margin:
-
-        0
-
-        0
-
-        5px;
-
-
-
-    display:
-
-        -webkit-box;
-
-
-
-    -webkit-line-clamp: 1;
-
-
-
-    line-clamp: 1;
-
-
-
-    -webkit-box-orient:
-
-        vertical;
-
-
-
-    overflow: hidden;
-
+  overflow: hidden;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -2591,77 +1101,39 @@
 
    ============================================================ */
 
-
-
 .pl-glass-location {
+  display: flex;
 
-    display: flex;
+  align-items: center;
 
+  gap: 4px;
 
+  margin-bottom: 6px;
 
-    align-items: center;
+  color: #071426;
 
+  font-size: 12px;
 
+  font-weight: 700;
 
-    gap: 4px;
-
-
-
-    margin-bottom: 6px;
-
-
-
-    color: #071426;
-
-
-
-    font-size: 12px;
-
-
-
-    font-weight: 700;
-
-
-
-    overflow: hidden;
-
+  overflow: hidden;
 }
-
-
 
 .pl-glass-location i {
+  flex-shrink: 0;
 
-    flex-shrink: 0;
+  color: #0787bd;
 
-
-
-    color: #0787bd;
-
-
-
-    font-size: 11px;
-
+  font-size: 11px;
 }
-
-
 
 .pl-glass-location span {
+  overflow: hidden;
 
-    overflow: hidden;
+  white-space: nowrap;
 
-
-
-    white-space: nowrap;
-
-
-
-    text-overflow: ellipsis;
-
+  text-overflow: ellipsis;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -2669,53 +1141,18 @@
 
    ============================================================ */
 
-
-
 .pl-glass-divider {
+  height: 1px;
 
-    height: 1px;
+  margin: 4px 0 7px;
 
-
-
-    margin:
-
-        4px
-
-        0
-
-        7px;
-
-
-
-    background:
-
-        linear-gradient(
-
-            90deg,
-
-            transparent,
-
-            rgba(
-
-                20,
-
-                60,
-
-                100,
-
-                0.40
-
-            ),
-
-            transparent
-
-        );
-
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(20, 60, 100, 0.4),
+    transparent
+  );
 }
-
-
-
-
 
 /* ============================================================
 
@@ -2723,49 +1160,25 @@
 
    ============================================================ */
 
-
-
 .pl-glass-price-row {
+  display: flex;
 
-    display: flex;
+  align-items: baseline;
 
+  gap: 8px;
 
-
-    align-items: baseline;
-
-
-
-    gap: 8px;
-
-
-
-    /* margin-top: 8px; */
-
+  /* margin-top: 8px; */
 }
-
-
 
 .pl-glass-price {
+  color: #071426;
 
-    color: #071426;
+  font-size: 18px;
 
+  font-weight: 900;
 
-
-    font-size: 18px;
-
-
-
-    font-weight: 900;
-
-
-
-    line-height: 1;
-
+  line-height: 1;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -2773,281 +1186,81 @@
 
    ============================================================ */
 
-
-
 .pl-glass-actions {
+  display: flex;
 
-    display: flex;
+  align-items: center;
 
+  justify-content: center;
 
-
-    align-items: center;
-
-
-
-    justify-content: center;
-
-
-
-    gap: 10px;
-
+  gap: 10px;
 }
-
-
 
 .pl-glass-details-btn,
-
 .pl-glass-enquiry-btn {
+  height: auto;
 
-    height: auto;
+  padding: 6px 15px;
 
+  border-radius: 30px;
 
+  display: inline-flex;
 
-    padding:
+  align-items: center;
 
-        6px
+  justify-content: center;
 
-        15px;
+  gap: 5px;
 
+  width: auto;
 
+  flex: 0 0 auto;
 
-    border-radius: 30px;
+  font-size: 10px;
 
+  font-weight: 800;
 
+  cursor: pointer;
 
-    display: inline-flex;
-
-
-
-    align-items: center;
-
-
-
-    justify-content: center;
-
-
-
-    gap: 5px;
-
-
-
-    width: auto;
-
-
-
-    flex:
-
-        0
-
-        0
-
-        auto;
-
-
-
-    font-size: 10px;
-
-
-
-    font-weight: 800;
-
-
-
-    cursor: pointer;
-
-
-
-    transition:
-
-        transform
-
-        0.25s
-
-        ease,
-
-        box-shadow
-
-        0.25s
-
-        ease,
-
-        background
-
-        0.25s
-
-        ease;
-
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
 }
-
-
 
 .pl-glass-details-btn {
+  color: #071426;
 
-    color: #071426;
+  background: rgba(255, 255, 255, 0.5);
 
+  border: 1px solid rgba(7, 40, 80, 0.7);
 
+  backdrop-filter: blur(2px);
 
-    background:
-
-        rgba(
-
-            255,
-
-            255,
-
-            255,
-
-            0.50
-
-        );
-
-
-
-    border:
-
-        1px solid
-
-        rgba(
-
-            7,
-
-            40,
-
-            80,
-
-            0.70
-
-        );
-
-
-
-    backdrop-filter:
-
-        blur(2px);
-
-
-
-    -webkit-backdrop-filter:
-
-        blur(2px);
-
+  -webkit-backdrop-filter: blur(2px);
 }
-
-
 
 .pl-glass-details-btn:hover {
+  background: rgba(255, 255, 255, 0.78);
 
-    background:
-
-        rgba(
-
-            255,
-
-            255,
-
-            255,
-
-            0.78
-
-        );
-
-
-
-    transform:
-
-        translateY(-1px);
-
+  transform: translateY(-1px);
 }
-
-
 
 .pl-glass-enquiry-btn {
+  color: #fff;
 
-    color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.65);
 
+  background: linear-gradient(135deg, #159cff, #006cff);
 
-
-    border:
-
-        1px solid
-
-        rgba(
-
-            255,
-
-            255,
-
-            255,
-
-            0.65
-
-        );
-
-
-
-    background:
-
-        linear-gradient(
-
-            135deg,
-
-            #159cff,
-
-            #006cff
-
-        );
-
-
-
-    box-shadow:
-
-        0 4px 12px
-
-        rgba(
-
-            0,
-
-            105,
-
-            255,
-
-            0.28
-
-        );
-
+  box-shadow: 0 4px 12px rgba(0, 105, 255, 0.28);
 }
-
-
 
 .pl-glass-enquiry-btn:hover {
+  transform: translateY(-1px);
 
-    transform:
-
-        translateY(-1px);
-
-
-
-    box-shadow:
-
-        0 6px 16px
-
-        rgba(
-
-            0,
-
-            105,
-
-            255,
-
-            0.40
-
-        );
-
+  box-shadow: 0 6px 16px rgba(0, 105, 255, 0.4);
 }
-
-
-
-
 
 /* ============================================================
 
@@ -3055,105 +1268,49 @@
 
    ============================================================ */
 
-
-
 .pl-empty {
+  text-align: center;
 
-    text-align: center;
-
-
-
-    padding:
-
-        60px
-
-        20px;
-
+  padding: 60px 20px;
 }
-
-
 
 .pl-empty-icon {
+  font-size: 3rem;
 
-    font-size: 3rem;
+  color: #bbb;
 
+  display: block;
 
-
-    color: #bbb;
-
-
-
-    display: block;
-
-
-
-    margin-bottom: 16px;
-
+  margin-bottom: 16px;
 }
-
-
 
 .pl-empty h5 {
+  color: #555;
 
-    color: #555;
-
-
-
-    margin-bottom: 8px;
-
+  margin-bottom: 8px;
 }
-
-
 
 .pl-empty p {
+  color: #888;
 
-    color: #888;
-
-
-
-    margin-bottom: 20px;
-
+  margin-bottom: 20px;
 }
-
-
 
 .pl-btn {
+  border: none;
 
-    border: none;
+  cursor: pointer;
 
-
-
-    cursor: pointer;
-
-
-
-    border-radius: 6px;
-
+  border-radius: 6px;
 }
-
-
 
 .pl-btn-primary {
+  padding: 8px 16px;
 
-    padding:
+  background: #3498db;
 
-        8px
-
-        16px;
-
-
-
-    background: #3498db;
-
-
-
-    color: #fff;
-
+  color: #fff;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -3161,473 +1318,194 @@
 
    ============================================================ */
 
-
-
 @media (max-width: 900px) {
+  .pl-body {
+    padding: 14px 16px;
+  }
 
+  .pl-filter-toggle {
+    display: inline-flex;
+  }
 
+  .pl-backdrop {
+    display: block;
+  }
 
-    .pl-body {
+  .pl-sidebar {
+    position: fixed;
 
-        padding:
+    top: 0;
 
-            14px
+    left: -260px;
 
-            16px;
+    width: 260px;
 
-    }
+    height: 100vh;
 
+    max-height: 100vh;
 
+    z-index: 1100;
 
-    .pl-filter-toggle {
+    border-radius: 0;
 
-        display:
+    transition: left 0.3s ease;
 
-            inline-flex;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
+  }
 
-    }
+  .pl-sidebar.pl-sidebar-open {
+    left: 0;
+  }
 
+  .pl-layout {
+    flex-direction: column;
+  }
 
+  .pl-main {
+    width: 100%;
+  }
 
-    .pl-backdrop {
+  .pl-card {
+    height: 390px;
 
-        display:
-
-            block;
-
-    }
-
-
-
-    .pl-sidebar {
-
-        position: fixed;
-
-
-
-        top: 0;
-
-
-
-        left: -260px;
-
-
-
-        width: 260px;
-
-
-
-        height: 100vh;
-
-
-
-        max-height: 100vh;
-
-
-
-        z-index: 1100;
-
-
-
-        border-radius: 0;
-
-
-
-        transition:
-
-            left
-
-            0.3s
-
-            ease;
-
-
-
-        box-shadow:
-
-            4px 0 20px
-
-            rgba(
-
-                0,
-
-                0,
-
-                0,
-
-                0.2
-
-            );
-
-    }
-
-
-
-    .pl-sidebar.pl-sidebar-open {
-
-        left: 0;
-
-    }
-
-
-
-    .pl-layout {
-
-        flex-direction:
-
-            column;
-
-    }
-
-
-
-    .pl-main {
-
-        width: 100%;
-
-    }
-
-
-
-    .pl-card {
-
-        height: 390px;
-
-
-
-        border-radius: 20px;
-
-    }
-
-
-
+    border-radius: 20px;
+  }
 }
-
-
-
-
 
 @media (max-width: 600px) {
+  .pl-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 
+    gap: 10px;
+  }
 
+  .pl-card {
+    height: 390px;
 
-    .pl-grid {
+    border-radius: 20px;
+  }
 
-        grid-template-columns:
+  .pl-glass-content {
+    left: 0;
 
-            repeat(
+    right: 0;
 
-                2,
+    bottom: 0;
 
-                minmax(
+    padding: 10px 10px 11px;
 
-                    0,
+    border-radius: 20px;
 
-                    1fr
+    backdrop-filter: blur(2px) saturate(115%);
 
-                )
+    -webkit-backdrop-filter: blur(2px) saturate(115%);
+  }
 
-            );
+  .pl-glass-name {
+    font-size: 13px;
+  }
 
+  .pl-glass-category,
+  .pl-glass-transaction {
+    font-size: 7px;
+  }
 
+  .pl-glass-transaction {
+    padding: 3px 6px;
+  }
 
-        gap: 10px;
+  .pl-glass-desc {
+    font-size: 12px;
+  }
 
-    }
+  .pl-glass-location {
+    font-size: 12px;
+  }
 
+  .pl-glass-price {
+    font-size: 18px;
+  }
 
+  .pl-glass-actions {
+    gap: 6px;
+  }
 
-    .pl-card {
+  .pl-glass-details-btn,
+  .pl-glass-enquiry-btn {
+    padding: 5px 9px;
 
-        height: 390px;
+    font-size: 9px;
+  }
 
+  .pl-img-nav {
+    width: 27px;
 
+    height: 27px;
 
-        border-radius: 20px;
+    font-size: 10px;
+  }
 
-    }
+  .pl-img-prev {
+    left: 5px;
+  }
 
+  .pl-img-next {
+    right: 5px;
+  }
 
+  .pl-img-counter {
+    top: 7px;
 
-    .pl-glass-content {
+    right: 7px;
 
-        left: 0;
+    padding: 3px 6px;
 
-        right: 0;
+    font-size: 8px;
+  }
 
-        bottom: 0;
+  .pl-img-dots {
+    top: 210px;
 
+    padding: 3px 6px;
 
+    gap: 4px;
+  }
 
-        padding:
+  .pl-img-dot {
+    width: 5px;
 
-            10px
-
-            10px
-
-            11px;
-
-
-
-        border-radius: 20px;
-
-
-
-        backdrop-filter:
-
-            blur(2px)
-
-            saturate(115%);
-
-
-
-        -webkit-backdrop-filter:
-
-            blur(2px)
-
-            saturate(115%);
-
-    }
-
-
-
-    .pl-glass-name {
-
-        font-size: 13px;
-
-    }
-
-
-
-    .pl-glass-category,
-
-    .pl-glass-transaction {
-
-        font-size: 7px;
-
-    }
-
-
-
-    .pl-glass-transaction {
-
-        padding:
-
-            3px
-
-            6px;
-
-    }
-
-
-
-    .pl-glass-desc {
-
-        font-size: 12px;
-
-    }
-
-
-
-    .pl-glass-location {
-
-        font-size: 12px;
-
-    }
-
-
-
-    .pl-glass-price {
-
-        font-size: 18px;
-
-    }
-
-
-
-    .pl-glass-actions {
-
-        gap: 6px;
-
-    }
-
-
-
-    .pl-glass-details-btn,
-
-    .pl-glass-enquiry-btn {
-
-        padding:
-
-            5px
-
-            9px;
-
-
-
-        font-size: 9px;
-
-    }
-
-
-
-    .pl-img-nav {
-
-        width: 27px;
-
-        height: 27px;
-
-
-
-        font-size: 10px;
-
-    }
-
-
-
-    .pl-img-prev {
-
-        left: 5px;
-
-    }
-
-
-
-    .pl-img-next {
-
-        right: 5px;
-
-    }
-
-
-
-    .pl-img-counter {
-
-        top: 7px;
-
-        right: 7px;
-
-
-
-        padding:
-
-            3px
-
-            6px;
-
-
-
-        font-size: 8px;
-
-    }
-
-
-
-    .pl-img-dots {
-
-        top: 210px;
-
-
-
-        padding:
-
-            3px
-
-            6px;
-
-
-
-        gap: 4px;
-
-    }
-
-
-
-    .pl-img-dot {
-
-        width: 5px;
-
-        height: 5px;
-
-    }
-
-
-
+    height: 5px;
+  }
 }
-
-
-
-
 
 @media (max-width: 380px) {
+  .pl-grid {
+    grid-template-columns: 1fr;
+  }
 
+  .pl-card {
+    height: 400px;
+  }
 
+  .pl-glass-name {
+    font-size: 15px;
+  }
 
-    .pl-grid {
+  .pl-glass-desc {
+    font-size: 12px;
+  }
 
-        grid-template-columns:
+  .pl-glass-price {
+    font-size: 18px;
+  }
 
-            1fr;
+  .pl-glass-details-btn,
+  .pl-glass-enquiry-btn {
+    padding: 6px 14px;
 
-    }
-
-
-
-    .pl-card {
-
-        height: 400px;
-
-    }
-
-
-
-    .pl-glass-name {
-
-        font-size: 15px;
-
-    }
-
-
-
-    .pl-glass-desc {
-
-        font-size: 12px;
-
-    }
-
-
-
-    .pl-glass-price {
-
-        font-size: 18px;
-
-    }
-
-
-
-    .pl-glass-details-btn,
-
-    .pl-glass-enquiry-btn {
-
-        padding:
-
-            6px
-
-            14px;
-
-
-
-        font-size: 10px;
-
-    }
-
-
-
+    font-size: 10px;
+  }
 }
-
-
-
-
 
 /* ============================================================
 
@@ -3635,51 +1513,23 @@
 
    ============================================================ */
 
-
-
 .property-reels-column {
+  width: 285px;
 
-    width: 285px;
+  flex: 0 0 285px;
 
-
-
-    flex:
-
-        0
-
-        0
-
-        285px;
-
-
-
-    min-width: 0;
-
+  min-width: 0;
 }
-
-
 
 .reels-sticky {
+  top: 90px;
 
-    top: 90px;
-
-
-
-    z-index: 10;
-
+  z-index: 10;
 }
-
-
 
 .reels-header-card {
-
-    min-height: 72px;
-
+  min-height: 72px;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -3687,55 +1537,29 @@
 
    ============================================================ */
 
-
-
 .live-dot {
+  width: 8px;
 
-    width: 8px;
+  height: 8px;
 
-    height: 8px;
+  background: #ffb703;
 
+  border-radius: 50%;
 
-
-    background: #ffb703;
-
-
-
-    border-radius: 50%;
-
-
-
-    display: inline-block;
-
+  display: inline-block;
 }
-
-
 
 .reels-title {
-
-    font-size: 14px;
-
+  font-size: 14px;
 }
-
-
 
 .reels-subtitle {
-
-    font-size: 11px;
-
+  font-size: 11px;
 }
-
-
 
 .reels-view-all {
-
-    font-size: 12px;
-
+  font-size: 12px;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -3743,105 +1567,51 @@
 
    ============================================================ */
 
-
-
 .property-reel-item {
-
-    width: 100%;
-
+  width: 100%;
 }
-
-
 
 .property-reel-item + .property-reel-item {
-
-    margin-top: 4px;
-
+  margin-top: 4px;
 }
-
-
 
 .property-reel-property-title {
+  display: flex;
 
-    display: flex;
+  align-items: center;
 
+  justify-content: space-between;
 
+  gap: 8px;
 
-    align-items: center;
+  margin-bottom: 8px;
 
-
-
-    justify-content: space-between;
-
-
-
-    gap: 8px;
-
-
-
-    margin-bottom: 8px;
-
-
-
-    padding:
-
-        0
-
-        2px;
-
+  padding: 0 2px;
 }
-
-
 
 .property-reel-property-title > span {
+  min-width: 0;
 
-    min-width: 0;
+  overflow: hidden;
 
+  white-space: nowrap;
 
+  text-overflow: ellipsis;
 
-    overflow: hidden;
+  color: #2c3e50;
 
+  font-size: 12px;
 
-
-    white-space: nowrap;
-
-
-
-    text-overflow: ellipsis;
-
-
-
-    color: #2c3e50;
-
-
-
-    font-size: 12px;
-
-
-
-    font-weight: 700;
-
+  font-weight: 700;
 }
-
-
 
 .property-reel-property-title > small {
+  flex-shrink: 0;
 
-    flex-shrink: 0;
+  color: #7f8c8d;
 
-
-
-    color: #7f8c8d;
-
-
-
-    font-size: 10px;
-
+  font-size: 10px;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -3851,55 +1621,21 @@
 
    ============================================================ */
 
-
-
 .reel-card {
+  position: relative;
 
-    position: relative;
+  width: 100%;
 
+  height: 400px;
 
+  background: #000;
 
-    width: 100%;
+  border-radius: 18px;
 
+  overflow: hidden;
 
-
-    height: 400px;
-
-
-
-    background: #000;
-
-
-
-    border-radius: 18px;
-
-
-
-    overflow: hidden;
-
-
-
-    box-shadow:
-
-        0 8px 25px
-
-        rgba(
-
-            0,
-
-            0,
-
-            0,
-
-            0.18
-
-        );
-
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18);
 }
-
-
-
-
 
 /* ============================================================
 
@@ -3907,35 +1643,19 @@
 
    ============================================================ */
 
-
-
 .reel-video {
+  width: 100%;
 
-    width: 100%;
+  height: 100%;
 
-    height: 100%;
+  object-fit: cover;
 
+  display: block;
 
+  cursor: pointer;
 
-    object-fit: cover;
-
-
-
-    display: block;
-
-
-
-    cursor: pointer;
-
-
-
-    background: #000;
-
+  background: #000;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -3943,69 +1663,27 @@
 
    ============================================================ */
 
-
-
 .reel-gradient {
+  position: absolute;
 
-    position: absolute;
+  left: 0;
 
+  right: 0;
 
+  bottom: 0;
 
-    left: 0;
+  height: 55%;
 
-    right: 0;
+  pointer-events: none;
 
-    bottom: 0;
+  background: linear-gradient(
+    to top,
 
-
-
-    height: 55%;
-
-
-
-    pointer-events: none;
-
-
-
-    background:
-
-        linear-gradient(
-
-            to top,
-
-            rgba(
-
-                0,
-
-                0,
-
-                0,
-
-                0.85
-
-            ),
-
-            rgba(
-
-                0,
-
-                0,
-
-                0,
-
-                0.35
-
-            ),
-
-            transparent
-
-        );
-
+    rgba(0, 0, 0, 0.85),
+    rgba(0, 0, 0, 0.35),
+    transparent
+  );
 }
-
-
-
-
 
 /* ============================================================
 
@@ -4013,103 +1691,45 @@
 
    ============================================================ */
 
-
-
 .reel-live-badge {
+  position: absolute;
 
-    position: absolute;
+  top: 15px;
 
+  left: 15px;
 
+  display: flex;
 
-    top: 15px;
+  align-items: center;
 
-    left: 15px;
+  gap: 5px;
 
+  background: rgba(220, 53, 69, 0.95);
 
+  color: #fff;
 
-    display: flex;
+  font-size: 9px;
 
+  font-weight: 700;
 
+  padding: 6px 10px;
 
-    align-items: center;
+  border-radius: 50px;
 
+  backdrop-filter: blur(5px);
 
-
-    gap: 5px;
-
-
-
-    background:
-
-        rgba(
-
-            220,
-
-            53,
-
-            69,
-
-            0.95
-
-        );
-
-
-
-    color: #fff;
-
-
-
-    font-size: 9px;
-
-
-
-    font-weight: 700;
-
-
-
-    padding:
-
-        6px
-
-        10px;
-
-
-
-    border-radius: 50px;
-
-
-
-    backdrop-filter:
-
-        blur(5px);
-
-
-
-    z-index: 4;
-
+  z-index: 4;
 }
-
-
 
 .reel-live-dot {
+  width: 6px;
 
-    width: 6px;
+  height: 6px;
 
-    height: 6px;
+  background: #fff;
 
-
-
-    background: #fff;
-
-
-
-    border-radius: 50%;
-
+  border-radius: 50%;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -4117,89 +1737,37 @@
 
    ============================================================ */
 
-
-
 .reel-video-label {
+  position: absolute;
 
-    position: absolute;
+  top: 16px;
 
+  left: 16px;
 
+  display: flex;
 
-    top: 16px;
+  align-items: center;
 
-    left: 16px;
+  gap: 6px;
 
+  background: rgba(0, 0, 0, 0.65);
 
+  color: #fff;
 
-    display: flex;
+  padding: 6px 11px;
 
+  border-radius: 50px;
 
+  font-size: 9px;
 
-    align-items: center;
+  font-weight: 700;
 
+  letter-spacing: 0.4px;
 
+  backdrop-filter: blur(8px);
 
-    gap: 6px;
-
-
-
-    background:
-
-        rgba(
-
-            0,
-
-            0,
-
-            0,
-
-            0.65
-
-        );
-
-
-
-    color: #fff;
-
-
-
-    padding:
-
-        6px
-
-        11px;
-
-
-
-    border-radius: 50px;
-
-
-
-    font-size: 9px;
-
-
-
-    font-weight: 700;
-
-
-
-    letter-spacing: 0.4px;
-
-
-
-    backdrop-filter:
-
-        blur(8px);
-
-
-
-    z-index: 5;
-
+  z-index: 5;
 }
-
-
-
-
 
 /*
 
@@ -4211,17 +1779,9 @@ badge खाली ठेवतो.
 
 */
 
-
-
 .reel-live-badge {
-
-    top: 58px;
-
+  top: 58px;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -4229,101 +1789,47 @@ badge खाली ठेवतो.
 
    ============================================================ */
 
-
-
 .reel-actions {
+  position: absolute;
 
-    position: absolute;
+  right: 12px;
 
+  bottom: 95px;
 
+  display: flex;
 
-    right: 12px;
+  flex-direction: column;
 
-    bottom: 95px;
+  gap: 10px;
 
-
-
-    display: flex;
-
-
-
-    flex-direction: column;
-
-
-
-    gap: 10px;
-
-
-
-    z-index: 5;
-
+  z-index: 5;
 }
-
-
 
 .reel-action-btn {
+  width: 36px;
 
-    width: 36px;
+  height: 36px;
 
-    height: 36px;
+  border: none;
 
+  border-radius: 50%;
 
+  background: rgba(0, 0, 0, 0.45);
 
-    border: none;
+  color: #fff;
 
+  backdrop-filter: blur(8px);
 
+  display: flex;
 
-    border-radius: 50%;
+  align-items: center;
 
+  justify-content: center;
 
+  font-size: 18px;
 
-    background:
-
-        rgba(
-
-            0,
-
-            0,
-
-            0,
-
-            0.45
-
-        );
-
-
-
-    color: #fff;
-
-
-
-    backdrop-filter:
-
-        blur(8px);
-
-
-
-    display: flex;
-
-
-
-    align-items: center;
-
-    justify-content: center;
-
-
-
-    font-size: 18px;
-
-
-
-    cursor: pointer;
-
+  cursor: pointer;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -4331,129 +1837,59 @@ badge खाली ठेवतो.
 
    ============================================================ */
 
-
-
 .reel-product-info {
+  position: absolute;
 
-    position: absolute;
+  left: 15px;
 
+  right: 55px;
 
+  bottom: 16px;
 
-    left: 15px;
+  color: #fff;
 
-    right: 55px;
-
-    bottom: 16px;
-
-
-
-    color: #fff;
-
-
-
-    z-index: 2;
-
+  z-index: 2;
 }
-
-
 
 .reel-product-name {
+  font-size: 14px;
 
-    font-size: 14px;
+  font-weight: 700;
 
+  line-height: 1.3;
 
+  margin-bottom: 3px;
 
-    font-weight: 700;
+  display: -webkit-box;
 
+  -webkit-line-clamp: 2;
 
+  -webkit-box-orient: vertical;
 
-    line-height: 1.3;
-
-
-
-    margin-bottom: 3px;
-
-
-
-    display:
-
-        -webkit-box;
-
-
-
-    -webkit-line-clamp: 2;
-
-
-
-    -webkit-box-orient:
-
-        vertical;
-
-
-
-    overflow: hidden;
-
+  overflow: hidden;
 }
-
-
 
 .reel-property-location {
+  color: rgba(255, 255, 255, 0.88);
 
-    color:
+  font-size: 10px;
 
-        rgba(
+  margin-bottom: 4px;
 
-            255,
+  white-space: nowrap;
 
-            255,
+  overflow: hidden;
 
-            255,
-
-            0.88
-
-        );
-
-
-
-    font-size: 10px;
-
-
-
-    margin-bottom: 4px;
-
-
-
-    white-space: nowrap;
-
-
-
-    overflow: hidden;
-
-
-
-    text-overflow: ellipsis;
-
+  text-overflow: ellipsis;
 }
-
-
 
 .reel-product-price {
+  font-size: 15px;
 
-    font-size: 15px;
+  font-weight: 700;
 
-
-
-    font-weight: 700;
-
-
-
-    margin-bottom: 8px;
-
+  margin-bottom: 8px;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -4461,67 +1897,29 @@ badge खाली ठेवतो.
 
    ============================================================ */
 
-
-
 .reel-shop-btn {
+  border: none;
 
-    border: none;
+  background: #fff;
 
+  color: #111;
 
+  font-size: 11px;
 
-    background: #fff;
+  font-weight: 700;
 
+  padding: 7px 14px;
 
+  border-radius: 50px;
 
-    color: #111;
+  cursor: pointer;
 
-
-
-    font-size: 11px;
-
-
-
-    font-weight: 700;
-
-
-
-    padding:
-
-        7px
-
-        14px;
-
-
-
-    border-radius: 50px;
-
-
-
-    cursor: pointer;
-
-
-
-    transition:
-
-        0.2s
-
-        ease;
-
+  transition: 0.2s ease;
 }
-
-
 
 .reel-shop-btn:hover {
-
-    transform:
-
-        translateY(-1px);
-
+  transform: translateY(-1px);
 }
-
-
-
-
 
 /* ============================================================
 
@@ -4529,95 +1927,43 @@ badge खाली ठेवतो.
 
    ============================================================ */
 
-
-
 .reel-navigation {
+  position: absolute;
 
-    position: absolute;
+  right: 12px;
 
+  width: 32px;
 
+  height: 32px;
 
-    right: 12px;
+  border: none;
 
+  border-radius: 50%;
 
+  background: rgba(0, 0, 0, 0.48);
 
-    width: 32px;
+  color: #fff;
 
-    height: 32px;
+  display: flex;
 
+  align-items: center;
 
+  justify-content: center;
 
-    border: none;
+  cursor: pointer;
 
+  backdrop-filter: blur(5px);
 
-
-    border-radius: 50%;
-
-
-
-    background:
-
-        rgba(
-
-            0,
-
-            0,
-
-            0,
-
-            0.48
-
-        );
-
-
-
-    color: #fff;
-
-
-
-    display: flex;
-
-
-
-    align-items: center;
-
-    justify-content: center;
-
-
-
-    cursor: pointer;
-
-
-
-    backdrop-filter:
-
-        blur(5px);
-
-
-
-    z-index: 6;
-
+  z-index: 6;
 }
-
-
 
 .reel-prev {
-
-    top: 55px;
-
+  top: 55px;
 }
-
-
 
 .reel-next {
-
-    top: 95px;
-
+  top: 95px;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -4625,69 +1971,27 @@ badge खाली ठेवतो.
 
    ============================================================ */
 
-
-
 .reel-counter {
+  position: absolute;
 
-    position: absolute;
+  top: 15px;
 
+  right: 15px;
 
+  background: rgba(0, 0, 0, 0.45);
 
-    top: 15px;
+  color: #fff;
 
-    right: 15px;
+  font-size: 10px;
 
+  padding: 4px 8px;
 
+  border-radius: 20px;
 
-    background:
+  backdrop-filter: blur(5px);
 
-        rgba(
-
-            0,
-
-            0,
-
-            0,
-
-            0.45
-
-        );
-
-
-
-    color: #fff;
-
-
-
-    font-size: 10px;
-
-
-
-    padding:
-
-        4px
-
-        8px;
-
-
-
-    border-radius: 20px;
-
-
-
-    backdrop-filter:
-
-        blur(5px);
-
-
-
-    z-index: 6;
-
+  z-index: 6;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -4695,131 +1999,60 @@ badge खाली ठेवतो.
 
    ============================================================ */
 
-
-
 .reel-center-control {
+  position: absolute;
 
-    position: absolute;
+  top: 50%;
 
+  left: 50%;
 
+  transform: translate(
+    -50%,
 
-    top: 50%;
+    -50%
+  );
 
-    left: 50%;
+  width: 58px;
 
+  height: 58px;
 
+  border: none;
 
-    transform:
+  border-radius: 50%;
 
-        translate(
+  background: rgba(0, 0, 0, 0.52);
 
-            -50%,
+  color: #fff;
 
-            -50%
+  font-size: 32px;
 
-        );
+  display: flex;
 
+  align-items: center;
 
+  justify-content: center;
 
-    width: 58px;
+  cursor: pointer;
 
-    height: 58px;
+  backdrop-filter: blur(7px);
 
+  z-index: 6;
 
-
-    border: none;
-
-
-
-    border-radius: 50%;
-
-
-
-    background:
-
-        rgba(
-
-            0,
-
-            0,
-
-            0,
-
-            0.52
-
-        );
-
-
-
-    color: #fff;
-
-
-
-    font-size: 32px;
-
-
-
-    display: flex;
-
-
-
-    align-items: center;
-
-    justify-content: center;
-
-
-
-    cursor: pointer;
-
-
-
-    backdrop-filter:
-
-        blur(7px);
-
-
-
-    z-index: 6;
-
-
-
-    transition:
-
-        0.2s
-
-        ease;
-
+  transition: 0.2s ease;
 }
-
-
 
 .reel-center-control:hover {
+  transform: translate(
+      -50%,
 
-    transform:
-
-        translate(
-
-            -50%,
-
-            -50%
-
-        )
-
-        scale(1.08);
-
+      -50%
+    )
+    scale(1.08);
 }
-
-
 
 .reel-center-control i {
-
-    line-height: 1;
-
+  line-height: 1;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -4827,129 +2060,51 @@ badge खाली ठेवतो.
 
    ============================================================ */
 
-
-
 .reel-status {
+  position: absolute;
 
-    position: absolute;
+  top: 50px;
 
+  left: 15px;
 
+  display: flex;
 
-    top: 50px;
+  align-items: center;
 
-    left: 15px;
+  gap: 5px;
 
+  background: rgba(0, 0, 0, 0.55);
 
+  color: #fff;
 
-    display: flex;
+  padding: 5px 9px;
 
+  border-radius: 50px;
 
+  font-size: 9px;
 
-    align-items: center;
+  font-weight: 600;
 
+  z-index: 5;
 
-
-    gap: 5px;
-
-
-
-    background:
-
-        rgba(
-
-            0,
-
-            0,
-
-            0,
-
-            0.55
-
-        );
-
-
-
-    color: #fff;
-
-
-
-    padding:
-
-        5px
-
-        9px;
-
-
-
-    border-radius: 50px;
-
-
-
-    font-size: 9px;
-
-
-
-    font-weight: 600;
-
-
-
-    z-index: 5;
-
-
-
-    backdrop-filter:
-
-        blur(6px);
-
+  backdrop-filter: blur(6px);
 }
-
-
 
 .reel-status-dot {
+  width: 6px;
 
-    width: 6px;
+  height: 6px;
 
-    height: 6px;
+  border-radius: 50%;
 
-
-
-    border-radius: 50%;
-
-
-
-    background: #ffc107;
-
+  background: #ffc107;
 }
-
-
 
 .reel-status-dot.playing {
+  background: #28a745;
 
-    background: #28a745;
-
-
-
-    box-shadow:
-
-        0 0 0 3px
-
-        rgba(
-
-            40,
-
-            167,
-
-            69,
-
-            0.18
-
-        );
-
+  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.18);
 }
-
-
-
-
 
 /* ============================================================
 
@@ -4957,59 +2112,31 @@ badge खाली ठेवतो.
 
    ============================================================ */
 
-
-
 .reel-empty {
+  height: 300px;
 
-    height: 300px;
+  border-radius: 18px;
 
+  background: #f8f9fa;
 
+  display: flex;
 
-    border-radius: 18px;
+  flex-direction: column;
 
+  align-items: center;
 
+  justify-content: center;
 
-    background: #f8f9fa;
+  color: #888;
 
+  gap: 8px;
 
-
-    display: flex;
-
-
-
-    flex-direction: column;
-
-
-
-    align-items: center;
-
-    justify-content: center;
-
-
-
-    color: #888;
-
-
-
-    gap: 8px;
-
-
-
-    font-size: 12px;
-
+  font-size: 12px;
 }
-
-
 
 .reel-empty i {
-
-    font-size: 32px;
-
+  font-size: 32px;
 }
-
-
-
-
 
 /* ============================================================
 
@@ -5019,207 +2146,73 @@ badge खाली ठेवतो.
 
    ============================================================ */
 
-
-
 @media (max-width: 1199px) {
+  .property-reels-column {
+    width: 100%;
 
+    flex: 0 0 100%;
 
+    min-width: 0;
+  }
 
-    .property-reels-column {
+  .property-reels-column .reels-sticky {
+    position: static !important;
+  }
 
-        width: 100%;
+  .property-reel-item {
+    max-width: 330px;
 
+    margin-left: auto;
 
+    margin-right: auto;
+  }
 
-        flex:
+  .reel-card {
+    height: 480px;
 
-            0
+    max-width: 330px;
 
-            0
+    margin: auto;
+  }
 
-            100%;
+  .reel-empty {
+    max-width: 330px;
 
+    margin-left: auto;
 
-
-        min-width: 0;
-
-    }
-
-
-
-    .property-reels-column
-
-    .reels-sticky {
-
-        position:
-
-            static !important;
-
-    }
-
-
-
-    .property-reel-item {
-
-        max-width: 330px;
-
-
-
-        margin-left: auto;
-
-        margin-right: auto;
-
-    }
-
-
-
-    .reel-card {
-
-        height: 480px;
-
-
-
-        max-width: 330px;
-
-
-
-        margin: auto;
-
-    }
-
-
-
-    .reel-empty {
-
-        max-width: 330px;
-
-
-
-        margin-left: auto;
-
-        margin-right: auto;
-
-    }
-
-
-
+    margin-right: auto;
+  }
 }
-
-
-
-
 
 @media (max-width: 900px) {
-
-
-
-    .property-reels-column {
-
-        width: 100%;
-
-    }
-
-
-
+  .property-reels-column {
+    width: 100%;
+  }
 }
-
-
-
-
 
 @media (max-width: 576px) {
+  .property-reel-item {
+    max-width: 100%;
+  }
 
+  .reel-card {
+    height: 500px;
 
+    max-width: 100%;
+  }
 
-    .property-reel-item {
-
-        max-width: 100%;
-
-    }
-
-
-
-    .reel-card {
-
-        height: 500px;
-
-
-
-        max-width: 100%;
-
-    }
-
-
-
-    .reel-empty {
-
-        max-width: 100%;
-
-    }
-
-
-
+  .reel-empty {
+    max-width: 100%;
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* =====================================================
-
-   QNX MART PREMIUM PROPERTY CARD DESIGN
-
-   CARD-ONLY OVERRIDES
-
-   ===================================================== */
-
-
+/* ===== FIX PROPERTY CARD WIDTH ===== */
 
 .pl-page .pl-grid {
-
-    display: grid;
-
-    grid-template-columns: repeat(
-
-        auto-fit,
-
-        minmax(min(100%, 250px), 1fr)
-
-    );
-
-    gap: 20px;
-
-    align-items: stretch;
-
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+  gap: 20px;
+  align-items: stretch;
 }
-
-
 
 /* =========================================
 
@@ -5227,73 +2220,48 @@ badge खाली ठेवतो.
 
    ========================================= */
 
-
-
 .pl-page .pl-card {
+  position: relative;
 
-    position: relative;
+  display: flex;
 
-    display: flex;
+  flex-direction: column;
 
-    flex-direction: column;
+  width: 100%;
 
-    width: 100%;
+  height: auto;
 
-    height: auto;
+  min-width: 0;
 
-    min-width: 0;
+  overflow: hidden;
 
-    overflow: hidden;
+  isolation: isolate;
 
-    isolation: isolate;
+  background: #ffffff;
 
+  border: 1px solid #e5eaf3;
 
+  border-radius: 18px;
 
-    background: #ffffff;
+  box-shadow:
+    0 4px 12px rgba(15, 23, 42, 0.04),
+    0 10px 24px rgba(15, 23, 42, 0.06);
 
-    border: 1px solid #e5eaf3;
-
-    border-radius: 18px;
-
-
-
-    box-shadow:
-
-        0 4px 12px rgba(15, 23, 42, 0.04),
-
-        0 10px 24px rgba(15, 23, 42, 0.06);
-
-
-
-    transition:
-
-        transform 0.3s ease,
-
-        box-shadow 0.3s ease,
-
-        border-color 0.3s ease;
-
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
 }
-
-
 
 .pl-page .pl-card:hover {
+  transform: translateY(-5px);
 
-    transform: translateY(-5px);
+  border-color: #c9dcff;
 
-    border-color: #c9dcff;
-
-
-
-    box-shadow:
-
-        0 12px 26px rgba(15, 23, 42, 0.09),
-
-        0 5px 12px rgba(15, 23, 42, 0.04);
-
+  box-shadow:
+    0 12px 26px rgba(15, 23, 42, 0.09),
+    0 5px 12px rgba(15, 23, 42, 0.04);
 }
-
-
 
 /* =========================================
 
@@ -5301,61 +2269,43 @@ badge खाली ठेवतो.
 
    ========================================= */
 
-
-
 .pl-page .pl-image-section {
+  position: relative;
 
-    position: relative;
+  width: 100%;
 
-    width: 100%;
+  height: 205px;
 
-    height: 205px;
+  flex-shrink: 0;
 
-    flex-shrink: 0;
+  overflow: hidden;
 
-    overflow: hidden;
-
-    background: #edf2f8;
-
+  background: #edf2f8;
 }
-
-
 
 .pl-page .pl-full-bg {
+  position: absolute;
 
-    position: absolute;
+  inset: 0;
 
-    inset: 0;
+  width: 100%;
 
-    width: 100%;
+  height: 100%;
 
-    height: 100%;
+  object-fit: 100% 100%;
 
+  object-position: center;
 
+  display: block;
 
-    object-fit: 100% 100%;
+  cursor: pointer;
 
-    object-position: center;
-
-    display: block;
-
-    cursor: pointer;
-
-
-
-    transition: transform 0.45s ease;
-
+  transition: transform 0.45s ease;
 }
-
-
 
 .pl-page .pl-card:hover .pl-full-bg {
-
-    transform: scale(1.045);
-
+  transform: scale(1.045);
 }
-
-
 
 /* =========================================
 
@@ -5363,117 +2313,82 @@ badge खाली ठेवतो.
 
    ========================================= */
 
-
-
 .pl-page .pl-image-badges {
+  position: absolute;
 
-    position: absolute;
+  z-index: 5;
 
-    z-index: 5;
+  top: 12px;
 
-    top: 12px;
+  left: 12px;
 
-    left: 12px;
+  right: 12px;
 
-    right: 12px;
+  display: flex;
 
+  align-items: flex-start;
 
+  justify-content: space-between;
 
-    display: flex;
+  gap: 6px;
 
-    align-items: flex-start;
-
-    justify-content: space-between;
-
-    gap: 6px;
-
-
-
-    pointer-events: none;
-
+  pointer-events: none;
 }
-
-
 
 .pl-page .pl-category-badge,
-
 .pl-page .pl-transaction-badge {
+  display: inline-flex;
 
-    display: inline-flex;
+  align-items: center;
 
-    align-items: center;
+  justify-content: center;
 
-    justify-content: center;
+  gap: 5px;
 
-    gap: 5px;
+  padding: 6px 10px;
 
+  border-radius: 30px;
 
+  font-size: 10px;
 
-    padding: 6px 10px;
+  font-weight: 700;
 
-    border-radius: 30px;
+  line-height: 1.2;
 
+  white-space: nowrap;
 
-
-    font-size: 10px;
-
-    font-weight: 700;
-
-    line-height: 1.2;
-
-    white-space: nowrap;
-
-
-
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
-
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
-
-
 
 .pl-page .pl-category-badge {
+  background: #f5ac17;
 
-    background: #f5ac17;
+  color: #ffffff;
 
-    color: #ffffff;
+  max-width: 65%;
 
+  overflow: hidden;
 
-
-    max-width: 65%;
-
-    overflow: hidden;
-
-    text-overflow: ellipsis;
-
+  text-overflow: ellipsis;
 }
-
-
 
 .pl-page .pl-category-badge i {
+  font-size: 11px;
 
-    font-size: 11px;
-
-    flex-shrink: 0;
-
+  flex-shrink: 0;
 }
-
-
 
 .pl-page .pl-transaction-badge {
+  background: rgba(255, 255, 255, 0.96);
 
-    background: rgba(255, 255, 255, 0.96);
+  color: #1557c9;
 
-    color: #1557c9;
+  max-width: 38%;
 
-    max-width: 38%;
+  overflow: hidden;
 
-    overflow: hidden;
-
-    text-overflow: ellipsis;
-
+  text-overflow: ellipsis;
 }
-
-
 
 /* =========================================
 
@@ -5481,203 +2396,143 @@ badge खाली ठेवतो.
 
    ========================================= */
 
-
-
 .pl-page .pl-img-nav {
+  position: absolute;
 
-    position: absolute;
+  z-index: 10;
 
-    z-index: 10;
+  top: 50%;
 
-    top: 50%;
+  width: 32px;
 
+  height: 32px;
 
+  padding: 0;
 
-    width: 32px;
+  display: flex;
 
-    height: 32px;
+  align-items: center;
 
-    padding: 0;
+  justify-content: center;
 
+  background: rgba(15, 23, 42, 0.55);
 
+  border: 1px solid rgba(255, 255, 255, 0.45);
 
-    display: flex;
+  border-radius: 50%;
 
-    align-items: center;
+  color: #ffffff;
 
-    justify-content: center;
+  cursor: pointer;
 
+  backdrop-filter: blur(5px);
 
+  transform: translateY(-50%);
 
-    background: rgba(15, 23, 42, 0.55);
-
-    border: 1px solid rgba(255, 255, 255, 0.45);
-
-    border-radius: 50%;
-
-    color: #ffffff;
-
-
-
-    cursor: pointer;
-
-    backdrop-filter: blur(5px);
-
-
-
-    transform: translateY(-50%);
-
-    transition: background 0.2s ease;
-
+  transition: background 0.2s ease;
 }
-
-
 
 .pl-page .pl-img-nav:hover {
-
-    background: #0963ed;
-
+  background: #0963ed;
 }
-
-
 
 .pl-page .pl-img-prev {
-
-    left: 10px;
-
+  left: 10px;
 }
-
-
 
 .pl-page .pl-img-next {
-
-    right: 10px;
-
+  right: 10px;
 }
-
-
 
 .pl-page .pl-img-counter {
+  position: absolute;
 
-    position: absolute;
+  z-index: 10;
 
-    z-index: 10;
+  top: auto;
 
-    top: auto;
+  right: 12px;
 
-    right: 12px;
+  bottom: 12px;
 
-    bottom: 12px;
+  display: inline-flex;
 
+  align-items: center;
 
+  gap: 5px;
 
-    display: inline-flex;
+  padding: 5px 9px;
 
-    align-items: center;
+  border-radius: 20px;
 
-    gap: 5px;
+  background: rgba(15, 23, 42, 0.74);
 
+  border: none;
 
+  color: #ffffff;
 
-    padding: 5px 9px;
+  font-size: 10px;
 
-    border-radius: 20px;
+  font-weight: 700;
 
-
-
-    background: rgba(15, 23, 42, 0.74);
-
-    border: none;
-
-    color: #ffffff;
-
-
-
-    font-size: 10px;
-
-    font-weight: 700;
-
-    line-height: 1.2;
-
+  line-height: 1.2;
 }
-
-
 
 .pl-page .pl-img-dots {
+  position: absolute;
 
-    position: absolute;
+  top: auto;
 
-    top: auto;
+  left: 50%;
 
-    left: 50%;
+  bottom: 15px;
 
-    bottom: 15px;
+  z-index: 10;
 
-    z-index: 10;
+  display: flex;
 
+  align-items: center;
 
+  justify-content: center;
 
-    display: flex;
+  gap: 5px;
 
-    align-items: center;
+  padding: 0;
 
-    justify-content: center;
+  background: transparent;
 
-    gap: 5px;
+  backdrop-filter: none;
 
-
-
-    padding: 0;
-
-    background: transparent;
-
-    backdrop-filter: none;
-
-    transform: translateX(-50%);
-
+  transform: translateX(-50%);
 }
-
-
 
 .pl-page .pl-img-dot {
+  width: 6px;
 
-    width: 6px;
+  height: 6px;
 
-    height: 6px;
+  padding: 0;
 
-    padding: 0;
+  flex-shrink: 0;
 
-    flex-shrink: 0;
+  border: none;
 
+  border-radius: 50%;
 
+  background: rgba(255, 255, 255, 0.55);
 
-    border: none;
-
-    border-radius: 50%;
-
-    background: rgba(255, 255, 255, 0.55);
-
-
-
-    cursor: pointer;
-
+  cursor: pointer;
 }
-
-
 
 .pl-page .pl-img-dot.active {
+  width: 15px;
 
-    width: 15px;
+  border-radius: 6px;
 
-    border-radius: 6px;
+  background: #ffffff;
 
-    background: #ffffff;
-
-    transform: none;
-
+  transform: none;
 }
-
-
 
 /* =========================================
 
@@ -5685,67 +2540,46 @@ badge खाली ठेवतो.
 
    ========================================= */
 
-
-
 .pl-page .pl-glass-content {
+  position: relative;
 
-    position: relative;
+  inset: auto;
 
-    inset: auto;
+  z-index: auto;
 
-    z-index: auto;
+  display: flex;
 
+  flex-direction: column;
 
+  flex: 1;
 
-    display: flex;
+  width: 100%;
 
-    flex-direction: column;
+  min-width: 0;
 
-    flex: 1;
+  padding: 14px 15px 15px;
 
+  overflow: visible;
 
+  background: #ffffff;
 
-    width: 100%;
+  border: none;
 
-    min-width: 0;
+  border-radius: 0;
 
+  box-shadow: none;
 
+  backdrop-filter: none;
 
-    padding: 14px 15px 15px;
-
-    overflow: visible;
-
-
-
-    background: #ffffff;
-
-    border: none;
-
-    border-radius: 0;
-
-    box-shadow: none;
-
-
-
-    backdrop-filter: none;
-
-    -webkit-backdrop-filter: none;
-
+  -webkit-backdrop-filter: none;
 }
-
-
 
 .pl-page .pl-glass-content::before,
-
 .pl-page .pl-glass-content::after {
+  display: none;
 
-    display: none;
-
-    animation: none;
-
+  animation: none;
 }
-
-
 
 /* =========================================
 
@@ -5753,53 +2587,37 @@ badge खाली ठेवतो.
 
    ========================================= */
 
-
-
 .pl-page .pl-glass-name {
+  margin: 0 0 7px;
 
-    margin: 0 0 7px;
+  color: #101c36;
 
+  font-size: 16px;
 
+  font-weight: 800;
 
-    color: #101c36;
+  line-height: 1.4;
 
-    font-size: 16px;
+  letter-spacing: -0.25px;
 
-    font-weight: 800;
+  text-shadow: none;
 
-    line-height: 1.4;
+  display: -webkit-box;
 
-    letter-spacing: -0.25px;
+  -webkit-box-orient: vertical;
 
-    text-shadow: none;
+  -webkit-line-clamp: 1;
 
+  line-clamp: 1;
 
+  overflow: hidden;
 
-    display: -webkit-box;
-
-    -webkit-box-orient: vertical;
-
-    -webkit-line-clamp: 1;
-
-    line-clamp: 1;
-
-    overflow: hidden;
-
-
-
-    cursor: pointer;
-
+  cursor: pointer;
 }
-
-
 
 .pl-page .pl-glass-name:hover {
-
-    color: #0963ed;
-
+  color: #0963ed;
 }
-
-
 
 /* =========================================
 
@@ -5807,61 +2625,43 @@ badge खाली ठेवतो.
 
    ========================================= */
 
-
-
 .pl-page .pl-glass-location {
+  display: flex;
 
-    display: flex;
+  align-items: center;
 
-    align-items: center;
+  gap: 6px;
 
-    gap: 6px;
+  min-width: 0;
 
+  margin: 0 0 9px;
 
+  color: #53627b;
 
-    min-width: 0;
+  font-size: 12px;
 
-    margin: 0 0 9px;
+  font-weight: 500;
 
-
-
-    color: #53627b;
-
-    font-size: 12px;
-
-    font-weight: 500;
-
-    line-height: 1.4;
-
+  line-height: 1.4;
 }
-
-
 
 .pl-page .pl-glass-location i {
+  flex-shrink: 0;
 
-    flex-shrink: 0;
+  color: #155fd7;
 
-    color: #155fd7;
-
-    font-size: 13px;
-
+  font-size: 13px;
 }
-
-
 
 .pl-page .pl-glass-location span {
+  min-width: 0;
 
-    min-width: 0;
+  overflow: hidden;
 
-    overflow: hidden;
+  white-space: nowrap;
 
-    white-space: nowrap;
-
-    text-overflow: ellipsis;
-
+  text-overflow: ellipsis;
 }
-
-
 
 /* =========================================
 
@@ -5869,39 +2669,29 @@ badge खाली ठेवतो.
 
    ========================================= */
 
-
-
 .pl-page .pl-glass-desc {
+  margin: 0 0 5px;
 
-    margin: 0 0 5px;
+  min-height: 32px;
 
-    min-height: 32px;
+  color: #748096;
 
+  font-size: 11px;
 
+  font-weight: 400;
 
-    color: #748096;
+  line-height: 1.5;
 
-    font-size: 11px;
+  display: -webkit-box;
 
-    font-weight: 400;
+  -webkit-box-orient: vertical;
 
-    line-height: 1.5;
+  -webkit-line-clamp: 2;
 
+  line-clamp: 2;
 
-
-    display: -webkit-box;
-
-    -webkit-box-orient: vertical;
-
-    -webkit-line-clamp: 2;
-
-    line-clamp: 2;
-
-    overflow: hidden;
-
+  overflow: hidden;
 }
-
-
 
 /* =========================================
 
@@ -5909,87 +2699,61 @@ badge खाली ठेवतो.
 
    ========================================= */
 
-
-
 .pl-page .pl-glass-price-row {
+  display: flex;
 
-    display: flex;
+  align-items: center;
 
-    align-items: center;
+  justify-content: space-between;
 
-    justify-content: space-between;
+  flex-wrap: wrap;
 
-    flex-wrap: wrap;
+  gap: 8px;
 
-    gap: 8px;
+  margin: auto 0 13px;
 
+  padding-top: 3px;
 
-
-    margin: auto 0 13px;
-
-    padding-top: 3px;
-
-
-
-    border-top: 1px solid #dcdee1;
-
+  border-top: 1px solid #dcdee1;
 }
-
-
 
 .pl-page .pl-glass-price {
+  display: block;
 
-    display: block;
+  min-width: 0;
 
-    min-width: 0;
+  color: #0963ed;
 
+  font-size: 17px;
 
+  font-weight: 800;
 
-    color: #0963ed;
+  line-height: 1.3;
 
-    font-size: 17px;
-
-    font-weight: 800;
-
-    line-height: 1.3;
-
-    overflow-wrap: anywhere;
-
+  overflow-wrap: anywhere;
 }
-
-
 
 .pl-page .pl-price-transaction {
+  display: inline-flex;
 
-    display: inline-flex;
+  align-items: center;
 
-    align-items: center;
+  justify-content: center;
 
-    justify-content: center;
+  padding: 5px 8px;
 
+  border-radius: 5px;
 
+  background: #eaf2ff;
 
-    padding: 5px 8px;
+  color: #075bd8;
 
-    border-radius: 5px;
+  font-size: 10px;
 
+  font-weight: 600;
 
-
-    background: #eaf2ff;
-
-    color: #075bd8;
-
-
-
-    font-size: 10px;
-
-    font-weight: 600;
-
-    white-space: nowrap;
-
+  white-space: nowrap;
 }
-
-
 
 /* =========================================
 
@@ -5997,127 +2761,90 @@ badge खाली ठेवतो.
 
    ========================================= */
 
-
-
 .pl-page .pl-glass-actions {
+  display: grid;
 
-    display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 9px;
 
-    gap: 9px;
-
-    width: 100%;
-
+  width: 100%;
 }
-
-
 
 .pl-page .pl-glass-details-btn,
-
 .pl-page .pl-glass-enquiry-btn {
+  display: inline-flex;
 
-    display: inline-flex;
+  align-items: center;
 
-    align-items: center;
+  justify-content: center;
 
-    justify-content: center;
+  gap: 6px;
 
-    gap: 6px;
+  width: 100%;
 
+  min-width: 0;
 
+  height: 37px;
 
-    width: 100%;
+  padding: 6px 8px;
 
-    min-width: 0;
+  border-radius: 7px;
 
-    height: 37px;
+  font-size: 11px;
 
-    padding: 6px 8px;
+  font-weight: 700;
 
+  line-height: 1.2;
 
+  white-space: nowrap;
 
-    border-radius: 7px;
+  cursor: pointer;
 
-    font-size: 11px;
-
-    font-weight: 700;
-
-    line-height: 1.2;
-
-    white-space: nowrap;
-
-
-
-    cursor: pointer;
-
-    transition:
-
-        background 0.2s ease,
-
-        border-color 0.2s ease,
-
-        box-shadow 0.2s ease,
-
-        transform 0.2s ease;
-
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
-
-
 
 .pl-page .pl-glass-details-btn {
+  background: #ffffff;
 
-    background: #ffffff;
+  border: 1px solid #0963ed;
 
-    border: 1px solid #0963ed;
+  color: #0963ed;
 
-    color: #0963ed;
+  box-shadow: none;
 
-    box-shadow: none;
-
-    backdrop-filter: none;
-
+  backdrop-filter: none;
 }
-
-
 
 .pl-page .pl-glass-details-btn:hover {
+  background: #eaf2ff;
 
-    background: #eaf2ff;
-
-    transform: translateY(-1px);
-
+  transform: translateY(-1px);
 }
-
-
 
 .pl-page .pl-glass-enquiry-btn {
+  background: #0963ed;
 
-    background: #0963ed;
+  border: 1px solid #0963ed;
 
-    border: 1px solid #0963ed;
+  color: #ffffff;
 
-    color: #ffffff;
-
-    box-shadow: none;
-
+  box-shadow: none;
 }
-
-
 
 .pl-page .pl-glass-enquiry-btn:hover {
+  background: #004fc8;
 
-    background: #004fc8;
+  border-color: #004fc8;
 
-    border-color: #004fc8;
+  box-shadow: 0 4px 12px rgba(9, 99, 237, 0.2);
 
-    box-shadow: 0 4px 12px rgba(9, 99, 237, 0.20);
-
-    transform: translateY(-1px);
-
+  transform: translateY(-1px);
 }
-
-
 
 /* =========================================
 
@@ -6125,19 +2852,11 @@ badge खाली ठेवतो.
 
    ========================================= */
 
-
-
 @media (max-width: 1199px) {
-
-    .pl-page .pl-grid {
-
-        gap: 16px;
-
-    }
-
+  .pl-page .pl-grid {
+    gap: 16px;
+  }
 }
-
-
 
 /* =========================================
 
@@ -6145,197 +2864,119 @@ badge खाली ठेवतो.
 
    ========================================= */
 
-
-
 @media (max-width: 600px) {
+  .pl-page .pl-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 
-    .pl-page .pl-grid {
+    gap: 10px;
+  }
 
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+  .pl-page .pl-card {
+    border-radius: 12px;
+  }
 
-        gap: 10px;
+  .pl-page .pl-image-section {
+    height: 145px;
+  }
 
-    }
+  .pl-page .pl-glass-content {
+    padding: 10px;
+  }
 
+  .pl-page .pl-glass-name {
+    font-size: 12px;
 
+    margin-bottom: 5px;
+  }
 
-    .pl-page .pl-card {
+  .pl-page .pl-glass-location {
+    font-size: 10px;
 
-        border-radius: 12px;
+    margin-bottom: 7px;
+  }
 
-    }
+  .pl-page .pl-glass-desc {
+    font-size: 10px;
 
+    min-height: 30px;
 
+    margin-bottom: 8px;
+  }
 
-    .pl-page .pl-image-section {
+  .pl-page .pl-glass-price-row {
+    gap: 5px;
 
-        height: 145px;
+    padding-top: 9px;
 
-    }
+    margin-bottom: 10px;
+  }
 
+  .pl-page .pl-glass-price {
+    font-size: 14px;
+  }
 
+  .pl-page .pl-price-transaction {
+    font-size: 9px;
 
-    .pl-page .pl-glass-content {
+    padding: 4px 6px;
+  }
 
-        padding: 10px;
+  .pl-page .pl-glass-actions {
+    grid-template-columns: 1fr;
 
-    }
+    gap: 6px;
+  }
 
+  .pl-page .pl-glass-details-btn,
+  .pl-page .pl-glass-enquiry-btn {
+    height: 31px;
 
+    font-size: 10px;
 
-    .pl-page .pl-glass-name {
+    border-radius: 6px;
+  }
 
-        font-size: 12px;
+  .pl-page .pl-category-badge,
+  .pl-page .pl-transaction-badge {
+    padding: 4px 6px;
 
-        margin-bottom: 5px;
+    font-size: 8px;
+  }
 
-    }
+  .pl-page .pl-img-nav {
+    width: 26px;
 
+    height: 26px;
 
+    font-size: 11px;
+  }
 
-    .pl-page .pl-glass-location {
+  .pl-page .pl-img-prev {
+    left: 5px;
+  }
 
-        font-size: 10px;
+  .pl-page .pl-img-next {
+    right: 5px;
+  }
 
-        margin-bottom: 7px;
+  .pl-page .pl-img-counter {
+    bottom: 7px;
 
-    }
+    right: 7px;
 
+    font-size: 9px;
 
+    padding: 4px 6px;
+  }
 
-    .pl-page .pl-glass-desc {
+  .pl-page .pl-img-dots {
+    bottom: 10px;
 
-        font-size: 10px;
+    max-width: 55%;
 
-        min-height: 30px;
-
-        margin-bottom: 8px;
-
-    }
-
-
-
-    .pl-page .pl-glass-price-row {
-
-        gap: 5px;
-
-        padding-top: 9px;
-
-        margin-bottom: 10px;
-
-    }
-
-
-
-    .pl-page .pl-glass-price {
-
-        font-size: 14px;
-
-    }
-
-
-
-    .pl-page .pl-price-transaction {
-
-        font-size: 9px;
-
-        padding: 4px 6px;
-
-    }
-
-
-
-    .pl-page .pl-glass-actions {
-
-        grid-template-columns: 1fr;
-
-        gap: 6px;
-
-    }
-
-
-
-    .pl-page .pl-glass-details-btn,
-
-    .pl-page .pl-glass-enquiry-btn {
-
-        height: 31px;
-
-        font-size: 10px;
-
-        border-radius: 6px;
-
-    }
-
-
-
-    .pl-page .pl-category-badge,
-
-    .pl-page .pl-transaction-badge {
-
-        padding: 4px 6px;
-
-        font-size: 8px;
-
-    }
-
-
-
-    .pl-page .pl-img-nav {
-
-        width: 26px;
-
-        height: 26px;
-
-        font-size: 11px;
-
-    }
-
-
-
-    .pl-page .pl-img-prev {
-
-        left: 5px;
-
-    }
-
-
-
-    .pl-page .pl-img-next {
-
-        right: 5px;
-
-    }
-
-
-
-    .pl-page .pl-img-counter {
-
-        bottom: 7px;
-
-        right: 7px;
-
-        font-size: 9px;
-
-        padding: 4px 6px;
-
-    }
-
-
-
-    .pl-page .pl-img-dots {
-
-        bottom: 10px;
-
-        max-width: 55%;
-
-        overflow: hidden;
-
-    }
-
+    overflow: hidden;
+  }
 }
-
-
 
 /* =========================================
 
@@ -6343,65 +2984,36 @@ badge खाली ठेवतो.
 
    ========================================= */
 
-
-
 @media (max-width: 380px) {
+  .pl-page .pl-grid {
+    grid-template-columns: 1fr;
 
-    .pl-page .pl-grid {
+    gap: 14px;
+  }
 
-        grid-template-columns: 1fr;
+  .pl-page .pl-image-section {
+    height: 195px;
+  }
 
-        gap: 14px;
+  .pl-page .pl-glass-content {
+    padding: 14px;
+  }
 
-    }
+  .pl-page .pl-glass-name {
+    font-size: 15px;
+  }
 
+  .pl-page .pl-glass-actions {
+    grid-template-columns: 1fr 1fr;
+  }
 
+  .pl-page .pl-glass-details-btn,
+  .pl-page .pl-glass-enquiry-btn {
+    height: 36px;
 
-    .pl-page .pl-image-section {
-
-        height: 195px;
-
-    }
-
-
-
-    .pl-page .pl-glass-content {
-
-        padding: 14px;
-
-    }
-
-
-
-    .pl-page .pl-glass-name {
-
-        font-size: 15px;
-
-    }
-
-
-
-    .pl-page .pl-glass-actions {
-
-        grid-template-columns: 1fr 1fr;
-
-    }
-
-
-
-    .pl-page .pl-glass-details-btn,
-
-    .pl-page .pl-glass-enquiry-btn {
-
-        height: 36px;
-
-        font-size: 11px;
-
-    }
-
+    font-size: 11px;
+  }
 }
-
-
 
 /* =========================================
 
@@ -6409,45 +3021,20 @@ badge खाली ठेवतो.
 
    ========================================= */
 
-
-
 @media (prefers-reduced-motion: reduce) {
+  .pl-page .pl-card,
+  .pl-page .pl-full-bg,
+  .pl-page .pl-img-nav,
+  .pl-page .pl-glass-details-btn,
+  .pl-page .pl-glass-enquiry-btn {
+    transition: none;
+  }
 
-    .pl-page .pl-card,
-
-    .pl-page .pl-full-bg,
-
-    .pl-page .pl-img-nav,
-
-    .pl-page .pl-glass-details-btn,
-
-    .pl-page .pl-glass-enquiry-btn {
-
-        transition: none;
-
-    }
-
-
-
-    .pl-page .pl-card:hover,
-
-    .pl-page .pl-card:hover .pl-full-bg {
-
-        transform: none;
-
-    }
-
+  .pl-page .pl-card:hover,
+  .pl-page .pl-card:hover .pl-full-bg {
+    transform: none;
+  }
 }
-
-
-
-
-
-
-
-
-
-
 
 /* ==========================================
 
@@ -6455,354 +3042,211 @@ badge खाली ठेवतो.
 
    ========================================== */
 
-
-
 .pl-loading-grid {
+  display: grid;
 
-    display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
 
-    grid-template-columns: repeat(
+  gap: 20px;
 
-        auto-fit,
-
-        minmax(min(100%, 250px), 1fr)
-
-    );
-
-    gap: 20px;
-
-    width: 100%;
-
+  width: 100%;
 }
-
-
 
 /* SKELETON CARD */
 
-
-
 .pl-skeleton-card {
+  background: #ffffff;
 
-    background: #ffffff;
+  border: 1px solid #e5eaf3;
 
-    border: 1px solid #e5eaf3;
+  border-radius: 18px;
 
-    border-radius: 18px;
+  overflow: hidden;
 
-    overflow: hidden;
-
-
-
-    box-shadow:
-
-        0 4px 12px rgba(15, 23, 42, 0.04),
-
-        0 10px 24px rgba(15, 23, 42, 0.06);
-
+  box-shadow:
+    0 4px 12px rgba(15, 23, 42, 0.04),
+    0 10px 24px rgba(15, 23, 42, 0.06);
 }
-
-
 
 /* IMAGE */
 
-
-
 .pl-skeleton-image {
+  height: 205px;
 
-    height: 205px;
-
-    position: relative;
-
+  position: relative;
 }
-
-
 
 /* BADGE */
 
-
-
 .pl-skeleton-badge {
+  position: absolute;
 
-    position: absolute;
+  top: 12px;
 
-    top: 12px;
+  left: 12px;
 
-    left: 12px;
+  width: 90px;
 
-    width: 90px;
+  height: 24px;
 
-    height: 24px;
+  border-radius: 20px;
 
-    border-radius: 20px;
-
-    background: #e4eaf3;
-
+  background: #e4eaf3;
 }
-
-
 
 /* CONTENT */
 
-
-
 .pl-skeleton-content {
-
-    padding: 14px 15px 15px;
-
+  padding: 14px 15px 15px;
 }
-
-
 
 .pl-skeleton-title {
+  width: 76%;
 
-    width: 76%;
+  height: 19px;
 
-    height: 19px;
+  border-radius: 5px;
 
-    border-radius: 5px;
-
-    margin-bottom: 13px;
-
+  margin-bottom: 13px;
 }
-
-
 
 .pl-skeleton-location {
+  width: 55%;
 
-    width: 55%;
+  height: 13px;
 
-    height: 13px;
+  border-radius: 5px;
 
-    border-radius: 5px;
-
-    margin-bottom: 12px;
-
+  margin-bottom: 12px;
 }
-
-
 
 .pl-skeleton-description {
+  width: 95%;
 
-    width: 95%;
+  height: 28px;
 
-    height: 28px;
+  border-radius: 5px;
 
-    border-radius: 5px;
-
-    margin-bottom: 18px;
-
+  margin-bottom: 18px;
 }
-
-
 
 .pl-skeleton-price {
+  width: 48%;
 
-    width: 48%;
+  height: 21px;
 
-    height: 21px;
+  border-radius: 5px;
 
-    border-radius: 5px;
-
-    margin-bottom: 16px;
-
+  margin-bottom: 16px;
 }
-
-
 
 .pl-skeleton-buttons {
+  display: grid;
 
-    display: grid;
+  grid-template-columns: 1fr 1fr;
 
-    grid-template-columns: 1fr 1fr;
-
-    gap: 9px;
-
+  gap: 9px;
 }
-
-
 
 .pl-skeleton-btn {
+  height: 37px;
 
-    height: 37px;
-
-    border-radius: 7px;
-
+  border-radius: 7px;
 }
-
-
 
 /* PREMIUM BLUE SHIMMER */
 
-
-
 .pl-shimmer {
+  background: linear-gradient(
+    100deg,
+    #e9eef5 10%,
 
-    background: linear-gradient(
+    #f7faff 35%,
 
-        100deg,
+    #dceaff 50%,
 
-        #e9eef5 10%,
+    #f7faff 65%,
 
-        #f7faff 35%,
+    #e9eef5 90%
+  );
 
-        #dceaff 50%,
+  background-size: 200% 100%;
 
-        #f7faff 65%,
-
-        #e9eef5 90%
-
-    );
-
-
-
-    background-size: 200% 100%;
-
-    animation: plShimmer 1.5s linear infinite;
-
+  animation: plShimmer 1.5s linear infinite;
 }
-
-
 
 @keyframes plShimmer {
+  0% {
+    background-position: 200% 0;
+  }
 
-    0% {
-
-        background-position: 200% 0;
-
-    }
-
-
-
-    100% {
-
-        background-position: -200% 0;
-
-    }
-
+  100% {
+    background-position: -200% 0;
+  }
 }
-
-
 
 /* TABLET */
 
-
-
 @media (max-width: 1199px) {
-
-    .pl-loading-grid {
-
-        gap: 16px;
-
-    }
-
+  .pl-loading-grid {
+    gap: 16px;
+  }
 }
-
-
 
 /* MOBILE */
 
-
-
 @media (max-width: 600px) {
+  .pl-loading-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 
-    .pl-loading-grid {
+    gap: 10px;
+  }
 
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+  .pl-skeleton-card {
+    border-radius: 12px;
+  }
 
-        gap: 10px;
+  .pl-skeleton-image {
+    height: 145px;
+  }
 
-    }
+  .pl-skeleton-content {
+    padding: 10px;
+  }
 
+  .pl-skeleton-title {
+    height: 15px;
+  }
 
+  .pl-skeleton-buttons {
+    grid-template-columns: 1fr;
 
-    .pl-skeleton-card {
+    gap: 6px;
+  }
 
-        border-radius: 12px;
-
-    }
-
-
-
-    .pl-skeleton-image {
-
-        height: 145px;
-
-    }
-
-
-
-    .pl-skeleton-content {
-
-        padding: 10px;
-
-    }
-
-
-
-    .pl-skeleton-title {
-
-        height: 15px;
-
-    }
-
-
-
-    .pl-skeleton-buttons {
-
-        grid-template-columns: 1fr;
-
-        gap: 6px;
-
-    }
-
-
-
-    .pl-skeleton-btn {
-
-        height: 31px;
-
-    }
-
+  .pl-skeleton-btn {
+    height: 31px;
+  }
 }
-
-
 
 @media (max-width: 380px) {
+  .pl-loading-grid {
+    grid-template-columns: 1fr;
+  }
 
-    .pl-loading-grid {
+  .pl-skeleton-image {
+    height: 195px;
+  }
 
-        grid-template-columns: 1fr;
-
-    }
-
-
-
-    .pl-skeleton-image {
-
-        height: 195px;
-
-    }
-
-
-
-    .pl-skeleton-buttons {
-
-        grid-template-columns: 1fr 1fr;
-
-    }
-
+  .pl-skeleton-buttons {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
-
-
 @media (prefers-reduced-motion: reduce) {
-
-    .pl-shimmer {
-
-        animation: none;
-
-    }
-
+  .pl-shimmer {
+    animation: none;
+  }
 }
 
 /* ==========================================================
@@ -6818,10 +3262,10 @@ badge खाली ठेवतो.
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  background: rgba(255,255,255,.95);
-  border: 1px solid rgba(255,255,255,.85);
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.85);
   border-radius: 999px;
-  box-shadow: 0 8px 24px rgba(0,0,0,.2);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   color: #0757cb;
   padding: 9px 16px;
   font-size: 12px;
@@ -6829,8 +3273,13 @@ badge खाली ठेवतो.
   cursor: pointer;
   white-space: nowrap;
 }
-.pl-watch-video-btn:hover { background: #0757cb; color: white; }
-.pl-watch-video-btn i { font-size: 16px; }
+.pl-watch-video-btn:hover {
+  background: #0757cb;
+  color: white;
+}
+.pl-watch-video-btn i {
+  font-size: 16px;
+}
 
 .pl-video-popup-backdrop {
   position: fixed;
@@ -6840,7 +3289,7 @@ badge खाली ठेवतो.
   align-items: center;
   justify-content: center;
   padding: 16px;
-  background: rgba(5, 14, 31, .82);
+  background: rgba(5, 14, 31, 0.82);
   backdrop-filter: blur(7px);
 }
 .pl-video-popup {
@@ -6851,7 +3300,7 @@ badge खाली ठेवतो.
   background: #fff;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 24px 80px rgba(0,0,0,.35);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
 }
 .pl-video-popup-header {
   display: flex;
@@ -6860,38 +3309,178 @@ badge खाली ठेवतो.
   gap: 14px;
   padding: 13px 15px;
 }
-.pl-video-popup-heading { min-width: 0; display: grid; gap: 3px; }
-.pl-video-popup-heading strong { color: #13243b; font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.pl-video-popup-heading small { color: #6b7280; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.pl-video-popup-close { flex-shrink: 0; width: 34px; height: 34px; border: 0; border-radius: 50%; background: #edf2f8; color: #182b45; cursor: pointer; }
-.pl-video-popup-player { position: relative; min-height: 0; background: #000; display: flex; justify-content: center; }
-.pl-video-popup-media { display: block; width: 100%; max-height: min(68dvh, 680px); aspect-ratio: 9 / 16; object-fit: contain; background: #000; }
-.pl-video-popup-arrow { position: absolute; top: 50%; transform: translateY(-50%); width: 36px; height: 36px; border-radius: 50%; border: 0; background: rgba(0,0,0,.6); color: #fff; cursor: pointer; }
-.pl-video-popup-prev { left: 10px; }
-.pl-video-popup-next { right: 10px; }
-.pl-video-popup-footer { padding: 12px 15px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.pl-video-popup-count { color: #64748b; font-size: 12px; white-space: nowrap; }
-.pl-video-popup-links { display: flex; gap: 8px; }
-.pl-popup-outline-btn, .pl-popup-primary-btn { border-radius: 8px; padding: 9px 12px; font-size: 12px; font-weight: 700; cursor: pointer; }
-.pl-popup-outline-btn { border: 1px solid #0c63e7; color: #0c63e7; background: #fff; }
-.pl-popup-primary-btn { border: 1px solid #0c63e7; color: #fff; background: #0c63e7; }
+.pl-video-popup-heading {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+.pl-video-popup-heading strong {
+  color: #13243b;
+  font-size: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pl-video-popup-heading small {
+  color: #6b7280;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pl-video-popup-close {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 50%;
+  background: #edf2f8;
+  color: #182b45;
+  cursor: pointer;
+}
+.pl-video-popup-player {
+  position: relative;
+  min-height: 0;
+  background: #000;
+  display: flex;
+  justify-content: center;
+}
+.pl-video-popup-media {
+  display: block;
+  width: 100%;
+  max-height: min(68dvh, 680px);
+  aspect-ratio: 9 / 16;
+  object-fit: contain;
+  background: #000;
+}
+.pl-video-popup-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 0;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  cursor: pointer;
+}
+.pl-video-popup-prev {
+  left: 10px;
+}
+.pl-video-popup-next {
+  right: 10px;
+}
+.pl-video-popup-footer {
+  padding: 12px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.pl-video-popup-count {
+  color: #64748b;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.pl-video-popup-links {
+  display: flex;
+  gap: 8px;
+}
+.pl-popup-outline-btn,
+.pl-popup-primary-btn {
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.pl-popup-outline-btn {
+  border: 1px solid #0c63e7;
+  color: #0c63e7;
+  background: #fff;
+}
+.pl-popup-primary-btn {
+  border: 1px solid #0c63e7;
+  color: #fff;
+  background: #0c63e7;
+}
 @media (max-width: 560px) {
-  .pl-video-popup-backdrop { padding: 8px; }
-  .pl-video-popup { max-height: calc(100dvh - 16px); border-radius: 12px; }
-  .pl-video-popup-media { max-height: 65dvh; }
-  .pl-video-popup-footer { flex-wrap: wrap; }
-  .pl-video-popup-links { width: 100%; }
-  .pl-video-popup-links button { flex: 1; }
+  .pl-video-popup-backdrop {
+    padding: 8px;
+  }
+  .pl-video-popup {
+    max-height: calc(100dvh - 16px);
+    border-radius: 12px;
+  }
+  .pl-video-popup-media {
+    max-height: 65dvh;
+  }
+  .pl-video-popup-footer {
+    flex-wrap: wrap;
+  }
+  .pl-video-popup-links {
+    width: 100%;
+  }
+  .pl-video-popup-links button {
+    flex: 1;
+  }
 }
 
 /* Watch Video belongs in card information, never over the property image */
-.pl-card-video-action { display:flex; justify-content:center; margin-top: 7px; }
-.pl-card-video-action .pl-watch-video-btn {
-  position: static; left:auto; top:auto; transform:none; z-index:auto;
-  display:inline-flex; align-items:center; justify-content:center; gap:6px;
-  padding:6px 14px; min-height:28px; width:100%;
-  background:#eff6ff; color:#0757cb; border:1px solid #bfd9ff;
-  border-radius:7px; box-shadow:none; font-size:11px; font-weight:800;
+.pl-card-video-action {
+  display: flex;
+  justify-content: center;
+  margin-top: 7px;
 }
-.pl-card-video-action .pl-watch-video-btn:hover { background:#0757cb; color:#fff; }
-.pl-card-video-action .pl-watch-video-btn i {font-size:13px;}
+.pl-card-video-action .pl-watch-video-btn {
+  position: static;
+  left: auto;
+  top: auto;
+  transform: none;
+  z-index: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 14px;
+  min-height: 28px;
+  width: 100%;
+  background: #eff6ff;
+  color: #0757cb;
+  border: 1px solid #bfd9ff;
+  border-radius: 7px;
+  box-shadow: none;
+  font-size: 11px;
+  font-weight: 800;
+}
+.pl-card-video-action .pl-watch-video-btn:hover {
+  background: #0757cb;
+  color: #fff;
+}
+.pl-card-video-action .pl-watch-video-btn i {
+  font-size: 13px;
+}
+/* ===== PROPERTY CARD - STATIC HOVER FIX ===== */
+
+.pl-page .pl-card,
+.pl-page .pl-card:hover {
+  transform: none !important;
+  transition: none !important;
+}
+
+/* Stop Image Zoom */
+.pl-page .pl-full-bg,
+.pl-page .pl-card:hover .pl-full-bg {
+  transform: none !important;
+  transition: none !important;
+}
+
+/* Keep Original Shadow */
+.pl-page .pl-card:hover {
+  box-shadow:
+    0 4px 12px rgba(15, 23, 42, 0.04),
+    0 10px 24px rgba(15, 23, 42, 0.06) !important;
+
+  border-color: #e5eaf3 !important;
+}

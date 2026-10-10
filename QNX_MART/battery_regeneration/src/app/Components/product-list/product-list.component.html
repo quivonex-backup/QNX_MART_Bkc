@@ -1,368 +1,669 @@
 <div class="pl-page">
 
+
+
   <!-- Header -->
+
   <div class="pl-header">
+
     <div class="pl-header-text">
+
       <h2><i class="bi bi-grid-3x3-gap-fill me-2"></i>
+
         {{ discountLabel || activeCat || 'All Products' }}
+
         <span *ngIf="activeSubCat"> › {{ activeSubCat }}</span>
+
       </h2>
+
       <p>{{ totalItems }} product{{ totalItems !== 1 ? 's' : '' }} found</p>
+
     </div>
+
     <button class="pl-filter-toggle" (click)="filterOpen = !filterOpen">
+
       <i class="bi bi-funnel-fill me-1"></i>Filters
+
       <span class="pl-filter-badge" *ngIf="activeFilterCount > 0">{{ activeFilterCount }}</span>
+
     </button>
+
   </div>
 
+
+
   <div class="pl-body">
+
     <div class="pl-layout">
 
+
+
       <!-- ===== SIDEBAR ===== -->
+
       <div class="pl-backdrop" *ngIf="filterOpen" (click)="filterOpen = false"></div>
 
+
+
       <aside class="pl-sidebar" [class.pl-sidebar-open]="filterOpen">
+
         <div class="pl-sidebar-header">
+
           <span><i class="bi bi-funnel-fill me-2"></i>Filters
+
             <span class="pl-filter-badge ms-1" *ngIf="activeFilterCount > 0">{{ activeFilterCount }}</span>
+
           </span>
+
           <button class="pl-sidebar-close" (click)="filterOpen = false" title="Close">
+
             <i class="bi bi-x-lg"></i>
+
           </button>
+
         </div>
 
+
+
         <div class="pl-sidebar-scroll">
+
           <div class="pl-sidebar-clear" *ngIf="activeFilterCount > 0">
+
             <button (click)="showAll()">
+
               <i class="bi bi-x-circle me-1"></i>Clear all filters ({{ activeFilterCount }})
+
             </button>
+
           </div>
+
+
 
           <div class="pl-filter-group">
+
             <div class="pl-filter-group-title">
+
               <i class="bi bi-grid me-2"></i>Category
+
             </div>
+
             <ul class="pl-filter-list">
+
               <li [class.active]="!activeCat" (click)="selectCategory(''); activeSubCat=''; activeBrand=''">
+
                 <i class="bi bi-circle me-2"></i>All Categories
+
               </li>
+
               <li *ngFor="let cat of categories" [class.active]="activeCat === cat" (click)="selectCategory(cat)">
+
                 <i class="bi bi-circle me-2"></i>{{ cat }}
+
               </li>
+
             </ul>
+
           </div>
+
+
 
           <div class="pl-filter-group" *ngIf="activeCat && subcategoriesForCat.length > 0">
+
             <div class="pl-filter-group-title">
+
               <i class="bi bi-diagram-2 me-2"></i>Sub Category
+
               <span class="pl-filter-sub-label">in {{ activeCat }}</span>
+
             </div>
+
             <ul class="pl-filter-list">
+
               <li [class.active]="!activeSubCat" (click)="selectSubCategory('')">
+
                 <i class="bi bi-circle me-2"></i>All in {{ activeCat }}
+
               </li>
+
               <li *ngFor="let sub of subcategoriesForCat" [class.active]="activeSubCat === sub"
+
                 (click)="selectSubCategory(sub)">
+
                 <i class="bi bi-circle me-2"></i>{{ sub }}
+
               </li>
+
             </ul>
+
           </div>
+
+
 
           <div class="pl-filter-group" *ngIf="brandsForFilter.length > 0">
+
             <div class="pl-filter-group-title">
+
               <i class="bi bi-award me-2"></i>Brand
+
             </div>
+
             <ul class="pl-filter-list">
+
               <li [class.active]="!activeBrand" (click)="selectBrand('')">
+
                 <i class="bi bi-circle me-2"></i>All Brands
+
               </li>
+
               <li *ngFor="let brand of brandsForFilter" [class.active]="activeBrand === brand"
+
                 (click)="selectBrand(brand)">
+
                 <i class="bi bi-circle me-2"></i>{{ brand }}
+
               </li>
+
             </ul>
+
           </div>
 
+
+
           <!-- 4. PREMIUM PRICE RANGE FILTER -->
+
           <div class="pl-price-filter mb-3 pb-3 border-bottom">
 
+
+
             <div class="d-flex justify-content-between align-items-center mb-3">
+
               <span class="fw-bold text-dark" style="font-size: 13px;">
+
                 <i class="bi bi-currency-rupee me-1"></i>
+
                 Price Range
+
               </span>
+
+
 
               <span class="pl-range-badge">
+
                 ₹{{ (priceMin ?? 0) | number:'1.0-0' }} -
+
                 ₹{{ (priceMax ?? maxProductPrice) | number:'1.0-0' }}
+
               </span>
+
             </div>
 
+
+
             <!-- DUAL RANGE SLIDER -->
+
             <div class="pl-range-container">
+
+
 
               <div class="pl-range-track"></div>
 
+
+
               <div class="pl-range-active" [style.left.%]="getMinPricePercent()"
+
                 [style.right.%]="100 - getMaxPricePercent()">
+
               </div>
+
+
 
               <!-- MINIMUM PRICE SLIDER -->
+
               <input type="range" class="pl-range-input pl-range-min" min="0" [max]="sliderMaxPrice" [step]="priceStep"
+
                 [ngModel]="priceMin ?? 0" (ngModelChange)="onMinPriceChange($event)" aria-label="Minimum price">
 
+
+
               <!-- MAXIMUM PRICE SLIDER -->
+
               <input type="range" class="pl-range-input pl-range-max" min="0" [max]="sliderMaxPrice" [step]="priceStep"
+
                 [ngModel]="priceMax ?? sliderMaxPrice" (ngModelChange)="onMaxPriceChange($event)"
+
                 aria-label="Maximum price">
 
+
+
             </div>
+
+
 
             <!-- MIN MAX LABELS -->
+
             <div class="d-flex justify-content-between mt-2 mb-3">
+
               <span class="pl-range-limit">₹0</span>
+
               <span class="pl-range-limit">
+
                 ₹{{ sliderMaxPrice | number:'1.0-0' }}
+
               </span>
+
             </div>
 
+
+
             <!-- MANUAL PRICE INPUTS -->
+
             <div class="pl-price-inputs d-flex align-items-center gap-2">
 
+
+
               <div class="pl-price-field">
+
                 <label>Minimum</label>
+
                 <input type="number" class="form-control form-control-sm" [ngModel]="priceMin"
+
                   (ngModelChange)="onMinPriceChange($event)" placeholder="200" min="0">
+
               </div>
+
+
 
               <span class="pl-price-separator">—</span>
 
+
+
               <div class="pl-price-field">
+
                 <label>Maximum</label>
+
                 <input type="number" class="form-control form-control-sm" [ngModel]="priceMax"
+
                   (ngModelChange)="onMaxPriceChange($event)" placeholder="4000" min="0">
+
               </div>
 
+
+
             </div>
+
+
 
             <!-- BUTTONS -->
+
             <div class="d-flex gap-2 mt-3">
 
+
+
               <button type="button" class="btn btn-primary btn-sm w-100" (click)="applyFilters()">
+
                 <i class="bi bi-check2 me-1"></i>
+
                 Apply
+
               </button>
+
+
 
               <button type="button" class="btn btn-outline-secondary btn-sm w-100" (click)="clearPriceFilter()">
+
                 Clear
+
               </button>
 
+
+
             </div>
 
+
+
           </div>
+
         </div>
+
       </aside>
 
+
+
       <!-- ===== MAIN ===== -->
+
       <main class="pl-main">
+
         <div class="pl-topbar">
+
           <div class="pl-chips" *ngIf="activeFilterCount > 0 || discountLabel">
+
             <span class="pl-chip" *ngIf="discountLabel">
+
               {{ discountLabel }}
+
               <button (click)="showAll()"><i class="bi bi-x"></i></button>
+
             </span>
+
             <span class="pl-chip" *ngIf="activeCat">
+
               {{ activeCat }}
+
               <button (click)="selectCategory('')"><i class="bi bi-x"></i></button>
+
             </span>
+
             <span class="pl-chip" *ngIf="activeSubCat">
+
               {{ activeSubCat }}
+
               <button (click)="selectSubCategory('')"><i class="bi bi-x"></i></button>
+
             </span>
+
             <span class="pl-chip" *ngIf="activeBrand">
+
               {{ activeBrand }}
+
               <button (click)="selectBrand('')"><i class="bi bi-x"></i></button>
+
             </span>
+
             <span class="pl-chip" *ngIf="priceMin !== null || priceMax !== null">
+
               ₹{{ priceMin ?? 0 }} – ₹{{ priceMax ?? '∞' }}
+
               <button (click)="clearPriceFilter()"><i class="bi bi-x"></i></button>
+
             </span>
+
           </div>
+
+
 
           <div class="pl-topbar-right">
+
             <div class="pl-ipp">
+
               <label>Show:</label>
+
               <select [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
+
                 <option *ngFor="let s of pageSizeOptions" [ngValue]="s">{{ s }}</option>
+
               </select>
+
             </div>
+
             <select class="pl-sort-select" [(ngModel)]="selectedSort" (change)="applyFilters()">
+
               <option value="">Sort By</option>
+
               <option value="price_low">Price: Low → High</option>
+
               <option value="price_high">Price: High → Low</option>
+
               <option value="a_z">Name: A → Z</option>
+
               <option value="z_a">Name: Z → A</option>
+
             </select>
+
             <span class="pl-count" *ngIf="totalItems > 0">
+
               {{ startIndex }}–{{ endIndex }} of {{ totalItems }}
+
             </span>
+
           </div>
+
         </div>
 
-        <!-- Product Grid -->
-        <div class="pl-grid" *ngIf="paginatedProducts.length > 0; else noResults">
-          <div class="pl-card" *ngFor="let product of paginatedProducts">
-            <!-- <div class="pl-img-wrap" (click)="viewDetails(product.id)"> -->
-            <div class="pl-img-wrap" (click)="viewDetails(product)">
-              <img [src]="product.thumbnail_s3_key" [alt]="product.name" class="pl-img" />
-              <div class="pl-img-overlay">
-                <!-- <button class="pl-overlay-btn" (click)="$event.stopPropagation(); addToCart(product)"
-                  title="Add to Cart">
-                  <i class="bi bi-cart-plus"></i>
-                </button> -->
-                <button class="pl-overlay-btn" title="View Details">
-                  <i class="bi bi-search"></i>
-                </button>
+
+
+        <!-- Product Grid: Home / Property-style Premium Cards -->
+        <div class="pl-grid pl-premium-grid" *ngIf="paginatedProducts.length > 0; else noResults">
+          <article class="pl-card pl-premium-card" *ngFor="let product of paginatedProducts">
+
+            <div class="pl-premium-image-section">
+              <img [src]="product.thumbnail_s3_key" [alt]="product.name"
+                   class="pl-premium-image" loading="lazy"
+                   (click)="viewDetails(product)"
+                   onerror="this.src='assets/placeholder.png'" />
+
+              <div class="pl-premium-image-badges">
+                <span class="pl-premium-category" [title]="product.category_name">
+                  <i class="bi bi-box-seam"></i>
+                  <span class="pl-premium-category-text">{{ product.category_name }}</span>
+                </span>
+                <span class="pl-premium-brand" *ngIf="product.brand_name" [title]="product.brand_name">
+                  {{ product.brand_name }}
+                </span>
               </div>
 
-              <div class="pl-discount-tag" *ngIf="getDiscountValue(product)">
-                <div class="pl-discount-content">
-                  <span class="pl-discount-badge">
-                    {{ getDiscountDisplay(product) }}
-                  </span>
-                  <span class="pl-offer-title" *ngIf="getOfferTitle(product)">
-                    {{ getOfferTitle(product) }}
-                  </span>
-                </div>
+              <div class="pl-premium-discount" *ngIf="getDiscountValue(product)">
+                <strong>{{ getDiscountDisplay(product) }}</strong>
+                <small *ngIf="getOfferTitle(product)">{{ getOfferTitle(product) }}</small>
               </div>
             </div>
 
-            <div class="pl-card-body">
-              <div class="pl-badges">
-                <span class="pl-badge pl-badge-cat">{{ product.category_name }}</span>
-                <span class="pl-badge pl-badge-sub" *ngIf="product.subcategory_name">{{ product.subcategory_name
-                  }}</span>
-              </div>
-              <h6 class="pl-name">{{ product.name }}</h6>
-              <p class="pl-desc">{{ product.description }}</p>
+            <div class="pl-premium-content">
+              <h3 class="pl-premium-name" (click)="viewDetails(product)" [title]="product.name">
+                {{ product.name }}
+              </h3>
+              <p class="pl-premium-description" [title]="product.description">
+                {{ product.description }}
+              </p>
 
-              <div class="pl-price-row">
-                <span class="pl-price">₹{{ getFinalPrice(product) }}</span>
-                <span class="pl-price-orig" *ngIf="getOriginalPrice(product) > getFinalPrice(product)">
+              <div class="pl-premium-price-row">
+                <span class="pl-premium-price">₹{{ getFinalPrice(product) }}</span>
+                <span class="pl-premium-old-price"
+                      *ngIf="getOriginalPrice(product) > getFinalPrice(product)">
                   ₹{{ getOriginalPrice(product) }}
                 </span>
               </div>
 
-              <div class="pl-franchise" *ngIf="product.is_franchise_available">
-                <button class="pl-btn pl-btn-franchise" (click)="openFranchise(product)">
+              <div class="pl-premium-franchise" *ngIf="product.is_franchise_available">
+                <button type="button" class="pl-premium-franchise-btn" (click)="openFranchise(product)">
                   <i class="bi bi-shop"></i> Franchise Available
                 </button>
               </div>
 
-              <div class="pl-actions">
-                <!-- <button class="pl-btn pl-btn-outline" (click)="viewDetails(product.id)"> -->
-                <button class="pl-btn pl-btn-outline" (click)="$event.stopPropagation(); addToCart(product)">
-                  <i class="bi bi-cart-plus me-1"></i>Add to Cart
+              <div class="pl-premium-actions">
+                <button type="button" class="pl-premium-enquiry-btn" (click)="goToEnquiry(product)">
+                  <i class="bi bi-chat-dots"></i> Enquiry
                 </button>
-                <button class="pl-btn pl-btn-primary" (click)="goToEnquiry(product)">
-                  <i class="bi bi-chat-dots me-1"></i>Enquiry
+                <button type="button" class="pl-premium-cart-btn" (click)="addToCart(product)">
+                  <i class="bi bi-cart3"></i> Cart
                 </button>
               </div>
             </div>
-          </div>
+          </article>
         </div>
 
         <!-- Pagination -->
+
         <div class="pl-pagination" *ngIf="totalPages > 1">
+
           <button class="pl-page-btn" [disabled]="currentPage === 1" (click)="firstPage()">
+
             <i class="bi bi-chevron-double-left"></i> First
+
           </button>
+
           <button class="pl-page-btn" [disabled]="currentPage === 1" (click)="previousPage()">
+
             <i class="bi bi-chevron-left"></i> Prev
+
           </button>
+
           <div class="pl-page-numbers">
+
             <button *ngFor="let page of getPageNumbers()" class="pl-page-num" [class.active]="page === currentPage"
+
               [disabled]="page === '...'" (click)="goToPage(page)">
+
               {{ page }}
+
             </button>
+
           </div>
+
           <button class="pl-page-btn" [disabled]="currentPage === totalPages" (click)="nextPage()">
+
             Next <i class="bi bi-chevron-right"></i>
+
           </button>
+
           <button class="pl-page-btn" [disabled]="currentPage === totalPages" (click)="lastPage()">
+
             Last <i class="bi bi-chevron-double-right"></i>
+
           </button>
+
         </div>
 
+
+
         <ng-template #noResults>
+
           <div class="pl-empty">
+
             <i class="bi bi-search pl-empty-icon"></i>
+
             <h5>No products found</h5>
+
             <p>Try adjusting your filters or browse all categories.</p>
+
             <button class="pl-btn pl-btn-primary" (click)="showAll()">Clear Filters</button>
+
           </div>
+
         </ng-template>
+
       </main>
+
     </div>
+
   </div>
+
 </div>
 
 
 
+
+
+
+
 <!-- ===== FRANCHISE PLANS POPUP ===== -->
+
 <div class="franchise-popup-backdrop" *ngIf="franchisePopupOpen" (click)="closeFranchisePopup()"></div>
 
+
+
 <div class="franchise-popup" *ngIf="franchisePopupOpen">
+
   <!-- Header -->
+
   <div class="franchise-popup-header">
+
     <h3>
+
       <i class="bi bi-shop"></i>
+
       {{ selectedProduct?.name || 'Product' }} - Franchise Plans
+
     </h3>
+
     <button class="franchise-popup-close" (click)="closeFranchisePopup()">
+
       <i class="bi bi-x-lg"></i>
+
     </button>
+
   </div>
+
+
 
   <!-- Body -->
+
   <div class="franchise-popup-body" style="flex-direction: column; padding: 20px;">
+
     <!-- Loading State -->
+
     <div class="franchise-loading" *ngIf="franchiseLoading">
+
       <div class="spinner"></div>
+
       <span>Loading franchise plans...</span>
+
     </div>
+
+
 
     <!-- Error or No Plans Message -->
+
     <div class="franchise-empty-state" *ngIf="!franchiseLoading && (showNoPlansMessage || franchiseError)">
+
       <i class="bi bi-info-circle"></i>
+
       <h4 *ngIf="franchiseError">{{ franchiseError }}</h4>
+
       <h4 *ngIf="!franchiseError && showNoPlansMessage">No Franchise Plans Available</h4>
+
       <p *ngIf="!franchiseError">This product currently has no active franchise plans. Please check back later or
+
         contact support for more information.</p>
+
       <p *ngIf="franchiseError">We encountered an issue while loading franchise plans. Please try again.</p>
+
     </div>
 
+
+
     <!-- Plans List -->
+
     <ng-container *ngIf="!franchiseLoading && !showNoPlansMessage && !franchiseError && franchisePlans.length > 0">
+
       <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
+
         <div class="franchise-plan-card" *ngFor="let plan of franchisePlans"
+
           style="cursor: default; border-color: #e5e7eb;">
+
           <h5>{{ plan.plan_name }}</h5>
+
           <div class="franchise-plan-amount">₹ {{ plan.amount }}</div>
+
           <p style="font-size: 13px; color: #6b7280; margin-top: 6px;">{{ plan.description }}</p>
+
           <ul style="list-style: none; padding: 0; margin: 8px 0 0;">
+
             <li *ngFor="let item of plan.plan_products" style="font-size: 13px; color: #374151;">
+
               <i class="bi bi-check-circle-fill" style="color: #27ae60; margin-right: 6px;"></i>
+
               {{ item.item_name }} - {{ item.quantity }} {{ item.unit }}
+
             </li>
+
           </ul>
+
         </div>
+
       </div>
 
+
+
       <!-- Single button to navigate to franchise application page -->
+
       <button class="franchise-enquiry-btn" (click)="goToFranchiseApply()" style="margin-top: 10px;">
+
         <i class="bi bi-arrow-right-circle me-2"></i>Apply for Franchise
+
       </button>
+
     </ng-container>
+
   </div>
+
 </div>

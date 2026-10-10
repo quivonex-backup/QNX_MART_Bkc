@@ -27,7 +27,11 @@
   width: 100%;
   /* संपूर्ण स्क्रीनवर पसरण्यासाठी */
   z-index: 1000;
-  background: linear-gradient(135deg, var(--nav-bg-start), var(--nav-bg-end)) !important;
+  background: linear-gradient(
+    135deg,
+    var(--nav-bg-start),
+    var(--nav-bg-end)
+  ) !important;
   border-bottom: 1px solid var(--nav-border);
   transition: box-shadow 0.3s;
   /* padding-top: 8px; */
@@ -203,7 +207,7 @@
 }
 
 .nav-dropdown-wrap::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 0;
@@ -229,7 +233,10 @@
   font-weight: 600;
   /* bolder for visibility */
   text-decoration: none;
-  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
   white-space: nowrap;
   line-height: 1;
   letter-spacing: 0.3px;
@@ -294,7 +301,6 @@
 .nav-icon-btn.active .arrow {
   color: var(--nav-active-color) !important;
 }
-
 
 /* ===== CART WRAP – needed for badge positioning ===== */
 .cart-wrap {
@@ -391,7 +397,9 @@
   color: var(--nav-text) !important;
   text-decoration: none;
   cursor: pointer;
-  transition: background 0.18s, color 0.18s;
+  transition:
+    background 0.18s,
+    color 0.18s;
   border-radius: 6px;
   margin: 0 6px;
 }
@@ -445,7 +453,9 @@
   padding: 8px 4px;
   border-radius: 10px;
   cursor: pointer;
-  transition: background 0.18s, transform 0.2s;
+  transition:
+    background 0.18s,
+    transform 0.2s;
   text-align: center;
 }
 
@@ -753,7 +763,7 @@
   font-size: 17px;
 }
 
-.mobile-section-title>i {
+.mobile-section-title > i {
   font-size: 13px;
   color: var(--nav-text-muted);
   transition: transform 0.25s ease;
@@ -766,10 +776,9 @@
   color: var(--nav-active-color);
 }
 
-.mobile-section-title:hover>i {
+.mobile-section-title:hover > i {
   color: var(--nav-active-color);
 }
-
 
 /* ===== MOBILE SUBMENU ===== */
 .mobile-submenu {
@@ -787,12 +796,10 @@
   opacity: 1;
 }
 
-
 /* submenu items slightly indented */
 .mobile-submenu .mobile-item {
   padding-left: 34px;
 }
-
 
 /* Divider */
 .mobile-divider {
@@ -833,7 +840,6 @@
   transition: all 0.2s ease;
 }
 
-
 .mobile-item:hover {
   background: var(--nav-hover-bg);
   color: var(--nav-active-color) !important;
@@ -857,7 +863,6 @@
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 992px) {
-
   /* हॅमबर्गर आणि मोबाईल मेनू पूर्णपणे बंद करा */
   .hamburger {
     display: none !important;
@@ -945,9 +950,6 @@
   padding: 0 !important;
 }
 
-
-
-
 /* Sidebar / Drawer styling */
 .qnx-sidebar-backdrop {
   position: fixed;
@@ -978,7 +980,9 @@
 
 .drawer-item {
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
   padding: 6px 8px;
   border-radius: 4px;
 }
@@ -988,13 +992,8 @@
   color: #0d6efd !important;
 }
 
-
-
-
-
 /* ===== SIDEBAR / DRAWER MOBILE FIX ===== */
 @media (max-width: 992px) {
-
   /* display: none kaadun taka, jevhekarun open class mule ti screen var yeil */
   .qnx-side-drawer {
     display: block !important;
@@ -1023,7 +1022,7 @@
 }
 
 /* Jar backdrop activeasna direct display sathi */
-.qnx-side-drawer.open+.qnx-sidebar-backdrop,
+.qnx-side-drawer.open + .qnx-sidebar-backdrop,
 .qnx-sidebar-backdrop[style*="display: block"] {
   display: block !important;
 }
@@ -1034,15 +1033,12 @@
   transform: translateX(-30px) !important;
 }
 
-
 .real-estate-active {
   background-color: #0d6efd !important;
   color: #fff !important;
   border-color: #0d6efd !important;
   box-shadow: 0 2px 6px rgba(13, 110, 253, 0.25);
 }
-
-
 
 .go-home {
   display: inline-flex;
@@ -1070,17 +1066,9 @@
   transform: translateX(4px);
 }
 
-
-
-
-
-
-
-
 /* MOBILE SEARCH DROPDOWN VISIBILITY FIX */
 
 @media screen and (max-width: 991px) {
-
   .qnx-nav {
     overflow: visible !important;
   }
@@ -1134,5 +1122,413 @@
     display: flex !important;
     align-items: center;
     cursor: pointer;
+  }
+}
+/* ===== MAIN NAVBAR ACTIVE MENU FIX ===== */
+
+.qnx-nav .nav-link.qnx-main-tab-active {
+  background-color: #0d6efd !important;
+  color: #ffffff !important;
+  border-color: #0d6efd !important;
+  box-shadow: 0 3px 10px rgba(13, 110, 253, 0.2) !important;
+}
+
+.qnx-nav .nav-link.qnx-main-tab-active:hover {
+  background-color: #0b5ed7 !important;
+  color: #ffffff !important;
+}
+/* ===== LANGUAGE DROPDOWN MOBILE FIX ===== */
+
+.qnx-nav .language-dropdown-wrap {
+  position: relative !important;
+  z-index: 9999 !important;
+}
+
+.qnx-nav .language-dropdown-menu {
+  position: absolute !important;
+
+  top: calc(100% + 5px) !important;
+  right: 0 !important;
+  left: auto !important;
+
+  transform: none !important;
+
+  min-width: 160px !important;
+  height: auto !important;
+  max-height: none !important;
+
+  overflow: visible !important;
+  padding: 6px !important;
+
+  background: #ffffff !important;
+  z-index: 10000 !important;
+}
+
+/* All three options visible */
+.qnx-nav .language-dropdown-menu li {
+  display: list-item !important;
+  height: auto !important;
+}
+
+.qnx-nav .language-dropdown-menu .dropdown-item {
+  display: block !important;
+  width: 100% !important;
+
+  padding: 10px 12px !important;
+  font-size: 13px !important;
+
+  white-space: nowrap;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .qnx-nav,
+  .qnx-nav .container-fluid {
+    overflow: visible !important;
+  }
+
+  .qnx-nav .language-dropdown-menu {
+    min-width: 160px !important;
+    max-height: min(240px, 60vh) !important;
+    overflow-y: auto !important;
+  }
+}
+/* ===================================================
+   QNX MART - PREMIUM NAVBAR ACTION BUTTONS
+   Language | Cart | My Account
+=================================================== */
+
+.qnx-nav .qnx-premium-action {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-height: 40px;
+  padding: 5px 12px;
+
+  background: #ffffff !important;
+  color: #172b4d !important;
+
+  border: 1px solid #dce4f3 !important;
+  border-radius: 12px;
+
+  box-shadow: 0 2px 7px rgba(15, 23, 42, 0.07);
+
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* Highlight on hover */
+.qnx-nav .qnx-premium-action:hover {
+  background: #eff5ff !important;
+  border-color: #9dbdfb !important;
+  color: #0757c7 !important;
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.12);
+}
+
+/* Icon container */
+.qnx-nav .qnx-action-icon {
+  width: 29px;
+  height: 29px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  background: #edf3ff;
+  color: #155ed6;
+
+  border-radius: 9px;
+}
+
+.qnx-nav .qnx-action-icon i {
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* Label */
+.qnx-nav .qnx-action-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: inherit;
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Dropdown arrow */
+.qnx-nav .qnx-action-arrow {
+  font-size: 10px;
+  color: #64748b;
+}
+
+.qnx-nav .qnx-language-btn::after {
+  display: none !important;
+}
+
+/* ==============================
+   CART BADGE
+============================== */
+
+.qnx-nav .qnx-cart-btn {
+  position: relative;
+}
+
+.qnx-nav .qnx-premium-cart-count {
+  position: absolute;
+  top: -7px;
+  right: -6px;
+
+  min-width: 19px;
+  height: 19px;
+  padding: 0 4px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 20px;
+  background: #ef4444;
+  color: #ffffff;
+
+  border: 2px solid #ffffff;
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+/* ==============================
+   LANGUAGE DROPDOWN
+============================== */
+
+.qnx-nav .language-dropdown-wrap {
+  position: relative;
+  z-index: 1200;
+}
+
+.qnx-nav .language-dropdown-menu {
+  position: absolute !important;
+  top: 100% !important;
+  right: 0 !important;
+  left: auto !important;
+
+  transform: none !important;
+
+  min-width: 160px;
+  max-height: min(260px, 60vh);
+  overflow-y: auto;
+
+  padding: 7px;
+  margin-top: 8px;
+
+  background: #ffffff;
+  border: 1px solid #e5eaf3 !important;
+  border-radius: 12px;
+
+  z-index: 1201;
+}
+
+.qnx-nav .language-dropdown-menu .dropdown-item {
+  padding: 11px 12px;
+  border-radius: 8px;
+
+  font-size: 13px;
+  font-weight: 600;
+  color: #26364f;
+
+  white-space: nowrap;
+}
+
+.qnx-nav .language-dropdown-menu .dropdown-item:hover {
+  background: #edf3ff;
+  color: #155ed6;
+}
+
+/* ==============================
+   MY ACCOUNT DROPDOWN
+============================== */
+
+.qnx-nav .qnx-account-wrap {
+  position: relative;
+}
+
+.qnx-nav .qnx-account-dropdown {
+  position: absolute;
+  right: 0 !important;
+  left: auto !important;
+
+  transform: none !important;
+
+  min-width: 220px;
+  margin-top: 8px;
+  padding: 8px;
+
+  background: #ffffff;
+  border: 1px solid #e5eaf3 !important;
+  border-radius: 14px;
+
+  z-index: 1300;
+}
+
+.qnx-nav .qnx-account-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 12px;
+  margin-bottom: 6px;
+
+  background: #f3f7ff;
+  border-radius: 10px;
+}
+
+.qnx-nav .qnx-account-heading > i {
+  color: #155ed6;
+  font-size: 25px;
+}
+
+.qnx-nav .qnx-account-heading strong,
+.qnx-nav .qnx-account-heading small {
+  display: block;
+}
+
+.qnx-nav .qnx-account-heading strong {
+  font-size: 12px;
+  color: #1e293b;
+}
+
+.qnx-nav .qnx-account-heading small {
+  font-size: 10px;
+  color: #64748b;
+}
+
+.qnx-nav .qnx-account-dropdown .dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 11px;
+  margin: 3px 0;
+
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.qnx-nav .qnx-account-dropdown .dropdown-item:hover {
+  background: #edf3ff;
+  color: #155ed6;
+}
+
+.qnx-nav .qnx-account-signin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  width: 100%;
+  padding: 10px;
+
+  background: #155ed6;
+  color: #ffffff;
+  border: none;
+  border-radius: 9px;
+
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ==============================
+   RESPONSIVE DESIGN
+============================== */
+
+@media (max-width: 991px) {
+  .qnx-nav .qnx-premium-action {
+    min-height: 38px;
+    padding: 4px 7px;
+    gap: 4px;
+    border-radius: 10px;
+  }
+
+  .qnx-nav .qnx-action-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+  }
+
+  .qnx-nav .qnx-action-label {
+    display: none;
+  }
+
+  .qnx-nav .qnx-action-arrow {
+    display: none;
+  }
+
+  .qnx-nav .language-dropdown-menu {
+    min-width: 160px;
+    max-height: min(260px, 60vh);
+  }
+
+  .qnx-nav .qnx-account-dropdown {
+    min-width: 210px;
+    max-width: calc(100vw - 16px);
+  }
+
+  .qnx-nav,
+  .qnx-nav .container-fluid {
+    overflow: visible !important;
+  }
+}
+/* ===== FULLY ROUNDED NAVBAR ACTION BUTTONS ===== */
+
+.qnx-nav .qnx-premium-action,
+.qnx-nav .qnx-language-btn,
+.qnx-nav .qnx-cart-btn,
+.qnx-nav .qnx-account-btn {
+  border-radius: 9999px !important;
+}
+
+/* Rounded icon background */
+.qnx-nav .qnx-action-icon {
+  border-radius: 50% !important;
+}
+
+/* Desktop */
+@media (min-width: 992px) {
+  .qnx-nav .qnx-premium-action {
+    padding: 5px 14px;
+    gap: 8px;
+  }
+}
+
+/* Mobile & Tablet */
+@media (max-width: 991px) {
+  .qnx-nav .qnx-premium-action {
+    width: 40px;
+    height: 40px;
+    min-height: 40px;
+    padding: 4px !important;
+    border-radius: 50% !important;
+  }
+
+  .qnx-nav .qnx-action-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50% !important;
   }
 }
