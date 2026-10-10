@@ -21,7 +21,7 @@ import { AlertService } from '../../../services/alert.service';
 })
 export class PropertyEnquiryComponent implements OnInit {
 
-  property: any = null;
+  property_id: any = null;
   propertyPrice: number = 0;
 
   enquiryForm!: FormGroup;
@@ -290,7 +290,7 @@ export class PropertyEnquiryComponent implements OnInit {
       }];
     }
 
-    this.property = p;
+    this.property_id = p;
   }
 
   // ---------- SUBMIT ----------
@@ -303,7 +303,7 @@ export class PropertyEnquiryComponent implements OnInit {
       return;
     }
 
-    if (!this.property?.id) {
+    if (!this.property_id?.id) {
       this.alertService.unialert('❌ Property not loaded. Please go back and try again.');
       return;
     }
@@ -311,7 +311,7 @@ export class PropertyEnquiryComponent implements OnInit {
     const v = this.enquiryForm.value;
 
     const payload: any = {
-      property: this.property.id,
+      property: this.property_id.id,
       customer_name: v.customer_name,
       customer_email: v.customer_email,
       customer_mobile: v.customer_mobile,
@@ -402,16 +402,16 @@ export class PropertyEnquiryComponent implements OnInit {
 
   // ---------- PUBLIC DISPLAY (hide identity / exact location) ----------
   get publicTitle(): string {
-    if (!this.property) return 'Property';
-    const type = this.getPropertyTypeLabel(this.property.property_type);
-    const city = this.property.city || '';
+    if (!this.property_id) return 'Property';
+    const type = this.getPropertyTypeLabel(this.property_id.property_type);
+    const city = this.property_id.city || '';
     if (type && city) return `${type} in ${city}`;
     return type || city || 'Property';
   }
 
   get locationLine(): string {
-    if (!this.property) return '';
-    const parts = [this.property.area, this.property.city].filter(Boolean);
+    if (!this.property_id) return '';
+    const parts = [this.property_id.area, this.property_id.city].filter(Boolean);
     return parts.length ? parts.join(', ') : 'Location available on request';
   }
 }

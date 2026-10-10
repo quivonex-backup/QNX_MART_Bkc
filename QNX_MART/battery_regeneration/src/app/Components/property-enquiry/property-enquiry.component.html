@@ -14,19 +14,19 @@
     <div class="enq-container">
 
         <!-- ===== PROPERTY SUMMARY CARD ===== -->
-        <div class="enq-product-card d-flex flex-column flex-md-row-reverse align-items-center gap-4" *ngIf="property">
+        <div class="enq-product-card d-flex flex-column flex-md-row-reverse align-items-center gap-4" *ngIf="property_id">
         <!-- <div class="enq-product-card" *ngIf="property"> -->
 
              <!-- इमेज उजव्या बाजूला (क्लिक केल्यावर फुलस्क्रीन उघडण्यासाठी) -->
-            <img [src]="property.images[0]?.image_s3_key" [alt]="publicTitle" class="enq-product-img clickable-img"
-                (click)="openFullScreen(property.images[0]?.image_s3_key)" title="Click to view full screen" />
+            <img [src]="property_id.images[0]?.image_s3_key" [alt]="publicTitle" class="enq-product-img clickable-img"
+                (click)="openFullScreen(property_id.images[0]?.image_s3_key)" title="Click to view full screen" />
                 
             <!-- माहिती डाव्या बाजूला -->
             <div class="enq-product-info">
                 <div class="enq-product-tags">
-                    <span class="enq-tag enq-tag-cat">{{ getPropertyTypeLabel(property.property_type) }}</span>
+                    <span class="enq-tag enq-tag-cat">{{ getPropertyTypeLabel(property_id.property_type) }}</span>
                     <span class="enq-tag enq-tag-brand">
-                        <i class="bi bi-arrow-left-right me-1"></i>{{ getTransactionTypeLabel(property.transaction_type)
+                        <i class="bi bi-arrow-left-right me-1"></i>{{ getTransactionTypeLabel(property_id.transaction_type)
                         }}
                     </span>
                 </div>
@@ -41,38 +41,38 @@
 
                 <!-- Property Key Details Grid -->
                 <div class="enq-detail-grid">
-                    <div class="enq-detail-item" *ngIf="property.rera_number">
+                    <div class="enq-detail-item" *ngIf="property_id.rera_number">
                         <span class="enq-detail-label"><i class="bi bi-patch-check me-1"></i>RERA No.</span>
-                        <span class="enq-detail-value">{{ maskReraNumber(property.rera_number) }}</span>
+                        <span class="enq-detail-value">{{ maskReraNumber(property_id.rera_number) }}</span>
                     </div>
-                    <div class="enq-detail-item" *ngIf="property.total_floors">
+                    <div class="enq-detail-item" *ngIf="property_id.total_floors">
                         <span class="enq-detail-label"><i class="bi bi-building me-1"></i>Total Floors</span>
-                        <span class="enq-detail-value">{{ property.total_floors }}</span>
+                        <span class="enq-detail-value">{{ property_id.total_floors }}</span>
                     </div>
-                    <div class="enq-detail-item" *ngIf="property.total_towers">
+                    <div class="enq-detail-item" *ngIf="property_id.total_towers">
                         <span class="enq-detail-label"><i class="bi bi-buildings me-1"></i>Total Towers</span>
-                        <span class="enq-detail-value">{{ property.total_towers }}</span>
+                        <span class="enq-detail-value">{{ property_id.total_towers }}</span>
                     </div>
-                    <div class="enq-detail-item" *ngIf="property.possession_date">
+                    <div class="enq-detail-item" *ngIf="property_id.possession_date">
                         <span class="enq-detail-label"><i class="bi bi-calendar-check me-1"></i>Possession</span>
-                        <span class="enq-detail-value">{{ property.possession_date }}</span>
+                        <span class="enq-detail-value">{{ property_id.possession_date }}</span>
                     </div>
                     <div class="enq-detail-item"
-                        *ngIf="property.completion_percentage !== null && property.completion_percentage !== undefined">
+                        *ngIf="property_id.completion_percentage !== null && property_id.completion_percentage !== undefined">
                         <span class="enq-detail-label"><i class="bi bi-speedometer2 me-1"></i>Completion</span>
-                        <span class="enq-detail-value">{{ property.completion_percentage }}%</span>
+                        <span class="enq-detail-value">{{ property_id.completion_percentage }}%</span>
                     </div>
-                    <div class="enq-detail-item" *ngIf="property.flat_types?.length">
+                    <div class="enq-detail-item" *ngIf="property_id.flat_types?.length">
                         <span class="enq-detail-label"><i class="bi bi-house-door me-1"></i>Configurations</span>
                         <span class="enq-detail-value">
-                            <span *ngFor="let ft of property.flat_types; let i = index">
-                                {{ ft.flat_type }}<span *ngIf="i < property.flat_types.length - 1">, </span>
+                            <span *ngFor="let ft of property_id.flat_types; let i = index">
+                                {{ ft.flat_type }}<span *ngIf="i < property_id.flat_types.length - 1">, </span>
                             </span>
                         </span>
                     </div>
-                    <div class="enq-detail-item" *ngIf="property.amenities?.length">
+                    <div class="enq-detail-item" *ngIf="property_id.amenities?.length">
                         <span class="enq-detail-label"><i class="bi bi-star me-1"></i>Amenities</span>
-                        <span class="enq-detail-value">{{ property.amenities.length }}+</span>
+                        <span class="enq-detail-value">{{ property_id.amenities.length }}+</span>
                     </div>
                 </div>
             </div>
@@ -281,7 +281,7 @@
                 </div>
 
                 <!-- Selected Summary -->
-                <div class="enq-summary-box" *ngIf="property">
+                <div class="enq-summary-box" *ngIf="property_id">
                     <div class="enq-summary-title">
                         <i class="bi bi-clipboard-check me-2"></i>Enquiry Summary
                     </div>
@@ -289,14 +289,14 @@
                         <div class="enq-summary-row">
                             <span>Property</span><strong>{{ publicTitle }}</strong>
                         </div>
-                        <div class="enq-summary-row" *ngIf="property.property_type">
-                            <span>Type</span><strong>{{ getPropertyTypeLabel(property.property_type) }}</strong>
+                        <div class="enq-summary-row" *ngIf="property_id.property_type">
+                            <span>Type</span><strong>{{ getPropertyTypeLabel(property_id.property_type) }}</strong>
                         </div>
-                        <div class="enq-summary-row" *ngIf="property.transaction_type">
-                            <span>Transaction</span><strong>{{ getTransactionTypeLabel(property.transaction_type)
+                        <div class="enq-summary-row" *ngIf="property_id.transaction_type">
+                            <span>Transaction</span><strong>{{ getTransactionTypeLabel(property_id.transaction_type)
                                 }}</strong>
                         </div>
-                        <div class="enq-summary-row" *ngIf="property.city">
+                        <div class="enq-summary-row" *ngIf="property_id.city">
                             <span>Location</span>
                             <strong>{{ locationLine }}</strong>
                         </div>
